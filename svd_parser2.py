@@ -6,7 +6,7 @@
 import cmsis_svd as svd
 
 # Standard libraries
-from dataclasses import dataclass
+import copy
 import re
 import os
 
@@ -432,7 +432,7 @@ for periph1 in device.peripherals:
                     periph3.dim_index = None
         cur_common_name: str = None
         periph_num_list: list[int] = []
-        new_periph: svd.parser.SVDPeripheralArray = device.peripherals.copy()
+        new_periph: svd.parser.SVDPeripheralArray = copy.deepcopy(device.peripherals)
         for periph2 in device.peripherals:
             if periph2.dim_name is None and periph1.name != periph2.name:
                 for c1, c2, i in zip(periph1.name, periph2.name, range(min(len(periph1.name), len(periph2.name)))):
@@ -521,7 +521,7 @@ for periph in device.peripherals:
                             reg3.dim_index = None
                 cur_common_name: str = None
                 dim_num_list: list[int] = []
-                new_reg: svd.parser.SVDRegisterArray = periph.registers.copy()
+                new_reg: svd.parser.SVDRegisterArray = copy.deepcopy(periph.registers)
                 for reg2 in periph.registers:
                     if reg2.dim_name is None and reg1.name != reg2.name and ((reg1.fields == None) == (reg2.fields == None)):
                         for c1, c2, i in zip(reg1.name, reg2.name, range(min(len(reg1.name), len(reg2.name)))):
