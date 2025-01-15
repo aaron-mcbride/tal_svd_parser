@@ -18,10 +18,10 @@ import os
 ###################################################################################################
 
 # Output file path
-OUTPUT_PATH: str = "D:\\main\\projects\\sarp\\svd_parser\\output.h"
+OUTPUT_PATH: str = "C:\\Users\\AJM42\\Documents\\sarp\\tal_svd_parser\\output2.h"
 
 # Path to SVD data directory -> git clone --depth=1 -b main https://github.com/cmsis-svd/cmsis-svd-data.git
-SVD_PKG_PATH: str = "D:\\main\\projects\\sarp\\svd_parser\\cmsis-svd-data\\data"
+SVD_PKG_PATH: str = "C:\\Users\\AJM42\\Documents\\sarp\\tal_svd_parser\\cmsis-svd-data\\data"
 
 # Target device vendor name
 VENDOR_NAME: str = "STMicro"
@@ -143,14 +143,14 @@ with open(OUTPUT_PATH, "w") as f:
                                                     pr_name = r_diff[0]
                                                     base_r2_num = r_diff[1]
                                                     new_r2[r_diff[2]] = register_t(
-                                                        address = r2.base_address + r2.address_offset,
+                                                        address = p2.base_address + r2.address_offset,
                                                         access = r2.access,
                                                         size = r2.size,
                                                         desc = r2.description,
                                                         reset = r2.reset_value)
                                                 elif r1.name == r2.name:
                                                     base_r2 = register_t(
-                                                        address = r2.base_address + r2.address_offset,
+                                                        address = p2.base_address + r2.address_offset,
                                                         access = r2.access,
                                                         size = r2.size, 
                                                         desc = r2.description,
@@ -192,7 +192,7 @@ with open(OUTPUT_PATH, "w") as f:
 
                     for r1, n in zip(reg_list, name_list):
                         max_idx: int = 0
-                        size: int = r1.values()[0][0].size
+                        size: int = list(r1.values())[0].values()[0].size
                         qual: str = get_qual(r1.values()[0][0].access)
                         r1_decl_list: list[str] = []
                         r1_def_list: list[str] = []
@@ -224,8 +224,8 @@ with open(OUTPUT_PATH, "w") as f:
                     for r1, n in zip(reg_list, name_list):
                         max_idx_d1: int = 0
                         max_idx_d2: int = 0
-                        size: int = r1.values()[0][0].size
-                        qual: str = get_qual(r1.values()[0][0].access)
+                        size: int = r1.values()[0].values()[0].size
+                        qual: str = get_qual(r1.values()[0].values()[0].access)
                         r1_str_list: list[str] = []
                         if len(r1) > 1:
                             for i, r2 in r1.items():
@@ -276,8 +276,8 @@ with open(OUTPUT_PATH, "w") as f:
 
                     for r1, n in zip(reg_list, name_list):
                         max_idx: int = 0
-                        size: int = r1.values()[0][0].size
-                        qual: str = get_qual(r1.values()[0][0].access)
+                        size: int = r1.values()[0].values()[0].size
+                        qual: str = get_qual(r1.values()[0].values()[0].access)
                         r1_decl_list: list[str] = []
                         r1_def_list: list[str] = []
                         r1_cmt_list: list[str] = []
@@ -308,8 +308,8 @@ with open(OUTPUT_PATH, "w") as f:
                     for r1, n in zip(reg_list, name_list):
                         max_idx_d1: int = 0
                         max_idx_d2: int = 0
-                        size: int = r1.values()[0][0].size
-                        qual: str = get_qual(r1.values()[0][0].access)
+                        size: int = r1.values()[0].values()[0].size
+                        qual: str = get_qual(r1.values()[0].values()[0].access)
                         r1_str_list: list[str] = []
                         if len(r1) > 1:
                             for i, r2 in r1.items():
@@ -458,7 +458,7 @@ with open(OUTPUT_PATH, "w") as f:
                     for f1, n in zip(field_list, name_list):
                         max_idx: int = 0
                         name: str = n
-                        size: int = f1.values()[0][0].size
+                        size: int = f1.values()[0].values()[0].values()[0].size
                         decl_list: list[str] = []
                         def_list: list[str] = []
                         cmt_list: list[str] = []
@@ -499,9 +499,9 @@ with open(OUTPUT_PATH, "w") as f:
                     for f1, n in zip(field_list, name_list):
                         max_idx_d1: int = 0
                         max_idx_d2: int = 0
-                        size: int = f1.values()[0][0].size
-                        qual: str = get_qual(f1.values()[0][0].access)
-                        r1_str_list: list[str] = []
+                        size: int = f1.values()[0].values()[0].values()[0].size
+                        qual: str = get_qual(f1.values()[0].values()[0].values()[0].access)
+                        str_list: list[str] = []
                         if len(f1) > 1:
                             for i, f2 in f1.items():
                                 f2_decl_list: list[str] = []
@@ -514,14 +514,12 @@ with open(OUTPUT_PATH, "w") as f:
                                             f2_def_list.append(f'0x{((1 << f3.width) - 1) << f3.offset:0{size // 4}X}U')
                                             f2_cmt_list.append(f'/** @brief {f3.desc} */')
                                             max_idx_d2 = max(max_idx_d2, j)
-                                else:
+                                else:                                    
                                     for j, f3 in f2.items():
                                         f2_decl_list.append(f'[{j}]')
                                         f2_def_list.append(f'0x{((1 << f3.width) - 1) << f3.offset:0{size // 4}X}U')
                                         f2_cmt_list.append(f'/** @brief {f3.desc} */')
                                         max_idx_d2 = max(max_idx_d2, j)
-                                    
-
                                 dim_f2_str: str = f'[{i}] = {{\n'
                                 if len(f2_decl_list) > 0:
                                     max_decl_len: int = max([len(x) for x in f2_decl_list])
@@ -534,9 +532,61 @@ with open(OUTPUT_PATH, "w") as f:
                                 r1_str_list.append(dim_f2_str)
                             if len(r1_str_list) > 0:
                                 f.write(f'    static const uint{size}_t {n}_MASK[{max_idx_d1}][{max_idx_d2}] = {{\n')
-                                for x in r1_str_list: f.write(x)
+                                for x in str_list: f.write(x)
                                 f.write("    };\n")
                                 f.write('\n')
+
+                    for f1, n in zip(field_list, name_list):
+                        size: int = f1.values()[0].values()[0].values()[0].size
+                        max_idx_d1: int = 0
+                        max_idx_d2: int = 0
+                        max_idx_d3: int = 0
+                        str_list: list[str] = []
+                        if len(f1) > 1:
+                            for i, f2 in f1.items():
+                                if len(f2) > 1:
+                                    max_idx_d1 = max(max_idx_d1, i)
+                                    d2_str_list: list[str] = []
+                                    for j, f3 in f2.items():
+                                        if len(f3) > 1:
+                                            max_idx_d2 = max(max_idx_d2, j)
+                                            d3_decl_list: list[str] = []
+                                            d3_def_list: list[str] = []
+                                            d3_cmt_list: list[str] = []
+                                            for k, f4 in f3.items():
+                                                if len(f4) > 1:
+                                                    max_idx_d3 = max(max_idx_d3, k)
+                                                    d3_decl_list.append(f'[{k}]')
+                                                    d3_def_list.append(f'0x{((1 << f4.width) - 1) << f4.offset:0{size // 4}X}U')
+                                                    d3_cmt_list.append(f'/** @brief {f4.desc} */')
+                                            if len(d3_decl_list) > 0:
+                                                max_decl_len: int = max([len(x) for x in d3_decl_list])
+                                                max_def_len: int = max([len(x) for x in d3_def_list])
+                                                d2_str_list.append(f'         {{\n')
+                                                for decl, _def, cmt in zip(decl, _def, cmt):
+                                                    def_gap: int = (max_decl_len - len(decl)) + 3
+                                                    cmt_cap: int = (max_def_len - len(_def)) + 3
+                                                    new_str = f'            {decl}{" "*def_gap}= {_def};{" "*cmt_gap}{cmt}\n'
+                                                    d2_str_list.append(new_str)
+                                                d2_str_list.append(f'          }},\n')
+                                    if len(d2_str_list) > 0:
+                                        for d2_str in d2_str_list:
+                                            str_list.append(f'        {{\n{"".join([x for x in d2_str_list])}        }},\n')
+                        if len(str_list) > 0:
+                            f.write(f'static uint{size}_t {n} = {{\n')
+                            for x in str_list:
+                                f.write(x)
+                            f.write(f'     }};\n')
+
+                    
+                
+                
+                
+                        
+
+
+
+                        
 
 
 
