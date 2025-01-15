@@ -346,11 +346,11 @@
 
     /**** @subsection DAC Register Field Masks ****/
 
-    static const uint32_t DAC_DHR12Rx_DACCxDHR_MASK   = 0x00000FFFU;   /** @brief DAC channel1 12-bit right-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
-    static const uint32_t DAC_DHR12Lx_DACCxDHR_MASK   = 0x0000FFF0U;   /** @brief DAC channel1 12-bit left-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
-    static const uint32_t DAC_DHR8Rx_DACCxDHR_MASK    = 0x000000FFU;   /** @brief DAC channel1 8-bit right-aligned data these bits are written by software which specifies 8-bit data for DAC channel1. */
-    static const uint32_t DAC_DORx_DACCxDOR_MASK      = 0x00000FFFU;   /** @brief DAC channel1 data output these bits are read-only, they contain data output for DAC channel1. */
-    static const uint32_t DAC_SHSRx_TSAMPLEx_MASK     = 0x000003FFU;   /** @brief DAC channel 1 sample time (only valid in sample &amp; hold mode) these bits can be written when the DAC channel1 is disabled or also during normal operation. In the latter case, the write can be done only when bwstx of DAC_SR register is low, if bwstx=1, the write operation is ignored. */
+    static const uint32_t DAC_DHR12Rx_DACC1DHR_MASK   = 0x00000FFFU;   /** @brief DAC channel1 12-bit right-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
+    static const uint32_t DAC_DHR12Lx_DACC1DHR_MASK   = 0x0000FFF0U;   /** @brief DAC channel1 12-bit left-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
+    static const uint32_t DAC_DHR8Rx_DACC1DHR_MASK    = 0x000000FFU;   /** @brief DAC channel1 8-bit right-aligned data these bits are written by software which specifies 8-bit data for DAC channel1. */
+    static const uint32_t DAC_DORx_DACC1DOR_MASK      = 0x00000FFFU;   /** @brief DAC channel1 data output these bits are read-only, they contain data output for DAC channel1. */
+    static const uint32_t DAC_SHSRx_TSAMPLE1_MASK     = 0x000003FFU;   /** @brief DAC channel 1 sample time (only valid in sample &amp; hold mode) these bits can be written when the DAC channel1 is disabled or also during normal operation. In the latter case, the write can be done only when bwstx of DAC_SR register is low, if bwstx=1, the write operation is ignored. */
 
     /**** @subsection Enumerated DAC Register Field Masks ****/
 
@@ -441,11 +441,11 @@
 
     /**** @subsection DAC Register Field Positions ****/
 
-    static const int32_t DAC_DHR12Rx_DACCxDHR_POS   = 0;   /** @brief DAC channel1 12-bit right-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
-    static const int32_t DAC_DHR12Lx_DACCxDHR_POS   = 4;   /** @brief DAC channel1 12-bit left-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
-    static const int32_t DAC_DHR8Rx_DACCxDHR_POS    = 0;   /** @brief DAC channel1 8-bit right-aligned data these bits are written by software which specifies 8-bit data for DAC channel1. */
-    static const int32_t DAC_DORx_DACCxDOR_POS      = 0;   /** @brief DAC channel1 data output these bits are read-only, they contain data output for DAC channel1. */
-    static const int32_t DAC_SHSRx_TSAMPLEx_POS     = 0;   /** @brief DAC channel 1 sample time (only valid in sample &amp; hold mode) these bits can be written when the DAC channel1 is disabled or also during normal operation. In the latter case, the write can be done only when bwstx of DAC_SR register is low, if bwstx=1, the write operation is ignored. */
+    static const int32_t DAC_DHR12Rx_DACC1DHR_POS   = 0;   /** @brief DAC channel1 12-bit right-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
+    static const int32_t DAC_DHR12Lx_DACC1DHR_POS   = 4;   /** @brief DAC channel1 12-bit left-aligned data these bits are written by software which specifies 12-bit data for DAC channel1. */
+    static const int32_t DAC_DHR8Rx_DACC1DHR_POS    = 0;   /** @brief DAC channel1 8-bit right-aligned data these bits are written by software which specifies 8-bit data for DAC channel1. */
+    static const int32_t DAC_DORx_DACC1DOR_POS      = 0;   /** @brief DAC channel1 data output these bits are read-only, they contain data output for DAC channel1. */
+    static const int32_t DAC_SHSRx_TSAMPLE1_POS     = 0;   /** @brief DAC channel 1 sample time (only valid in sample &amp; hold mode) these bits can be written when the DAC channel1 is disabled or also during normal operation. In the latter case, the write can be done only when bwstx of DAC_SR register is low, if bwstx=1, the write operation is ignored. */
 
     /**** @subsection Enumerated DAC Register Field Positions ****/
 
@@ -3150,41 +3150,47 @@
 
     /**** @subsection MDMA Register Pointers ****/
 
-    static RO_ uint32_t* const MDMA_MDMA_GISR0_PTR     = (RO_ uint32_t* const)0x52000000U;   /** @brief MDMA global interrupt/status register */
-    static RO_ uint32_t* const MDMA_MDMA_C0ISR_PTR     = (RO_ uint32_t* const)0x52000040U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C0IFCR_PTR    = (RW_ uint32_t* const)0x52000044U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C1ISR_PTR     = (RO_ uint32_t* const)0x52000080U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C1IFCR_PTR    = (RW_ uint32_t* const)0x52000084U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C2ISR_PTR     = (RO_ uint32_t* const)0x520000C0U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C2IFCR_PTR    = (RW_ uint32_t* const)0x520000C4U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C3ISR_PTR     = (RO_ uint32_t* const)0x52000100U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C3IFCR_PTR    = (RW_ uint32_t* const)0x52000104U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C4ISR_PTR     = (RO_ uint32_t* const)0x52000140U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C4IFCR_PTR    = (RW_ uint32_t* const)0x52000144U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C5ISR_PTR     = (RO_ uint32_t* const)0x52000180U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C5IFCR_PTR    = (RW_ uint32_t* const)0x52000184U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C6ISR_PTR     = (RO_ uint32_t* const)0x520001C0U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C6IFCR_PTR    = (RW_ uint32_t* const)0x520001C4U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C7ISR_PTR     = (RO_ uint32_t* const)0x52000200U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C7IFCR_PTR    = (RW_ uint32_t* const)0x52000204U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C8ISR_PTR     = (RO_ uint32_t* const)0x52000240U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C8IFCR_PTR    = (RW_ uint32_t* const)0x52000244U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C9ISR_PTR     = (RO_ uint32_t* const)0x52000280U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C9IFCR_PTR    = (RW_ uint32_t* const)0x52000284U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C10ISR_PTR    = (RO_ uint32_t* const)0x520002C0U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C10IFCR_PTR   = (RW_ uint32_t* const)0x520002C4U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C11ISR_PTR    = (RO_ uint32_t* const)0x52000300U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C11IFCR_PTR   = (RW_ uint32_t* const)0x52000304U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C12ISR_PTR    = (RO_ uint32_t* const)0x52000340U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C12IFCR_PTR   = (RW_ uint32_t* const)0x52000344U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C13ISR_PTR    = (RO_ uint32_t* const)0x52000380U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C13IFCR_PTR   = (RW_ uint32_t* const)0x52000384U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C14ISR_PTR    = (RO_ uint32_t* const)0x520003C0U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C14IFCR_PTR   = (RW_ uint32_t* const)0x520003C4U;   /** @brief MDMA channel x interrupt flag clear register */
-    static RO_ uint32_t* const MDMA_MDMA_C15ISR_PTR    = (RO_ uint32_t* const)0x52000400U;   /** @brief MDMA channel x interrupt/status register */
-    static RW_ uint32_t* const MDMA_MDMA_C15IFCR_PTR   = (RW_ uint32_t* const)0x52000404U;   /** @brief MDMA channel x interrupt flag clear register */
+    static RO_ uint32_t* const MDMA_MDMA_GISR0_PTR   = (RO_ uint32_t* const)0x52000000U;   /** @brief MDMA global interrupt/status register */
 
     /**** @subsection Enumerated MDMA Register Pointers ****/
+
+    static RO_ uint32_t* const MDMA_MDMA_CxISR_PTR[16] = {
+      [0]  = (RO_ uint32_t* const)0x52000040U,   /** @brief MDMA channel x interrupt/status register */
+      [1]  = (RO_ uint32_t* const)0x52000080U,   /** @brief MDMA channel x interrupt/status register */
+      [2]  = (RO_ uint32_t* const)0x520000C0U,   /** @brief MDMA channel x interrupt/status register */
+      [3]  = (RO_ uint32_t* const)0x52000100U,   /** @brief MDMA channel x interrupt/status register */
+      [4]  = (RO_ uint32_t* const)0x52000140U,   /** @brief MDMA channel x interrupt/status register */
+      [5]  = (RO_ uint32_t* const)0x52000180U,   /** @brief MDMA channel x interrupt/status register */
+      [6]  = (RO_ uint32_t* const)0x520001C0U,   /** @brief MDMA channel x interrupt/status register */
+      [7]  = (RO_ uint32_t* const)0x52000200U,   /** @brief MDMA channel x interrupt/status register */
+      [8]  = (RO_ uint32_t* const)0x52000240U,   /** @brief MDMA channel x interrupt/status register */
+      [9]  = (RO_ uint32_t* const)0x52000280U,   /** @brief MDMA channel x interrupt/status register */
+      [10] = (RO_ uint32_t* const)0x520002C0U,   /** @brief MDMA channel x interrupt/status register */
+      [11] = (RO_ uint32_t* const)0x52000300U,   /** @brief MDMA channel x interrupt/status register */
+      [12] = (RO_ uint32_t* const)0x52000340U,   /** @brief MDMA channel x interrupt/status register */
+      [13] = (RO_ uint32_t* const)0x52000380U,   /** @brief MDMA channel x interrupt/status register */
+      [14] = (RO_ uint32_t* const)0x520003C0U,   /** @brief MDMA channel x interrupt/status register */
+      [15] = (RO_ uint32_t* const)0x52000400U,   /** @brief MDMA channel x interrupt/status register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxIFCR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000044U,   /** @brief MDMA channel x interrupt flag clear register */
+      [1]  = (RW_ uint32_t* const)0x52000084U,   /** @brief MDMA channel x interrupt flag clear register */
+      [2]  = (RW_ uint32_t* const)0x520000C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [3]  = (RW_ uint32_t* const)0x52000104U,   /** @brief MDMA channel x interrupt flag clear register */
+      [4]  = (RW_ uint32_t* const)0x52000144U,   /** @brief MDMA channel x interrupt flag clear register */
+      [5]  = (RW_ uint32_t* const)0x52000184U,   /** @brief MDMA channel x interrupt flag clear register */
+      [6]  = (RW_ uint32_t* const)0x520001C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [7]  = (RW_ uint32_t* const)0x52000204U,   /** @brief MDMA channel x interrupt flag clear register */
+      [8]  = (RW_ uint32_t* const)0x52000244U,   /** @brief MDMA channel x interrupt flag clear register */
+      [9]  = (RW_ uint32_t* const)0x52000284U,   /** @brief MDMA channel x interrupt flag clear register */
+      [10] = (RW_ uint32_t* const)0x520002C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [11] = (RW_ uint32_t* const)0x52000304U,   /** @brief MDMA channel x interrupt flag clear register */
+      [12] = (RW_ uint32_t* const)0x52000344U,   /** @brief MDMA channel x interrupt flag clear register */
+      [13] = (RW_ uint32_t* const)0x52000384U,   /** @brief MDMA channel x interrupt flag clear register */
+      [14] = (RW_ uint32_t* const)0x520003C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [15] = (RW_ uint32_t* const)0x52000404U,   /** @brief MDMA channel x interrupt flag clear register */
+    };
 
     static RO_ uint32_t* const MDMA_MDMA_CxESR_PTR[16] = {
       [0]  = (RO_ uint32_t* const)0x52000048U,   /** @brief MDMA channel x error status register */
@@ -3397,41 +3403,47 @@
 
     /**** @subsection MDMA Register Reset Values ****/
 
-    static const uint32_t MDMA_MDMA_GISR0_RST     = 0x00000000U;   /** @brief MDMA_GISR0 register reset value. */
-    static const uint32_t MDMA_MDMA_C0ISR_RST     = 0x00000000U;   /** @brief MDMA_C0ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C0IFCR_RST    = 0x00000000U;   /** @brief MDMA_C0IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C1ISR_RST     = 0x00000000U;   /** @brief MDMA_C1ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C1IFCR_RST    = 0x00000000U;   /** @brief MDMA_C1IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C2ISR_RST     = 0x00000000U;   /** @brief MDMA_C2ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C2IFCR_RST    = 0x00000000U;   /** @brief MDMA_C2IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C3ISR_RST     = 0x00000000U;   /** @brief MDMA_C3ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C3IFCR_RST    = 0x00000000U;   /** @brief MDMA_C3IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C4ISR_RST     = 0x00000000U;   /** @brief MDMA_C4ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C4IFCR_RST    = 0x00000000U;   /** @brief MDMA_C4IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C5ISR_RST     = 0x00000000U;   /** @brief MDMA_C5ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C5IFCR_RST    = 0x00000000U;   /** @brief MDMA_C5IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C6ISR_RST     = 0x00000000U;   /** @brief MDMA_C6ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C6IFCR_RST    = 0x00000000U;   /** @brief MDMA_C6IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C7ISR_RST     = 0x00000000U;   /** @brief MDMA_C7ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C7IFCR_RST    = 0x00000000U;   /** @brief MDMA_C7IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C8ISR_RST     = 0x00000000U;   /** @brief MDMA_C8ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C8IFCR_RST    = 0x00000000U;   /** @brief MDMA_C8IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C9ISR_RST     = 0x00000000U;   /** @brief MDMA_C9ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C9IFCR_RST    = 0x00000000U;   /** @brief MDMA_C9IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C10ISR_RST    = 0x00000000U;   /** @brief MDMA_C10ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C10IFCR_RST   = 0x00000000U;   /** @brief MDMA_C10IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C11ISR_RST    = 0x00000000U;   /** @brief MDMA_C11ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C11IFCR_RST   = 0x00000000U;   /** @brief MDMA_C11IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C12ISR_RST    = 0x00000000U;   /** @brief MDMA_C12ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C12IFCR_RST   = 0x00000000U;   /** @brief MDMA_C12IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C13ISR_RST    = 0x00000000U;   /** @brief MDMA_C13ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C13IFCR_RST   = 0x00000000U;   /** @brief MDMA_C13IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C14ISR_RST    = 0x00000000U;   /** @brief MDMA_C14ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C14IFCR_RST   = 0x00000000U;   /** @brief MDMA_C14IFCR register reset value. */
-    static const uint32_t MDMA_MDMA_C15ISR_RST    = 0x00000000U;   /** @brief MDMA_C15ISR register reset value. */
-    static const uint32_t MDMA_MDMA_C15IFCR_RST   = 0x00000000U;   /** @brief MDMA_C15IFCR register reset value. */
+    static const uint32_t MDMA_MDMA_GISR0_RST   = 0x00000000U;   /** @brief MDMA_GISR0 register reset value. */
 
     /**** @subsection Enumerated MDMA Register Reset Values ****/
+
+    static const uint32_t MDMA_MDMA_CxISR_RST[16] = {
+      [0]  = 0x00000000U,   /** @brief MDMA_C0ISR register reset value. */
+      [1]  = 0x00000000U,   /** @brief MDMA_C1ISR register reset value. */
+      [2]  = 0x00000000U,   /** @brief MDMA_C2ISR register reset value. */
+      [3]  = 0x00000000U,   /** @brief MDMA_C3ISR register reset value. */
+      [4]  = 0x00000000U,   /** @brief MDMA_C4ISR register reset value. */
+      [5]  = 0x00000000U,   /** @brief MDMA_C5ISR register reset value. */
+      [6]  = 0x00000000U,   /** @brief MDMA_C6ISR register reset value. */
+      [7]  = 0x00000000U,   /** @brief MDMA_C7ISR register reset value. */
+      [8]  = 0x00000000U,   /** @brief MDMA_C8ISR register reset value. */
+      [9]  = 0x00000000U,   /** @brief MDMA_C9ISR register reset value. */
+      [10] = 0x00000000U,   /** @brief MDMA_C10ISR register reset value. */
+      [11] = 0x00000000U,   /** @brief MDMA_C11ISR register reset value. */
+      [12] = 0x00000000U,   /** @brief MDMA_C12ISR register reset value. */
+      [13] = 0x00000000U,   /** @brief MDMA_C13ISR register reset value. */
+      [14] = 0x00000000U,   /** @brief MDMA_C14ISR register reset value. */
+      [15] = 0x00000000U,   /** @brief MDMA_C15ISR register reset value. */
+    };
+
+    static const uint32_t MDMA_MDMA_CxIFCR_RST[16] = {
+      [0]  = 0x00000000U,   /** @brief MDMA_C0IFCR register reset value. */
+      [1]  = 0x00000000U,   /** @brief MDMA_C1IFCR register reset value. */
+      [2]  = 0x00000000U,   /** @brief MDMA_C2IFCR register reset value. */
+      [3]  = 0x00000000U,   /** @brief MDMA_C3IFCR register reset value. */
+      [4]  = 0x00000000U,   /** @brief MDMA_C4IFCR register reset value. */
+      [5]  = 0x00000000U,   /** @brief MDMA_C5IFCR register reset value. */
+      [6]  = 0x00000000U,   /** @brief MDMA_C6IFCR register reset value. */
+      [7]  = 0x00000000U,   /** @brief MDMA_C7IFCR register reset value. */
+      [8]  = 0x00000000U,   /** @brief MDMA_C8IFCR register reset value. */
+      [9]  = 0x00000000U,   /** @brief MDMA_C9IFCR register reset value. */
+      [10] = 0x00000000U,   /** @brief MDMA_C10IFCR register reset value. */
+      [11] = 0x00000000U,   /** @brief MDMA_C11IFCR register reset value. */
+      [12] = 0x00000000U,   /** @brief MDMA_C12IFCR register reset value. */
+      [13] = 0x00000000U,   /** @brief MDMA_C13IFCR register reset value. */
+      [14] = 0x00000000U,   /** @brief MDMA_C14IFCR register reset value. */
+      [15] = 0x00000000U,   /** @brief MDMA_C15IFCR register reset value. */
+    };
 
     static const uint32_t MDMA_MDMA_CxESR_RST[16] = {
       [0]  = 0x00000000U,   /** @brief MDMA_C0ESR register reset value. */
@@ -3645,8 +3657,8 @@
     /**** @subsection Enumerated MDMA Register Value Types ****/
 
     typedef uint32_t MDMA_MDMA_GISR0_t;     /** @brief MDMA_GISR0 register value type. */
-    typedef uint32_t MDMA_MDMA_C0ISR_t;     /** @brief MDMA_C0ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C0IFCR_t;    /** @brief MDMA_C0IFCR register value type. */
+    typedef uint32_t MDMA_MDMA_CxISR_t;     /** @brief MDMA_CxISR register value type. */
+    typedef uint32_t MDMA_MDMA_CxIFCR_t;    /** @brief MDMA_CxIFCR register value type. */
     typedef uint32_t MDMA_MDMA_CxESR_t;     /** @brief MDMA_CxESR register value type. */
     typedef uint32_t MDMA_MDMA_CxCR_t;      /** @brief MDMA_CxCR register value type. */
     typedef uint32_t MDMA_MDMA_CxTCR_t;     /** @brief MDMA_CxTCR register value type. */
@@ -3658,42 +3670,12 @@
     typedef uint32_t MDMA_MDMA_CxTBR_t;     /** @brief MDMA_CxTBR register value type. */
     typedef uint32_t MDMA_MDMA_CxMAR_t;     /** @brief MDMA_CxMAR register value type. */
     typedef uint32_t MDMA_MDMA_CxMDR_t;     /** @brief MDMA_CxMDR register value type. */
-    typedef uint32_t MDMA_MDMA_C1ISR_t;     /** @brief MDMA_C1ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C1IFCR_t;    /** @brief MDMA_C1IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C2ISR_t;     /** @brief MDMA_C2ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C2IFCR_t;    /** @brief MDMA_C2IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C3ISR_t;     /** @brief MDMA_C3ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C3IFCR_t;    /** @brief MDMA_C3IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C4ISR_t;     /** @brief MDMA_C4ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C4IFCR_t;    /** @brief MDMA_C4IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C5ISR_t;     /** @brief MDMA_C5ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C5IFCR_t;    /** @brief MDMA_C5IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C6ISR_t;     /** @brief MDMA_C6ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C6IFCR_t;    /** @brief MDMA_C6IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C7ISR_t;     /** @brief MDMA_C7ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C7IFCR_t;    /** @brief MDMA_C7IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C8ISR_t;     /** @brief MDMA_C8ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C8IFCR_t;    /** @brief MDMA_C8IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C9ISR_t;     /** @brief MDMA_C9ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C9IFCR_t;    /** @brief MDMA_C9IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C10ISR_t;    /** @brief MDMA_C10ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C10IFCR_t;   /** @brief MDMA_C10IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C11ISR_t;    /** @brief MDMA_C11ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C11IFCR_t;   /** @brief MDMA_C11IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C12ISR_t;    /** @brief MDMA_C12ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C12IFCR_t;   /** @brief MDMA_C12IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C13ISR_t;    /** @brief MDMA_C13ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C13IFCR_t;   /** @brief MDMA_C13IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C14ISR_t;    /** @brief MDMA_C14ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C14IFCR_t;   /** @brief MDMA_C14IFCR register value type. */
-    typedef uint32_t MDMA_MDMA_C15ISR_t;    /** @brief MDMA_C15ISR register value type. */
-    typedef uint32_t MDMA_MDMA_C15IFCR_t;   /** @brief MDMA_C15IFCR register value type. */
 
     /**** @subsection Enumerated MDMA Register Pointer Types ****/
 
     typedef uint32_t* const MDMA_MDMA_GISR0_PTR_t;     /** @brief MDMA_GISR0 register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C0ISR_PTR_t;     /** @brief MDMA_C0ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C0IFCR_PTR_t;    /** @brief MDMA_C0IFCR register pointer type. */
+    typedef uint32_t* const MDMA_MDMA_CxISR_PTR_t;     /** @brief MDMA_CxISR register pointer type. */
+    typedef uint32_t* const MDMA_MDMA_CxIFCR_PTR_t;    /** @brief MDMA_CxIFCR register pointer type. */
     typedef uint32_t* const MDMA_MDMA_CxESR_PTR_t;     /** @brief MDMA_CxESR register pointer type. */
     typedef uint32_t* const MDMA_MDMA_CxCR_PTR_t;      /** @brief MDMA_CxCR register pointer type. */
     typedef uint32_t* const MDMA_MDMA_CxTCR_PTR_t;     /** @brief MDMA_CxTCR register pointer type. */
@@ -3705,255 +3687,60 @@
     typedef uint32_t* const MDMA_MDMA_CxTBR_PTR_t;     /** @brief MDMA_CxTBR register pointer type. */
     typedef uint32_t* const MDMA_MDMA_CxMAR_PTR_t;     /** @brief MDMA_CxMAR register pointer type. */
     typedef uint32_t* const MDMA_MDMA_CxMDR_PTR_t;     /** @brief MDMA_CxMDR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C1ISR_PTR_t;     /** @brief MDMA_C1ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C1IFCR_PTR_t;    /** @brief MDMA_C1IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C2ISR_PTR_t;     /** @brief MDMA_C2ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C2IFCR_PTR_t;    /** @brief MDMA_C2IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C3ISR_PTR_t;     /** @brief MDMA_C3ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C3IFCR_PTR_t;    /** @brief MDMA_C3IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C4ISR_PTR_t;     /** @brief MDMA_C4ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C4IFCR_PTR_t;    /** @brief MDMA_C4IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C5ISR_PTR_t;     /** @brief MDMA_C5ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C5IFCR_PTR_t;    /** @brief MDMA_C5IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C6ISR_PTR_t;     /** @brief MDMA_C6ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C6IFCR_PTR_t;    /** @brief MDMA_C6IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C7ISR_PTR_t;     /** @brief MDMA_C7ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C7IFCR_PTR_t;    /** @brief MDMA_C7IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C8ISR_PTR_t;     /** @brief MDMA_C8ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C8IFCR_PTR_t;    /** @brief MDMA_C8IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C9ISR_PTR_t;     /** @brief MDMA_C9ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C9IFCR_PTR_t;    /** @brief MDMA_C9IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C10ISR_PTR_t;    /** @brief MDMA_C10ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C10IFCR_PTR_t;   /** @brief MDMA_C10IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C11ISR_PTR_t;    /** @brief MDMA_C11ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C11IFCR_PTR_t;   /** @brief MDMA_C11IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C12ISR_PTR_t;    /** @brief MDMA_C12ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C12IFCR_PTR_t;   /** @brief MDMA_C12IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C13ISR_PTR_t;    /** @brief MDMA_C13ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C13IFCR_PTR_t;   /** @brief MDMA_C13IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C14ISR_PTR_t;    /** @brief MDMA_C14ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C14IFCR_PTR_t;   /** @brief MDMA_C14IFCR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C15ISR_PTR_t;    /** @brief MDMA_C15ISR register pointer type. */
-    typedef uint32_t* const MDMA_MDMA_C15IFCR_PTR_t;   /** @brief MDMA_C15IFCR register pointer type. */
 
     /**** @subsection MDMA Register Field Masks ****/
 
-    static const uint32_t MDMA_MDMA_C0ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C0ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C0ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C0ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C0ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C0ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C0IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C0IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C0IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C0IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C0IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_CxESR_TEA_MASK         = 0x0000007FU;   /** @brief Transfer error address these bits are set and cleared by HW, in case of an MDMA data transfer error. It is used in conjunction with TED. This field indicates the 7 lsbits of the address which generated a transfer/access error. It may be used by SW to retrieve the failing address, by adding this value (truncated to the buffer transfer length size) to the current SAR/DAR value. Note: the SAR/DAR current value doesnt reflect this last address due to the FIFO management system. The SAR/DAR are only updated at the end of a (buffer) transfer (of TLEN+1 bytes). Note: it is not set in case of a link data error. */
-    static const uint32_t MDMA_MDMA_CxESR_TED_MASK         = 0x00000080U;   /** @brief Transfer error direction these bit is set and cleared by HW, in case of an MDMA data transfer error. */
-    static const uint32_t MDMA_MDMA_CxESR_TELD_MASK        = 0x00000100U;   /** @brief Transfer error link data these bit is set by HW, in case of a transfer error while reading the block link data structure. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_CxESR_TEMD_MASK        = 0x00000200U;   /** @brief Transfer error mask data these bit is set by HW, in case of a transfer error while writing the mask data. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_CxESR_ASE_MASK         = 0x00000400U;   /** @brief Address/Size error these bit is set by HW, when the programmed address is not aligned with the data size. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_CxESR_BSE_MASK         = 0x00000800U;   /** @brief Block size error these bit is set by HW, when the block size is not an integer multiple of the data size either for source or destination. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_CxCR_EN_MASK           = 0x00000001U;   /** @brief Channel enable */
-    static const uint32_t MDMA_MDMA_CxCR_TEIE_MASK         = 0x00000002U;   /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
-    static const uint32_t MDMA_MDMA_CxCR_CTCIE_MASK        = 0x00000004U;   /** @brief Channel transfer complete interrupt enable this bit is set and cleared by software. */
-    static const uint32_t MDMA_MDMA_CxCR_BRTIE_MASK        = 0x00000008U;   /** @brief Block repeat transfer interrupt enable this bit is set and cleared by software. */
-    static const uint32_t MDMA_MDMA_CxCR_BTIE_MASK         = 0x00000010U;   /** @brief Block transfer interrupt enable this bit is set and cleared by software. */
-    static const uint32_t MDMA_MDMA_CxCR_TCIE_MASK         = 0x00000020U;   /** @brief Buffer transfer complete interrupt enable this bit is set and cleared by software. */
-    static const uint32_t MDMA_MDMA_CxCR_PL_MASK           = 0x000000C0U;   /** @brief Priority level these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxCR_BEX_MASK          = 0x00001000U;   /** @brief Byte endianness exchange */
-    static const uint32_t MDMA_MDMA_CxCR_HEX_MASK          = 0x00002000U;   /** @brief Half word endianes exchange */
-    static const uint32_t MDMA_MDMA_CxCR_WEX_MASK          = 0x00004000U;   /** @brief Word endianness exchange */
-    static const uint32_t MDMA_MDMA_CxCR_SWRQ_MASK         = 0x00010000U;   /** @brief SW request writing a 1 into this bit sets the crqax in mdma_isry register, activating the request on channel x note: either the whole cxcr register or the 8-bit/16-bit register @ address offset: 0x4e + 0x40 chn may be used for SWRQ activation. In case of a SW request, acknowledge is not generated (neither HW signal, nor cxmar write access). */
-    static const uint32_t MDMA_MDMA_CxTCR_SINC_MASK        = 0x00000003U;   /** @brief Source increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when source is AHB (SBUS=1), SINC = 00 is forbidden. In linked list mode, at the end of a block (single or last block in repeated block transfer mode), this register will be loaded from memory (from address given by current LAR[31:0] + 0x00). */
-    static const uint32_t MDMA_MDMA_CxTCR_DINC_MASK        = 0x0000000CU;   /** @brief Destination increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when destination is AHB (DBUS=1), DINC = 00 is forbidden. */
-    static const uint32_t MDMA_MDMA_CxTCR_SSIZE_MASK       = 0x00000030U;   /** @brief Source data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if SINCOS &lt; SSIZE and SINC &#8800; 00, the result will be unpredictable. Note: SSIZE = 11 (double-word) is forbidden when source is TCM/AHB bus (SBUS=1). */
-    static const uint32_t MDMA_MDMA_CxTCR_DSIZE_MASK       = 0x000000C0U;   /** @brief Destination data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. Note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if DINCOS &lt; DSIZE and DINC &#8800; 00, the result will be unpredictable. Note: DSIZE = 11 (double-word) is forbidden when destination is TCM/AHB bus (DBUS=1). */
-    static const uint32_t MDMA_MDMA_CxTCR_SINCOS_MASK      = 0x00000300U;   /** @brief Source increment offset size */
-    static const uint32_t MDMA_MDMA_CxTCR_DINCOS_MASK      = 0x00000C00U;   /** @brief Destination increment offset */
-    static const uint32_t MDMA_MDMA_CxTCR_SBURST_MASK      = 0x00007000U;   /** @brief Source burst transfer configuration */
-    static const uint32_t MDMA_MDMA_CxTCR_DBURST_MASK      = 0x00038000U;   /** @brief Destination burst transfer configuration */
-    static const uint32_t MDMA_MDMA_CxTCR_TLEN_MASK        = 0x01FC0000U;   /** @brief Buffer transfer lengh */
-    static const uint32_t MDMA_MDMA_CxTCR_PKE_MASK         = 0x02000000U;   /** @brief PacK enable these bit is set and cleared by software. If the source size is smaller than the destination, it will be padded according to the PAM value. If the source data size is larger than the destination one, it will be truncated. The alignment will be done according to the PAM[0] value. This bit is protected and can be written only if EN is 0 */
-    static const uint32_t MDMA_MDMA_CxTCR_PAM_MASK         = 0x0C000000U;   /** @brief Padding/Alignement mode these bits are set and cleared by software. Case 1: source data size smaller than destination data size - 3 options are valid. Case 2: source data size larger than destination data size. The remainder part is discarded. When PKE = 1 or DSIZE=SSIZE, these bits are ignored. These bits are protected and can be written only if EN is 0 */
-    static const uint32_t MDMA_MDMA_CxTCR_TRGM_MASK        = 0x30000000U;   /** @brief Trigger mode these bits are set and cleared by software. Note: if TRGM is 11 for the current block, all the values loaded at the end of the current block through the linked list mechanism must keep the same value (TRGM=11) and the same SWRM value, otherwise the result is undefined. These bits are protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxTCR_SWRM_MASK        = 0x40000000U;   /** @brief SW request mode this bit is set and cleared by software. If a HW or SW request is currently active, the bit change will be delayed until the current transfer is completed. If the cxmar contains a valid address, the cxmdr value will also be written @ cxmar address. This bit is protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxTCR_BWM_MASK         = 0x80000000U;   /** @brief Bufferable write mode this bit is set and cleared by software. This bit is protected and can be written only if EN is 0. Note: all MDMA destination accesses are non-cacheable. */
-    static const uint32_t MDMA_MDMA_CxBNDTR_BNDT_MASK      = 0x0001FFFFU;   /** @brief Block number of data to transfer */
-    static const uint32_t MDMA_MDMA_CxBNDTR_BRSUM_MASK     = 0x00040000U;   /** @brief Block repeat source address update mode these bits are protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxBNDTR_BRDUM_MASK     = 0x00080000U;   /** @brief Block repeat destination address update mode these bits are protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxBNDTR_BRC_MASK       = 0xFFF00000U;   /** @brief Block repeat count this field contains the number of repetitions of the current block (0 to 4095). When the channel is enabled, this register is read-only, indicating the remaining number of blocks, excluding the current one. This register decrements after each complete block transfer. Once the last block transfer has completed, this register can either stay at zero or be reloaded automatically from memory (in linked list mode - i.e. Link address valid). These bits are protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxBRUR_SUV_MASK        = 0x0000FFFFU;   /** @brief Source adresse update value */
-    static const uint32_t MDMA_MDMA_CxBRUR_DUV_MASK        = 0xFFFF0000U;   /** @brief Destination address update */
-    static const uint32_t MDMA_MDMA_CxTBR_TSEL_MASK        = 0x0000003FU;   /** @brief Trigger selection */
-    static const uint32_t MDMA_MDMA_CxTBR_SBUS_MASK        = 0x00010000U;   /** @brief Source BUS select this bit is protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_CxTBR_DBUS_MASK        = 0x00020000U;   /** @brief Destination BUS slect this bit is protected and can be written only if EN is 0. */
-    static const uint32_t MDMA_MDMA_C1ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C1ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C1ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C1ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C1ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C1ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C1IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C1IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C1IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C1IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C1IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C2ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C2ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C2ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C2ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C2ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C2ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C2IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C2IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C2IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C2IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C2IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C3ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C3ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C3ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C3ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C3ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C3ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C3IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C3IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C3IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C3IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C3IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C4ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C4ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C4ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C4ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C4ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C4ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C4IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C4IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C4IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C4IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C4IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C5ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C5ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C5ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C5ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C5ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C5ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C5IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C5IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C5IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C5IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C5IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C6ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C6ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C6ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C6ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C6ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C6ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C6IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C6IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C6IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C6IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C6IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C7ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C7ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C7ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C7ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C7ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C7ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C7IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C7IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C7IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C7IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C7IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C8ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C8ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C8ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C8ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C8ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C8ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C8IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C8IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C8IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C8IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C8IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C9ISR_TEIFx_MASK       = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C9ISR_CTCIFx_MASK      = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C9ISR_BRTIFx_MASK      = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C9ISR_BTIFx_MASK       = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C9ISR_TCIFx_MASK       = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C9ISR_CRQAx_MASK       = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C9IFCR_CTEIFx_MASK     = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C9IFCR_CCTCIFx_MASK    = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C9IFCR_CBRTIFx_MASK    = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C9IFCR_CBTIFx_MASK     = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C9IFCR_CLTCIFx_MASK    = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C10ISR_TEIFx_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C10ISR_CTCIFx_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C10ISR_BRTIFx_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C10ISR_BTIFx_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C10ISR_TCIFx_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C10ISR_CRQAx_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C10IFCR_CTEIFx_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C10IFCR_CCTCIFx_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C10IFCR_CBRTIFx_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C10IFCR_CBTIFx_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C10IFCR_CLTCIFx_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C11ISR_TEIFx_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C11ISR_CTCIFx_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C11ISR_BRTIFx_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C11ISR_BTIFx_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C11ISR_TCIFx_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C11ISR_CRQAx_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C11IFCR_CTEIFx_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C11IFCR_CCTCIFx_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C11IFCR_CBRTIFx_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C11IFCR_CBTIFx_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C11IFCR_CLTCIFx_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C12ISR_TEIFx_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C12ISR_CTCIFx_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C12ISR_BRTIFx_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C12ISR_BTIFx_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C12ISR_TCIFx_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C12ISR_CRQAx_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C12IFCR_CTEIFx_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C12IFCR_CCTCIFx_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C12IFCR_CBRTIFx_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C12IFCR_CBTIFx_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C12IFCR_CLTCIFx_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C13ISR_TEIFx_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C13ISR_CTCIFx_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C13ISR_BRTIFx_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C13ISR_BTIFx_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C13ISR_TCIFx_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C13ISR_CRQAx_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C13IFCR_CTEIFx_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C13IFCR_CCTCIFx_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C13IFCR_CBRTIFx_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C13IFCR_CBTIFx_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C13IFCR_CLTCIFx_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C14ISR_TEIFx_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C14ISR_CTCIFx_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C14ISR_BRTIFx_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C14ISR_BTIFx_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C14ISR_TCIFx_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C14ISR_CRQAx_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C14IFCR_CTEIFx_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C14IFCR_CCTCIFx_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C14IFCR_CBRTIFx_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C14IFCR_CBTIFx_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C14IFCR_CLTCIFx_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C15ISR_TEIFx_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C15ISR_CTCIFx_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const uint32_t MDMA_MDMA_C15ISR_BRTIFx_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C15ISR_BTIFx_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const uint32_t MDMA_MDMA_C15ISR_TCIFx_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
-    static const uint32_t MDMA_MDMA_C15ISR_CRQAx_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
-    static const uint32_t MDMA_MDMA_C15IFCR_CTEIFx_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C15IFCR_CCTCIFx_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C15IFCR_CBRTIFx_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C15IFCR_CBTIFx_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const uint32_t MDMA_MDMA_C15IFCR_CLTCIFx_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxISR_TEIF0_MASK      = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxISR_CTCIF0_MASK     = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
+    static const uint32_t MDMA_MDMA_CxISR_BRTIF0_MASK     = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxISR_BTIF0_MASK      = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxISR_TCIF0_MASK      = 0x00000010U;   /** @brief Channel x buffer transfer complete */
+    static const uint32_t MDMA_MDMA_CxISR_CRQA0_MASK      = 0x00010000U;   /** @brief Channel x request active flag */
+    static const uint32_t MDMA_MDMA_CxIFCR_CTEIF0_MASK    = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CCTCIF0_MASK   = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CBRTIF0_MASK   = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CBTIF0_MASK    = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CLTCIF0_MASK   = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxESR_TEA_MASK        = 0x0000007FU;   /** @brief Transfer error address these bits are set and cleared by HW, in case of an MDMA data transfer error. It is used in conjunction with TED. This field indicates the 7 lsbits of the address which generated a transfer/access error. It may be used by SW to retrieve the failing address, by adding this value (truncated to the buffer transfer length size) to the current SAR/DAR value. Note: the SAR/DAR current value doesnt reflect this last address due to the FIFO management system. The SAR/DAR are only updated at the end of a (buffer) transfer (of TLEN+1 bytes). Note: it is not set in case of a link data error. */
+    static const uint32_t MDMA_MDMA_CxESR_TED_MASK        = 0x00000080U;   /** @brief Transfer error direction these bit is set and cleared by HW, in case of an MDMA data transfer error. */
+    static const uint32_t MDMA_MDMA_CxESR_TELD_MASK       = 0x00000100U;   /** @brief Transfer error link data these bit is set by HW, in case of a transfer error while reading the block link data structure. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxESR_TEMD_MASK       = 0x00000200U;   /** @brief Transfer error mask data these bit is set by HW, in case of a transfer error while writing the mask data. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxESR_ASE_MASK        = 0x00000400U;   /** @brief Address/Size error these bit is set by HW, when the programmed address is not aligned with the data size. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxESR_BSE_MASK        = 0x00000800U;   /** @brief Block size error these bit is set by HW, when the block size is not an integer multiple of the data size either for source or destination. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxCR_EN_MASK          = 0x00000001U;   /** @brief Channel enable */
+    static const uint32_t MDMA_MDMA_CxCR_TEIE_MASK        = 0x00000002U;   /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_CTCIE_MASK       = 0x00000004U;   /** @brief Channel transfer complete interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_BRTIE_MASK       = 0x00000008U;   /** @brief Block repeat transfer interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_BTIE_MASK        = 0x00000010U;   /** @brief Block transfer interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_TCIE_MASK        = 0x00000020U;   /** @brief Buffer transfer complete interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_PL_MASK          = 0x000000C0U;   /** @brief Priority level these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxCR_BEX_MASK         = 0x00001000U;   /** @brief Byte endianness exchange */
+    static const uint32_t MDMA_MDMA_CxCR_HEX_MASK         = 0x00002000U;   /** @brief Half word endianes exchange */
+    static const uint32_t MDMA_MDMA_CxCR_WEX_MASK         = 0x00004000U;   /** @brief Word endianness exchange */
+    static const uint32_t MDMA_MDMA_CxCR_SWRQ_MASK        = 0x00010000U;   /** @brief SW request writing a 1 into this bit sets the crqax in mdma_isry register, activating the request on channel x note: either the whole cxcr register or the 8-bit/16-bit register @ address offset: 0x4e + 0x40 chn may be used for SWRQ activation. In case of a SW request, acknowledge is not generated (neither HW signal, nor cxmar write access). */
+    static const uint32_t MDMA_MDMA_CxTCR_SINC_MASK       = 0x00000003U;   /** @brief Source increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when source is AHB (SBUS=1), SINC = 00 is forbidden. In linked list mode, at the end of a block (single or last block in repeated block transfer mode), this register will be loaded from memory (from address given by current LAR[31:0] + 0x00). */
+    static const uint32_t MDMA_MDMA_CxTCR_DINC_MASK       = 0x0000000CU;   /** @brief Destination increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when destination is AHB (DBUS=1), DINC = 00 is forbidden. */
+    static const uint32_t MDMA_MDMA_CxTCR_SSIZE_MASK      = 0x00000030U;   /** @brief Source data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if SINCOS &lt; SSIZE and SINC &#8800; 00, the result will be unpredictable. Note: SSIZE = 11 (double-word) is forbidden when source is TCM/AHB bus (SBUS=1). */
+    static const uint32_t MDMA_MDMA_CxTCR_DSIZE_MASK      = 0x000000C0U;   /** @brief Destination data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. Note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if DINCOS &lt; DSIZE and DINC &#8800; 00, the result will be unpredictable. Note: DSIZE = 11 (double-word) is forbidden when destination is TCM/AHB bus (DBUS=1). */
+    static const uint32_t MDMA_MDMA_CxTCR_SINCOS_MASK     = 0x00000300U;   /** @brief Source increment offset size */
+    static const uint32_t MDMA_MDMA_CxTCR_DINCOS_MASK     = 0x00000C00U;   /** @brief Destination increment offset */
+    static const uint32_t MDMA_MDMA_CxTCR_SBURST_MASK     = 0x00007000U;   /** @brief Source burst transfer configuration */
+    static const uint32_t MDMA_MDMA_CxTCR_DBURST_MASK     = 0x00038000U;   /** @brief Destination burst transfer configuration */
+    static const uint32_t MDMA_MDMA_CxTCR_TLEN_MASK       = 0x01FC0000U;   /** @brief Buffer transfer lengh */
+    static const uint32_t MDMA_MDMA_CxTCR_PKE_MASK        = 0x02000000U;   /** @brief PacK enable these bit is set and cleared by software. If the source size is smaller than the destination, it will be padded according to the PAM value. If the source data size is larger than the destination one, it will be truncated. The alignment will be done according to the PAM[0] value. This bit is protected and can be written only if EN is 0 */
+    static const uint32_t MDMA_MDMA_CxTCR_PAM_MASK        = 0x0C000000U;   /** @brief Padding/Alignement mode these bits are set and cleared by software. Case 1: source data size smaller than destination data size - 3 options are valid. Case 2: source data size larger than destination data size. The remainder part is discarded. When PKE = 1 or DSIZE=SSIZE, these bits are ignored. These bits are protected and can be written only if EN is 0 */
+    static const uint32_t MDMA_MDMA_CxTCR_TRGM_MASK       = 0x30000000U;   /** @brief Trigger mode these bits are set and cleared by software. Note: if TRGM is 11 for the current block, all the values loaded at the end of the current block through the linked list mechanism must keep the same value (TRGM=11) and the same SWRM value, otherwise the result is undefined. These bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxTCR_SWRM_MASK       = 0x40000000U;   /** @brief SW request mode this bit is set and cleared by software. If a HW or SW request is currently active, the bit change will be delayed until the current transfer is completed. If the cxmar contains a valid address, the cxmdr value will also be written @ cxmar address. This bit is protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxTCR_BWM_MASK        = 0x80000000U;   /** @brief Bufferable write mode this bit is set and cleared by software. This bit is protected and can be written only if EN is 0. Note: all MDMA destination accesses are non-cacheable. */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BNDT_MASK     = 0x0001FFFFU;   /** @brief Block number of data to transfer */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BRSUM_MASK    = 0x00040000U;   /** @brief Block repeat source address update mode these bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BRDUM_MASK    = 0x00080000U;   /** @brief Block repeat destination address update mode these bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BRC_MASK      = 0xFFF00000U;   /** @brief Block repeat count this field contains the number of repetitions of the current block (0 to 4095). When the channel is enabled, this register is read-only, indicating the remaining number of blocks, excluding the current one. This register decrements after each complete block transfer. Once the last block transfer has completed, this register can either stay at zero or be reloaded automatically from memory (in linked list mode - i.e. Link address valid). These bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxBRUR_SUV_MASK       = 0x0000FFFFU;   /** @brief Source adresse update value */
+    static const uint32_t MDMA_MDMA_CxBRUR_DUV_MASK       = 0xFFFF0000U;   /** @brief Destination address update */
+    static const uint32_t MDMA_MDMA_CxTBR_TSEL_MASK       = 0x0000003FU;   /** @brief Trigger selection */
+    static const uint32_t MDMA_MDMA_CxTBR_SBUS_MASK       = 0x00010000U;   /** @brief Source BUS select this bit is protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxTBR_DBUS_MASK       = 0x00020000U;   /** @brief Destination BUS slect this bit is protected and can be written only if EN is 0. */
 
     /**** @subsection Enumerated MDMA Register Field Masks ****/
 
@@ -3978,222 +3765,57 @@
 
     /**** @subsection MDMA Register Field Positions ****/
 
-    static const int32_t MDMA_MDMA_C0ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C0ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C0ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C0ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C0ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C0ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C0IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C0IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C0IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C0IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C0IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_CxESR_TEA_POS         = 0;    /** @brief Transfer error address these bits are set and cleared by HW, in case of an MDMA data transfer error. It is used in conjunction with TED. This field indicates the 7 lsbits of the address which generated a transfer/access error. It may be used by SW to retrieve the failing address, by adding this value (truncated to the buffer transfer length size) to the current SAR/DAR value. Note: the SAR/DAR current value doesnt reflect this last address due to the FIFO management system. The SAR/DAR are only updated at the end of a (buffer) transfer (of TLEN+1 bytes). Note: it is not set in case of a link data error. */
-    static const int32_t MDMA_MDMA_CxESR_TED_POS         = 7;    /** @brief Transfer error direction these bit is set and cleared by HW, in case of an MDMA data transfer error. */
-    static const int32_t MDMA_MDMA_CxESR_TELD_POS        = 8;    /** @brief Transfer error link data these bit is set by HW, in case of a transfer error while reading the block link data structure. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_CxESR_TEMD_POS        = 9;    /** @brief Transfer error mask data these bit is set by HW, in case of a transfer error while writing the mask data. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_CxESR_ASE_POS         = 10;   /** @brief Address/Size error these bit is set by HW, when the programmed address is not aligned with the data size. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_CxESR_BSE_POS         = 11;   /** @brief Block size error these bit is set by HW, when the block size is not an integer multiple of the data size either for source or destination. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_CxCR_EN_POS           = 0;    /** @brief Channel enable */
-    static const int32_t MDMA_MDMA_CxCR_TEIE_POS         = 1;    /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
-    static const int32_t MDMA_MDMA_CxCR_CTCIE_POS        = 2;    /** @brief Channel transfer complete interrupt enable this bit is set and cleared by software. */
-    static const int32_t MDMA_MDMA_CxCR_BRTIE_POS        = 3;    /** @brief Block repeat transfer interrupt enable this bit is set and cleared by software. */
-    static const int32_t MDMA_MDMA_CxCR_BTIE_POS         = 4;    /** @brief Block transfer interrupt enable this bit is set and cleared by software. */
-    static const int32_t MDMA_MDMA_CxCR_TCIE_POS         = 5;    /** @brief Buffer transfer complete interrupt enable this bit is set and cleared by software. */
-    static const int32_t MDMA_MDMA_CxCR_PL_POS           = 6;    /** @brief Priority level these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxCR_BEX_POS          = 12;   /** @brief Byte endianness exchange */
-    static const int32_t MDMA_MDMA_CxCR_HEX_POS          = 13;   /** @brief Half word endianes exchange */
-    static const int32_t MDMA_MDMA_CxCR_WEX_POS          = 14;   /** @brief Word endianness exchange */
-    static const int32_t MDMA_MDMA_CxCR_SWRQ_POS         = 16;   /** @brief SW request writing a 1 into this bit sets the crqax in mdma_isry register, activating the request on channel x note: either the whole cxcr register or the 8-bit/16-bit register @ address offset: 0x4e + 0x40 chn may be used for SWRQ activation. In case of a SW request, acknowledge is not generated (neither HW signal, nor cxmar write access). */
-    static const int32_t MDMA_MDMA_CxTCR_SINC_POS        = 0;    /** @brief Source increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when source is AHB (SBUS=1), SINC = 00 is forbidden. In linked list mode, at the end of a block (single or last block in repeated block transfer mode), this register will be loaded from memory (from address given by current LAR[31:0] + 0x00). */
-    static const int32_t MDMA_MDMA_CxTCR_DINC_POS        = 2;    /** @brief Destination increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when destination is AHB (DBUS=1), DINC = 00 is forbidden. */
-    static const int32_t MDMA_MDMA_CxTCR_SSIZE_POS       = 4;    /** @brief Source data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if SINCOS &lt; SSIZE and SINC &#8800; 00, the result will be unpredictable. Note: SSIZE = 11 (double-word) is forbidden when source is TCM/AHB bus (SBUS=1). */
-    static const int32_t MDMA_MDMA_CxTCR_DSIZE_POS       = 6;    /** @brief Destination data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. Note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if DINCOS &lt; DSIZE and DINC &#8800; 00, the result will be unpredictable. Note: DSIZE = 11 (double-word) is forbidden when destination is TCM/AHB bus (DBUS=1). */
-    static const int32_t MDMA_MDMA_CxTCR_SINCOS_POS      = 8;    /** @brief Source increment offset size */
-    static const int32_t MDMA_MDMA_CxTCR_DINCOS_POS      = 10;   /** @brief Destination increment offset */
-    static const int32_t MDMA_MDMA_CxTCR_SBURST_POS      = 12;   /** @brief Source burst transfer configuration */
-    static const int32_t MDMA_MDMA_CxTCR_DBURST_POS      = 15;   /** @brief Destination burst transfer configuration */
-    static const int32_t MDMA_MDMA_CxTCR_TLEN_POS        = 18;   /** @brief Buffer transfer lengh */
-    static const int32_t MDMA_MDMA_CxTCR_PKE_POS         = 25;   /** @brief PacK enable these bit is set and cleared by software. If the source size is smaller than the destination, it will be padded according to the PAM value. If the source data size is larger than the destination one, it will be truncated. The alignment will be done according to the PAM[0] value. This bit is protected and can be written only if EN is 0 */
-    static const int32_t MDMA_MDMA_CxTCR_PAM_POS         = 26;   /** @brief Padding/Alignement mode these bits are set and cleared by software. Case 1: source data size smaller than destination data size - 3 options are valid. Case 2: source data size larger than destination data size. The remainder part is discarded. When PKE = 1 or DSIZE=SSIZE, these bits are ignored. These bits are protected and can be written only if EN is 0 */
-    static const int32_t MDMA_MDMA_CxTCR_TRGM_POS        = 28;   /** @brief Trigger mode these bits are set and cleared by software. Note: if TRGM is 11 for the current block, all the values loaded at the end of the current block through the linked list mechanism must keep the same value (TRGM=11) and the same SWRM value, otherwise the result is undefined. These bits are protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxTCR_SWRM_POS        = 30;   /** @brief SW request mode this bit is set and cleared by software. If a HW or SW request is currently active, the bit change will be delayed until the current transfer is completed. If the cxmar contains a valid address, the cxmdr value will also be written @ cxmar address. This bit is protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxTCR_BWM_POS         = 31;   /** @brief Bufferable write mode this bit is set and cleared by software. This bit is protected and can be written only if EN is 0. Note: all MDMA destination accesses are non-cacheable. */
-    static const int32_t MDMA_MDMA_CxBNDTR_BNDT_POS      = 0;    /** @brief Block number of data to transfer */
-    static const int32_t MDMA_MDMA_CxBNDTR_BRSUM_POS     = 18;   /** @brief Block repeat source address update mode these bits are protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxBNDTR_BRDUM_POS     = 19;   /** @brief Block repeat destination address update mode these bits are protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxBNDTR_BRC_POS       = 20;   /** @brief Block repeat count this field contains the number of repetitions of the current block (0 to 4095). When the channel is enabled, this register is read-only, indicating the remaining number of blocks, excluding the current one. This register decrements after each complete block transfer. Once the last block transfer has completed, this register can either stay at zero or be reloaded automatically from memory (in linked list mode - i.e. Link address valid). These bits are protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxBRUR_SUV_POS        = 0;    /** @brief Source adresse update value */
-    static const int32_t MDMA_MDMA_CxBRUR_DUV_POS        = 16;   /** @brief Destination address update */
-    static const int32_t MDMA_MDMA_CxTBR_TSEL_POS        = 0;    /** @brief Trigger selection */
-    static const int32_t MDMA_MDMA_CxTBR_SBUS_POS        = 16;   /** @brief Source BUS select this bit is protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_CxTBR_DBUS_POS        = 17;   /** @brief Destination BUS slect this bit is protected and can be written only if EN is 0. */
-    static const int32_t MDMA_MDMA_C1ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C1ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C1ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C1ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C1ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C1ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C1IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C1IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C1IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C1IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C1IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C2ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C2ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C2ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C2ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C2ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C2ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C2IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C2IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C2IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C2IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C2IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C3ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C3ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C3ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C3ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C3ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C3ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C3IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C3IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C3IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C3IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C3IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C4ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C4ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C4ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C4ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C4ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C4ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C4IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C4IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C4IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C4IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C4IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C5ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C5ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C5ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C5ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C5ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C5ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C5IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C5IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C5IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C5IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C5IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C6ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C6ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C6ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C6ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C6ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C6ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C6IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C6IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C6IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C6IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C6IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C7ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C7ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C7ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C7ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C7ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C7ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C7IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C7IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C7IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C7IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C7IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C8ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C8ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C8ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C8ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C8ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C8ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C8IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C8IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C8IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C8IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C8IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C9ISR_TEIFx_POS       = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C9ISR_CTCIFx_POS      = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C9ISR_BRTIFx_POS      = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C9ISR_BTIFx_POS       = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C9ISR_TCIFx_POS       = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C9ISR_CRQAx_POS       = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C9IFCR_CTEIFx_POS     = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C9IFCR_CCTCIFx_POS    = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C9IFCR_CBRTIFx_POS    = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C9IFCR_CBTIFx_POS     = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C9IFCR_CLTCIFx_POS    = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C10ISR_TEIFx_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C10ISR_CTCIFx_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C10ISR_BRTIFx_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C10ISR_BTIFx_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C10ISR_TCIFx_POS      = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C10ISR_CRQAx_POS      = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C10IFCR_CTEIFx_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C10IFCR_CCTCIFx_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C10IFCR_CBRTIFx_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C10IFCR_CBTIFx_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C10IFCR_CLTCIFx_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C11ISR_TEIFx_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C11ISR_CTCIFx_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C11ISR_BRTIFx_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C11ISR_BTIFx_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C11ISR_TCIFx_POS      = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C11ISR_CRQAx_POS      = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C11IFCR_CTEIFx_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C11IFCR_CCTCIFx_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C11IFCR_CBRTIFx_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C11IFCR_CBTIFx_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C11IFCR_CLTCIFx_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C12ISR_TEIFx_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C12ISR_CTCIFx_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C12ISR_BRTIFx_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C12ISR_BTIFx_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C12ISR_TCIFx_POS      = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C12ISR_CRQAx_POS      = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C12IFCR_CTEIFx_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C12IFCR_CCTCIFx_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C12IFCR_CBRTIFx_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C12IFCR_CBTIFx_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C12IFCR_CLTCIFx_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C13ISR_TEIFx_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C13ISR_CTCIFx_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C13ISR_BRTIFx_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C13ISR_BTIFx_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C13ISR_TCIFx_POS      = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C13ISR_CRQAx_POS      = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C13IFCR_CTEIFx_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C13IFCR_CCTCIFx_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C13IFCR_CBRTIFx_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C13IFCR_CBTIFx_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C13IFCR_CLTCIFx_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C14ISR_TEIFx_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C14ISR_CTCIFx_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C14ISR_BRTIFx_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C14ISR_BTIFx_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C14ISR_TCIFx_POS      = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C14ISR_CRQAx_POS      = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C14IFCR_CTEIFx_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C14IFCR_CCTCIFx_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C14IFCR_CBRTIFx_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C14IFCR_CBTIFx_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C14IFCR_CLTCIFx_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C15ISR_TEIFx_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C15ISR_CTCIFx_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
-    static const int32_t MDMA_MDMA_C15ISR_BRTIFx_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C15ISR_BTIFx_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
-    static const int32_t MDMA_MDMA_C15ISR_TCIFx_POS      = 4;    /** @brief Channel x buffer transfer complete */
-    static const int32_t MDMA_MDMA_C15ISR_CRQAx_POS      = 16;   /** @brief Channel x request active flag */
-    static const int32_t MDMA_MDMA_C15IFCR_CTEIFx_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C15IFCR_CCTCIFx_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C15IFCR_CBRTIFx_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C15IFCR_CBTIFx_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
-    static const int32_t MDMA_MDMA_C15IFCR_CLTCIFx_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxISR_TEIF0_POS      = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxISR_CTCIF0_POS     = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
+    static const int32_t MDMA_MDMA_CxISR_BRTIF0_POS     = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxISR_BTIF0_POS      = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxISR_TCIF0_POS      = 4;    /** @brief Channel x buffer transfer complete */
+    static const int32_t MDMA_MDMA_CxISR_CRQA0_POS      = 16;   /** @brief Channel x request active flag */
+    static const int32_t MDMA_MDMA_CxIFCR_CTEIF0_POS    = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CCTCIF0_POS   = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CBRTIF0_POS   = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CBTIF0_POS    = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CLTCIF0_POS   = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxESR_TEA_POS        = 0;    /** @brief Transfer error address these bits are set and cleared by HW, in case of an MDMA data transfer error. It is used in conjunction with TED. This field indicates the 7 lsbits of the address which generated a transfer/access error. It may be used by SW to retrieve the failing address, by adding this value (truncated to the buffer transfer length size) to the current SAR/DAR value. Note: the SAR/DAR current value doesnt reflect this last address due to the FIFO management system. The SAR/DAR are only updated at the end of a (buffer) transfer (of TLEN+1 bytes). Note: it is not set in case of a link data error. */
+    static const int32_t MDMA_MDMA_CxESR_TED_POS        = 7;    /** @brief Transfer error direction these bit is set and cleared by HW, in case of an MDMA data transfer error. */
+    static const int32_t MDMA_MDMA_CxESR_TELD_POS       = 8;    /** @brief Transfer error link data these bit is set by HW, in case of a transfer error while reading the block link data structure. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxESR_TEMD_POS       = 9;    /** @brief Transfer error mask data these bit is set by HW, in case of a transfer error while writing the mask data. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxESR_ASE_POS        = 10;   /** @brief Address/Size error these bit is set by HW, when the programmed address is not aligned with the data size. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxESR_BSE_POS        = 11;   /** @brief Block size error these bit is set by HW, when the block size is not an integer multiple of the data size either for source or destination. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxCR_EN_POS          = 0;    /** @brief Channel enable */
+    static const int32_t MDMA_MDMA_CxCR_TEIE_POS        = 1;    /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_CTCIE_POS       = 2;    /** @brief Channel transfer complete interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_BRTIE_POS       = 3;    /** @brief Block repeat transfer interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_BTIE_POS        = 4;    /** @brief Block transfer interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_TCIE_POS        = 5;    /** @brief Buffer transfer complete interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_PL_POS          = 6;    /** @brief Priority level these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxCR_BEX_POS         = 12;   /** @brief Byte endianness exchange */
+    static const int32_t MDMA_MDMA_CxCR_HEX_POS         = 13;   /** @brief Half word endianes exchange */
+    static const int32_t MDMA_MDMA_CxCR_WEX_POS         = 14;   /** @brief Word endianness exchange */
+    static const int32_t MDMA_MDMA_CxCR_SWRQ_POS        = 16;   /** @brief SW request writing a 1 into this bit sets the crqax in mdma_isry register, activating the request on channel x note: either the whole cxcr register or the 8-bit/16-bit register @ address offset: 0x4e + 0x40 chn may be used for SWRQ activation. In case of a SW request, acknowledge is not generated (neither HW signal, nor cxmar write access). */
+    static const int32_t MDMA_MDMA_CxTCR_SINC_POS       = 0;    /** @brief Source increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when source is AHB (SBUS=1), SINC = 00 is forbidden. In linked list mode, at the end of a block (single or last block in repeated block transfer mode), this register will be loaded from memory (from address given by current LAR[31:0] + 0x00). */
+    static const int32_t MDMA_MDMA_CxTCR_DINC_POS       = 2;    /** @brief Destination increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when destination is AHB (DBUS=1), DINC = 00 is forbidden. */
+    static const int32_t MDMA_MDMA_CxTCR_SSIZE_POS      = 4;    /** @brief Source data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if SINCOS &lt; SSIZE and SINC &#8800; 00, the result will be unpredictable. Note: SSIZE = 11 (double-word) is forbidden when source is TCM/AHB bus (SBUS=1). */
+    static const int32_t MDMA_MDMA_CxTCR_DSIZE_POS      = 6;    /** @brief Destination data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. Note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if DINCOS &lt; DSIZE and DINC &#8800; 00, the result will be unpredictable. Note: DSIZE = 11 (double-word) is forbidden when destination is TCM/AHB bus (DBUS=1). */
+    static const int32_t MDMA_MDMA_CxTCR_SINCOS_POS     = 8;    /** @brief Source increment offset size */
+    static const int32_t MDMA_MDMA_CxTCR_DINCOS_POS     = 10;   /** @brief Destination increment offset */
+    static const int32_t MDMA_MDMA_CxTCR_SBURST_POS     = 12;   /** @brief Source burst transfer configuration */
+    static const int32_t MDMA_MDMA_CxTCR_DBURST_POS     = 15;   /** @brief Destination burst transfer configuration */
+    static const int32_t MDMA_MDMA_CxTCR_TLEN_POS       = 18;   /** @brief Buffer transfer lengh */
+    static const int32_t MDMA_MDMA_CxTCR_PKE_POS        = 25;   /** @brief PacK enable these bit is set and cleared by software. If the source size is smaller than the destination, it will be padded according to the PAM value. If the source data size is larger than the destination one, it will be truncated. The alignment will be done according to the PAM[0] value. This bit is protected and can be written only if EN is 0 */
+    static const int32_t MDMA_MDMA_CxTCR_PAM_POS        = 26;   /** @brief Padding/Alignement mode these bits are set and cleared by software. Case 1: source data size smaller than destination data size - 3 options are valid. Case 2: source data size larger than destination data size. The remainder part is discarded. When PKE = 1 or DSIZE=SSIZE, these bits are ignored. These bits are protected and can be written only if EN is 0 */
+    static const int32_t MDMA_MDMA_CxTCR_TRGM_POS       = 28;   /** @brief Trigger mode these bits are set and cleared by software. Note: if TRGM is 11 for the current block, all the values loaded at the end of the current block through the linked list mechanism must keep the same value (TRGM=11) and the same SWRM value, otherwise the result is undefined. These bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxTCR_SWRM_POS       = 30;   /** @brief SW request mode this bit is set and cleared by software. If a HW or SW request is currently active, the bit change will be delayed until the current transfer is completed. If the cxmar contains a valid address, the cxmdr value will also be written @ cxmar address. This bit is protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxTCR_BWM_POS        = 31;   /** @brief Bufferable write mode this bit is set and cleared by software. This bit is protected and can be written only if EN is 0. Note: all MDMA destination accesses are non-cacheable. */
+    static const int32_t MDMA_MDMA_CxBNDTR_BNDT_POS     = 0;    /** @brief Block number of data to transfer */
+    static const int32_t MDMA_MDMA_CxBNDTR_BRSUM_POS    = 18;   /** @brief Block repeat source address update mode these bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxBNDTR_BRDUM_POS    = 19;   /** @brief Block repeat destination address update mode these bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxBNDTR_BRC_POS      = 20;   /** @brief Block repeat count this field contains the number of repetitions of the current block (0 to 4095). When the channel is enabled, this register is read-only, indicating the remaining number of blocks, excluding the current one. This register decrements after each complete block transfer. Once the last block transfer has completed, this register can either stay at zero or be reloaded automatically from memory (in linked list mode - i.e. Link address valid). These bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxBRUR_SUV_POS       = 0;    /** @brief Source adresse update value */
+    static const int32_t MDMA_MDMA_CxBRUR_DUV_POS       = 16;   /** @brief Destination address update */
+    static const int32_t MDMA_MDMA_CxTBR_TSEL_POS       = 0;    /** @brief Trigger selection */
+    static const int32_t MDMA_MDMA_CxTBR_SBUS_POS       = 16;   /** @brief Source BUS select this bit is protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxTBR_DBUS_POS       = 17;   /** @brief Destination BUS slect this bit is protected and can be written only if EN is 0. */
 
     /**** @subsection Enumerated MDMA Register Field Positions ****/
 
@@ -5518,24 +5140,19 @@
       [2] = (RW_ uint32_t* const)0x4802240CU,   /** @brief The SDMMC_CMDR register contains the command index and command type bits. The command index is sent to a card as part of a command message. The command type bits control the command path state machine (CPSM). */
     };
 
-    static RO_ uint32_t* const SDMMCx_RESP1R_PTR[3] = {
-      [1] = (RO_ uint32_t* const)0x52007014U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-      [2] = (RO_ uint32_t* const)0x48022414U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-    };
-
-    static RO_ uint32_t* const SDMMCx_RESP2R_PTR[3] = {
-      [1] = (RO_ uint32_t* const)0x52007018U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-      [2] = (RO_ uint32_t* const)0x48022418U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-    };
-
-    static RO_ uint32_t* const SDMMCx_RESP3R_PTR[3] = {
-      [1] = (RO_ uint32_t* const)0x5200701CU,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-      [2] = (RO_ uint32_t* const)0x4802241CU,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-    };
-
-    static RO_ uint32_t* const SDMMCx_RESP4R_PTR[3] = {
-      [1] = (RO_ uint32_t* const)0x52007020U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
-      [2] = (RO_ uint32_t* const)0x48022420U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+    static RO_ uint32_t* const SDMMCx_RESPxR_PTR[3][5] = {
+      [0] = {
+        [1] = (RO_ uint32_t* const)0x52007014U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+        [2] = (RO_ uint32_t* const)0x52007018U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+        [3] = (RO_ uint32_t* const)0x5200701CU,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+        [4] = (RO_ uint32_t* const)0x52007020U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+      },
+      [1] = {
+        [1] = (RO_ uint32_t* const)0x48022414U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+        [2] = (RO_ uint32_t* const)0x48022418U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+        [3] = (RO_ uint32_t* const)0x4802241CU,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+        [4] = (RO_ uint32_t* const)0x48022420U,   /** @brief The SDMMC_RESP1/2/3/4R registers contain the status of a card, which is part of the received response. */
+      },
     };
 
     static RW_ uint32_t* const SDMMCx_DTIMER_PTR[3] = {
@@ -5631,24 +5248,19 @@
       [2] = 0x00000000U,   /** @brief CMDR register reset value */
     };
 
-    static const uint32_t SDMMCx_RESP1R_RST[3] = {
-      [1] = 0x00000000U,   /** @brief RESP1R register reset value */
-      [2] = 0x00000000U,   /** @brief RESP1R register reset value */
-    };
-
-    static const uint32_t SDMMCx_RESP2R_RST[3] = {
-      [1] = 0x00000000U,   /** @brief RESP2R register reset value */
-      [2] = 0x00000000U,   /** @brief RESP2R register reset value */
-    };
-
-    static const uint32_t SDMMCx_RESP3R_RST[3] = {
-      [1] = 0x00000000U,   /** @brief RESP3R register reset value */
-      [2] = 0x00000000U,   /** @brief RESP3R register reset value */
-    };
-
-    static const uint32_t SDMMCx_RESP4R_RST[3] = {
-      [1] = 0x00000000U,   /** @brief RESP4R register reset value */
-      [2] = 0x00000000U,   /** @brief RESP4R register reset value */
+    static const uint32_t SDMMCx_RESPxR_RST[3][5] = {
+      [0] = {
+        [1] = 0x00000000U,   /** @brief RESP1R register reset value. */
+        [2] = 0x00000000U,   /** @brief RESP2R register reset value. */
+        [3] = 0x00000000U,   /** @brief RESP3R register reset value. */
+        [4] = 0x00000000U,   /** @brief RESP4R register reset value. */
+      },
+      [1] = {
+        [1] = 0x00000000U,   /** @brief RESP1R register reset value. */
+        [2] = 0x00000000U,   /** @brief RESP2R register reset value. */
+        [3] = 0x00000000U,   /** @brief RESP3R register reset value. */
+        [4] = 0x00000000U,   /** @brief RESP4R register reset value. */
+      },
     };
 
     static const uint32_t SDMMCx_DTIMER_RST[3] = {
@@ -5728,10 +5340,7 @@
     typedef uint32_t SDMMCx_CLKCR_t;        /** @brief CLKCR register value type. */
     typedef uint32_t SDMMCx_ARGR_t;         /** @brief ARGR register value type. */
     typedef uint32_t SDMMCx_CMDR_t;         /** @brief CMDR register value type. */
-    typedef uint32_t SDMMCx_RESP1R_t;       /** @brief RESP1R register value type. */
-    typedef uint32_t SDMMCx_RESP2R_t;       /** @brief RESP2R register value type. */
-    typedef uint32_t SDMMCx_RESP3R_t;       /** @brief RESP3R register value type. */
-    typedef uint32_t SDMMCx_RESP4R_t;       /** @brief RESP4R register value type. */
+    typedef uint32_t SDMMCx_RESPxR_t;       /** @brief RESPxR register value type. */
     typedef uint32_t SDMMCx_DTIMER_t;       /** @brief DTIMER register value type. */
     typedef uint32_t SDMMCx_DLENR_t;        /** @brief DLENR register value type. */
     typedef uint32_t SDMMCx_DCTRL_t;        /** @brief DCTRL register value type. */
@@ -5752,10 +5361,7 @@
     typedef uint32_t* const SDMMCx_CLKCR_PTR_t;        /** @brief CLKCR register pointer type. */
     typedef uint32_t* const SDMMCx_ARGR_PTR_t;         /** @brief ARGR register pointer type. */
     typedef uint32_t* const SDMMCx_CMDR_PTR_t;         /** @brief CMDR register pointer type. */
-    typedef uint32_t* const SDMMCx_RESP1R_PTR_t;       /** @brief RESP1R register pointer type. */
-    typedef uint32_t* const SDMMCx_RESP2R_PTR_t;       /** @brief RESP2R register pointer type. */
-    typedef uint32_t* const SDMMCx_RESP3R_PTR_t;       /** @brief RESP3R register pointer type. */
-    typedef uint32_t* const SDMMCx_RESP4R_PTR_t;       /** @brief RESP4R register pointer type. */
+    typedef uint32_t* const SDMMCx_RESPxR_PTR_t;       /** @brief RESPxR register pointer type. */
     typedef uint32_t* const SDMMCx_DTIMER_PTR_t;       /** @brief DTIMER register pointer type. */
     typedef uint32_t* const SDMMCx_DLENR_PTR_t;        /** @brief DLENR register pointer type. */
     typedef uint32_t* const SDMMCx_DCTRL_PTR_t;        /** @brief DCTRL register pointer type. */
@@ -7502,10 +7108,22 @@
       [3] = (RW_ uint32_t* const)0x58026018U,   /** @brief ADC sampling time register 2 */
     };
 
-    static RW_ uint32_t* const ADCx_LTR1_PTR[4] = {
-      [1] = (RW_ uint32_t* const)0x40022020U,   /** @brief ADC analog watchdog 1 threshold register */
-      [2] = (RW_ uint32_t* const)0x40022120U,   /** @brief ADC analog watchdog 1 threshold register */
-      [3] = (RW_ uint32_t* const)0x58026020U,   /** @brief ADC analog watchdog 1 threshold register */
+    static RW_ uint32_t* const ADCx_LTRx_PTR[4][4] = {
+      [0] = {
+        [1] = (RW_ uint32_t* const)0x40022020U,   /** @brief ADC analog watchdog 1 threshold register */
+        [2] = (RW_ uint32_t* const)0x400220B0U,   /** @brief ADC watchdog lower threshold register 2 */
+        [3] = (RW_ uint32_t* const)0x400220B8U,   /** @brief ADC watchdog lower threshold register 3 */
+      },
+      [1] = {
+        [1] = (RW_ uint32_t* const)0x40022120U,   /** @brief ADC analog watchdog 1 threshold register */
+        [2] = (RW_ uint32_t* const)0x400221B0U,   /** @brief ADC watchdog lower threshold register 2 */
+        [3] = (RW_ uint32_t* const)0x400221B8U,   /** @brief ADC watchdog lower threshold register 3 */
+      },
+      [2] = {
+        [1] = (RW_ uint32_t* const)0x58026020U,   /** @brief ADC analog watchdog 1 threshold register */
+        [2] = (RW_ uint32_t* const)0x580260B0U,   /** @brief ADC watchdog lower threshold register 2 */
+        [3] = (RW_ uint32_t* const)0x580260B8U,   /** @brief ADC watchdog lower threshold register 3 */
+      },
     };
 
     static RW_ uint32_t* const ADCx_LHTR1_PTR[4] = {
@@ -7571,28 +7189,25 @@
       },
     };
 
-    static RO_ uint32_t* const ADCx_JDR1_PTR[4] = {
-      [1] = (RO_ uint32_t* const)0x40022080U,   /** @brief ADC group injected sequencer rank 1 register */
-      [2] = (RO_ uint32_t* const)0x40022180U,   /** @brief ADC group injected sequencer rank 1 register */
-      [3] = (RO_ uint32_t* const)0x58026080U,   /** @brief ADC group injected sequencer rank 1 register */
-    };
-
-    static RO_ uint32_t* const ADCx_JDR2_PTR[4] = {
-      [1] = (RO_ uint32_t* const)0x40022084U,   /** @brief ADC group injected sequencer rank 2 register */
-      [2] = (RO_ uint32_t* const)0x40022184U,   /** @brief ADC group injected sequencer rank 2 register */
-      [3] = (RO_ uint32_t* const)0x58026084U,   /** @brief ADC group injected sequencer rank 2 register */
-    };
-
-    static RO_ uint32_t* const ADCx_JDR3_PTR[4] = {
-      [1] = (RO_ uint32_t* const)0x40022088U,   /** @brief ADC group injected sequencer rank 3 register */
-      [2] = (RO_ uint32_t* const)0x40022188U,   /** @brief ADC group injected sequencer rank 3 register */
-      [3] = (RO_ uint32_t* const)0x58026088U,   /** @brief ADC group injected sequencer rank 3 register */
-    };
-
-    static RO_ uint32_t* const ADCx_JDR4_PTR[4] = {
-      [1] = (RO_ uint32_t* const)0x4002208CU,   /** @brief ADC group injected sequencer rank 4 register */
-      [2] = (RO_ uint32_t* const)0x4002218CU,   /** @brief ADC group injected sequencer rank 4 register */
-      [3] = (RO_ uint32_t* const)0x5802608CU,   /** @brief ADC group injected sequencer rank 4 register */
+    static RO_ uint32_t* const ADCx_JDRx_PTR[4][5] = {
+      [0] = {
+        [1] = (RO_ uint32_t* const)0x40022080U,   /** @brief ADC group injected sequencer rank 1 register */
+        [2] = (RO_ uint32_t* const)0x40022084U,   /** @brief ADC group injected sequencer rank 2 register */
+        [3] = (RO_ uint32_t* const)0x40022088U,   /** @brief ADC group injected sequencer rank 3 register */
+        [4] = (RO_ uint32_t* const)0x4002208CU,   /** @brief ADC group injected sequencer rank 4 register */
+      },
+      [1] = {
+        [1] = (RO_ uint32_t* const)0x40022180U,   /** @brief ADC group injected sequencer rank 1 register */
+        [2] = (RO_ uint32_t* const)0x40022184U,   /** @brief ADC group injected sequencer rank 2 register */
+        [3] = (RO_ uint32_t* const)0x40022188U,   /** @brief ADC group injected sequencer rank 3 register */
+        [4] = (RO_ uint32_t* const)0x4002218CU,   /** @brief ADC group injected sequencer rank 4 register */
+      },
+      [2] = {
+        [1] = (RO_ uint32_t* const)0x58026080U,   /** @brief ADC group injected sequencer rank 1 register */
+        [2] = (RO_ uint32_t* const)0x58026084U,   /** @brief ADC group injected sequencer rank 2 register */
+        [3] = (RO_ uint32_t* const)0x58026088U,   /** @brief ADC group injected sequencer rank 3 register */
+        [4] = (RO_ uint32_t* const)0x5802608CU,   /** @brief ADC group injected sequencer rank 4 register */
+      },
     };
 
     static RW_ uint32_t* const ADCx_AWD2CR_PTR[4] = {
@@ -7625,12 +7240,6 @@
       [3] = (RW_ uint32_t* const)0x5802601CU,   /** @brief ADC pre channel selection register */
     };
 
-    static RW_ uint32_t* const ADCx_LTR2_PTR[4] = {
-      [1] = (RW_ uint32_t* const)0x400220B0U,   /** @brief ADC watchdog lower threshold register 2 */
-      [2] = (RW_ uint32_t* const)0x400221B0U,   /** @brief ADC watchdog lower threshold register 2 */
-      [3] = (RW_ uint32_t* const)0x580260B0U,   /** @brief ADC watchdog lower threshold register 2 */
-    };
-
     static RW_ uint32_t* const ADCx_HTRx_PTR[4][4] = {
       [0] = {
         [2] = (RW_ uint32_t* const)0x400220B4U,   /** @brief ADC watchdog higher threshold register 2 */
@@ -7644,12 +7253,6 @@
         [2] = (RW_ uint32_t* const)0x580260B4U,   /** @brief ADC watchdog higher threshold register 2 */
         [3] = (RW_ uint32_t* const)0x580260BCU,   /** @brief ADC watchdog higher threshold register 3 */
       },
-    };
-
-    static RW_ uint32_t* const ADCx_LTR3_PTR[4] = {
-      [1] = (RW_ uint32_t* const)0x400220B8U,   /** @brief ADC watchdog lower threshold register 3 */
-      [2] = (RW_ uint32_t* const)0x400221B8U,   /** @brief ADC watchdog lower threshold register 3 */
-      [3] = (RW_ uint32_t* const)0x580260B8U,   /** @brief ADC watchdog lower threshold register 3 */
     };
 
     static RW_ uint32_t* const ADCx_CALFACT2_PTR[4] = {
@@ -7702,10 +7305,22 @@
       [3] = 0x00000000U,   /** @brief SMPR2 register reset value */
     };
 
-    static const uint32_t ADCx_LTR1_RST[4] = {
-      [1] = 0x0FFF0000U,   /** @brief LTR1 register reset value */
-      [2] = 0x0FFF0000U,   /** @brief LTR1 register reset value */
-      [3] = 0x0FFF0000U,   /** @brief LTR1 register reset value */
+    static const uint32_t ADCx_LTRx_RST[4][4] = {
+      [0] = {
+        [1] = 0x0FFF0000U,   /** @brief LTR1 register reset value. */
+        [2] = 0x00000000U,   /** @brief LTR2 register reset value. */
+        [3] = 0x00000000U,   /** @brief LTR3 register reset value. */
+      },
+      [1] = {
+        [1] = 0x0FFF0000U,   /** @brief LTR1 register reset value. */
+        [2] = 0x00000000U,   /** @brief LTR2 register reset value. */
+        [3] = 0x00000000U,   /** @brief LTR3 register reset value. */
+      },
+      [2] = {
+        [1] = 0x0FFF0000U,   /** @brief LTR1 register reset value. */
+        [2] = 0x00000000U,   /** @brief LTR2 register reset value. */
+        [3] = 0x00000000U,   /** @brief LTR3 register reset value. */
+      },
     };
 
     static const uint32_t ADCx_LHTR1_RST[4] = {
@@ -7771,28 +7386,25 @@
       },
     };
 
-    static const uint32_t ADCx_JDR1_RST[4] = {
-      [1] = 0x00000000U,   /** @brief JDR1 register reset value */
-      [2] = 0x00000000U,   /** @brief JDR1 register reset value */
-      [3] = 0x00000000U,   /** @brief JDR1 register reset value */
-    };
-
-    static const uint32_t ADCx_JDR2_RST[4] = {
-      [1] = 0x00000000U,   /** @brief JDR2 register reset value */
-      [2] = 0x00000000U,   /** @brief JDR2 register reset value */
-      [3] = 0x00000000U,   /** @brief JDR2 register reset value */
-    };
-
-    static const uint32_t ADCx_JDR3_RST[4] = {
-      [1] = 0x00000000U,   /** @brief JDR3 register reset value */
-      [2] = 0x00000000U,   /** @brief JDR3 register reset value */
-      [3] = 0x00000000U,   /** @brief JDR3 register reset value */
-    };
-
-    static const uint32_t ADCx_JDR4_RST[4] = {
-      [1] = 0x00000000U,   /** @brief JDR4 register reset value */
-      [2] = 0x00000000U,   /** @brief JDR4 register reset value */
-      [3] = 0x00000000U,   /** @brief JDR4 register reset value */
+    static const uint32_t ADCx_JDRx_RST[4][5] = {
+      [0] = {
+        [1] = 0x00000000U,   /** @brief JDR1 register reset value. */
+        [2] = 0x00000000U,   /** @brief JDR2 register reset value. */
+        [3] = 0x00000000U,   /** @brief JDR3 register reset value. */
+        [4] = 0x00000000U,   /** @brief JDR4 register reset value. */
+      },
+      [1] = {
+        [1] = 0x00000000U,   /** @brief JDR1 register reset value. */
+        [2] = 0x00000000U,   /** @brief JDR2 register reset value. */
+        [3] = 0x00000000U,   /** @brief JDR3 register reset value. */
+        [4] = 0x00000000U,   /** @brief JDR4 register reset value. */
+      },
+      [2] = {
+        [1] = 0x00000000U,   /** @brief JDR1 register reset value. */
+        [2] = 0x00000000U,   /** @brief JDR2 register reset value. */
+        [3] = 0x00000000U,   /** @brief JDR3 register reset value. */
+        [4] = 0x00000000U,   /** @brief JDR4 register reset value. */
+      },
     };
 
     static const uint32_t ADCx_AWD2CR_RST[4] = {
@@ -7825,12 +7437,6 @@
       [3] = 0x00000000U,   /** @brief PCSEL register reset value */
     };
 
-    static const uint32_t ADCx_LTR2_RST[4] = {
-      [1] = 0x00000000U,   /** @brief LTR2 register reset value */
-      [2] = 0x00000000U,   /** @brief LTR2 register reset value */
-      [3] = 0x00000000U,   /** @brief LTR2 register reset value */
-    };
-
     static const uint32_t ADCx_HTRx_RST[4][4] = {
       [0] = {
         [2] = 0x00000000U,   /** @brief HTR2 register reset value. */
@@ -7844,12 +7450,6 @@
         [2] = 0x00000000U,   /** @brief HTR2 register reset value. */
         [3] = 0x00000000U,   /** @brief HTR3 register reset value. */
       },
-    };
-
-    static const uint32_t ADCx_LTR3_RST[4] = {
-      [1] = 0x00000000U,   /** @brief LTR3 register reset value */
-      [2] = 0x00000000U,   /** @brief LTR3 register reset value */
-      [3] = 0x00000000U,   /** @brief LTR3 register reset value */
     };
 
     static const uint32_t ADCx_CALFACT2_RST[4] = {
@@ -7867,7 +7467,7 @@
     typedef uint32_t ADCx_CFGR2_t;      /** @brief CFGR2 register value type. */
     typedef uint32_t ADCx_SMPR1_t;      /** @brief SMPR1 register value type. */
     typedef uint32_t ADCx_SMPR2_t;      /** @brief SMPR2 register value type. */
-    typedef uint32_t ADCx_LTR1_t;       /** @brief LTR1 register value type. */
+    typedef uint32_t ADCx_LTRx_t;       /** @brief LTRx register value type. */
     typedef uint32_t ADCx_LHTR1_t;      /** @brief LHTR1 register value type. */
     typedef uint32_t ADCx_SQR1_t;       /** @brief SQR1 register value type. */
     typedef uint32_t ADCx_SQR2_t;       /** @brief SQR2 register value type. */
@@ -7876,18 +7476,13 @@
     typedef uint32_t ADCx_DR_t;         /** @brief DR register value type. */
     typedef uint32_t ADCx_JSQR_t;       /** @brief JSQR register value type. */
     typedef uint32_t ADCx_OFRx_t;       /** @brief OFRx register value type. */
-    typedef uint32_t ADCx_JDR1_t;       /** @brief JDR1 register value type. */
-    typedef uint32_t ADCx_JDR2_t;       /** @brief JDR2 register value type. */
-    typedef uint32_t ADCx_JDR3_t;       /** @brief JDR3 register value type. */
-    typedef uint32_t ADCx_JDR4_t;       /** @brief JDR4 register value type. */
+    typedef uint32_t ADCx_JDRx_t;       /** @brief JDRx register value type. */
     typedef uint32_t ADCx_AWD2CR_t;     /** @brief AWD2CR register value type. */
     typedef uint32_t ADCx_AWD3CR_t;     /** @brief AWD3CR register value type. */
     typedef uint32_t ADCx_DIFSEL_t;     /** @brief DIFSEL register value type. */
     typedef uint32_t ADCx_CALFACT_t;    /** @brief CALFACT register value type. */
     typedef uint32_t ADCx_PCSEL_t;      /** @brief PCSEL register value type. */
-    typedef uint32_t ADCx_LTR2_t;       /** @brief LTR2 register value type. */
     typedef uint32_t ADCx_HTRx_t;       /** @brief HTRx register value type. */
-    typedef uint32_t ADCx_LTR3_t;       /** @brief LTR3 register value type. */
     typedef uint32_t ADCx_CALFACT2_t;   /** @brief CALFACT2 register value type. */
 
     /**** @subsection Enumerated ADCx Register Pointer Types ****/
@@ -7899,7 +7494,7 @@
     typedef uint32_t* const ADCx_CFGR2_PTR_t;      /** @brief CFGR2 register pointer type. */
     typedef uint32_t* const ADCx_SMPR1_PTR_t;      /** @brief SMPR1 register pointer type. */
     typedef uint32_t* const ADCx_SMPR2_PTR_t;      /** @brief SMPR2 register pointer type. */
-    typedef uint32_t* const ADCx_LTR1_PTR_t;       /** @brief LTR1 register pointer type. */
+    typedef uint32_t* const ADCx_LTRx_PTR_t;       /** @brief LTRx register pointer type. */
     typedef uint32_t* const ADCx_LHTR1_PTR_t;      /** @brief LHTR1 register pointer type. */
     typedef uint32_t* const ADCx_SQR1_PTR_t;       /** @brief SQR1 register pointer type. */
     typedef uint32_t* const ADCx_SQR2_PTR_t;       /** @brief SQR2 register pointer type. */
@@ -7908,18 +7503,13 @@
     typedef uint32_t* const ADCx_DR_PTR_t;         /** @brief DR register pointer type. */
     typedef uint32_t* const ADCx_JSQR_PTR_t;       /** @brief JSQR register pointer type. */
     typedef uint32_t* const ADCx_OFRx_PTR_t;       /** @brief OFRx register pointer type. */
-    typedef uint32_t* const ADCx_JDR1_PTR_t;       /** @brief JDR1 register pointer type. */
-    typedef uint32_t* const ADCx_JDR2_PTR_t;       /** @brief JDR2 register pointer type. */
-    typedef uint32_t* const ADCx_JDR3_PTR_t;       /** @brief JDR3 register pointer type. */
-    typedef uint32_t* const ADCx_JDR4_PTR_t;       /** @brief JDR4 register pointer type. */
+    typedef uint32_t* const ADCx_JDRx_PTR_t;       /** @brief JDRx register pointer type. */
     typedef uint32_t* const ADCx_AWD2CR_PTR_t;     /** @brief AWD2CR register pointer type. */
     typedef uint32_t* const ADCx_AWD3CR_PTR_t;     /** @brief AWD3CR register pointer type. */
     typedef uint32_t* const ADCx_DIFSEL_PTR_t;     /** @brief DIFSEL register pointer type. */
     typedef uint32_t* const ADCx_CALFACT_PTR_t;    /** @brief CALFACT register pointer type. */
     typedef uint32_t* const ADCx_PCSEL_PTR_t;      /** @brief PCSEL register pointer type. */
-    typedef uint32_t* const ADCx_LTR2_PTR_t;       /** @brief LTR2 register pointer type. */
     typedef uint32_t* const ADCx_HTRx_PTR_t;       /** @brief HTRx register pointer type. */
-    typedef uint32_t* const ADCx_LTR3_PTR_t;       /** @brief LTR3 register pointer type. */
     typedef uint32_t* const ADCx_CALFACT2_PTR_t;   /** @brief CALFACT2 register pointer type. */
 
     /**** @subsection ADCx Register Field Masks ****/
@@ -7976,7 +7566,7 @@
     static const uint32_t ADCx_CFGR2_ROVSM_MASK           = 0x00000400U;   /** @brief Regular oversampling mode */
     static const uint32_t ADCx_CFGR2_OSR_MASK             = 0x03FF0000U;   /** @brief Oversampling ratio */
     static const uint32_t ADCx_CFGR2_LSHIFT_MASK          = 0xF0000000U;   /** @brief Left shift factor */
-    static const uint32_t ADCx_LTR1_LTRx_MASK             = 0x03FFFFFFU;   /** @brief ADC analog watchdog 1 threshold low */
+    static const uint32_t ADCx_LTRx_LTR1_MASK             = 0x03FFFFFFU;   /** @brief ADC analog watchdog 1 threshold low */
     static const uint32_t ADCx_LHTR1_LHTR1_MASK           = 0x03FFFFFFU;   /** @brief ADC analog watchdog 2 threshold low */
     static const uint32_t ADCx_SQR1_L3_MASK               = 0x0000000FU;   /** @brief L3 */
     static const uint32_t ADCx_DR_RDATA_MASK              = 0x0000FFFFU;   /** @brief ADC group regular conversion data */
@@ -7992,9 +7582,7 @@
     static const uint32_t ADCx_CALFACT_CALFACT_D_MASK     = 0x07FF0000U;   /** @brief ADC calibration factor in differential mode */
     static const uint32_t ADCx_CALFACT_CALFACT_S_MASK     = 0x000007FFU;   /** @brief ADC calibration factor in single-ended mode */
     static const uint32_t ADCx_PCSEL_PCSEL_MASK           = 0x000FFFFFU;   /** @brief Channel x (vinp[i]) pre selection */
-    static const uint32_t ADCx_LTR2_LTRx_MASK             = 0x03FFFFFFU;   /** @brief Analog watchdog 2 lower threshold */
-    static const uint32_t ADCx_HTRx_HTRx_MASK             = 0x03FFFFFFU;   /** @brief Analog watchdog 2 higher threshold */
-    static const uint32_t ADCx_LTR3_LTR3_MASK             = 0x03FFFFFFU;   /** @brief Analog watchdog 3 lower threshold */
+    static const uint32_t ADCx_HTRx_HTR2_MASK             = 0x03FFFFFFU;   /** @brief Analog watchdog 2 higher threshold */
     static const uint32_t ADCx_CALFACT2_LINCALFACT_MASK   = 0x3FFFFFFFU;   /** @brief Linearity calibration factor */
 
     /**** @subsection Enumerated ADCx Register Field Masks ****/
@@ -8128,7 +7716,7 @@
     static const int32_t ADCx_CFGR2_ROVSM_POS           = 10;   /** @brief Regular oversampling mode */
     static const int32_t ADCx_CFGR2_OSR_POS             = 16;   /** @brief Oversampling ratio */
     static const int32_t ADCx_CFGR2_LSHIFT_POS          = 28;   /** @brief Left shift factor */
-    static const int32_t ADCx_LTR1_LTRx_POS             = 0;    /** @brief ADC analog watchdog 1 threshold low */
+    static const int32_t ADCx_LTRx_LTR1_POS             = 0;    /** @brief ADC analog watchdog 1 threshold low */
     static const int32_t ADCx_LHTR1_LHTR1_POS           = 0;    /** @brief ADC analog watchdog 2 threshold low */
     static const int32_t ADCx_SQR1_L3_POS               = 0;    /** @brief L3 */
     static const int32_t ADCx_DR_RDATA_POS              = 0;    /** @brief ADC group regular conversion data */
@@ -8144,9 +7732,7 @@
     static const int32_t ADCx_CALFACT_CALFACT_D_POS     = 16;   /** @brief ADC calibration factor in differential mode */
     static const int32_t ADCx_CALFACT_CALFACT_S_POS     = 0;    /** @brief ADC calibration factor in single-ended mode */
     static const int32_t ADCx_PCSEL_PCSEL_POS           = 0;    /** @brief Channel x (vinp[i]) pre selection */
-    static const int32_t ADCx_LTR2_LTRx_POS             = 0;    /** @brief Analog watchdog 2 lower threshold */
-    static const int32_t ADCx_HTRx_HTRx_POS             = 0;    /** @brief Analog watchdog 2 higher threshold */
-    static const int32_t ADCx_LTR3_LTR3_POS             = 0;    /** @brief Analog watchdog 3 lower threshold */
+    static const int32_t ADCx_HTRx_HTR2_POS             = 0;    /** @brief Analog watchdog 2 higher threshold */
     static const int32_t ADCx_CALFACT2_LINCALFACT_POS   = 0;    /** @brief Linearity calibration factor */
 
     /**** @subsection Enumerated ADCx Register Field Positions ****/
@@ -8577,9 +8163,6 @@
     static RW_ uint32_t* const RCC_D3CFGR_PTR          = (RW_ uint32_t* const)0x58024420U;   /** @brief RCC domain 3 clock configuration register */
     static RW_ uint32_t* const RCC_PLLCKSELR_PTR       = (RW_ uint32_t* const)0x58024428U;   /** @brief RCC plls clock source selection register */
     static RW_ uint32_t* const RCC_PLLCFGR_PTR         = (RW_ uint32_t* const)0x5802442CU;   /** @brief RCC plls configuration register */
-    static RW_ uint32_t* const RCC_PLL1FRACR_PTR       = (RW_ uint32_t* const)0x58024434U;   /** @brief RCC PLL1 fractional divider register */
-    static RW_ uint32_t* const RCC_PLL2FRACR_PTR       = (RW_ uint32_t* const)0x5802443CU;   /** @brief RCC PLL2 fractional divider register */
-    static RW_ uint32_t* const RCC_PLL3FRACR_PTR       = (RW_ uint32_t* const)0x58024444U;   /** @brief RCC PLL3 fractional divider register */
     static RW_ uint32_t* const RCC_D1CCIPR_PTR         = (RW_ uint32_t* const)0x5802444CU;   /** @brief RCC domain 1 kernel clock configuration register */
     static RW_ uint32_t* const RCC_D2CCIP1R_PTR        = (RW_ uint32_t* const)0x58024450U;   /** @brief RCC domain 2 kernel clock configuration register */
     static RW_ uint32_t* const RCC_D2CCIP2R_PTR        = (RW_ uint32_t* const)0x58024454U;   /** @brief RCC domain 2 kernel clock configuration register */
@@ -8647,6 +8230,12 @@
       [3] = (RW_ uint32_t* const)0x58024440U,   /** @brief RCC PLL3 dividers configuration register */
     };
 
+    static RW_ uint32_t* const RCC_PLLxFRACR_PTR[4] = {
+      [1] = (RW_ uint32_t* const)0x58024434U,   /** @brief RCC PLL1 fractional divider register */
+      [2] = (RW_ uint32_t* const)0x5802443CU,   /** @brief RCC PLL2 fractional divider register */
+      [3] = (RW_ uint32_t* const)0x58024444U,   /** @brief RCC PLL3 fractional divider register */
+    };
+
     /**** @subsection RCC Register Reset Values ****/
 
     static const uint32_t RCC_CR_RST              = 0x00000083U;   /** @brief CR register reset value. */
@@ -8658,9 +8247,6 @@
     static const uint32_t RCC_D3CFGR_RST          = 0x00000000U;   /** @brief D3CFGR register reset value. */
     static const uint32_t RCC_PLLCKSELR_RST       = 0x02020200U;   /** @brief PLLCKSELR register reset value. */
     static const uint32_t RCC_PLLCFGR_RST         = 0x01FF0000U;   /** @brief PLLCFGR register reset value. */
-    static const uint32_t RCC_PLL1FRACR_RST       = 0x00000000U;   /** @brief PLL1FRACR register reset value. */
-    static const uint32_t RCC_PLL2FRACR_RST       = 0x00000000U;   /** @brief PLL2FRACR register reset value. */
-    static const uint32_t RCC_PLL3FRACR_RST       = 0x00000000U;   /** @brief PLL3FRACR register reset value. */
     static const uint32_t RCC_D1CCIPR_RST         = 0x00000000U;   /** @brief D1CCIPR register reset value. */
     static const uint32_t RCC_D2CCIP1R_RST        = 0x00000000U;   /** @brief D2CCIP1R register reset value. */
     static const uint32_t RCC_D2CCIP2R_RST        = 0x00000000U;   /** @brief D2CCIP2R register reset value. */
@@ -8728,6 +8314,12 @@
       [3] = 0x01010280U,   /** @brief PLL3DIVR register reset value. */
     };
 
+    static const uint32_t RCC_PLLxFRACR_RST[4] = {
+      [1] = 0x00000000U,   /** @brief PLL1FRACR register reset value. */
+      [2] = 0x00000000U,   /** @brief PLL2FRACR register reset value. */
+      [3] = 0x00000000U,   /** @brief PLL3FRACR register reset value. */
+    };
+
     /**** @subsection Enumerated RCC Register Value Types ****/
 
     typedef uint32_t RCC_CR_t;              /** @brief CR register value type. */
@@ -8740,9 +8332,7 @@
     typedef uint32_t RCC_PLLCKSELR_t;       /** @brief PLLCKSELR register value type. */
     typedef uint32_t RCC_PLLCFGR_t;         /** @brief PLLCFGR register value type. */
     typedef uint32_t RCC_PLLxDIVR_t;        /** @brief PLLxDIVR register value type. */
-    typedef uint32_t RCC_PLL1FRACR_t;       /** @brief PLL1FRACR register value type. */
-    typedef uint32_t RCC_PLL2FRACR_t;       /** @brief PLL2FRACR register value type. */
-    typedef uint32_t RCC_PLL3FRACR_t;       /** @brief PLL3FRACR register value type. */
+    typedef uint32_t RCC_PLLxFRACR_t;       /** @brief PLLxFRACR register value type. */
     typedef uint32_t RCC_D1CCIPR_t;         /** @brief D1CCIPR register value type. */
     typedef uint32_t RCC_D2CCIP1R_t;        /** @brief D2CCIP1R register value type. */
     typedef uint32_t RCC_D2CCIP2R_t;        /** @brief D2CCIP2R register value type. */
@@ -8814,9 +8404,7 @@
     typedef uint32_t* const RCC_PLLCKSELR_PTR_t;       /** @brief PLLCKSELR register pointer type. */
     typedef uint32_t* const RCC_PLLCFGR_PTR_t;         /** @brief PLLCFGR register pointer type. */
     typedef uint32_t* const RCC_PLLxDIVR_PTR_t;        /** @brief PLLxDIVR register pointer type. */
-    typedef uint32_t* const RCC_PLL1FRACR_PTR_t;       /** @brief PLL1FRACR register pointer type. */
-    typedef uint32_t* const RCC_PLL2FRACR_PTR_t;       /** @brief PLL2FRACR register pointer type. */
-    typedef uint32_t* const RCC_PLL3FRACR_PTR_t;       /** @brief PLL3FRACR register pointer type. */
+    typedef uint32_t* const RCC_PLLxFRACR_PTR_t;       /** @brief PLLxFRACR register pointer type. */
     typedef uint32_t* const RCC_D1CCIPR_PTR_t;         /** @brief D1CCIPR register pointer type. */
     typedef uint32_t* const RCC_D2CCIP1R_PTR_t;        /** @brief D2CCIP1R register pointer type. */
     typedef uint32_t* const RCC_D2CCIP2R_PTR_t;        /** @brief D2CCIP2R register pointer type. */
@@ -8909,13 +8497,11 @@
     static const uint32_t RCC_D1CFGR_D1CPRE_MASK                    = 0x00000F00U;   /** @brief D1 domain core prescaler */
     static const uint32_t RCC_D3CFGR_D3PPRE_MASK                    = 0x00000070U;   /** @brief D3 domain APB4 prescaler */
     static const uint32_t RCC_PLLCKSELR_PLLSRC_MASK                 = 0x00000003U;   /** @brief DIVMx and plls clock source selection */
-    static const uint32_t RCC_PLLxDIVR_DIVNx_MASK                   = 0x000001FFU;   /** @brief Multiplication factor for PLL1 VCO */
-    static const uint32_t RCC_PLLxDIVR_DIVPx_MASK                   = 0x0000FE00U;   /** @brief PLL1 DIVP division factor */
-    static const uint32_t RCC_PLLxDIVR_DIVQx_MASK                   = 0x007F0000U;   /** @brief PLL1 DIVQ division factor */
-    static const uint32_t RCC_PLLxDIVR_DIVRx_MASK                   = 0x7F000000U;   /** @brief PLL1 DIVR division factor */
-    static const uint32_t RCC_PLL1FRACR_FRACNx_MASK                 = 0x0000FFF8U;   /** @brief Fractional part of the multiplication factor for PLL1 VCO */
-    static const uint32_t RCC_PLL2FRACR_FRACNx_MASK                 = 0x0000FFF8U;   /** @brief Fractional part of the multiplication factor for PLL VCO */
-    static const uint32_t RCC_PLL3FRACR_FRACN3_MASK                 = 0x0000FFF8U;   /** @brief Fractional part of the multiplication factor for PLL3 VCO */
+    static const uint32_t RCC_PLLxDIVR_DIVN1_MASK                   = 0x000001FFU;   /** @brief Multiplication factor for PLL1 VCO */
+    static const uint32_t RCC_PLLxDIVR_DIVP1_MASK                   = 0x0000FE00U;   /** @brief PLL1 DIVP division factor */
+    static const uint32_t RCC_PLLxDIVR_DIVQ1_MASK                   = 0x007F0000U;   /** @brief PLL1 DIVQ division factor */
+    static const uint32_t RCC_PLLxDIVR_DIVR1_MASK                   = 0x7F000000U;   /** @brief PLL1 DIVR division factor */
+    static const uint32_t RCC_PLLxFRACR_FRACN1_MASK                 = 0x0000FFF8U;   /** @brief Fractional part of the multiplication factor for PLL1 VCO */
     static const uint32_t RCC_D1CCIPR_FMCSRC_MASK                   = 0x00000003U;   /** @brief FMC kernel clock source selection */
     static const uint32_t RCC_D1CCIPR_QSPISRC_MASK                  = 0x00000030U;   /** @brief QUADSPI kernel clock source selection */
     static const uint32_t RCC_D1CCIPR_SDMMCSRC_MASK                 = 0x00010000U;   /** @brief SDMMC kernel clock source selection */
@@ -9610,13 +9196,11 @@
     static const int32_t RCC_D1CFGR_D1CPRE_POS                    = 8;    /** @brief D1 domain core prescaler */
     static const int32_t RCC_D3CFGR_D3PPRE_POS                    = 4;    /** @brief D3 domain APB4 prescaler */
     static const int32_t RCC_PLLCKSELR_PLLSRC_POS                 = 0;    /** @brief DIVMx and plls clock source selection */
-    static const int32_t RCC_PLLxDIVR_DIVNx_POS                   = 0;    /** @brief Multiplication factor for PLL1 VCO */
-    static const int32_t RCC_PLLxDIVR_DIVPx_POS                   = 9;    /** @brief PLL1 DIVP division factor */
-    static const int32_t RCC_PLLxDIVR_DIVQx_POS                   = 16;   /** @brief PLL1 DIVQ division factor */
-    static const int32_t RCC_PLLxDIVR_DIVRx_POS                   = 24;   /** @brief PLL1 DIVR division factor */
-    static const int32_t RCC_PLL1FRACR_FRACNx_POS                 = 3;    /** @brief Fractional part of the multiplication factor for PLL1 VCO */
-    static const int32_t RCC_PLL2FRACR_FRACNx_POS                 = 3;    /** @brief Fractional part of the multiplication factor for PLL VCO */
-    static const int32_t RCC_PLL3FRACR_FRACN3_POS                 = 3;    /** @brief Fractional part of the multiplication factor for PLL3 VCO */
+    static const int32_t RCC_PLLxDIVR_DIVN1_POS                   = 0;    /** @brief Multiplication factor for PLL1 VCO */
+    static const int32_t RCC_PLLxDIVR_DIVP1_POS                   = 9;    /** @brief PLL1 DIVP division factor */
+    static const int32_t RCC_PLLxDIVR_DIVQ1_POS                   = 16;   /** @brief PLL1 DIVQ division factor */
+    static const int32_t RCC_PLLxDIVR_DIVR1_POS                   = 24;   /** @brief PLL1 DIVR division factor */
+    static const int32_t RCC_PLLxFRACR_FRACN1_POS                 = 3;    /** @brief Fractional part of the multiplication factor for PLL1 VCO */
     static const int32_t RCC_D1CCIPR_FMCSRC_POS                   = 0;    /** @brief FMC kernel clock source selection */
     static const int32_t RCC_D1CCIPR_QSPISRC_POS                  = 4;    /** @brief QUADSPI kernel clock source selection */
     static const int32_t RCC_D1CCIPR_SDMMCSRC_POS                 = 16;   /** @brief SDMMC kernel clock source selection */
@@ -12352,52 +11936,52 @@
     static const uint32_t FLASH_ACR_WRHIGHFREQ_MASK               = 0x00000030U;   /** @brief Flash signal delay */
     static const uint32_t FLASH_ACR__LATENCY_MASK                 = 0x00000007U;   /** @brief Read latency */
     static const uint32_t FLASH_ACR__WRHIGHFREQ_MASK              = 0x00000030U;   /** @brief Flash signal delay */
-    static const uint32_t FLASH_CRx_LOCKx_MASK                    = 0x00000001U;   /** @brief Bank 1 configuration lock bit */
-    static const uint32_t FLASH_CRx_PGx_MASK                      = 0x00000002U;   /** @brief Bank 1 program enable bit */
-    static const uint32_t FLASH_CRx_SERx_MASK                     = 0x00000004U;   /** @brief Bank 1 sector erase request */
-    static const uint32_t FLASH_CRx_BERx_MASK                     = 0x00000008U;   /** @brief Bank 1 erase request */
-    static const uint32_t FLASH_CRx_PSIZEx_MASK                   = 0x00000030U;   /** @brief Bank 1 program size */
-    static const uint32_t FLASH_CRx_FWx_MASK                      = 0x00000040U;   /** @brief Bank 1 write forcing control bit */
-    static const uint32_t FLASH_CRx_STARTx_MASK                   = 0x00000080U;   /** @brief Bank 1 bank or sector erase start control bit */
-    static const uint32_t FLASH_CRx_SNBx_MASK                     = 0x00000700U;   /** @brief Bank 1 sector erase selection number */
+    static const uint32_t FLASH_CRx_LOCK1_MASK                    = 0x00000001U;   /** @brief Bank 1 configuration lock bit */
+    static const uint32_t FLASH_CRx_PG1_MASK                      = 0x00000002U;   /** @brief Bank 1 program enable bit */
+    static const uint32_t FLASH_CRx_SER1_MASK                     = 0x00000004U;   /** @brief Bank 1 sector erase request */
+    static const uint32_t FLASH_CRx_BER1_MASK                     = 0x00000008U;   /** @brief Bank 1 erase request */
+    static const uint32_t FLASH_CRx_PSIZE1_MASK                   = 0x00000030U;   /** @brief Bank 1 program size */
+    static const uint32_t FLASH_CRx_FW1_MASK                      = 0x00000040U;   /** @brief Bank 1 write forcing control bit */
+    static const uint32_t FLASH_CRx_START1_MASK                   = 0x00000080U;   /** @brief Bank 1 bank or sector erase start control bit */
+    static const uint32_t FLASH_CRx_SNB1_MASK                     = 0x00000700U;   /** @brief Bank 1 sector erase selection number */
     static const uint32_t FLASH_CRx_CRC_EN_MASK                   = 0x00008000U;   /** @brief Bank 1 CRC control bit */
-    static const uint32_t FLASH_CRx_EOPIEx_MASK                   = 0x00010000U;   /** @brief Bank 1 end-of-program interrupt control bit */
-    static const uint32_t FLASH_CRx_WRPERRIEx_MASK                = 0x00020000U;   /** @brief Bank 1 write protection error interrupt enable bit */
-    static const uint32_t FLASH_CRx_PGSERRIEx_MASK                = 0x00040000U;   /** @brief Bank 1 programming sequence error interrupt enable bit */
-    static const uint32_t FLASH_CRx_STRBERRIEx_MASK               = 0x00080000U;   /** @brief Bank 1 strobe error interrupt enable bit */
-    static const uint32_t FLASH_CRx_INCERRIEx_MASK                = 0x00200000U;   /** @brief Bank 1 inconsistency error interrupt enable bit */
-    static const uint32_t FLASH_CRx_OPERRIEx_MASK                 = 0x00400000U;   /** @brief Bank 1 write/erase error interrupt enable bit */
-    static const uint32_t FLASH_CRx_RDPERRIEx_MASK                = 0x00800000U;   /** @brief Bank 1 read protection error interrupt enable bit */
-    static const uint32_t FLASH_CRx_RDSERRIEx_MASK                = 0x01000000U;   /** @brief Bank 1 secure error interrupt enable bit */
-    static const uint32_t FLASH_CRx_SNECCERRIEx_MASK              = 0x02000000U;   /** @brief Bank 1 ECC single correction error interrupt enable bit */
-    static const uint32_t FLASH_CRx_DBECCERRIEx_MASK              = 0x04000000U;   /** @brief Bank 1 ECC double detection error interrupt enable bit */
-    static const uint32_t FLASH_CRx_CRCENDIEx_MASK                = 0x08000000U;   /** @brief Bank 1 end of CRC calculation interrupt enable bit */
-    static const uint32_t FLASH_SR1_BSYx_MASK                     = 0x00000001U;   /** @brief Bank 1 ongoing program flag */
-    static const uint32_t FLASH_SR1_WBNEx_MASK                    = 0x00000002U;   /** @brief Bank 1 write buffer not empty flag */
-    static const uint32_t FLASH_SR1_QWx_MASK                      = 0x00000004U;   /** @brief Bank 1 wait queue flag */
-    static const uint32_t FLASH_SR1_CRC_BUSYx_MASK                = 0x00000008U;   /** @brief Bank 1 CRC busy flag */
-    static const uint32_t FLASH_SR1_EOPx_MASK                     = 0x00010000U;   /** @brief Bank 1 end-of-program flag */
-    static const uint32_t FLASH_SR1_WRPERRx_MASK                  = 0x00020000U;   /** @brief Bank 1 write protection error flag */
-    static const uint32_t FLASH_SR1_PGSERRx_MASK                  = 0x00040000U;   /** @brief Bank 1 programming sequence error flag */
-    static const uint32_t FLASH_SR1_STRBERRx_MASK                 = 0x00080000U;   /** @brief Bank 1 strobe error flag */
-    static const uint32_t FLASH_SR1_INCERRx_MASK                  = 0x00200000U;   /** @brief Bank 1 inconsistency error flag */
-    static const uint32_t FLASH_SR1_OPERRx_MASK                   = 0x00400000U;   /** @brief Bank 1 write/erase error flag */
-    static const uint32_t FLASH_SR1_RDPERRx_MASK                  = 0x00800000U;   /** @brief Bank 1 read protection error flag */
-    static const uint32_t FLASH_SR1_RDSERRx_MASK                  = 0x01000000U;   /** @brief Bank 1 secure error flag */
+    static const uint32_t FLASH_CRx_EOPIE1_MASK                   = 0x00010000U;   /** @brief Bank 1 end-of-program interrupt control bit */
+    static const uint32_t FLASH_CRx_WRPERRIE1_MASK                = 0x00020000U;   /** @brief Bank 1 write protection error interrupt enable bit */
+    static const uint32_t FLASH_CRx_PGSERRIE1_MASK                = 0x00040000U;   /** @brief Bank 1 programming sequence error interrupt enable bit */
+    static const uint32_t FLASH_CRx_STRBERRIE1_MASK               = 0x00080000U;   /** @brief Bank 1 strobe error interrupt enable bit */
+    static const uint32_t FLASH_CRx_INCERRIE1_MASK                = 0x00200000U;   /** @brief Bank 1 inconsistency error interrupt enable bit */
+    static const uint32_t FLASH_CRx_OPERRIE1_MASK                 = 0x00400000U;   /** @brief Bank 1 write/erase error interrupt enable bit */
+    static const uint32_t FLASH_CRx_RDPERRIE1_MASK                = 0x00800000U;   /** @brief Bank 1 read protection error interrupt enable bit */
+    static const uint32_t FLASH_CRx_RDSERRIE1_MASK                = 0x01000000U;   /** @brief Bank 1 secure error interrupt enable bit */
+    static const uint32_t FLASH_CRx_SNECCERRIE1_MASK              = 0x02000000U;   /** @brief Bank 1 ECC single correction error interrupt enable bit */
+    static const uint32_t FLASH_CRx_DBECCERRIE1_MASK              = 0x04000000U;   /** @brief Bank 1 ECC double detection error interrupt enable bit */
+    static const uint32_t FLASH_CRx_CRCENDIE1_MASK                = 0x08000000U;   /** @brief Bank 1 end of CRC calculation interrupt enable bit */
+    static const uint32_t FLASH_SR1_BSY1_MASK                     = 0x00000001U;   /** @brief Bank 1 ongoing program flag */
+    static const uint32_t FLASH_SR1_WBNE1_MASK                    = 0x00000002U;   /** @brief Bank 1 write buffer not empty flag */
+    static const uint32_t FLASH_SR1_QW1_MASK                      = 0x00000004U;   /** @brief Bank 1 wait queue flag */
+    static const uint32_t FLASH_SR1_CRC_BUSY1_MASK                = 0x00000008U;   /** @brief Bank 1 CRC busy flag */
+    static const uint32_t FLASH_SR1_EOP1_MASK                     = 0x00010000U;   /** @brief Bank 1 end-of-program flag */
+    static const uint32_t FLASH_SR1_WRPERR1_MASK                  = 0x00020000U;   /** @brief Bank 1 write protection error flag */
+    static const uint32_t FLASH_SR1_PGSERR1_MASK                  = 0x00040000U;   /** @brief Bank 1 programming sequence error flag */
+    static const uint32_t FLASH_SR1_STRBERR1_MASK                 = 0x00080000U;   /** @brief Bank 1 strobe error flag */
+    static const uint32_t FLASH_SR1_INCERR1_MASK                  = 0x00200000U;   /** @brief Bank 1 inconsistency error flag */
+    static const uint32_t FLASH_SR1_OPERR1_MASK                   = 0x00400000U;   /** @brief Bank 1 write/erase error flag */
+    static const uint32_t FLASH_SR1_RDPERR1_MASK                  = 0x00800000U;   /** @brief Bank 1 read protection error flag */
+    static const uint32_t FLASH_SR1_RDSERR1_MASK                  = 0x01000000U;   /** @brief Bank 1 secure error flag */
     static const uint32_t FLASH_SR1_SNECCERR11_MASK               = 0x02000000U;   /** @brief Bank 1 single correction error flag */
     static const uint32_t FLASH_SR1_DBECCERR1_MASK                = 0x04000000U;   /** @brief Bank 1 ECC double detection error flag */
     static const uint32_t FLASH_SR1_CRCEND1_MASK                  = 0x08000000U;   /** @brief Bank 1 crc-complete flag */
-    static const uint32_t FLASH_CCRx_CLR_EOPx_MASK                = 0x00010000U;   /** @brief Bank 1 EOP1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_WRPERRx_MASK             = 0x00020000U;   /** @brief Bank 1 WRPERR1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_PGSERRx_MASK             = 0x00040000U;   /** @brief Bank 1 PGSERR1 flag clear bi */
-    static const uint32_t FLASH_CCRx_CLR_STRBERRx_MASK            = 0x00080000U;   /** @brief Bank 1 STRBERR1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_INCERRx_MASK             = 0x00200000U;   /** @brief Bank 1 INCERR1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_OPERRx_MASK              = 0x00400000U;   /** @brief Bank 1 OPERR1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_RDPERRx_MASK             = 0x00800000U;   /** @brief Bank 1 RDPERR1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_EOP1_MASK                = 0x00010000U;   /** @brief Bank 1 EOP1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_WRPERR1_MASK             = 0x00020000U;   /** @brief Bank 1 WRPERR1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_PGSERR1_MASK             = 0x00040000U;   /** @brief Bank 1 PGSERR1 flag clear bi */
+    static const uint32_t FLASH_CCRx_CLR_STRBERR1_MASK            = 0x00080000U;   /** @brief Bank 1 STRBERR1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_INCERR1_MASK             = 0x00200000U;   /** @brief Bank 1 INCERR1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_OPERR1_MASK              = 0x00400000U;   /** @brief Bank 1 OPERR1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_RDPERR1_MASK             = 0x00800000U;   /** @brief Bank 1 RDPERR1 flag clear bit */
     static const uint32_t FLASH_CCRx_CLR_RDSERR1_MASK             = 0x01000000U;   /** @brief Bank 1 RDSERR1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_SNECCERRx_MASK           = 0x02000000U;   /** @brief Bank 1 SNECCERR1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_SNECCERR1_MASK           = 0x02000000U;   /** @brief Bank 1 SNECCERR1 flag clear bit */
     static const uint32_t FLASH_CCRx_CLR_DBECCERR1_MASK           = 0x04000000U;   /** @brief Bank 1 DBECCERR1 flag clear bit */
-    static const uint32_t FLASH_CCRx_CLR_CRCENDx_MASK             = 0x08000000U;   /** @brief Bank 1 CRCEND1 flag clear bit */
+    static const uint32_t FLASH_CCRx_CLR_CRCEND1_MASK             = 0x08000000U;   /** @brief Bank 1 CRCEND1 flag clear bit */
     static const uint32_t FLASH_OPTCR_OPTLOCK_MASK                = 0x00000001U;   /** @brief FLASH_OPTCR lock option configuration bit */
     static const uint32_t FLASH_OPTCR_OPTSTART_MASK               = 0x00000002U;   /** @brief Option byte start change option configuration bit */
     static const uint32_t FLASH_OPTCR_MER_MASK                    = 0x00000010U;   /** @brief Flash mass erase enable bit */
@@ -12462,20 +12046,20 @@
     static const uint32_t FLASH_OPTSR_PRG__SWAP_BANK_OPT_MASK     = 0x80000000U;   /** @brief Bank swapping option configuration bit */
     static const uint32_t FLASH_OPTCCR__CLR_OPTCHANGEERR_MASK     = 0x40000000U;   /** @brief OPTCHANGEERR reset bit */
     static const uint32_t FLASH_OPTCCR_CLR_OPTCHANGEERR_MASK      = 0x40000000U;   /** @brief OPTCHANGEERR reset bit */
-    static const uint32_t FLASH_PRAR_CURx_PROT_AREA_STARTx_MASK   = 0x00000FFFU;   /** @brief Bank 1 lowest PCROP protected address */
-    static const uint32_t FLASH_PRAR_CURx_PROT_AREA_ENDx_MASK     = 0x0FFF0000U;   /** @brief Bank 1 highest PCROP protected address */
-    static const uint32_t FLASH_PRAR_CURx_DMEPx_MASK              = 0x80000000U;   /** @brief Bank 1 PCROP protected erase enable option status bit */
-    static const uint32_t FLASH_PRAR_PRGx_PROT_AREA_STARTx_MASK   = 0x00000FFFU;   /** @brief Bank 1 lowest PCROP protected address configuration */
-    static const uint32_t FLASH_PRAR_PRGx_PROT_AREA_ENDx_MASK     = 0x0FFF0000U;   /** @brief Bank 1 highest PCROP protected address configuration */
-    static const uint32_t FLASH_PRAR_PRGx_DMEPx_MASK              = 0x80000000U;   /** @brief Bank 1 PCROP protected erase enable option configuration bit */
-    static const uint32_t FLASH_SCAR_CURx_SEC_AREA_STARTx_MASK    = 0x00000FFFU;   /** @brief Bank 1 lowest secure protected address */
-    static const uint32_t FLASH_SCAR_CURx_SEC_AREA_ENDx_MASK      = 0x0FFF0000U;   /** @brief Bank 1 highest secure protected address */
-    static const uint32_t FLASH_SCAR_CURx_DMESx_MASK              = 0x80000000U;   /** @brief Bank 1 secure protected erase enable option status bit */
-    static const uint32_t FLASH_SCAR_PRGx_SEC_AREA_STARTx_MASK    = 0x00000FFFU;   /** @brief Bank 1 lowest secure protected address configuration */
-    static const uint32_t FLASH_SCAR_PRGx_SEC_AREA_ENDx_MASK      = 0x0FFF0000U;   /** @brief Bank 1 highest secure protected address configuration */
-    static const uint32_t FLASH_SCAR_PRGx_DMESx_MASK              = 0x80000000U;   /** @brief Bank 1 secure protected erase enable option configuration bit */
-    static const uint32_t FLASH_WPSN_CURxR_WRPSNx_MASK            = 0x000000FFU;   /** @brief Bank 1 sector write protection option status byte */
-    static const uint32_t FLASH_WPSN_PRGxR_WRPSNx_MASK            = 0x000000FFU;   /** @brief Bank 1 sector write protection configuration byte */
+    static const uint32_t FLASH_PRAR_CURx_PROT_AREA_START1_MASK   = 0x00000FFFU;   /** @brief Bank 1 lowest PCROP protected address */
+    static const uint32_t FLASH_PRAR_CURx_PROT_AREA_END1_MASK     = 0x0FFF0000U;   /** @brief Bank 1 highest PCROP protected address */
+    static const uint32_t FLASH_PRAR_CURx_DMEP1_MASK              = 0x80000000U;   /** @brief Bank 1 PCROP protected erase enable option status bit */
+    static const uint32_t FLASH_PRAR_PRGx_PROT_AREA_START1_MASK   = 0x00000FFFU;   /** @brief Bank 1 lowest PCROP protected address configuration */
+    static const uint32_t FLASH_PRAR_PRGx_PROT_AREA_END1_MASK     = 0x0FFF0000U;   /** @brief Bank 1 highest PCROP protected address configuration */
+    static const uint32_t FLASH_PRAR_PRGx_DMEP1_MASK              = 0x80000000U;   /** @brief Bank 1 PCROP protected erase enable option configuration bit */
+    static const uint32_t FLASH_SCAR_CURx_SEC_AREA_START1_MASK    = 0x00000FFFU;   /** @brief Bank 1 lowest secure protected address */
+    static const uint32_t FLASH_SCAR_CURx_SEC_AREA_END1_MASK      = 0x0FFF0000U;   /** @brief Bank 1 highest secure protected address */
+    static const uint32_t FLASH_SCAR_CURx_DMES1_MASK              = 0x80000000U;   /** @brief Bank 1 secure protected erase enable option status bit */
+    static const uint32_t FLASH_SCAR_PRGx_SEC_AREA_START1_MASK    = 0x00000FFFU;   /** @brief Bank 1 lowest secure protected address configuration */
+    static const uint32_t FLASH_SCAR_PRGx_SEC_AREA_END1_MASK      = 0x0FFF0000U;   /** @brief Bank 1 highest secure protected address configuration */
+    static const uint32_t FLASH_SCAR_PRGx_DMES1_MASK              = 0x80000000U;   /** @brief Bank 1 secure protected erase enable option configuration bit */
+    static const uint32_t FLASH_WPSN_CURxR_WRPSN1_MASK            = 0x000000FFU;   /** @brief Bank 1 sector write protection option status byte */
+    static const uint32_t FLASH_WPSN_PRGxR_WRPSN1_MASK            = 0x000000FFU;   /** @brief Bank 1 sector write protection configuration byte */
     static const uint32_t FLASH_CRCCRx_CRC_SECT_MASK              = 0x00000007U;   /** @brief Bank 1 CRC sector number */
     static const uint32_t FLASH_CRCCRx_ALL_BANK_MASK              = 0x00000080U;   /** @brief Bank 1 CRC select bit */
     static const uint32_t FLASH_CRCCRx_CRC_BY_SECT_MASK           = 0x00000100U;   /** @brief Bank 1 CRC sector mode select bit */
@@ -12484,19 +12068,19 @@
     static const uint32_t FLASH_CRCCRx_START_CRC_MASK             = 0x00010000U;   /** @brief Bank 1 CRC start bit */
     static const uint32_t FLASH_CRCCRx_CLEAN_CRC_MASK             = 0x00020000U;   /** @brief Bank 1 CRC clear bit */
     static const uint32_t FLASH_CRCCRx_CRC_BURST_MASK             = 0x00300000U;   /** @brief Bank 1 CRC burst size */
-    static const uint32_t FLASH_ECC_FAxR_FAIL_ECC_ADDRx_MASK      = 0x00007FFFU;   /** @brief Bank 1 ECC error address */
-    static const uint32_t FLASH_SR2_BSYx_MASK                     = 0x00000001U;   /** @brief Bank 2 ongoing program flag */
-    static const uint32_t FLASH_SR2_WBNEx_MASK                    = 0x00000002U;   /** @brief Bank 2 write buffer not empty flag */
-    static const uint32_t FLASH_SR2_QWx_MASK                      = 0x00000004U;   /** @brief Bank 2 wait queue flag */
-    static const uint32_t FLASH_SR2_CRC_BUSYx_MASK                = 0x00000008U;   /** @brief Bank 2 CRC busy flag */
-    static const uint32_t FLASH_SR2_EOPx_MASK                     = 0x00010000U;   /** @brief Bank 2 end-of-program flag */
-    static const uint32_t FLASH_SR2_WRPERRx_MASK                  = 0x00020000U;   /** @brief Bank 2 write protection error flag */
-    static const uint32_t FLASH_SR2_PGSERRx_MASK                  = 0x00040000U;   /** @brief Bank 2 programming sequence error flag */
-    static const uint32_t FLASH_SR2_STRBERRx_MASK                 = 0x00080000U;   /** @brief Bank 2 strobe error flag */
-    static const uint32_t FLASH_SR2_INCERRx_MASK                  = 0x00200000U;   /** @brief Bank 2 inconsistency error flag */
-    static const uint32_t FLASH_SR2_OPERRx_MASK                   = 0x00400000U;   /** @brief Bank 2 write/erase error flag */
-    static const uint32_t FLASH_SR2_RDPERRx_MASK                  = 0x00800000U;   /** @brief Bank 2 read protection error flag */
-    static const uint32_t FLASH_SR2_RDSERRx_MASK                  = 0x01000000U;   /** @brief Bank 2 secure error flag */
+    static const uint32_t FLASH_ECC_FAxR_FAIL_ECC_ADDR1_MASK      = 0x00007FFFU;   /** @brief Bank 1 ECC error address */
+    static const uint32_t FLASH_SR2_BSY2_MASK                     = 0x00000001U;   /** @brief Bank 2 ongoing program flag */
+    static const uint32_t FLASH_SR2_WBNE2_MASK                    = 0x00000002U;   /** @brief Bank 2 write buffer not empty flag */
+    static const uint32_t FLASH_SR2_QW2_MASK                      = 0x00000004U;   /** @brief Bank 2 wait queue flag */
+    static const uint32_t FLASH_SR2_CRC_BUSY2_MASK                = 0x00000008U;   /** @brief Bank 2 CRC busy flag */
+    static const uint32_t FLASH_SR2_EOP2_MASK                     = 0x00010000U;   /** @brief Bank 2 end-of-program flag */
+    static const uint32_t FLASH_SR2_WRPERR2_MASK                  = 0x00020000U;   /** @brief Bank 2 write protection error flag */
+    static const uint32_t FLASH_SR2_PGSERR2_MASK                  = 0x00040000U;   /** @brief Bank 2 programming sequence error flag */
+    static const uint32_t FLASH_SR2_STRBERR2_MASK                 = 0x00080000U;   /** @brief Bank 2 strobe error flag */
+    static const uint32_t FLASH_SR2_INCERR2_MASK                  = 0x00200000U;   /** @brief Bank 2 inconsistency error flag */
+    static const uint32_t FLASH_SR2_OPERR2_MASK                   = 0x00400000U;   /** @brief Bank 2 write/erase error flag */
+    static const uint32_t FLASH_SR2_RDPERR2_MASK                  = 0x00800000U;   /** @brief Bank 2 read protection error flag */
+    static const uint32_t FLASH_SR2_RDSERR2_MASK                  = 0x01000000U;   /** @brief Bank 2 secure error flag */
     static const uint32_t FLASH_SR2_SNECCERR2_MASK                = 0x02000000U;   /** @brief Bank 2 single correction error flag */
     static const uint32_t FLASH_SR2_DBECCERR2_MASK                = 0x04000000U;   /** @brief Bank 2 ECC double detection error flag */
     static const uint32_t FLASH_SR2_CRCEND2_MASK                  = 0x08000000U;   /** @brief Bank 2 crc-complete flag */
@@ -12519,52 +12103,52 @@
     static const int32_t FLASH_ACR_WRHIGHFREQ_POS               = 4;    /** @brief Flash signal delay */
     static const int32_t FLASH_ACR__LATENCY_POS                 = 0;    /** @brief Read latency */
     static const int32_t FLASH_ACR__WRHIGHFREQ_POS              = 4;    /** @brief Flash signal delay */
-    static const int32_t FLASH_CRx_LOCKx_POS                    = 0;    /** @brief Bank 1 configuration lock bit */
-    static const int32_t FLASH_CRx_PGx_POS                      = 1;    /** @brief Bank 1 program enable bit */
-    static const int32_t FLASH_CRx_SERx_POS                     = 2;    /** @brief Bank 1 sector erase request */
-    static const int32_t FLASH_CRx_BERx_POS                     = 3;    /** @brief Bank 1 erase request */
-    static const int32_t FLASH_CRx_PSIZEx_POS                   = 4;    /** @brief Bank 1 program size */
-    static const int32_t FLASH_CRx_FWx_POS                      = 6;    /** @brief Bank 1 write forcing control bit */
-    static const int32_t FLASH_CRx_STARTx_POS                   = 7;    /** @brief Bank 1 bank or sector erase start control bit */
-    static const int32_t FLASH_CRx_SNBx_POS                     = 8;    /** @brief Bank 1 sector erase selection number */
+    static const int32_t FLASH_CRx_LOCK1_POS                    = 0;    /** @brief Bank 1 configuration lock bit */
+    static const int32_t FLASH_CRx_PG1_POS                      = 1;    /** @brief Bank 1 program enable bit */
+    static const int32_t FLASH_CRx_SER1_POS                     = 2;    /** @brief Bank 1 sector erase request */
+    static const int32_t FLASH_CRx_BER1_POS                     = 3;    /** @brief Bank 1 erase request */
+    static const int32_t FLASH_CRx_PSIZE1_POS                   = 4;    /** @brief Bank 1 program size */
+    static const int32_t FLASH_CRx_FW1_POS                      = 6;    /** @brief Bank 1 write forcing control bit */
+    static const int32_t FLASH_CRx_START1_POS                   = 7;    /** @brief Bank 1 bank or sector erase start control bit */
+    static const int32_t FLASH_CRx_SNB1_POS                     = 8;    /** @brief Bank 1 sector erase selection number */
     static const int32_t FLASH_CRx_CRC_EN_POS                   = 15;   /** @brief Bank 1 CRC control bit */
-    static const int32_t FLASH_CRx_EOPIEx_POS                   = 16;   /** @brief Bank 1 end-of-program interrupt control bit */
-    static const int32_t FLASH_CRx_WRPERRIEx_POS                = 17;   /** @brief Bank 1 write protection error interrupt enable bit */
-    static const int32_t FLASH_CRx_PGSERRIEx_POS                = 18;   /** @brief Bank 1 programming sequence error interrupt enable bit */
-    static const int32_t FLASH_CRx_STRBERRIEx_POS               = 19;   /** @brief Bank 1 strobe error interrupt enable bit */
-    static const int32_t FLASH_CRx_INCERRIEx_POS                = 21;   /** @brief Bank 1 inconsistency error interrupt enable bit */
-    static const int32_t FLASH_CRx_OPERRIEx_POS                 = 22;   /** @brief Bank 1 write/erase error interrupt enable bit */
-    static const int32_t FLASH_CRx_RDPERRIEx_POS                = 23;   /** @brief Bank 1 read protection error interrupt enable bit */
-    static const int32_t FLASH_CRx_RDSERRIEx_POS                = 24;   /** @brief Bank 1 secure error interrupt enable bit */
-    static const int32_t FLASH_CRx_SNECCERRIEx_POS              = 25;   /** @brief Bank 1 ECC single correction error interrupt enable bit */
-    static const int32_t FLASH_CRx_DBECCERRIEx_POS              = 26;   /** @brief Bank 1 ECC double detection error interrupt enable bit */
-    static const int32_t FLASH_CRx_CRCENDIEx_POS                = 27;   /** @brief Bank 1 end of CRC calculation interrupt enable bit */
-    static const int32_t FLASH_SR1_BSYx_POS                     = 0;    /** @brief Bank 1 ongoing program flag */
-    static const int32_t FLASH_SR1_WBNEx_POS                    = 1;    /** @brief Bank 1 write buffer not empty flag */
-    static const int32_t FLASH_SR1_QWx_POS                      = 2;    /** @brief Bank 1 wait queue flag */
-    static const int32_t FLASH_SR1_CRC_BUSYx_POS                = 3;    /** @brief Bank 1 CRC busy flag */
-    static const int32_t FLASH_SR1_EOPx_POS                     = 16;   /** @brief Bank 1 end-of-program flag */
-    static const int32_t FLASH_SR1_WRPERRx_POS                  = 17;   /** @brief Bank 1 write protection error flag */
-    static const int32_t FLASH_SR1_PGSERRx_POS                  = 18;   /** @brief Bank 1 programming sequence error flag */
-    static const int32_t FLASH_SR1_STRBERRx_POS                 = 19;   /** @brief Bank 1 strobe error flag */
-    static const int32_t FLASH_SR1_INCERRx_POS                  = 21;   /** @brief Bank 1 inconsistency error flag */
-    static const int32_t FLASH_SR1_OPERRx_POS                   = 22;   /** @brief Bank 1 write/erase error flag */
-    static const int32_t FLASH_SR1_RDPERRx_POS                  = 23;   /** @brief Bank 1 read protection error flag */
-    static const int32_t FLASH_SR1_RDSERRx_POS                  = 24;   /** @brief Bank 1 secure error flag */
+    static const int32_t FLASH_CRx_EOPIE1_POS                   = 16;   /** @brief Bank 1 end-of-program interrupt control bit */
+    static const int32_t FLASH_CRx_WRPERRIE1_POS                = 17;   /** @brief Bank 1 write protection error interrupt enable bit */
+    static const int32_t FLASH_CRx_PGSERRIE1_POS                = 18;   /** @brief Bank 1 programming sequence error interrupt enable bit */
+    static const int32_t FLASH_CRx_STRBERRIE1_POS               = 19;   /** @brief Bank 1 strobe error interrupt enable bit */
+    static const int32_t FLASH_CRx_INCERRIE1_POS                = 21;   /** @brief Bank 1 inconsistency error interrupt enable bit */
+    static const int32_t FLASH_CRx_OPERRIE1_POS                 = 22;   /** @brief Bank 1 write/erase error interrupt enable bit */
+    static const int32_t FLASH_CRx_RDPERRIE1_POS                = 23;   /** @brief Bank 1 read protection error interrupt enable bit */
+    static const int32_t FLASH_CRx_RDSERRIE1_POS                = 24;   /** @brief Bank 1 secure error interrupt enable bit */
+    static const int32_t FLASH_CRx_SNECCERRIE1_POS              = 25;   /** @brief Bank 1 ECC single correction error interrupt enable bit */
+    static const int32_t FLASH_CRx_DBECCERRIE1_POS              = 26;   /** @brief Bank 1 ECC double detection error interrupt enable bit */
+    static const int32_t FLASH_CRx_CRCENDIE1_POS                = 27;   /** @brief Bank 1 end of CRC calculation interrupt enable bit */
+    static const int32_t FLASH_SR1_BSY1_POS                     = 0;    /** @brief Bank 1 ongoing program flag */
+    static const int32_t FLASH_SR1_WBNE1_POS                    = 1;    /** @brief Bank 1 write buffer not empty flag */
+    static const int32_t FLASH_SR1_QW1_POS                      = 2;    /** @brief Bank 1 wait queue flag */
+    static const int32_t FLASH_SR1_CRC_BUSY1_POS                = 3;    /** @brief Bank 1 CRC busy flag */
+    static const int32_t FLASH_SR1_EOP1_POS                     = 16;   /** @brief Bank 1 end-of-program flag */
+    static const int32_t FLASH_SR1_WRPERR1_POS                  = 17;   /** @brief Bank 1 write protection error flag */
+    static const int32_t FLASH_SR1_PGSERR1_POS                  = 18;   /** @brief Bank 1 programming sequence error flag */
+    static const int32_t FLASH_SR1_STRBERR1_POS                 = 19;   /** @brief Bank 1 strobe error flag */
+    static const int32_t FLASH_SR1_INCERR1_POS                  = 21;   /** @brief Bank 1 inconsistency error flag */
+    static const int32_t FLASH_SR1_OPERR1_POS                   = 22;   /** @brief Bank 1 write/erase error flag */
+    static const int32_t FLASH_SR1_RDPERR1_POS                  = 23;   /** @brief Bank 1 read protection error flag */
+    static const int32_t FLASH_SR1_RDSERR1_POS                  = 24;   /** @brief Bank 1 secure error flag */
     static const int32_t FLASH_SR1_SNECCERR11_POS               = 25;   /** @brief Bank 1 single correction error flag */
     static const int32_t FLASH_SR1_DBECCERR1_POS                = 26;   /** @brief Bank 1 ECC double detection error flag */
     static const int32_t FLASH_SR1_CRCEND1_POS                  = 27;   /** @brief Bank 1 crc-complete flag */
-    static const int32_t FLASH_CCRx_CLR_EOPx_POS                = 16;   /** @brief Bank 1 EOP1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_WRPERRx_POS             = 17;   /** @brief Bank 1 WRPERR1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_PGSERRx_POS             = 18;   /** @brief Bank 1 PGSERR1 flag clear bi */
-    static const int32_t FLASH_CCRx_CLR_STRBERRx_POS            = 19;   /** @brief Bank 1 STRBERR1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_INCERRx_POS             = 21;   /** @brief Bank 1 INCERR1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_OPERRx_POS              = 22;   /** @brief Bank 1 OPERR1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_RDPERRx_POS             = 23;   /** @brief Bank 1 RDPERR1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_EOP1_POS                = 16;   /** @brief Bank 1 EOP1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_WRPERR1_POS             = 17;   /** @brief Bank 1 WRPERR1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_PGSERR1_POS             = 18;   /** @brief Bank 1 PGSERR1 flag clear bi */
+    static const int32_t FLASH_CCRx_CLR_STRBERR1_POS            = 19;   /** @brief Bank 1 STRBERR1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_INCERR1_POS             = 21;   /** @brief Bank 1 INCERR1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_OPERR1_POS              = 22;   /** @brief Bank 1 OPERR1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_RDPERR1_POS             = 23;   /** @brief Bank 1 RDPERR1 flag clear bit */
     static const int32_t FLASH_CCRx_CLR_RDSERR1_POS             = 24;   /** @brief Bank 1 RDSERR1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_SNECCERRx_POS           = 25;   /** @brief Bank 1 SNECCERR1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_SNECCERR1_POS           = 25;   /** @brief Bank 1 SNECCERR1 flag clear bit */
     static const int32_t FLASH_CCRx_CLR_DBECCERR1_POS           = 26;   /** @brief Bank 1 DBECCERR1 flag clear bit */
-    static const int32_t FLASH_CCRx_CLR_CRCENDx_POS             = 27;   /** @brief Bank 1 CRCEND1 flag clear bit */
+    static const int32_t FLASH_CCRx_CLR_CRCEND1_POS             = 27;   /** @brief Bank 1 CRCEND1 flag clear bit */
     static const int32_t FLASH_OPTCR_OPTLOCK_POS                = 0;    /** @brief FLASH_OPTCR lock option configuration bit */
     static const int32_t FLASH_OPTCR_OPTSTART_POS               = 1;    /** @brief Option byte start change option configuration bit */
     static const int32_t FLASH_OPTCR_MER_POS                    = 4;    /** @brief Flash mass erase enable bit */
@@ -12629,20 +12213,20 @@
     static const int32_t FLASH_OPTSR_PRG__SWAP_BANK_OPT_POS     = 31;   /** @brief Bank swapping option configuration bit */
     static const int32_t FLASH_OPTCCR__CLR_OPTCHANGEERR_POS     = 30;   /** @brief OPTCHANGEERR reset bit */
     static const int32_t FLASH_OPTCCR_CLR_OPTCHANGEERR_POS      = 30;   /** @brief OPTCHANGEERR reset bit */
-    static const int32_t FLASH_PRAR_CURx_PROT_AREA_STARTx_POS   = 0;    /** @brief Bank 1 lowest PCROP protected address */
-    static const int32_t FLASH_PRAR_CURx_PROT_AREA_ENDx_POS     = 16;   /** @brief Bank 1 highest PCROP protected address */
-    static const int32_t FLASH_PRAR_CURx_DMEPx_POS              = 31;   /** @brief Bank 1 PCROP protected erase enable option status bit */
-    static const int32_t FLASH_PRAR_PRGx_PROT_AREA_STARTx_POS   = 0;    /** @brief Bank 1 lowest PCROP protected address configuration */
-    static const int32_t FLASH_PRAR_PRGx_PROT_AREA_ENDx_POS     = 16;   /** @brief Bank 1 highest PCROP protected address configuration */
-    static const int32_t FLASH_PRAR_PRGx_DMEPx_POS              = 31;   /** @brief Bank 1 PCROP protected erase enable option configuration bit */
-    static const int32_t FLASH_SCAR_CURx_SEC_AREA_STARTx_POS    = 0;    /** @brief Bank 1 lowest secure protected address */
-    static const int32_t FLASH_SCAR_CURx_SEC_AREA_ENDx_POS      = 16;   /** @brief Bank 1 highest secure protected address */
-    static const int32_t FLASH_SCAR_CURx_DMESx_POS              = 31;   /** @brief Bank 1 secure protected erase enable option status bit */
-    static const int32_t FLASH_SCAR_PRGx_SEC_AREA_STARTx_POS    = 0;    /** @brief Bank 1 lowest secure protected address configuration */
-    static const int32_t FLASH_SCAR_PRGx_SEC_AREA_ENDx_POS      = 16;   /** @brief Bank 1 highest secure protected address configuration */
-    static const int32_t FLASH_SCAR_PRGx_DMESx_POS              = 31;   /** @brief Bank 1 secure protected erase enable option configuration bit */
-    static const int32_t FLASH_WPSN_CURxR_WRPSNx_POS            = 0;    /** @brief Bank 1 sector write protection option status byte */
-    static const int32_t FLASH_WPSN_PRGxR_WRPSNx_POS            = 0;    /** @brief Bank 1 sector write protection configuration byte */
+    static const int32_t FLASH_PRAR_CURx_PROT_AREA_START1_POS   = 0;    /** @brief Bank 1 lowest PCROP protected address */
+    static const int32_t FLASH_PRAR_CURx_PROT_AREA_END1_POS     = 16;   /** @brief Bank 1 highest PCROP protected address */
+    static const int32_t FLASH_PRAR_CURx_DMEP1_POS              = 31;   /** @brief Bank 1 PCROP protected erase enable option status bit */
+    static const int32_t FLASH_PRAR_PRGx_PROT_AREA_START1_POS   = 0;    /** @brief Bank 1 lowest PCROP protected address configuration */
+    static const int32_t FLASH_PRAR_PRGx_PROT_AREA_END1_POS     = 16;   /** @brief Bank 1 highest PCROP protected address configuration */
+    static const int32_t FLASH_PRAR_PRGx_DMEP1_POS              = 31;   /** @brief Bank 1 PCROP protected erase enable option configuration bit */
+    static const int32_t FLASH_SCAR_CURx_SEC_AREA_START1_POS    = 0;    /** @brief Bank 1 lowest secure protected address */
+    static const int32_t FLASH_SCAR_CURx_SEC_AREA_END1_POS      = 16;   /** @brief Bank 1 highest secure protected address */
+    static const int32_t FLASH_SCAR_CURx_DMES1_POS              = 31;   /** @brief Bank 1 secure protected erase enable option status bit */
+    static const int32_t FLASH_SCAR_PRGx_SEC_AREA_START1_POS    = 0;    /** @brief Bank 1 lowest secure protected address configuration */
+    static const int32_t FLASH_SCAR_PRGx_SEC_AREA_END1_POS      = 16;   /** @brief Bank 1 highest secure protected address configuration */
+    static const int32_t FLASH_SCAR_PRGx_DMES1_POS              = 31;   /** @brief Bank 1 secure protected erase enable option configuration bit */
+    static const int32_t FLASH_WPSN_CURxR_WRPSN1_POS            = 0;    /** @brief Bank 1 sector write protection option status byte */
+    static const int32_t FLASH_WPSN_PRGxR_WRPSN1_POS            = 0;    /** @brief Bank 1 sector write protection configuration byte */
     static const int32_t FLASH_CRCCRx_CRC_SECT_POS              = 0;    /** @brief Bank 1 CRC sector number */
     static const int32_t FLASH_CRCCRx_ALL_BANK_POS              = 7;    /** @brief Bank 1 CRC select bit */
     static const int32_t FLASH_CRCCRx_CRC_BY_SECT_POS           = 8;    /** @brief Bank 1 CRC sector mode select bit */
@@ -12651,19 +12235,19 @@
     static const int32_t FLASH_CRCCRx_START_CRC_POS             = 16;   /** @brief Bank 1 CRC start bit */
     static const int32_t FLASH_CRCCRx_CLEAN_CRC_POS             = 17;   /** @brief Bank 1 CRC clear bit */
     static const int32_t FLASH_CRCCRx_CRC_BURST_POS             = 20;   /** @brief Bank 1 CRC burst size */
-    static const int32_t FLASH_ECC_FAxR_FAIL_ECC_ADDRx_POS      = 0;    /** @brief Bank 1 ECC error address */
-    static const int32_t FLASH_SR2_BSYx_POS                     = 0;    /** @brief Bank 2 ongoing program flag */
-    static const int32_t FLASH_SR2_WBNEx_POS                    = 1;    /** @brief Bank 2 write buffer not empty flag */
-    static const int32_t FLASH_SR2_QWx_POS                      = 2;    /** @brief Bank 2 wait queue flag */
-    static const int32_t FLASH_SR2_CRC_BUSYx_POS                = 3;    /** @brief Bank 2 CRC busy flag */
-    static const int32_t FLASH_SR2_EOPx_POS                     = 16;   /** @brief Bank 2 end-of-program flag */
-    static const int32_t FLASH_SR2_WRPERRx_POS                  = 17;   /** @brief Bank 2 write protection error flag */
-    static const int32_t FLASH_SR2_PGSERRx_POS                  = 18;   /** @brief Bank 2 programming sequence error flag */
-    static const int32_t FLASH_SR2_STRBERRx_POS                 = 19;   /** @brief Bank 2 strobe error flag */
-    static const int32_t FLASH_SR2_INCERRx_POS                  = 21;   /** @brief Bank 2 inconsistency error flag */
-    static const int32_t FLASH_SR2_OPERRx_POS                   = 22;   /** @brief Bank 2 write/erase error flag */
-    static const int32_t FLASH_SR2_RDPERRx_POS                  = 23;   /** @brief Bank 2 read protection error flag */
-    static const int32_t FLASH_SR2_RDSERRx_POS                  = 24;   /** @brief Bank 2 secure error flag */
+    static const int32_t FLASH_ECC_FAxR_FAIL_ECC_ADDR1_POS      = 0;    /** @brief Bank 1 ECC error address */
+    static const int32_t FLASH_SR2_BSY2_POS                     = 0;    /** @brief Bank 2 ongoing program flag */
+    static const int32_t FLASH_SR2_WBNE2_POS                    = 1;    /** @brief Bank 2 write buffer not empty flag */
+    static const int32_t FLASH_SR2_QW2_POS                      = 2;    /** @brief Bank 2 wait queue flag */
+    static const int32_t FLASH_SR2_CRC_BUSY2_POS                = 3;    /** @brief Bank 2 CRC busy flag */
+    static const int32_t FLASH_SR2_EOP2_POS                     = 16;   /** @brief Bank 2 end-of-program flag */
+    static const int32_t FLASH_SR2_WRPERR2_POS                  = 17;   /** @brief Bank 2 write protection error flag */
+    static const int32_t FLASH_SR2_PGSERR2_POS                  = 18;   /** @brief Bank 2 programming sequence error flag */
+    static const int32_t FLASH_SR2_STRBERR2_POS                 = 19;   /** @brief Bank 2 strobe error flag */
+    static const int32_t FLASH_SR2_INCERR2_POS                  = 21;   /** @brief Bank 2 inconsistency error flag */
+    static const int32_t FLASH_SR2_OPERR2_POS                   = 22;   /** @brief Bank 2 write/erase error flag */
+    static const int32_t FLASH_SR2_RDPERR2_POS                  = 23;   /** @brief Bank 2 read protection error flag */
+    static const int32_t FLASH_SR2_RDSERR2_POS                  = 24;   /** @brief Bank 2 secure error flag */
     static const int32_t FLASH_SR2_SNECCERR2_POS                = 25;   /** @brief Bank 2 single correction error flag */
     static const int32_t FLASH_SR2_DBECCERR2_POS                = 26;   /** @brief Bank 2 ECC double detection error flag */
     static const int32_t FLASH_SR2_CRCEND2_POS                  = 27;   /** @brief Bank 2 crc-complete flag */
@@ -12950,303 +12534,197 @@
 
     /**** @subsection HASH Register Pointers ****/
 
-    static RW_ uint32_t* const HASH_CR_PTR         = (RW_ uint32_t* const)0x48021400U;   /** @brief Control register */
-    static RW_ uint32_t* const HASH_DIN_PTR        = (RW_ uint32_t* const)0x48021404U;   /** @brief Data input register */
-    static RW_ uint32_t* const HASH_STR_PTR        = (RW_ uint32_t* const)0x48021408U;   /** @brief Start register */
-    static RO_ uint32_t* const HASH_HR0_PTR        = (RO_ uint32_t* const)0x4802140CU;   /** @brief Digest registers */
-    static RO_ uint32_t* const HASH_HR1_PTR        = (RO_ uint32_t* const)0x48021410U;   /** @brief Digest registers */
-    static RO_ uint32_t* const HASH_HR2_PTR        = (RO_ uint32_t* const)0x48021414U;   /** @brief Digest registers */
-    static RO_ uint32_t* const HASH_HR3_PTR        = (RO_ uint32_t* const)0x48021418U;   /** @brief Digest registers */
-    static RO_ uint32_t* const HASH_HR4_PTR        = (RO_ uint32_t* const)0x4802141CU;   /** @brief Digest registers */
-    static RW_ uint32_t* const HASH_IMR_PTR        = (RW_ uint32_t* const)0x48021420U;   /** @brief Interrupt enable register */
-    static RW_ uint32_t* const HASH_SR_PTR         = (RW_ uint32_t* const)0x48021424U;   /** @brief Status register */
-    static RW_ uint32_t* const HASH_CSR0_PTR       = (RW_ uint32_t* const)0x480214F8U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR1_PTR       = (RW_ uint32_t* const)0x480214FCU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR2_PTR       = (RW_ uint32_t* const)0x48021500U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR3_PTR       = (RW_ uint32_t* const)0x48021504U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR4_PTR       = (RW_ uint32_t* const)0x48021508U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR5_PTR       = (RW_ uint32_t* const)0x4802150CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR6_PTR       = (RW_ uint32_t* const)0x48021510U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR7_PTR       = (RW_ uint32_t* const)0x48021514U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR8_PTR       = (RW_ uint32_t* const)0x48021518U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR9_PTR       = (RW_ uint32_t* const)0x4802151CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR10_PTR      = (RW_ uint32_t* const)0x48021520U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR11_PTR      = (RW_ uint32_t* const)0x48021524U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR12_PTR      = (RW_ uint32_t* const)0x48021528U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR13_PTR      = (RW_ uint32_t* const)0x4802152CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR14_PTR      = (RW_ uint32_t* const)0x48021530U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR15_PTR      = (RW_ uint32_t* const)0x48021534U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR16_PTR      = (RW_ uint32_t* const)0x48021538U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR17_PTR      = (RW_ uint32_t* const)0x4802153CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR18_PTR      = (RW_ uint32_t* const)0x48021540U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR19_PTR      = (RW_ uint32_t* const)0x48021544U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR20_PTR      = (RW_ uint32_t* const)0x48021548U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR21_PTR      = (RW_ uint32_t* const)0x4802154CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR22_PTR      = (RW_ uint32_t* const)0x48021550U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR23_PTR      = (RW_ uint32_t* const)0x48021554U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR24_PTR      = (RW_ uint32_t* const)0x48021558U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR25_PTR      = (RW_ uint32_t* const)0x4802155CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR26_PTR      = (RW_ uint32_t* const)0x48021560U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR27_PTR      = (RW_ uint32_t* const)0x48021564U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR28_PTR      = (RW_ uint32_t* const)0x48021568U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR29_PTR      = (RW_ uint32_t* const)0x4802156CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR30_PTR      = (RW_ uint32_t* const)0x48021570U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR31_PTR      = (RW_ uint32_t* const)0x48021574U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR32_PTR      = (RW_ uint32_t* const)0x48021578U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR33_PTR      = (RW_ uint32_t* const)0x4802157CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR34_PTR      = (RW_ uint32_t* const)0x48021580U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR35_PTR      = (RW_ uint32_t* const)0x48021584U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR36_PTR      = (RW_ uint32_t* const)0x48021588U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR37_PTR      = (RW_ uint32_t* const)0x4802158CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR38_PTR      = (RW_ uint32_t* const)0x48021590U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR39_PTR      = (RW_ uint32_t* const)0x48021594U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR40_PTR      = (RW_ uint32_t* const)0x48021598U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR41_PTR      = (RW_ uint32_t* const)0x4802159CU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR42_PTR      = (RW_ uint32_t* const)0x480215A0U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR43_PTR      = (RW_ uint32_t* const)0x480215A4U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR44_PTR      = (RW_ uint32_t* const)0x480215A8U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR45_PTR      = (RW_ uint32_t* const)0x480215ACU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR46_PTR      = (RW_ uint32_t* const)0x480215B0U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR47_PTR      = (RW_ uint32_t* const)0x480215B4U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR48_PTR      = (RW_ uint32_t* const)0x480215B8U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR49_PTR      = (RW_ uint32_t* const)0x480215BCU;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR50_PTR      = (RW_ uint32_t* const)0x480215C0U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR51_PTR      = (RW_ uint32_t* const)0x480215C4U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR52_PTR      = (RW_ uint32_t* const)0x480215C8U;   /** @brief Context swap registers */
-    static RW_ uint32_t* const HASH_CSR53_PTR      = (RW_ uint32_t* const)0x480215CCU;   /** @brief Context swap registers */
-    static RO_ uint32_t* const HASH_HASH_HR0_PTR   = (RO_ uint32_t* const)0x48021710U;   /** @brief HASH digest register */
-    static RO_ uint32_t* const HASH_HASH_HR1_PTR   = (RO_ uint32_t* const)0x48021714U;   /** @brief Read-only */
-    static RO_ uint32_t* const HASH_HASH_HR2_PTR   = (RO_ uint32_t* const)0x48021718U;   /** @brief Read-only */
-    static RO_ uint32_t* const HASH_HASH_HR3_PTR   = (RO_ uint32_t* const)0x4802171CU;   /** @brief Read-only */
-    static RO_ uint32_t* const HASH_HASH_HR4_PTR   = (RO_ uint32_t* const)0x48021720U;   /** @brief Read-only */
-    static RO_ uint32_t* const HASH_HASH_HR5_PTR   = (RO_ uint32_t* const)0x48021724U;   /** @brief Read-only */
-    static RO_ uint32_t* const HASH_HASH_HR6_PTR   = (RO_ uint32_t* const)0x48021728U;   /** @brief Read-only */
-    static RO_ uint32_t* const HASH_HASH_HR7_PTR   = (RO_ uint32_t* const)0x4802172CU;   /** @brief Read-only */
+    static RW_ uint32_t* const HASH_CR_PTR    = (RW_ uint32_t* const)0x48021400U;   /** @brief Control register */
+    static RW_ uint32_t* const HASH_DIN_PTR   = (RW_ uint32_t* const)0x48021404U;   /** @brief Data input register */
+    static RW_ uint32_t* const HASH_STR_PTR   = (RW_ uint32_t* const)0x48021408U;   /** @brief Start register */
+    static RW_ uint32_t* const HASH_IMR_PTR   = (RW_ uint32_t* const)0x48021420U;   /** @brief Interrupt enable register */
+    static RW_ uint32_t* const HASH_SR_PTR    = (RW_ uint32_t* const)0x48021424U;   /** @brief Status register */
+
+    /**** @subsection Enumerated HASH Register Pointers ****/
+
+    static RO_ uint32_t* const HASH_HRx_PTR[5] = {
+      [0] = (RO_ uint32_t* const)0x4802140CU,   /** @brief Digest registers */
+      [1] = (RO_ uint32_t* const)0x48021410U,   /** @brief Digest registers */
+      [2] = (RO_ uint32_t* const)0x48021414U,   /** @brief Digest registers */
+      [3] = (RO_ uint32_t* const)0x48021418U,   /** @brief Digest registers */
+      [4] = (RO_ uint32_t* const)0x4802141CU,   /** @brief Digest registers */
+    };
+
+    static RW_ uint32_t* const HASH_CSRx_PTR[54] = {
+      [0]  = (RW_ uint32_t* const)0x480214F8U,   /** @brief Context swap registers */
+      [1]  = (RW_ uint32_t* const)0x480214FCU,   /** @brief Context swap registers */
+      [2]  = (RW_ uint32_t* const)0x48021500U,   /** @brief Context swap registers */
+      [3]  = (RW_ uint32_t* const)0x48021504U,   /** @brief Context swap registers */
+      [4]  = (RW_ uint32_t* const)0x48021508U,   /** @brief Context swap registers */
+      [5]  = (RW_ uint32_t* const)0x4802150CU,   /** @brief Context swap registers */
+      [6]  = (RW_ uint32_t* const)0x48021510U,   /** @brief Context swap registers */
+      [7]  = (RW_ uint32_t* const)0x48021514U,   /** @brief Context swap registers */
+      [8]  = (RW_ uint32_t* const)0x48021518U,   /** @brief Context swap registers */
+      [9]  = (RW_ uint32_t* const)0x4802151CU,   /** @brief Context swap registers */
+      [10] = (RW_ uint32_t* const)0x48021520U,   /** @brief Context swap registers */
+      [11] = (RW_ uint32_t* const)0x48021524U,   /** @brief Context swap registers */
+      [12] = (RW_ uint32_t* const)0x48021528U,   /** @brief Context swap registers */
+      [13] = (RW_ uint32_t* const)0x4802152CU,   /** @brief Context swap registers */
+      [14] = (RW_ uint32_t* const)0x48021530U,   /** @brief Context swap registers */
+      [15] = (RW_ uint32_t* const)0x48021534U,   /** @brief Context swap registers */
+      [16] = (RW_ uint32_t* const)0x48021538U,   /** @brief Context swap registers */
+      [17] = (RW_ uint32_t* const)0x4802153CU,   /** @brief Context swap registers */
+      [18] = (RW_ uint32_t* const)0x48021540U,   /** @brief Context swap registers */
+      [19] = (RW_ uint32_t* const)0x48021544U,   /** @brief Context swap registers */
+      [20] = (RW_ uint32_t* const)0x48021548U,   /** @brief Context swap registers */
+      [21] = (RW_ uint32_t* const)0x4802154CU,   /** @brief Context swap registers */
+      [22] = (RW_ uint32_t* const)0x48021550U,   /** @brief Context swap registers */
+      [23] = (RW_ uint32_t* const)0x48021554U,   /** @brief Context swap registers */
+      [24] = (RW_ uint32_t* const)0x48021558U,   /** @brief Context swap registers */
+      [25] = (RW_ uint32_t* const)0x4802155CU,   /** @brief Context swap registers */
+      [26] = (RW_ uint32_t* const)0x48021560U,   /** @brief Context swap registers */
+      [27] = (RW_ uint32_t* const)0x48021564U,   /** @brief Context swap registers */
+      [28] = (RW_ uint32_t* const)0x48021568U,   /** @brief Context swap registers */
+      [29] = (RW_ uint32_t* const)0x4802156CU,   /** @brief Context swap registers */
+      [30] = (RW_ uint32_t* const)0x48021570U,   /** @brief Context swap registers */
+      [31] = (RW_ uint32_t* const)0x48021574U,   /** @brief Context swap registers */
+      [32] = (RW_ uint32_t* const)0x48021578U,   /** @brief Context swap registers */
+      [33] = (RW_ uint32_t* const)0x4802157CU,   /** @brief Context swap registers */
+      [34] = (RW_ uint32_t* const)0x48021580U,   /** @brief Context swap registers */
+      [35] = (RW_ uint32_t* const)0x48021584U,   /** @brief Context swap registers */
+      [36] = (RW_ uint32_t* const)0x48021588U,   /** @brief Context swap registers */
+      [37] = (RW_ uint32_t* const)0x4802158CU,   /** @brief Context swap registers */
+      [38] = (RW_ uint32_t* const)0x48021590U,   /** @brief Context swap registers */
+      [39] = (RW_ uint32_t* const)0x48021594U,   /** @brief Context swap registers */
+      [40] = (RW_ uint32_t* const)0x48021598U,   /** @brief Context swap registers */
+      [41] = (RW_ uint32_t* const)0x4802159CU,   /** @brief Context swap registers */
+      [42] = (RW_ uint32_t* const)0x480215A0U,   /** @brief Context swap registers */
+      [43] = (RW_ uint32_t* const)0x480215A4U,   /** @brief Context swap registers */
+      [44] = (RW_ uint32_t* const)0x480215A8U,   /** @brief Context swap registers */
+      [45] = (RW_ uint32_t* const)0x480215ACU,   /** @brief Context swap registers */
+      [46] = (RW_ uint32_t* const)0x480215B0U,   /** @brief Context swap registers */
+      [47] = (RW_ uint32_t* const)0x480215B4U,   /** @brief Context swap registers */
+      [48] = (RW_ uint32_t* const)0x480215B8U,   /** @brief Context swap registers */
+      [49] = (RW_ uint32_t* const)0x480215BCU,   /** @brief Context swap registers */
+      [50] = (RW_ uint32_t* const)0x480215C0U,   /** @brief Context swap registers */
+      [51] = (RW_ uint32_t* const)0x480215C4U,   /** @brief Context swap registers */
+      [52] = (RW_ uint32_t* const)0x480215C8U,   /** @brief Context swap registers */
+      [53] = (RW_ uint32_t* const)0x480215CCU,   /** @brief Context swap registers */
+    };
+
+    static RO_ uint32_t* const HASH_HASH_HRx_PTR[8] = {
+      [0] = (RO_ uint32_t* const)0x48021710U,   /** @brief HASH digest register */
+      [1] = (RO_ uint32_t* const)0x48021714U,   /** @brief Read-only */
+      [2] = (RO_ uint32_t* const)0x48021718U,   /** @brief Read-only */
+      [3] = (RO_ uint32_t* const)0x4802171CU,   /** @brief Read-only */
+      [4] = (RO_ uint32_t* const)0x48021720U,   /** @brief Read-only */
+      [5] = (RO_ uint32_t* const)0x48021724U,   /** @brief Read-only */
+      [6] = (RO_ uint32_t* const)0x48021728U,   /** @brief Read-only */
+      [7] = (RO_ uint32_t* const)0x4802172CU,   /** @brief Read-only */
+    };
 
     /**** @subsection HASH Register Reset Values ****/
 
-    static const uint32_t HASH_CR_RST         = 0x00000000U;   /** @brief CR register reset value. */
-    static const uint32_t HASH_DIN_RST        = 0x00000000U;   /** @brief DIN register reset value. */
-    static const uint32_t HASH_STR_RST        = 0x00000000U;   /** @brief STR register reset value. */
-    static const uint32_t HASH_HR0_RST        = 0x00000000U;   /** @brief HR0 register reset value. */
-    static const uint32_t HASH_HR1_RST        = 0x00000000U;   /** @brief HR1 register reset value. */
-    static const uint32_t HASH_HR2_RST        = 0x00000000U;   /** @brief HR2 register reset value. */
-    static const uint32_t HASH_HR3_RST        = 0x00000000U;   /** @brief HR3 register reset value. */
-    static const uint32_t HASH_HR4_RST        = 0x00000000U;   /** @brief HR4 register reset value. */
-    static const uint32_t HASH_IMR_RST        = 0x00000000U;   /** @brief IMR register reset value. */
-    static const uint32_t HASH_SR_RST         = 0x00000001U;   /** @brief SR register reset value. */
-    static const uint32_t HASH_CSR0_RST       = 0x00000000U;   /** @brief CSR0 register reset value. */
-    static const uint32_t HASH_CSR1_RST       = 0x00000000U;   /** @brief CSR1 register reset value. */
-    static const uint32_t HASH_CSR2_RST       = 0x00000000U;   /** @brief CSR2 register reset value. */
-    static const uint32_t HASH_CSR3_RST       = 0x00000000U;   /** @brief CSR3 register reset value. */
-    static const uint32_t HASH_CSR4_RST       = 0x00000000U;   /** @brief CSR4 register reset value. */
-    static const uint32_t HASH_CSR5_RST       = 0x00000000U;   /** @brief CSR5 register reset value. */
-    static const uint32_t HASH_CSR6_RST       = 0x00000000U;   /** @brief CSR6 register reset value. */
-    static const uint32_t HASH_CSR7_RST       = 0x00000000U;   /** @brief CSR7 register reset value. */
-    static const uint32_t HASH_CSR8_RST       = 0x00000000U;   /** @brief CSR8 register reset value. */
-    static const uint32_t HASH_CSR9_RST       = 0x00000000U;   /** @brief CSR9 register reset value. */
-    static const uint32_t HASH_CSR10_RST      = 0x00000000U;   /** @brief CSR10 register reset value. */
-    static const uint32_t HASH_CSR11_RST      = 0x00000000U;   /** @brief CSR11 register reset value. */
-    static const uint32_t HASH_CSR12_RST      = 0x00000000U;   /** @brief CSR12 register reset value. */
-    static const uint32_t HASH_CSR13_RST      = 0x00000000U;   /** @brief CSR13 register reset value. */
-    static const uint32_t HASH_CSR14_RST      = 0x00000000U;   /** @brief CSR14 register reset value. */
-    static const uint32_t HASH_CSR15_RST      = 0x00000000U;   /** @brief CSR15 register reset value. */
-    static const uint32_t HASH_CSR16_RST      = 0x00000000U;   /** @brief CSR16 register reset value. */
-    static const uint32_t HASH_CSR17_RST      = 0x00000000U;   /** @brief CSR17 register reset value. */
-    static const uint32_t HASH_CSR18_RST      = 0x00000000U;   /** @brief CSR18 register reset value. */
-    static const uint32_t HASH_CSR19_RST      = 0x00000000U;   /** @brief CSR19 register reset value. */
-    static const uint32_t HASH_CSR20_RST      = 0x00000000U;   /** @brief CSR20 register reset value. */
-    static const uint32_t HASH_CSR21_RST      = 0x00000000U;   /** @brief CSR21 register reset value. */
-    static const uint32_t HASH_CSR22_RST      = 0x00000000U;   /** @brief CSR22 register reset value. */
-    static const uint32_t HASH_CSR23_RST      = 0x00000000U;   /** @brief CSR23 register reset value. */
-    static const uint32_t HASH_CSR24_RST      = 0x00000000U;   /** @brief CSR24 register reset value. */
-    static const uint32_t HASH_CSR25_RST      = 0x00000000U;   /** @brief CSR25 register reset value. */
-    static const uint32_t HASH_CSR26_RST      = 0x00000000U;   /** @brief CSR26 register reset value. */
-    static const uint32_t HASH_CSR27_RST      = 0x00000000U;   /** @brief CSR27 register reset value. */
-    static const uint32_t HASH_CSR28_RST      = 0x00000000U;   /** @brief CSR28 register reset value. */
-    static const uint32_t HASH_CSR29_RST      = 0x00000000U;   /** @brief CSR29 register reset value. */
-    static const uint32_t HASH_CSR30_RST      = 0x00000000U;   /** @brief CSR30 register reset value. */
-    static const uint32_t HASH_CSR31_RST      = 0x00000000U;   /** @brief CSR31 register reset value. */
-    static const uint32_t HASH_CSR32_RST      = 0x00000000U;   /** @brief CSR32 register reset value. */
-    static const uint32_t HASH_CSR33_RST      = 0x00000000U;   /** @brief CSR33 register reset value. */
-    static const uint32_t HASH_CSR34_RST      = 0x00000000U;   /** @brief CSR34 register reset value. */
-    static const uint32_t HASH_CSR35_RST      = 0x00000000U;   /** @brief CSR35 register reset value. */
-    static const uint32_t HASH_CSR36_RST      = 0x00000000U;   /** @brief CSR36 register reset value. */
-    static const uint32_t HASH_CSR37_RST      = 0x00000000U;   /** @brief CSR37 register reset value. */
-    static const uint32_t HASH_CSR38_RST      = 0x00000000U;   /** @brief CSR38 register reset value. */
-    static const uint32_t HASH_CSR39_RST      = 0x00000000U;   /** @brief CSR39 register reset value. */
-    static const uint32_t HASH_CSR40_RST      = 0x00000000U;   /** @brief CSR40 register reset value. */
-    static const uint32_t HASH_CSR41_RST      = 0x00000000U;   /** @brief CSR41 register reset value. */
-    static const uint32_t HASH_CSR42_RST      = 0x00000000U;   /** @brief CSR42 register reset value. */
-    static const uint32_t HASH_CSR43_RST      = 0x00000000U;   /** @brief CSR43 register reset value. */
-    static const uint32_t HASH_CSR44_RST      = 0x00000000U;   /** @brief CSR44 register reset value. */
-    static const uint32_t HASH_CSR45_RST      = 0x00000000U;   /** @brief CSR45 register reset value. */
-    static const uint32_t HASH_CSR46_RST      = 0x00000000U;   /** @brief CSR46 register reset value. */
-    static const uint32_t HASH_CSR47_RST      = 0x00000000U;   /** @brief CSR47 register reset value. */
-    static const uint32_t HASH_CSR48_RST      = 0x00000000U;   /** @brief CSR48 register reset value. */
-    static const uint32_t HASH_CSR49_RST      = 0x00000000U;   /** @brief CSR49 register reset value. */
-    static const uint32_t HASH_CSR50_RST      = 0x00000000U;   /** @brief CSR50 register reset value. */
-    static const uint32_t HASH_CSR51_RST      = 0x00000000U;   /** @brief CSR51 register reset value. */
-    static const uint32_t HASH_CSR52_RST      = 0x00000000U;   /** @brief CSR52 register reset value. */
-    static const uint32_t HASH_CSR53_RST      = 0x00000000U;   /** @brief CSR53 register reset value. */
-    static const uint32_t HASH_HASH_HR0_RST   = 0x00000000U;   /** @brief HASH_HR0 register reset value. */
-    static const uint32_t HASH_HASH_HR1_RST   = 0x00000000U;   /** @brief HASH_HR1 register reset value. */
-    static const uint32_t HASH_HASH_HR2_RST   = 0x00000000U;   /** @brief HASH_HR2 register reset value. */
-    static const uint32_t HASH_HASH_HR3_RST   = 0x00000000U;   /** @brief HASH_HR3 register reset value. */
-    static const uint32_t HASH_HASH_HR4_RST   = 0x00000000U;   /** @brief HASH_HR4 register reset value. */
-    static const uint32_t HASH_HASH_HR5_RST   = 0x00000000U;   /** @brief HASH_HR5 register reset value. */
-    static const uint32_t HASH_HASH_HR6_RST   = 0x00000000U;   /** @brief HASH_HR6 register reset value. */
-    static const uint32_t HASH_HASH_HR7_RST   = 0x00000000U;   /** @brief HASH_HR7 register reset value. */
+    static const uint32_t HASH_CR_RST    = 0x00000000U;   /** @brief CR register reset value. */
+    static const uint32_t HASH_DIN_RST   = 0x00000000U;   /** @brief DIN register reset value. */
+    static const uint32_t HASH_STR_RST   = 0x00000000U;   /** @brief STR register reset value. */
+    static const uint32_t HASH_IMR_RST   = 0x00000000U;   /** @brief IMR register reset value. */
+    static const uint32_t HASH_SR_RST    = 0x00000001U;   /** @brief SR register reset value. */
+
+    /**** @subsection Enumerated HASH Register Reset Values ****/
+
+    static const uint32_t HASH_HRx_RST[5] = {
+      [0] = 0x00000000U,   /** @brief HR0 register reset value. */
+      [1] = 0x00000000U,   /** @brief HR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief HR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief HR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief HR4 register reset value. */
+    };
+
+    static const uint32_t HASH_CSRx_RST[54] = {
+      [0]  = 0x00000000U,   /** @brief CSR0 register reset value. */
+      [1]  = 0x00000000U,   /** @brief CSR1 register reset value. */
+      [2]  = 0x00000000U,   /** @brief CSR2 register reset value. */
+      [3]  = 0x00000000U,   /** @brief CSR3 register reset value. */
+      [4]  = 0x00000000U,   /** @brief CSR4 register reset value. */
+      [5]  = 0x00000000U,   /** @brief CSR5 register reset value. */
+      [6]  = 0x00000000U,   /** @brief CSR6 register reset value. */
+      [7]  = 0x00000000U,   /** @brief CSR7 register reset value. */
+      [8]  = 0x00000000U,   /** @brief CSR8 register reset value. */
+      [9]  = 0x00000000U,   /** @brief CSR9 register reset value. */
+      [10] = 0x00000000U,   /** @brief CSR10 register reset value. */
+      [11] = 0x00000000U,   /** @brief CSR11 register reset value. */
+      [12] = 0x00000000U,   /** @brief CSR12 register reset value. */
+      [13] = 0x00000000U,   /** @brief CSR13 register reset value. */
+      [14] = 0x00000000U,   /** @brief CSR14 register reset value. */
+      [15] = 0x00000000U,   /** @brief CSR15 register reset value. */
+      [16] = 0x00000000U,   /** @brief CSR16 register reset value. */
+      [17] = 0x00000000U,   /** @brief CSR17 register reset value. */
+      [18] = 0x00000000U,   /** @brief CSR18 register reset value. */
+      [19] = 0x00000000U,   /** @brief CSR19 register reset value. */
+      [20] = 0x00000000U,   /** @brief CSR20 register reset value. */
+      [21] = 0x00000000U,   /** @brief CSR21 register reset value. */
+      [22] = 0x00000000U,   /** @brief CSR22 register reset value. */
+      [23] = 0x00000000U,   /** @brief CSR23 register reset value. */
+      [24] = 0x00000000U,   /** @brief CSR24 register reset value. */
+      [25] = 0x00000000U,   /** @brief CSR25 register reset value. */
+      [26] = 0x00000000U,   /** @brief CSR26 register reset value. */
+      [27] = 0x00000000U,   /** @brief CSR27 register reset value. */
+      [28] = 0x00000000U,   /** @brief CSR28 register reset value. */
+      [29] = 0x00000000U,   /** @brief CSR29 register reset value. */
+      [30] = 0x00000000U,   /** @brief CSR30 register reset value. */
+      [31] = 0x00000000U,   /** @brief CSR31 register reset value. */
+      [32] = 0x00000000U,   /** @brief CSR32 register reset value. */
+      [33] = 0x00000000U,   /** @brief CSR33 register reset value. */
+      [34] = 0x00000000U,   /** @brief CSR34 register reset value. */
+      [35] = 0x00000000U,   /** @brief CSR35 register reset value. */
+      [36] = 0x00000000U,   /** @brief CSR36 register reset value. */
+      [37] = 0x00000000U,   /** @brief CSR37 register reset value. */
+      [38] = 0x00000000U,   /** @brief CSR38 register reset value. */
+      [39] = 0x00000000U,   /** @brief CSR39 register reset value. */
+      [40] = 0x00000000U,   /** @brief CSR40 register reset value. */
+      [41] = 0x00000000U,   /** @brief CSR41 register reset value. */
+      [42] = 0x00000000U,   /** @brief CSR42 register reset value. */
+      [43] = 0x00000000U,   /** @brief CSR43 register reset value. */
+      [44] = 0x00000000U,   /** @brief CSR44 register reset value. */
+      [45] = 0x00000000U,   /** @brief CSR45 register reset value. */
+      [46] = 0x00000000U,   /** @brief CSR46 register reset value. */
+      [47] = 0x00000000U,   /** @brief CSR47 register reset value. */
+      [48] = 0x00000000U,   /** @brief CSR48 register reset value. */
+      [49] = 0x00000000U,   /** @brief CSR49 register reset value. */
+      [50] = 0x00000000U,   /** @brief CSR50 register reset value. */
+      [51] = 0x00000000U,   /** @brief CSR51 register reset value. */
+      [52] = 0x00000000U,   /** @brief CSR52 register reset value. */
+      [53] = 0x00000000U,   /** @brief CSR53 register reset value. */
+    };
+
+    static const uint32_t HASH_HASH_HRx_RST[8] = {
+      [0] = 0x00000000U,   /** @brief HASH_HR0 register reset value. */
+      [1] = 0x00000000U,   /** @brief HASH_HR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief HASH_HR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief HASH_HR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief HASH_HR4 register reset value. */
+      [5] = 0x00000000U,   /** @brief HASH_HR5 register reset value. */
+      [6] = 0x00000000U,   /** @brief HASH_HR6 register reset value. */
+      [7] = 0x00000000U,   /** @brief HASH_HR7 register reset value. */
+    };
 
     /**** @subsection Enumerated HASH Register Value Types ****/
 
     typedef uint32_t HASH_CR_t;         /** @brief CR register value type. */
     typedef uint32_t HASH_DIN_t;        /** @brief DIN register value type. */
     typedef uint32_t HASH_STR_t;        /** @brief STR register value type. */
-    typedef uint32_t HASH_HR0_t;        /** @brief HR0 register value type. */
-    typedef uint32_t HASH_HR1_t;        /** @brief HR1 register value type. */
-    typedef uint32_t HASH_HR2_t;        /** @brief HR2 register value type. */
-    typedef uint32_t HASH_HR3_t;        /** @brief HR3 register value type. */
-    typedef uint32_t HASH_HR4_t;        /** @brief HR4 register value type. */
+    typedef uint32_t HASH_HRx_t;        /** @brief HRx register value type. */
     typedef uint32_t HASH_IMR_t;        /** @brief IMR register value type. */
     typedef uint32_t HASH_SR_t;         /** @brief SR register value type. */
-    typedef uint32_t HASH_CSR0_t;       /** @brief CSR0 register value type. */
-    typedef uint32_t HASH_CSR1_t;       /** @brief CSR1 register value type. */
-    typedef uint32_t HASH_CSR2_t;       /** @brief CSR2 register value type. */
-    typedef uint32_t HASH_CSR3_t;       /** @brief CSR3 register value type. */
-    typedef uint32_t HASH_CSR4_t;       /** @brief CSR4 register value type. */
-    typedef uint32_t HASH_CSR5_t;       /** @brief CSR5 register value type. */
-    typedef uint32_t HASH_CSR6_t;       /** @brief CSR6 register value type. */
-    typedef uint32_t HASH_CSR7_t;       /** @brief CSR7 register value type. */
-    typedef uint32_t HASH_CSR8_t;       /** @brief CSR8 register value type. */
-    typedef uint32_t HASH_CSR9_t;       /** @brief CSR9 register value type. */
-    typedef uint32_t HASH_CSR10_t;      /** @brief CSR10 register value type. */
-    typedef uint32_t HASH_CSR11_t;      /** @brief CSR11 register value type. */
-    typedef uint32_t HASH_CSR12_t;      /** @brief CSR12 register value type. */
-    typedef uint32_t HASH_CSR13_t;      /** @brief CSR13 register value type. */
-    typedef uint32_t HASH_CSR14_t;      /** @brief CSR14 register value type. */
-    typedef uint32_t HASH_CSR15_t;      /** @brief CSR15 register value type. */
-    typedef uint32_t HASH_CSR16_t;      /** @brief CSR16 register value type. */
-    typedef uint32_t HASH_CSR17_t;      /** @brief CSR17 register value type. */
-    typedef uint32_t HASH_CSR18_t;      /** @brief CSR18 register value type. */
-    typedef uint32_t HASH_CSR19_t;      /** @brief CSR19 register value type. */
-    typedef uint32_t HASH_CSR20_t;      /** @brief CSR20 register value type. */
-    typedef uint32_t HASH_CSR21_t;      /** @brief CSR21 register value type. */
-    typedef uint32_t HASH_CSR22_t;      /** @brief CSR22 register value type. */
-    typedef uint32_t HASH_CSR23_t;      /** @brief CSR23 register value type. */
-    typedef uint32_t HASH_CSR24_t;      /** @brief CSR24 register value type. */
-    typedef uint32_t HASH_CSR25_t;      /** @brief CSR25 register value type. */
-    typedef uint32_t HASH_CSR26_t;      /** @brief CSR26 register value type. */
-    typedef uint32_t HASH_CSR27_t;      /** @brief CSR27 register value type. */
-    typedef uint32_t HASH_CSR28_t;      /** @brief CSR28 register value type. */
-    typedef uint32_t HASH_CSR29_t;      /** @brief CSR29 register value type. */
-    typedef uint32_t HASH_CSR30_t;      /** @brief CSR30 register value type. */
-    typedef uint32_t HASH_CSR31_t;      /** @brief CSR31 register value type. */
-    typedef uint32_t HASH_CSR32_t;      /** @brief CSR32 register value type. */
-    typedef uint32_t HASH_CSR33_t;      /** @brief CSR33 register value type. */
-    typedef uint32_t HASH_CSR34_t;      /** @brief CSR34 register value type. */
-    typedef uint32_t HASH_CSR35_t;      /** @brief CSR35 register value type. */
-    typedef uint32_t HASH_CSR36_t;      /** @brief CSR36 register value type. */
-    typedef uint32_t HASH_CSR37_t;      /** @brief CSR37 register value type. */
-    typedef uint32_t HASH_CSR38_t;      /** @brief CSR38 register value type. */
-    typedef uint32_t HASH_CSR39_t;      /** @brief CSR39 register value type. */
-    typedef uint32_t HASH_CSR40_t;      /** @brief CSR40 register value type. */
-    typedef uint32_t HASH_CSR41_t;      /** @brief CSR41 register value type. */
-    typedef uint32_t HASH_CSR42_t;      /** @brief CSR42 register value type. */
-    typedef uint32_t HASH_CSR43_t;      /** @brief CSR43 register value type. */
-    typedef uint32_t HASH_CSR44_t;      /** @brief CSR44 register value type. */
-    typedef uint32_t HASH_CSR45_t;      /** @brief CSR45 register value type. */
-    typedef uint32_t HASH_CSR46_t;      /** @brief CSR46 register value type. */
-    typedef uint32_t HASH_CSR47_t;      /** @brief CSR47 register value type. */
-    typedef uint32_t HASH_CSR48_t;      /** @brief CSR48 register value type. */
-    typedef uint32_t HASH_CSR49_t;      /** @brief CSR49 register value type. */
-    typedef uint32_t HASH_CSR50_t;      /** @brief CSR50 register value type. */
-    typedef uint32_t HASH_CSR51_t;      /** @brief CSR51 register value type. */
-    typedef uint32_t HASH_CSR52_t;      /** @brief CSR52 register value type. */
-    typedef uint32_t HASH_CSR53_t;      /** @brief CSR53 register value type. */
-    typedef uint32_t HASH_HASH_HR0_t;   /** @brief HASH_HR0 register value type. */
-    typedef uint32_t HASH_HASH_HR1_t;   /** @brief HASH_HR1 register value type. */
-    typedef uint32_t HASH_HASH_HR2_t;   /** @brief HASH_HR2 register value type. */
-    typedef uint32_t HASH_HASH_HR3_t;   /** @brief HASH_HR3 register value type. */
-    typedef uint32_t HASH_HASH_HR4_t;   /** @brief HASH_HR4 register value type. */
-    typedef uint32_t HASH_HASH_HR5_t;   /** @brief HASH_HR5 register value type. */
-    typedef uint32_t HASH_HASH_HR6_t;   /** @brief HASH_HR6 register value type. */
-    typedef uint32_t HASH_HASH_HR7_t;   /** @brief HASH_HR7 register value type. */
+    typedef uint32_t HASH_CSRx_t;       /** @brief CSRx register value type. */
+    typedef uint32_t HASH_HASH_HRx_t;   /** @brief HASH_HRx register value type. */
 
     /**** @subsection Enumerated HASH Register Pointer Types ****/
 
     typedef uint32_t* const HASH_CR_PTR_t;         /** @brief CR register pointer type. */
     typedef uint32_t* const HASH_DIN_PTR_t;        /** @brief DIN register pointer type. */
     typedef uint32_t* const HASH_STR_PTR_t;        /** @brief STR register pointer type. */
-    typedef uint32_t* const HASH_HR0_PTR_t;        /** @brief HR0 register pointer type. */
-    typedef uint32_t* const HASH_HR1_PTR_t;        /** @brief HR1 register pointer type. */
-    typedef uint32_t* const HASH_HR2_PTR_t;        /** @brief HR2 register pointer type. */
-    typedef uint32_t* const HASH_HR3_PTR_t;        /** @brief HR3 register pointer type. */
-    typedef uint32_t* const HASH_HR4_PTR_t;        /** @brief HR4 register pointer type. */
+    typedef uint32_t* const HASH_HRx_PTR_t;        /** @brief HRx register pointer type. */
     typedef uint32_t* const HASH_IMR_PTR_t;        /** @brief IMR register pointer type. */
     typedef uint32_t* const HASH_SR_PTR_t;         /** @brief SR register pointer type. */
-    typedef uint32_t* const HASH_CSR0_PTR_t;       /** @brief CSR0 register pointer type. */
-    typedef uint32_t* const HASH_CSR1_PTR_t;       /** @brief CSR1 register pointer type. */
-    typedef uint32_t* const HASH_CSR2_PTR_t;       /** @brief CSR2 register pointer type. */
-    typedef uint32_t* const HASH_CSR3_PTR_t;       /** @brief CSR3 register pointer type. */
-    typedef uint32_t* const HASH_CSR4_PTR_t;       /** @brief CSR4 register pointer type. */
-    typedef uint32_t* const HASH_CSR5_PTR_t;       /** @brief CSR5 register pointer type. */
-    typedef uint32_t* const HASH_CSR6_PTR_t;       /** @brief CSR6 register pointer type. */
-    typedef uint32_t* const HASH_CSR7_PTR_t;       /** @brief CSR7 register pointer type. */
-    typedef uint32_t* const HASH_CSR8_PTR_t;       /** @brief CSR8 register pointer type. */
-    typedef uint32_t* const HASH_CSR9_PTR_t;       /** @brief CSR9 register pointer type. */
-    typedef uint32_t* const HASH_CSR10_PTR_t;      /** @brief CSR10 register pointer type. */
-    typedef uint32_t* const HASH_CSR11_PTR_t;      /** @brief CSR11 register pointer type. */
-    typedef uint32_t* const HASH_CSR12_PTR_t;      /** @brief CSR12 register pointer type. */
-    typedef uint32_t* const HASH_CSR13_PTR_t;      /** @brief CSR13 register pointer type. */
-    typedef uint32_t* const HASH_CSR14_PTR_t;      /** @brief CSR14 register pointer type. */
-    typedef uint32_t* const HASH_CSR15_PTR_t;      /** @brief CSR15 register pointer type. */
-    typedef uint32_t* const HASH_CSR16_PTR_t;      /** @brief CSR16 register pointer type. */
-    typedef uint32_t* const HASH_CSR17_PTR_t;      /** @brief CSR17 register pointer type. */
-    typedef uint32_t* const HASH_CSR18_PTR_t;      /** @brief CSR18 register pointer type. */
-    typedef uint32_t* const HASH_CSR19_PTR_t;      /** @brief CSR19 register pointer type. */
-    typedef uint32_t* const HASH_CSR20_PTR_t;      /** @brief CSR20 register pointer type. */
-    typedef uint32_t* const HASH_CSR21_PTR_t;      /** @brief CSR21 register pointer type. */
-    typedef uint32_t* const HASH_CSR22_PTR_t;      /** @brief CSR22 register pointer type. */
-    typedef uint32_t* const HASH_CSR23_PTR_t;      /** @brief CSR23 register pointer type. */
-    typedef uint32_t* const HASH_CSR24_PTR_t;      /** @brief CSR24 register pointer type. */
-    typedef uint32_t* const HASH_CSR25_PTR_t;      /** @brief CSR25 register pointer type. */
-    typedef uint32_t* const HASH_CSR26_PTR_t;      /** @brief CSR26 register pointer type. */
-    typedef uint32_t* const HASH_CSR27_PTR_t;      /** @brief CSR27 register pointer type. */
-    typedef uint32_t* const HASH_CSR28_PTR_t;      /** @brief CSR28 register pointer type. */
-    typedef uint32_t* const HASH_CSR29_PTR_t;      /** @brief CSR29 register pointer type. */
-    typedef uint32_t* const HASH_CSR30_PTR_t;      /** @brief CSR30 register pointer type. */
-    typedef uint32_t* const HASH_CSR31_PTR_t;      /** @brief CSR31 register pointer type. */
-    typedef uint32_t* const HASH_CSR32_PTR_t;      /** @brief CSR32 register pointer type. */
-    typedef uint32_t* const HASH_CSR33_PTR_t;      /** @brief CSR33 register pointer type. */
-    typedef uint32_t* const HASH_CSR34_PTR_t;      /** @brief CSR34 register pointer type. */
-    typedef uint32_t* const HASH_CSR35_PTR_t;      /** @brief CSR35 register pointer type. */
-    typedef uint32_t* const HASH_CSR36_PTR_t;      /** @brief CSR36 register pointer type. */
-    typedef uint32_t* const HASH_CSR37_PTR_t;      /** @brief CSR37 register pointer type. */
-    typedef uint32_t* const HASH_CSR38_PTR_t;      /** @brief CSR38 register pointer type. */
-    typedef uint32_t* const HASH_CSR39_PTR_t;      /** @brief CSR39 register pointer type. */
-    typedef uint32_t* const HASH_CSR40_PTR_t;      /** @brief CSR40 register pointer type. */
-    typedef uint32_t* const HASH_CSR41_PTR_t;      /** @brief CSR41 register pointer type. */
-    typedef uint32_t* const HASH_CSR42_PTR_t;      /** @brief CSR42 register pointer type. */
-    typedef uint32_t* const HASH_CSR43_PTR_t;      /** @brief CSR43 register pointer type. */
-    typedef uint32_t* const HASH_CSR44_PTR_t;      /** @brief CSR44 register pointer type. */
-    typedef uint32_t* const HASH_CSR45_PTR_t;      /** @brief CSR45 register pointer type. */
-    typedef uint32_t* const HASH_CSR46_PTR_t;      /** @brief CSR46 register pointer type. */
-    typedef uint32_t* const HASH_CSR47_PTR_t;      /** @brief CSR47 register pointer type. */
-    typedef uint32_t* const HASH_CSR48_PTR_t;      /** @brief CSR48 register pointer type. */
-    typedef uint32_t* const HASH_CSR49_PTR_t;      /** @brief CSR49 register pointer type. */
-    typedef uint32_t* const HASH_CSR50_PTR_t;      /** @brief CSR50 register pointer type. */
-    typedef uint32_t* const HASH_CSR51_PTR_t;      /** @brief CSR51 register pointer type. */
-    typedef uint32_t* const HASH_CSR52_PTR_t;      /** @brief CSR52 register pointer type. */
-    typedef uint32_t* const HASH_CSR53_PTR_t;      /** @brief CSR53 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR0_PTR_t;   /** @brief HASH_HR0 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR1_PTR_t;   /** @brief HASH_HR1 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR2_PTR_t;   /** @brief HASH_HR2 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR3_PTR_t;   /** @brief HASH_HR3 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR4_PTR_t;   /** @brief HASH_HR4 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR5_PTR_t;   /** @brief HASH_HR5 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR6_PTR_t;   /** @brief HASH_HR6 register pointer type. */
-    typedef uint32_t* const HASH_HASH_HR7_PTR_t;   /** @brief HASH_HR7 register pointer type. */
+    typedef uint32_t* const HASH_CSRx_PTR_t;       /** @brief CSRx register pointer type. */
+    typedef uint32_t* const HASH_HASH_HRx_PTR_t;   /** @brief HASH_HRx register pointer type. */
 
     /**** @subsection HASH Register Field Masks ****/
 
@@ -13306,81 +12784,97 @@
 
     /**** @subsection CRYP Register Pointers ****/
 
-    static RW_ uint32_t* const CRYP_CR_PTR           = (RW_ uint32_t* const)0x48021000U;   /** @brief Control register */
-    static RO_ uint32_t* const CRYP_SR_PTR           = (RO_ uint32_t* const)0x48021004U;   /** @brief Status register */
-    static RW_ uint32_t* const CRYP_DIN_PTR          = (RW_ uint32_t* const)0x48021008U;   /** @brief Data input register */
-    static RO_ uint32_t* const CRYP_DOUT_PTR         = (RO_ uint32_t* const)0x4802100CU;   /** @brief Data output register */
-    static RW_ uint32_t* const CRYP_DMACR_PTR        = (RW_ uint32_t* const)0x48021010U;   /** @brief DMA control register */
-    static RW_ uint32_t* const CRYP_IMSCR_PTR        = (RW_ uint32_t* const)0x48021014U;   /** @brief Interrupt mask set/clear register */
-    static RO_ uint32_t* const CRYP_RISR_PTR         = (RO_ uint32_t* const)0x48021018U;   /** @brief Raw interrupt status register */
-    static RO_ uint32_t* const CRYP_MISR_PTR         = (RO_ uint32_t* const)0x4802101CU;   /** @brief Masked interrupt status register */
-    static RW_ uint32_t* const CRYP_K0LR_PTR         = (RW_ uint32_t* const)0x48021020U;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K0RR_PTR         = (RW_ uint32_t* const)0x48021024U;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K1LR_PTR         = (RW_ uint32_t* const)0x48021028U;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K1RR_PTR         = (RW_ uint32_t* const)0x4802102CU;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K2LR_PTR         = (RW_ uint32_t* const)0x48021030U;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K2RR_PTR         = (RW_ uint32_t* const)0x48021034U;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K3LR_PTR         = (RW_ uint32_t* const)0x48021038U;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_K3RR_PTR         = (RW_ uint32_t* const)0x4802103CU;   /** @brief Key registers */
-    static RW_ uint32_t* const CRYP_IV0LR_PTR        = (RW_ uint32_t* const)0x48021040U;   /** @brief Initialization vector registers */
-    static RW_ uint32_t* const CRYP_IV0RR_PTR        = (RW_ uint32_t* const)0x48021044U;   /** @brief Initialization vector registers */
-    static RW_ uint32_t* const CRYP_IV1LR_PTR        = (RW_ uint32_t* const)0x48021048U;   /** @brief Initialization vector registers */
-    static RW_ uint32_t* const CRYP_IV1RR_PTR        = (RW_ uint32_t* const)0x4802104CU;   /** @brief Initialization vector registers */
-    static RW_ uint32_t* const CRYP_CSGCMCCM0R_PTR   = (RW_ uint32_t* const)0x48021050U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM1R_PTR   = (RW_ uint32_t* const)0x48021054U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM2R_PTR   = (RW_ uint32_t* const)0x48021058U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM3R_PTR   = (RW_ uint32_t* const)0x4802105CU;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM4R_PTR   = (RW_ uint32_t* const)0x48021060U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM5R_PTR   = (RW_ uint32_t* const)0x48021064U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM6R_PTR   = (RW_ uint32_t* const)0x48021068U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCMCCM7R_PTR   = (RW_ uint32_t* const)0x4802106CU;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM0R_PTR      = (RW_ uint32_t* const)0x48021070U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM1R_PTR      = (RW_ uint32_t* const)0x48021074U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM2R_PTR      = (RW_ uint32_t* const)0x48021078U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM3R_PTR      = (RW_ uint32_t* const)0x4802107CU;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM4R_PTR      = (RW_ uint32_t* const)0x48021080U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM5R_PTR      = (RW_ uint32_t* const)0x48021084U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM6R_PTR      = (RW_ uint32_t* const)0x48021088U;   /** @brief Context swap register */
-    static RW_ uint32_t* const CRYP_CSGCM7R_PTR      = (RW_ uint32_t* const)0x4802108CU;   /** @brief Context swap register */
+    static RW_ uint32_t* const CRYP_CR_PTR      = (RW_ uint32_t* const)0x48021000U;   /** @brief Control register */
+    static RO_ uint32_t* const CRYP_SR_PTR      = (RO_ uint32_t* const)0x48021004U;   /** @brief Status register */
+    static RW_ uint32_t* const CRYP_DIN_PTR     = (RW_ uint32_t* const)0x48021008U;   /** @brief Data input register */
+    static RO_ uint32_t* const CRYP_DOUT_PTR    = (RO_ uint32_t* const)0x4802100CU;   /** @brief Data output register */
+    static RW_ uint32_t* const CRYP_DMACR_PTR   = (RW_ uint32_t* const)0x48021010U;   /** @brief DMA control register */
+    static RW_ uint32_t* const CRYP_IMSCR_PTR   = (RW_ uint32_t* const)0x48021014U;   /** @brief Interrupt mask set/clear register */
+    static RO_ uint32_t* const CRYP_RISR_PTR    = (RO_ uint32_t* const)0x48021018U;   /** @brief Raw interrupt status register */
+    static RO_ uint32_t* const CRYP_MISR_PTR    = (RO_ uint32_t* const)0x4802101CU;   /** @brief Masked interrupt status register */
+    static RW_ uint32_t* const CRYP_K0LR_PTR    = (RW_ uint32_t* const)0x48021020U;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K0RR_PTR    = (RW_ uint32_t* const)0x48021024U;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K1LR_PTR    = (RW_ uint32_t* const)0x48021028U;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K1RR_PTR    = (RW_ uint32_t* const)0x4802102CU;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K2LR_PTR    = (RW_ uint32_t* const)0x48021030U;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K2RR_PTR    = (RW_ uint32_t* const)0x48021034U;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K3LR_PTR    = (RW_ uint32_t* const)0x48021038U;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_K3RR_PTR    = (RW_ uint32_t* const)0x4802103CU;   /** @brief Key registers */
+    static RW_ uint32_t* const CRYP_IV0LR_PTR   = (RW_ uint32_t* const)0x48021040U;   /** @brief Initialization vector registers */
+    static RW_ uint32_t* const CRYP_IV0RR_PTR   = (RW_ uint32_t* const)0x48021044U;   /** @brief Initialization vector registers */
+    static RW_ uint32_t* const CRYP_IV1LR_PTR   = (RW_ uint32_t* const)0x48021048U;   /** @brief Initialization vector registers */
+    static RW_ uint32_t* const CRYP_IV1RR_PTR   = (RW_ uint32_t* const)0x4802104CU;   /** @brief Initialization vector registers */
+
+    /**** @subsection Enumerated CRYP Register Pointers ****/
+
+    static RW_ uint32_t* const CRYP_CSGCMCCMxR_PTR[8] = {
+      [0] = (RW_ uint32_t* const)0x48021050U,   /** @brief Context swap register */
+      [1] = (RW_ uint32_t* const)0x48021054U,   /** @brief Context swap register */
+      [2] = (RW_ uint32_t* const)0x48021058U,   /** @brief Context swap register */
+      [3] = (RW_ uint32_t* const)0x4802105CU,   /** @brief Context swap register */
+      [4] = (RW_ uint32_t* const)0x48021060U,   /** @brief Context swap register */
+      [5] = (RW_ uint32_t* const)0x48021064U,   /** @brief Context swap register */
+      [6] = (RW_ uint32_t* const)0x48021068U,   /** @brief Context swap register */
+      [7] = (RW_ uint32_t* const)0x4802106CU,   /** @brief Context swap register */
+    };
+
+    static RW_ uint32_t* const CRYP_CSGCMxR_PTR[8] = {
+      [0] = (RW_ uint32_t* const)0x48021070U,   /** @brief Context swap register */
+      [1] = (RW_ uint32_t* const)0x48021074U,   /** @brief Context swap register */
+      [2] = (RW_ uint32_t* const)0x48021078U,   /** @brief Context swap register */
+      [3] = (RW_ uint32_t* const)0x4802107CU,   /** @brief Context swap register */
+      [4] = (RW_ uint32_t* const)0x48021080U,   /** @brief Context swap register */
+      [5] = (RW_ uint32_t* const)0x48021084U,   /** @brief Context swap register */
+      [6] = (RW_ uint32_t* const)0x48021088U,   /** @brief Context swap register */
+      [7] = (RW_ uint32_t* const)0x4802108CU,   /** @brief Context swap register */
+    };
 
     /**** @subsection CRYP Register Reset Values ****/
 
-    static const uint32_t CRYP_CR_RST           = 0x00000000U;   /** @brief CR register reset value. */
-    static const uint32_t CRYP_SR_RST           = 0x00000003U;   /** @brief SR register reset value. */
-    static const uint32_t CRYP_DIN_RST          = 0x00000000U;   /** @brief DIN register reset value. */
-    static const uint32_t CRYP_DOUT_RST         = 0x00000000U;   /** @brief DOUT register reset value. */
-    static const uint32_t CRYP_DMACR_RST        = 0x00000000U;   /** @brief DMACR register reset value. */
-    static const uint32_t CRYP_IMSCR_RST        = 0x00000000U;   /** @brief IMSCR register reset value. */
-    static const uint32_t CRYP_RISR_RST         = 0x00000001U;   /** @brief RISR register reset value. */
-    static const uint32_t CRYP_MISR_RST         = 0x00000000U;   /** @brief MISR register reset value. */
-    static const uint32_t CRYP_K0LR_RST         = 0x00000000U;   /** @brief K0LR register reset value. */
-    static const uint32_t CRYP_K0RR_RST         = 0x00000000U;   /** @brief K0RR register reset value. */
-    static const uint32_t CRYP_K1LR_RST         = 0x00000000U;   /** @brief K1LR register reset value. */
-    static const uint32_t CRYP_K1RR_RST         = 0x00000000U;   /** @brief K1RR register reset value. */
-    static const uint32_t CRYP_K2LR_RST         = 0x00000000U;   /** @brief K2LR register reset value. */
-    static const uint32_t CRYP_K2RR_RST         = 0x00000000U;   /** @brief K2RR register reset value. */
-    static const uint32_t CRYP_K3LR_RST         = 0x00000000U;   /** @brief K3LR register reset value. */
-    static const uint32_t CRYP_K3RR_RST         = 0x00000000U;   /** @brief K3RR register reset value. */
-    static const uint32_t CRYP_IV0LR_RST        = 0x00000000U;   /** @brief IV0LR register reset value. */
-    static const uint32_t CRYP_IV0RR_RST        = 0x00000000U;   /** @brief IV0RR register reset value. */
-    static const uint32_t CRYP_IV1LR_RST        = 0x00000000U;   /** @brief IV1LR register reset value. */
-    static const uint32_t CRYP_IV1RR_RST        = 0x00000000U;   /** @brief IV1RR register reset value. */
-    static const uint32_t CRYP_CSGCMCCM0R_RST   = 0x00000000U;   /** @brief CSGCMCCM0R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM1R_RST   = 0x00000000U;   /** @brief CSGCMCCM1R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM2R_RST   = 0x00000000U;   /** @brief CSGCMCCM2R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM3R_RST   = 0x00000000U;   /** @brief CSGCMCCM3R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM4R_RST   = 0x00000000U;   /** @brief CSGCMCCM4R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM5R_RST   = 0x00000000U;   /** @brief CSGCMCCM5R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM6R_RST   = 0x00000000U;   /** @brief CSGCMCCM6R register reset value. */
-    static const uint32_t CRYP_CSGCMCCM7R_RST   = 0x00000000U;   /** @brief CSGCMCCM7R register reset value. */
-    static const uint32_t CRYP_CSGCM0R_RST      = 0x00000000U;   /** @brief CSGCM0R register reset value. */
-    static const uint32_t CRYP_CSGCM1R_RST      = 0x00000000U;   /** @brief CSGCM1R register reset value. */
-    static const uint32_t CRYP_CSGCM2R_RST      = 0x00000000U;   /** @brief CSGCM2R register reset value. */
-    static const uint32_t CRYP_CSGCM3R_RST      = 0x00000000U;   /** @brief CSGCM3R register reset value. */
-    static const uint32_t CRYP_CSGCM4R_RST      = 0x00000000U;   /** @brief CSGCM4R register reset value. */
-    static const uint32_t CRYP_CSGCM5R_RST      = 0x00000000U;   /** @brief CSGCM5R register reset value. */
-    static const uint32_t CRYP_CSGCM6R_RST      = 0x00000000U;   /** @brief CSGCM6R register reset value. */
-    static const uint32_t CRYP_CSGCM7R_RST      = 0x00000000U;   /** @brief CSGCM7R register reset value. */
+    static const uint32_t CRYP_CR_RST      = 0x00000000U;   /** @brief CR register reset value. */
+    static const uint32_t CRYP_SR_RST      = 0x00000003U;   /** @brief SR register reset value. */
+    static const uint32_t CRYP_DIN_RST     = 0x00000000U;   /** @brief DIN register reset value. */
+    static const uint32_t CRYP_DOUT_RST    = 0x00000000U;   /** @brief DOUT register reset value. */
+    static const uint32_t CRYP_DMACR_RST   = 0x00000000U;   /** @brief DMACR register reset value. */
+    static const uint32_t CRYP_IMSCR_RST   = 0x00000000U;   /** @brief IMSCR register reset value. */
+    static const uint32_t CRYP_RISR_RST    = 0x00000001U;   /** @brief RISR register reset value. */
+    static const uint32_t CRYP_MISR_RST    = 0x00000000U;   /** @brief MISR register reset value. */
+    static const uint32_t CRYP_K0LR_RST    = 0x00000000U;   /** @brief K0LR register reset value. */
+    static const uint32_t CRYP_K0RR_RST    = 0x00000000U;   /** @brief K0RR register reset value. */
+    static const uint32_t CRYP_K1LR_RST    = 0x00000000U;   /** @brief K1LR register reset value. */
+    static const uint32_t CRYP_K1RR_RST    = 0x00000000U;   /** @brief K1RR register reset value. */
+    static const uint32_t CRYP_K2LR_RST    = 0x00000000U;   /** @brief K2LR register reset value. */
+    static const uint32_t CRYP_K2RR_RST    = 0x00000000U;   /** @brief K2RR register reset value. */
+    static const uint32_t CRYP_K3LR_RST    = 0x00000000U;   /** @brief K3LR register reset value. */
+    static const uint32_t CRYP_K3RR_RST    = 0x00000000U;   /** @brief K3RR register reset value. */
+    static const uint32_t CRYP_IV0LR_RST   = 0x00000000U;   /** @brief IV0LR register reset value. */
+    static const uint32_t CRYP_IV0RR_RST   = 0x00000000U;   /** @brief IV0RR register reset value. */
+    static const uint32_t CRYP_IV1LR_RST   = 0x00000000U;   /** @brief IV1LR register reset value. */
+    static const uint32_t CRYP_IV1RR_RST   = 0x00000000U;   /** @brief IV1RR register reset value. */
+
+    /**** @subsection Enumerated CRYP Register Reset Values ****/
+
+    static const uint32_t CRYP_CSGCMCCMxR_RST[8] = {
+      [0] = 0x00000000U,   /** @brief CSGCMCCM0R register reset value. */
+      [1] = 0x00000000U,   /** @brief CSGCMCCM1R register reset value. */
+      [2] = 0x00000000U,   /** @brief CSGCMCCM2R register reset value. */
+      [3] = 0x00000000U,   /** @brief CSGCMCCM3R register reset value. */
+      [4] = 0x00000000U,   /** @brief CSGCMCCM4R register reset value. */
+      [5] = 0x00000000U,   /** @brief CSGCMCCM5R register reset value. */
+      [6] = 0x00000000U,   /** @brief CSGCMCCM6R register reset value. */
+      [7] = 0x00000000U,   /** @brief CSGCMCCM7R register reset value. */
+    };
+
+    static const uint32_t CRYP_CSGCMxR_RST[8] = {
+      [0] = 0x00000000U,   /** @brief CSGCM0R register reset value. */
+      [1] = 0x00000000U,   /** @brief CSGCM1R register reset value. */
+      [2] = 0x00000000U,   /** @brief CSGCM2R register reset value. */
+      [3] = 0x00000000U,   /** @brief CSGCM3R register reset value. */
+      [4] = 0x00000000U,   /** @brief CSGCM4R register reset value. */
+      [5] = 0x00000000U,   /** @brief CSGCM5R register reset value. */
+      [6] = 0x00000000U,   /** @brief CSGCM6R register reset value. */
+      [7] = 0x00000000U,   /** @brief CSGCM7R register reset value. */
+    };
 
     /**** @subsection Enumerated CRYP Register Value Types ****/
 
@@ -13404,22 +12898,8 @@
     typedef uint32_t CRYP_IV0RR_t;        /** @brief IV0RR register value type. */
     typedef uint32_t CRYP_IV1LR_t;        /** @brief IV1LR register value type. */
     typedef uint32_t CRYP_IV1RR_t;        /** @brief IV1RR register value type. */
-    typedef uint32_t CRYP_CSGCMCCM0R_t;   /** @brief CSGCMCCM0R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM1R_t;   /** @brief CSGCMCCM1R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM2R_t;   /** @brief CSGCMCCM2R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM3R_t;   /** @brief CSGCMCCM3R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM4R_t;   /** @brief CSGCMCCM4R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM5R_t;   /** @brief CSGCMCCM5R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM6R_t;   /** @brief CSGCMCCM6R register value type. */
-    typedef uint32_t CRYP_CSGCMCCM7R_t;   /** @brief CSGCMCCM7R register value type. */
-    typedef uint32_t CRYP_CSGCM0R_t;      /** @brief CSGCM0R register value type. */
-    typedef uint32_t CRYP_CSGCM1R_t;      /** @brief CSGCM1R register value type. */
-    typedef uint32_t CRYP_CSGCM2R_t;      /** @brief CSGCM2R register value type. */
-    typedef uint32_t CRYP_CSGCM3R_t;      /** @brief CSGCM3R register value type. */
-    typedef uint32_t CRYP_CSGCM4R_t;      /** @brief CSGCM4R register value type. */
-    typedef uint32_t CRYP_CSGCM5R_t;      /** @brief CSGCM5R register value type. */
-    typedef uint32_t CRYP_CSGCM6R_t;      /** @brief CSGCM6R register value type. */
-    typedef uint32_t CRYP_CSGCM7R_t;      /** @brief CSGCM7R register value type. */
+    typedef uint32_t CRYP_CSGCMCCMxR_t;   /** @brief CSGCMCCMxR register value type. */
+    typedef uint32_t CRYP_CSGCMxR_t;      /** @brief CSGCMxR register value type. */
 
     /**** @subsection Enumerated CRYP Register Pointer Types ****/
 
@@ -13443,22 +12923,8 @@
     typedef uint32_t* const CRYP_IV0RR_PTR_t;        /** @brief IV0RR register pointer type. */
     typedef uint32_t* const CRYP_IV1LR_PTR_t;        /** @brief IV1LR register pointer type. */
     typedef uint32_t* const CRYP_IV1RR_PTR_t;        /** @brief IV1RR register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM0R_PTR_t;   /** @brief CSGCMCCM0R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM1R_PTR_t;   /** @brief CSGCMCCM1R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM2R_PTR_t;   /** @brief CSGCMCCM2R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM3R_PTR_t;   /** @brief CSGCMCCM3R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM4R_PTR_t;   /** @brief CSGCMCCM4R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM5R_PTR_t;   /** @brief CSGCMCCM5R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM6R_PTR_t;   /** @brief CSGCMCCM6R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCMCCM7R_PTR_t;   /** @brief CSGCMCCM7R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM0R_PTR_t;      /** @brief CSGCM0R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM1R_PTR_t;      /** @brief CSGCM1R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM2R_PTR_t;      /** @brief CSGCM2R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM3R_PTR_t;      /** @brief CSGCM3R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM4R_PTR_t;      /** @brief CSGCM4R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM5R_PTR_t;      /** @brief CSGCM5R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM6R_PTR_t;      /** @brief CSGCM6R register pointer type. */
-    typedef uint32_t* const CRYP_CSGCM7R_PTR_t;      /** @brief CSGCM7R register pointer type. */
+    typedef uint32_t* const CRYP_CSGCMCCMxR_PTR_t;   /** @brief CSGCMCCMxR register pointer type. */
+    typedef uint32_t* const CRYP_CSGCMxR_PTR_t;      /** @brief CSGCMxR register pointer type. */
 
     /**** @subsection CRYP Register Field Masks ****/
 
@@ -17899,12 +17365,6 @@
     static RO_ uint32_t* const ETHERNET_MAC_RX_LPI_USEC_CNTR_PTR                     = (RO_ uint32_t* const)0x400287F4U;   /** @brief Rx LPI microsecond counter register */
     static RO_ uint32_t* const ETHERNET_MAC_RX_LPI_TRAN_CNTR_PTR                     = (RO_ uint32_t* const)0x400287F8U;   /** @brief Rx LPI transition counter register */
     static RO_ uint32_t* const ETHERNET_MAC_MACDR_PTR                                = (RO_ uint32_t* const)0x40028114U;   /** @brief Debug register */
-    static RW_ uint32_t* const ETHERNET_MAC_MACL3A00R_PTR                            = (RW_ uint32_t* const)0x40028910U;   /** @brief MACL3A00R */
-    static RW_ uint32_t* const ETHERNET_MAC_MACL3A10R_PTR                            = (RW_ uint32_t* const)0x40028914U;   /** @brief Layer3 address 1 filter 0 register */
-    static RW_ uint32_t* const ETHERNET_MAC_MACL3A01R_PTR                            = (RW_ uint32_t* const)0x40028940U;   /** @brief Layer3 address 0 filter 1 register */
-    static RW_ uint32_t* const ETHERNET_MAC_MACL3A11R_PTR                            = (RW_ uint32_t* const)0x40028944U;   /** @brief Layer3 address 1 filter 1 register */
-    static RW_ uint32_t* const ETHERNET_MAC_MACL3A21R_PTR                            = (RW_ uint32_t* const)0x40028948U;   /** @brief Layer3 address 2 filter 1 register */
-    static RW_ uint32_t* const ETHERNET_MAC_MACL3A31R_PTR                            = (RW_ uint32_t* const)0x4002894CU;   /** @brief Layer3 address 3 filter 1 register */
     static RW_ uint32_t* const ETHERNET_MAC_MACTSCR_PTR                              = (RW_ uint32_t* const)0x40028B00U;   /** @brief Timestamp control register */
     static RW_ uint32_t* const ETHERNET_MAC_MACSSIR_PTR                              = (RW_ uint32_t* const)0x40028B04U;   /** @brief Sub-second increment register */
     static RO_ uint32_t* const ETHERNET_MAC_MACSTSR_PTR                              = (RO_ uint32_t* const)0x40028B08U;   /** @brief System time seconds register */
@@ -17952,9 +17412,21 @@
       [1] = (RW_ uint32_t* const)0x40028934U,   /** @brief Layer 4 address filter 1 register */
     };
 
+    static RW_ uint32_t* const ETHERNET_MAC_MACL3AxR_PTR[32] = {
+      [0]  = (RW_ uint32_t* const)0x40028910U,   /** @brief MACL3A00R */
+      [10] = (RW_ uint32_t* const)0x40028914U,   /** @brief Layer3 address 1 filter 0 register */
+      [11] = (RW_ uint32_t* const)0x40028944U,   /** @brief Layer3 address 1 filter 1 register */
+      [21] = (RW_ uint32_t* const)0x40028948U,   /** @brief Layer3 address 2 filter 1 register */
+      [31] = (RW_ uint32_t* const)0x4002894CU,   /** @brief Layer3 address 3 filter 1 register */
+    };
+
     static RW_ uint32_t* const ETHERNET_MAC_MACL3Ax_PTR[31] = {
       [20] = (RW_ uint32_t* const)0x40028918U,   /** @brief Layer3 address 2 filter 0 register */
       [30] = (RW_ uint32_t* const)0x4002891CU,   /** @brief Layer3 address 3 filter 0 register */
+    };
+
+    static RW_ uint32_t* const ETHERNET_MAC_MACL3A0xR_PTR[2] = {
+      [1] = (RW_ uint32_t* const)0x40028940U,   /** @brief Layer3 address 0 filter 1 register */
     };
 
     /**** @subsection ETHERNET_MAC Register Reset Values ****/
@@ -18036,12 +17508,6 @@
     static const uint32_t ETHERNET_MAC_RX_LPI_USEC_CNTR_RST                     = 0x00000000U;   /** @brief RX_LPI_USEC_CNTR register reset value. */
     static const uint32_t ETHERNET_MAC_RX_LPI_TRAN_CNTR_RST                     = 0x00000000U;   /** @brief RX_LPI_TRAN_CNTR register reset value. */
     static const uint32_t ETHERNET_MAC_MACDR_RST                                = 0x00000000U;   /** @brief MACDR register reset value. */
-    static const uint32_t ETHERNET_MAC_MACL3A00R_RST                            = 0x00000000U;   /** @brief MACL3A00R register reset value. */
-    static const uint32_t ETHERNET_MAC_MACL3A10R_RST                            = 0x00000000U;   /** @brief MACL3A10R register reset value. */
-    static const uint32_t ETHERNET_MAC_MACL3A01R_RST                            = 0x00000000U;   /** @brief MACL3A01R register reset value. */
-    static const uint32_t ETHERNET_MAC_MACL3A11R_RST                            = 0x00000000U;   /** @brief MACL3A11R register reset value. */
-    static const uint32_t ETHERNET_MAC_MACL3A21R_RST                            = 0x00000000U;   /** @brief MACL3A21R register reset value. */
-    static const uint32_t ETHERNET_MAC_MACL3A31R_RST                            = 0x00000000U;   /** @brief MACL3A31R register reset value. */
     static const uint32_t ETHERNET_MAC_MACTSCR_RST                              = 0x00000200U;   /** @brief MACTSCR register reset value. */
     static const uint32_t ETHERNET_MAC_MACSSIR_RST                              = 0x00000000U;   /** @brief MACSSIR register reset value. */
     static const uint32_t ETHERNET_MAC_MACSTSR_RST                              = 0x00000000U;   /** @brief MACSTSR register reset value. */
@@ -18089,9 +17555,21 @@
       [1] = 0x00000000U,   /** @brief MACL4A1R register reset value. */
     };
 
+    static const uint32_t ETHERNET_MAC_MACL3AxR_RST[32] = {
+      [0]  = 0x00000000U,   /** @brief MACL3A00R register reset value. */
+      [10] = 0x00000000U,   /** @brief MACL3A10R register reset value. */
+      [11] = 0x00000000U,   /** @brief MACL3A11R register reset value. */
+      [21] = 0x00000000U,   /** @brief MACL3A21R register reset value. */
+      [31] = 0x00000000U,   /** @brief MACL3A31R register reset value. */
+    };
+
     static const uint32_t ETHERNET_MAC_MACL3Ax_RST[31] = {
       [20] = 0x00000000U,   /** @brief MACL3A20 register reset value. */
       [30] = 0x00000000U,   /** @brief MACL3A30 register reset value. */
+    };
+
+    static const uint32_t ETHERNET_MAC_MACL3A0xR_RST[2] = {
+      [1] = 0x00000000U,   /** @brief MACL3A01R register reset value. */
     };
 
     /**** @subsection Enumerated ETHERNET_MAC Register Value Types ****/
@@ -18176,13 +17654,9 @@
     typedef uint32_t ETHERNET_MAC_MACL3L4CxR_t;                           /** @brief MACL3L4CxR register value type. */
     typedef uint32_t ETHERNET_MAC_MACL4AxR_t;                             /** @brief MACL4AxR register value type. */
     typedef uint32_t ETHERNET_MAC_MACDR_t;                                /** @brief MACDR register value type. */
-    typedef uint32_t ETHERNET_MAC_MACL3A00R_t;                            /** @brief MACL3A00R register value type. */
-    typedef uint32_t ETHERNET_MAC_MACL3A10R_t;                            /** @brief MACL3A10R register value type. */
+    typedef uint32_t ETHERNET_MAC_MACL3AxR_t;                             /** @brief MACL3AxR register value type. */
     typedef uint32_t ETHERNET_MAC_MACL3Ax_t;                              /** @brief MACL3Ax register value type. */
-    typedef uint32_t ETHERNET_MAC_MACL3A01R_t;                            /** @brief MACL3A01R register value type. */
-    typedef uint32_t ETHERNET_MAC_MACL3A11R_t;                            /** @brief MACL3A11R register value type. */
-    typedef uint32_t ETHERNET_MAC_MACL3A21R_t;                            /** @brief MACL3A21R register value type. */
-    typedef uint32_t ETHERNET_MAC_MACL3A31R_t;                            /** @brief MACL3A31R register value type. */
+    typedef uint32_t ETHERNET_MAC_MACL3A0xR_t;                            /** @brief MACL3A0xR register value type. */
     typedef uint32_t ETHERNET_MAC_MACTSCR_t;                              /** @brief MACTSCR register value type. */
     typedef uint32_t ETHERNET_MAC_MACSSIR_t;                              /** @brief MACSSIR register value type. */
     typedef uint32_t ETHERNET_MAC_MACSTSR_t;                              /** @brief MACSTSR register value type. */
@@ -18293,13 +17767,9 @@
     typedef uint32_t* const ETHERNET_MAC_MACL3L4CxR_PTR_t;                           /** @brief MACL3L4CxR register pointer type. */
     typedef uint32_t* const ETHERNET_MAC_MACL4AxR_PTR_t;                             /** @brief MACL4AxR register pointer type. */
     typedef uint32_t* const ETHERNET_MAC_MACDR_PTR_t;                                /** @brief MACDR register pointer type. */
-    typedef uint32_t* const ETHERNET_MAC_MACL3A00R_PTR_t;                            /** @brief MACL3A00R register pointer type. */
-    typedef uint32_t* const ETHERNET_MAC_MACL3A10R_PTR_t;                            /** @brief MACL3A10R register pointer type. */
+    typedef uint32_t* const ETHERNET_MAC_MACL3AxR_PTR_t;                             /** @brief MACL3AxR register pointer type. */
     typedef uint32_t* const ETHERNET_MAC_MACL3Ax_PTR_t;                              /** @brief MACL3Ax register pointer type. */
-    typedef uint32_t* const ETHERNET_MAC_MACL3A01R_PTR_t;                            /** @brief MACL3A01R register pointer type. */
-    typedef uint32_t* const ETHERNET_MAC_MACL3A11R_PTR_t;                            /** @brief MACL3A11R register pointer type. */
-    typedef uint32_t* const ETHERNET_MAC_MACL3A21R_PTR_t;                            /** @brief MACL3A21R register pointer type. */
-    typedef uint32_t* const ETHERNET_MAC_MACL3A31R_PTR_t;                            /** @brief MACL3A31R register pointer type. */
+    typedef uint32_t* const ETHERNET_MAC_MACL3A0xR_PTR_t;                            /** @brief MACL3A0xR register pointer type. */
     typedef uint32_t* const ETHERNET_MAC_MACTSCR_PTR_t;                              /** @brief MACTSCR register pointer type. */
     typedef uint32_t* const ETHERNET_MAC_MACSSIR_PTR_t;                              /** @brief MACSSIR register pointer type. */
     typedef uint32_t* const ETHERNET_MAC_MACSTSR_PTR_t;                              /** @brief MACSTSR register pointer type. */
@@ -18628,18 +18098,18 @@
     static const uint32_t ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXGPKTIM_MASK      = 0x00200000U;   /** @brief TXGPKTIM */
     static const uint32_t ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPIUSCIM_MASK    = 0x04000000U;   /** @brief TXLPIUSCIM */
     static const uint32_t ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPITRCIM_MASK    = 0x08000000U;   /** @brief TXLPITRCIM */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3SAMx_MASK                   = 0x00000004U;   /** @brief L3SAM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3SAIMx_MASK                  = 0x00000008U;   /** @brief L3SAIM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3DAMx_MASK                   = 0x00000010U;   /** @brief L3DAM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3DAIMx_MASK                  = 0x00000020U;   /** @brief L3DAIM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3HSBMx_MASK                  = 0x000007C0U;   /** @brief L3HSBM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3HDBMx_MASK                  = 0x0000F800U;   /** @brief L3HDBM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4SPMx_MASK                   = 0x00040000U;   /** @brief L4SPM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4SPIMx_MASK                  = 0x00080000U;   /** @brief L4SPIM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4DPMx_MASK                   = 0x00100000U;   /** @brief L4DPM0 */
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4DPIMx_MASK                  = 0x00200000U;   /** @brief L4DPIM0 */
-    static const uint32_t ETHERNET_MAC_MACL4AxR_L4SPx_MASK                      = 0x0000FFFFU;   /** @brief L4SP0 */
-    static const uint32_t ETHERNET_MAC_MACL4AxR_L4DPx_MASK                      = 0xFFFF0000U;   /** @brief L4DP0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3SAM0_MASK                   = 0x00000004U;   /** @brief L3SAM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3SAIM0_MASK                  = 0x00000008U;   /** @brief L3SAIM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3DAM0_MASK                   = 0x00000010U;   /** @brief L3DAM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3DAIM0_MASK                  = 0x00000020U;   /** @brief L3DAIM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3HSBM0_MASK                  = 0x000007C0U;   /** @brief L3HSBM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L3HDBM0_MASK                  = 0x0000F800U;   /** @brief L3HDBM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4SPM0_MASK                   = 0x00040000U;   /** @brief L4SPM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4SPIM0_MASK                  = 0x00080000U;   /** @brief L4SPIM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4DPM0_MASK                   = 0x00100000U;   /** @brief L4DPM0 */
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_L4DPIM0_MASK                  = 0x00200000U;   /** @brief L4DPIM0 */
+    static const uint32_t ETHERNET_MAC_MACL4AxR_L4SP0_MASK                      = 0x0000FFFFU;   /** @brief L4SP0 */
+    static const uint32_t ETHERNET_MAC_MACL4AxR_L4DP0_MASK                      = 0xFFFF0000U;   /** @brief L4DP0 */
     static const uint32_t ETHERNET_MAC_MACDR_RPESTS_MASK                        = 0x00000001U;   /** @brief RPESTS */
     static const uint32_t ETHERNET_MAC_MACDR_RFCFCSTS_MASK                      = 0x00000006U;   /** @brief RFCFCSTS */
     static const uint32_t ETHERNET_MAC_MACDR_TPESTS_MASK                        = 0x00010000U;   /** @brief TPESTS */
@@ -18696,7 +18166,7 @@
 
     /**** @subsection Enumerated ETHERNET_MAC Register Field Masks ****/
 
-    static const uint32_t ETHERNET_MAC_MACL3L4CxR_LxPENx_MASK[5] = {
+    static const uint32_t ETHERNET_MAC_MACL3L4CxR_LxPEN0_MASK[5] = {
       [3] = 0x00000001U,   /** @brief L3PEN0 */
       [4] = 0x00010000U,   /** @brief L4PEN0 */
     };
@@ -19013,18 +18483,18 @@
     static const int32_t ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXGPKTIM_POS      = 21;   /** @brief TXGPKTIM */
     static const int32_t ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPIUSCIM_POS    = 26;   /** @brief TXLPIUSCIM */
     static const int32_t ETHERNET_MAC_MMC_TX_INTERRUPT_MASK_TXLPITRCIM_POS    = 27;   /** @brief TXLPITRCIM */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3SAMx_POS                   = 2;    /** @brief L3SAM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3SAIMx_POS                  = 3;    /** @brief L3SAIM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3DAMx_POS                   = 4;    /** @brief L3DAM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3DAIMx_POS                  = 5;    /** @brief L3DAIM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3HSBMx_POS                  = 6;    /** @brief L3HSBM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3HDBMx_POS                  = 11;   /** @brief L3HDBM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4SPMx_POS                   = 18;   /** @brief L4SPM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4SPIMx_POS                  = 19;   /** @brief L4SPIM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4DPMx_POS                   = 20;   /** @brief L4DPM0 */
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4DPIMx_POS                  = 21;   /** @brief L4DPIM0 */
-    static const int32_t ETHERNET_MAC_MACL4AxR_L4SPx_POS                      = 0;    /** @brief L4SP0 */
-    static const int32_t ETHERNET_MAC_MACL4AxR_L4DPx_POS                      = 16;   /** @brief L4DP0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3SAM0_POS                   = 2;    /** @brief L3SAM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3SAIM0_POS                  = 3;    /** @brief L3SAIM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3DAM0_POS                   = 4;    /** @brief L3DAM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3DAIM0_POS                  = 5;    /** @brief L3DAIM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3HSBM0_POS                  = 6;    /** @brief L3HSBM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L3HDBM0_POS                  = 11;   /** @brief L3HDBM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4SPM0_POS                   = 18;   /** @brief L4SPM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4SPIM0_POS                  = 19;   /** @brief L4SPIM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4DPM0_POS                   = 20;   /** @brief L4DPM0 */
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_L4DPIM0_POS                  = 21;   /** @brief L4DPIM0 */
+    static const int32_t ETHERNET_MAC_MACL4AxR_L4SP0_POS                      = 0;    /** @brief L4SP0 */
+    static const int32_t ETHERNET_MAC_MACL4AxR_L4DP0_POS                      = 16;   /** @brief L4DP0 */
     static const int32_t ETHERNET_MAC_MACDR_RPESTS_POS                        = 0;    /** @brief RPESTS */
     static const int32_t ETHERNET_MAC_MACDR_RFCFCSTS_POS                      = 1;    /** @brief RFCFCSTS */
     static const int32_t ETHERNET_MAC_MACDR_TPESTS_POS                        = 16;   /** @brief TPESTS */
@@ -19081,7 +18551,7 @@
 
     /**** @subsection Enumerated ETHERNET_MAC Register Field Positions ****/
 
-    static const int32_t ETHERNET_MAC_MACL3L4CxR_LxPENx_POS[5] = {
+    static const int32_t ETHERNET_MAC_MACL3L4CxR_LxPEN0_POS[5] = {
       [3] = 0,    /** @brief L3PEN0 */
       [4] = 16,   /** @brief L4PEN0 */
     };
@@ -19175,14 +18645,26 @@
       },
     };
 
-    static RW_ uint32_t* const DMAx_S0MxAR_PTR[3][2] = {
+    static RW_ uint32_t* const DMAx_SxM0AR_PTR[3][8] = {
       [0] = {
         [0] = (RW_ uint32_t* const)0x4002001CU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020020U,   /** @brief Stream x memory 1 address register */
+        [1] = (RW_ uint32_t* const)0x40020034U,   /** @brief Stream x memory 0 address register */
+        [2] = (RW_ uint32_t* const)0x4002004CU,   /** @brief Stream x memory 0 address register */
+        [3] = (RW_ uint32_t* const)0x40020064U,   /** @brief Stream x memory 0 address register */
+        [4] = (RW_ uint32_t* const)0x4002007CU,   /** @brief Stream x memory 0 address register */
+        [5] = (RW_ uint32_t* const)0x40020094U,   /** @brief Stream x memory 0 address register */
+        [6] = (RW_ uint32_t* const)0x400200ACU,   /** @brief Stream x memory 0 address register */
+        [7] = (RW_ uint32_t* const)0x400200C4U,   /** @brief Stream x memory 0 address register */
       },
       [1] = {
         [0] = (RW_ uint32_t* const)0x4002041CU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020420U,   /** @brief Stream x memory 1 address register */
+        [1] = (RW_ uint32_t* const)0x40020434U,   /** @brief Stream x memory 0 address register */
+        [2] = (RW_ uint32_t* const)0x4002044CU,   /** @brief Stream x memory 0 address register */
+        [3] = (RW_ uint32_t* const)0x40020464U,   /** @brief Stream x memory 0 address register */
+        [4] = (RW_ uint32_t* const)0x4002047CU,   /** @brief Stream x memory 0 address register */
+        [5] = (RW_ uint32_t* const)0x40020494U,   /** @brief Stream x memory 0 address register */
+        [6] = (RW_ uint32_t* const)0x400204ACU,   /** @brief Stream x memory 0 address register */
+        [7] = (RW_ uint32_t* const)0x400204C4U,   /** @brief Stream x memory 0 address register */
       },
     };
 
@@ -19214,14 +18696,24 @@
       [2] = (RW_ uint32_t* const)0x40020428U,   /** @brief Stream x configuration register */
     };
 
-    static RW_ uint32_t* const DMAx_S1MxAR_PTR[3][2] = {
+    static RW_ uint32_t* const DMAx_SxM1AR_PTR[3][8] = {
       [0] = {
-        [0] = (RW_ uint32_t* const)0x40020034U,   /** @brief Stream x memory 0 address register */
         [1] = (RW_ uint32_t* const)0x40020038U,   /** @brief Stream x memory 1 address register */
+        [2] = (RW_ uint32_t* const)0x40020050U,   /** @brief Stream x memory 1 address register */
+        [3] = (RW_ uint32_t* const)0x40020068U,   /** @brief Stream x memory 1 address register */
+        [4] = (RW_ uint32_t* const)0x40020080U,   /** @brief Stream x memory 1 address register */
+        [5] = (RW_ uint32_t* const)0x40020098U,   /** @brief Stream x memory 1 address register */
+        [6] = (RW_ uint32_t* const)0x400200B0U,   /** @brief Stream x memory 1 address register */
+        [7] = (RW_ uint32_t* const)0x400200C8U,   /** @brief Stream x memory 1 address register */
       },
       [1] = {
-        [0] = (RW_ uint32_t* const)0x40020434U,   /** @brief Stream x memory 0 address register */
         [1] = (RW_ uint32_t* const)0x40020438U,   /** @brief Stream x memory 1 address register */
+        [2] = (RW_ uint32_t* const)0x40020450U,   /** @brief Stream x memory 1 address register */
+        [3] = (RW_ uint32_t* const)0x40020468U,   /** @brief Stream x memory 1 address register */
+        [4] = (RW_ uint32_t* const)0x40020480U,   /** @brief Stream x memory 1 address register */
+        [5] = (RW_ uint32_t* const)0x40020498U,   /** @brief Stream x memory 1 address register */
+        [6] = (RW_ uint32_t* const)0x400204B0U,   /** @brief Stream x memory 1 address register */
+        [7] = (RW_ uint32_t* const)0x400204C8U,   /** @brief Stream x memory 1 address register */
       },
     };
 
@@ -19230,31 +18722,9 @@
       [2] = (RW_ uint32_t* const)0x40020440U,   /** @brief Stream x configuration register */
     };
 
-    static RW_ uint32_t* const DMAx_S2MxAR_PTR[3][2] = {
-      [0] = {
-        [0] = (RW_ uint32_t* const)0x4002004CU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020050U,   /** @brief Stream x memory 1 address register */
-      },
-      [1] = {
-        [0] = (RW_ uint32_t* const)0x4002044CU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020450U,   /** @brief Stream x memory 1 address register */
-      },
-    };
-
     static RW_ uint32_t* const DMAx_S3CR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x40020058U,   /** @brief Stream x configuration register */
       [2] = (RW_ uint32_t* const)0x40020458U,   /** @brief Stream x configuration register */
-    };
-
-    static RW_ uint32_t* const DMAx_S3MxAR_PTR[3][2] = {
-      [0] = {
-        [0] = (RW_ uint32_t* const)0x40020064U,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020068U,   /** @brief Stream x memory 1 address register */
-      },
-      [1] = {
-        [0] = (RW_ uint32_t* const)0x40020464U,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020468U,   /** @brief Stream x memory 1 address register */
-      },
     };
 
     static RW_ uint32_t* const DMAx_S4CR_PTR[3] = {
@@ -19262,31 +18732,9 @@
       [2] = (RW_ uint32_t* const)0x40020470U,   /** @brief Stream x configuration register */
     };
 
-    static RW_ uint32_t* const DMAx_S4MxAR_PTR[3][2] = {
-      [0] = {
-        [0] = (RW_ uint32_t* const)0x4002007CU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020080U,   /** @brief Stream x memory 1 address register */
-      },
-      [1] = {
-        [0] = (RW_ uint32_t* const)0x4002047CU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020480U,   /** @brief Stream x memory 1 address register */
-      },
-    };
-
     static RW_ uint32_t* const DMAx_S5CR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x40020088U,   /** @brief Stream x configuration register */
       [2] = (RW_ uint32_t* const)0x40020488U,   /** @brief Stream x configuration register */
-    };
-
-    static RW_ uint32_t* const DMAx_S5MxAR_PTR[3][2] = {
-      [0] = {
-        [0] = (RW_ uint32_t* const)0x40020094U,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020098U,   /** @brief Stream x memory 1 address register */
-      },
-      [1] = {
-        [0] = (RW_ uint32_t* const)0x40020494U,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x40020498U,   /** @brief Stream x memory 1 address register */
-      },
     };
 
     static RW_ uint32_t* const DMAx_S6CR_PTR[3] = {
@@ -19294,31 +18742,9 @@
       [2] = (RW_ uint32_t* const)0x400204A0U,   /** @brief Stream x configuration register */
     };
 
-    static RW_ uint32_t* const DMAx_S6MxAR_PTR[3][2] = {
-      [0] = {
-        [0] = (RW_ uint32_t* const)0x400200ACU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x400200B0U,   /** @brief Stream x memory 1 address register */
-      },
-      [1] = {
-        [0] = (RW_ uint32_t* const)0x400204ACU,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x400204B0U,   /** @brief Stream x memory 1 address register */
-      },
-    };
-
     static RW_ uint32_t* const DMAx_S7CR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x400200B8U,   /** @brief Stream x configuration register */
       [2] = (RW_ uint32_t* const)0x400204B8U,   /** @brief Stream x configuration register */
-    };
-
-    static RW_ uint32_t* const DMAx_S7MxAR_PTR[3][2] = {
-      [0] = {
-        [0] = (RW_ uint32_t* const)0x400200C4U,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x400200C8U,   /** @brief Stream x memory 1 address register */
-      },
-      [1] = {
-        [0] = (RW_ uint32_t* const)0x400204C4U,   /** @brief Stream x memory 0 address register */
-        [1] = (RW_ uint32_t* const)0x400204C8U,   /** @brief Stream x memory 1 address register */
-      },
     };
 
     /**** @subsection Enumerated DMAx Register Reset Values ****/
@@ -19394,14 +18820,26 @@
       },
     };
 
-    static const uint32_t DMAx_S0MxAR_RST[3][2] = {
+    static const uint32_t DMAx_SxM0AR_RST[3][8] = {
       [0] = {
         [0] = 0x00000000U,   /** @brief S0M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S0M1AR register reset value. */
+        [1] = 0x00000000U,   /** @brief S1M0AR register reset value. */
+        [2] = 0x00000000U,   /** @brief S2M0AR register reset value. */
+        [3] = 0x00000000U,   /** @brief S3M0AR register reset value. */
+        [4] = 0x00000000U,   /** @brief S4M0AR register reset value. */
+        [5] = 0x00000000U,   /** @brief S5M0AR register reset value. */
+        [6] = 0x00000000U,   /** @brief S6M0AR register reset value. */
+        [7] = 0x00000000U,   /** @brief S7M0AR register reset value. */
       },
       [1] = {
         [0] = 0x00000000U,   /** @brief S0M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S0M1AR register reset value. */
+        [1] = 0x00000000U,   /** @brief S1M0AR register reset value. */
+        [2] = 0x00000000U,   /** @brief S2M0AR register reset value. */
+        [3] = 0x00000000U,   /** @brief S3M0AR register reset value. */
+        [4] = 0x00000000U,   /** @brief S4M0AR register reset value. */
+        [5] = 0x00000000U,   /** @brief S5M0AR register reset value. */
+        [6] = 0x00000000U,   /** @brief S6M0AR register reset value. */
+        [7] = 0x00000000U,   /** @brief S7M0AR register reset value. */
       },
     };
 
@@ -19433,14 +18871,24 @@
       [2] = 0x00000000U,   /** @brief S1CR register reset value */
     };
 
-    static const uint32_t DMAx_S1MxAR_RST[3][2] = {
+    static const uint32_t DMAx_SxM1AR_RST[3][8] = {
       [0] = {
-        [0] = 0x00000000U,   /** @brief S1M0AR register reset value. */
         [1] = 0x00000000U,   /** @brief S1M1AR register reset value. */
+        [2] = 0x00000000U,   /** @brief S2M1AR register reset value. */
+        [3] = 0x00000000U,   /** @brief S3M1AR register reset value. */
+        [4] = 0x00000000U,   /** @brief S4M1AR register reset value. */
+        [5] = 0x00000000U,   /** @brief S5M1AR register reset value. */
+        [6] = 0x00000000U,   /** @brief S6M1AR register reset value. */
+        [7] = 0x00000000U,   /** @brief S7M1AR register reset value. */
       },
       [1] = {
-        [0] = 0x00000000U,   /** @brief S1M0AR register reset value. */
         [1] = 0x00000000U,   /** @brief S1M1AR register reset value. */
+        [2] = 0x00000000U,   /** @brief S2M1AR register reset value. */
+        [3] = 0x00000000U,   /** @brief S3M1AR register reset value. */
+        [4] = 0x00000000U,   /** @brief S4M1AR register reset value. */
+        [5] = 0x00000000U,   /** @brief S5M1AR register reset value. */
+        [6] = 0x00000000U,   /** @brief S6M1AR register reset value. */
+        [7] = 0x00000000U,   /** @brief S7M1AR register reset value. */
       },
     };
 
@@ -19449,31 +18897,9 @@
       [2] = 0x00000000U,   /** @brief S2CR register reset value */
     };
 
-    static const uint32_t DMAx_S2MxAR_RST[3][2] = {
-      [0] = {
-        [0] = 0x00000000U,   /** @brief S2M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S2M1AR register reset value. */
-      },
-      [1] = {
-        [0] = 0x00000000U,   /** @brief S2M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S2M1AR register reset value. */
-      },
-    };
-
     static const uint32_t DMAx_S3CR_RST[3] = {
       [1] = 0x00000000U,   /** @brief S3CR register reset value */
       [2] = 0x00000000U,   /** @brief S3CR register reset value */
-    };
-
-    static const uint32_t DMAx_S3MxAR_RST[3][2] = {
-      [0] = {
-        [0] = 0x00000000U,   /** @brief S3M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S3M1AR register reset value. */
-      },
-      [1] = {
-        [0] = 0x00000000U,   /** @brief S3M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S3M1AR register reset value. */
-      },
     };
 
     static const uint32_t DMAx_S4CR_RST[3] = {
@@ -19481,31 +18907,9 @@
       [2] = 0x00000000U,   /** @brief S4CR register reset value */
     };
 
-    static const uint32_t DMAx_S4MxAR_RST[3][2] = {
-      [0] = {
-        [0] = 0x00000000U,   /** @brief S4M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S4M1AR register reset value. */
-      },
-      [1] = {
-        [0] = 0x00000000U,   /** @brief S4M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S4M1AR register reset value. */
-      },
-    };
-
     static const uint32_t DMAx_S5CR_RST[3] = {
       [1] = 0x00000000U,   /** @brief S5CR register reset value */
       [2] = 0x00000000U,   /** @brief S5CR register reset value */
-    };
-
-    static const uint32_t DMAx_S5MxAR_RST[3][2] = {
-      [0] = {
-        [0] = 0x00000000U,   /** @brief S5M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S5M1AR register reset value. */
-      },
-      [1] = {
-        [0] = 0x00000000U,   /** @brief S5M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S5M1AR register reset value. */
-      },
     };
 
     static const uint32_t DMAx_S6CR_RST[3] = {
@@ -19513,31 +18917,9 @@
       [2] = 0x00000000U,   /** @brief S6CR register reset value */
     };
 
-    static const uint32_t DMAx_S6MxAR_RST[3][2] = {
-      [0] = {
-        [0] = 0x00000000U,   /** @brief S6M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S6M1AR register reset value. */
-      },
-      [1] = {
-        [0] = 0x00000000U,   /** @brief S6M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S6M1AR register reset value. */
-      },
-    };
-
     static const uint32_t DMAx_S7CR_RST[3] = {
       [1] = 0x00000000U,   /** @brief S7CR register reset value */
       [2] = 0x00000000U,   /** @brief S7CR register reset value */
-    };
-
-    static const uint32_t DMAx_S7MxAR_RST[3][2] = {
-      [0] = {
-        [0] = 0x00000000U,   /** @brief S7M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S7M1AR register reset value. */
-      },
-      [1] = {
-        [0] = 0x00000000U,   /** @brief S7M0AR register reset value. */
-        [1] = 0x00000000U,   /** @brief S7M1AR register reset value. */
-      },
     };
 
     /**** @subsection Enumerated DMAx Register Value Types ****/
@@ -19549,22 +18931,17 @@
     typedef uint32_t DMAx_S0CR_t;     /** @brief S0CR register value type. */
     typedef uint32_t DMAx_SxNDTR_t;   /** @brief SxNDTR register value type. */
     typedef uint32_t DMAx_SxPAR_t;    /** @brief SxPAR register value type. */
+    typedef uint32_t DMAx_SxM0AR_t;   /** @brief SxM0AR register value type. */
     typedef uint32_t DMAx_S0MxAR_t;   /** @brief S0MxAR register value type. */
     typedef uint32_t DMAx_SxFCR_t;    /** @brief SxFCR register value type. */
     typedef uint32_t DMAx_S1CR_t;     /** @brief S1CR register value type. */
-    typedef uint32_t DMAx_S1MxAR_t;   /** @brief S1MxAR register value type. */
+    typedef uint32_t DMAx_SxM1AR_t;   /** @brief SxM1AR register value type. */
     typedef uint32_t DMAx_S2CR_t;     /** @brief S2CR register value type. */
-    typedef uint32_t DMAx_S2MxAR_t;   /** @brief S2MxAR register value type. */
     typedef uint32_t DMAx_S3CR_t;     /** @brief S3CR register value type. */
-    typedef uint32_t DMAx_S3MxAR_t;   /** @brief S3MxAR register value type. */
     typedef uint32_t DMAx_S4CR_t;     /** @brief S4CR register value type. */
-    typedef uint32_t DMAx_S4MxAR_t;   /** @brief S4MxAR register value type. */
     typedef uint32_t DMAx_S5CR_t;     /** @brief S5CR register value type. */
-    typedef uint32_t DMAx_S5MxAR_t;   /** @brief S5MxAR register value type. */
     typedef uint32_t DMAx_S6CR_t;     /** @brief S6CR register value type. */
-    typedef uint32_t DMAx_S6MxAR_t;   /** @brief S6MxAR register value type. */
     typedef uint32_t DMAx_S7CR_t;     /** @brief S7CR register value type. */
-    typedef uint32_t DMAx_S7MxAR_t;   /** @brief S7MxAR register value type. */
 
     /**** @subsection Enumerated DMAx Register Pointer Types ****/
 
@@ -19575,22 +18952,17 @@
     typedef uint32_t* const DMAx_S0CR_PTR_t;     /** @brief S0CR register pointer type. */
     typedef uint32_t* const DMAx_SxNDTR_PTR_t;   /** @brief SxNDTR register pointer type. */
     typedef uint32_t* const DMAx_SxPAR_PTR_t;    /** @brief SxPAR register pointer type. */
+    typedef uint32_t* const DMAx_SxM0AR_PTR_t;   /** @brief SxM0AR register pointer type. */
     typedef uint32_t* const DMAx_S0MxAR_PTR_t;   /** @brief S0MxAR register pointer type. */
     typedef uint32_t* const DMAx_SxFCR_PTR_t;    /** @brief SxFCR register pointer type. */
     typedef uint32_t* const DMAx_S1CR_PTR_t;     /** @brief S1CR register pointer type. */
-    typedef uint32_t* const DMAx_S1MxAR_PTR_t;   /** @brief S1MxAR register pointer type. */
+    typedef uint32_t* const DMAx_SxM1AR_PTR_t;   /** @brief SxM1AR register pointer type. */
     typedef uint32_t* const DMAx_S2CR_PTR_t;     /** @brief S2CR register pointer type. */
-    typedef uint32_t* const DMAx_S2MxAR_PTR_t;   /** @brief S2MxAR register pointer type. */
     typedef uint32_t* const DMAx_S3CR_PTR_t;     /** @brief S3CR register pointer type. */
-    typedef uint32_t* const DMAx_S3MxAR_PTR_t;   /** @brief S3MxAR register pointer type. */
     typedef uint32_t* const DMAx_S4CR_PTR_t;     /** @brief S4CR register pointer type. */
-    typedef uint32_t* const DMAx_S4MxAR_PTR_t;   /** @brief S4MxAR register pointer type. */
     typedef uint32_t* const DMAx_S5CR_PTR_t;     /** @brief S5CR register pointer type. */
-    typedef uint32_t* const DMAx_S5MxAR_PTR_t;   /** @brief S5MxAR register pointer type. */
     typedef uint32_t* const DMAx_S6CR_PTR_t;     /** @brief S6CR register pointer type. */
-    typedef uint32_t* const DMAx_S6MxAR_PTR_t;   /** @brief S6MxAR register pointer type. */
     typedef uint32_t* const DMAx_S7CR_PTR_t;     /** @brief S7CR register pointer type. */
-    typedef uint32_t* const DMAx_S7MxAR_PTR_t;   /** @brief S7MxAR register pointer type. */
 
     /**** @subsection DMAx Register Field Masks ****/
 
@@ -20067,10 +19439,15 @@
     static RW_ uint32_t* const HRTIM_MASTER_MCNTR_PTR    = (RW_ uint32_t* const)0x40017410U;   /** @brief Master timer counter register */
     static RW_ uint32_t* const HRTIM_MASTER_MPER_PTR     = (RW_ uint32_t* const)0x40017414U;   /** @brief Master timer period register */
     static RW_ uint32_t* const HRTIM_MASTER_MREP_PTR     = (RW_ uint32_t* const)0x40017418U;   /** @brief Master timer repetition register */
-    static RW_ uint32_t* const HRTIM_MASTER_MCMP1R_PTR   = (RW_ uint32_t* const)0x4001741CU;   /** @brief Master timer compare 1 register */
-    static RW_ uint32_t* const HRTIM_MASTER_MCMP2R_PTR   = (RW_ uint32_t* const)0x40017424U;   /** @brief Master timer compare 2 register */
-    static RW_ uint32_t* const HRTIM_MASTER_MCMP3R_PTR   = (RW_ uint32_t* const)0x40017428U;   /** @brief Master timer compare 3 register */
-    static RW_ uint32_t* const HRTIM_MASTER_MCMP4R_PTR   = (RW_ uint32_t* const)0x4001742CU;   /** @brief Master timer compare 4 register */
+
+    /**** @subsection Enumerated HRTIM_MASTER Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_MASTER_MCMPxR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001741CU,   /** @brief Master timer compare 1 register */
+      [2] = (RW_ uint32_t* const)0x40017424U,   /** @brief Master timer compare 2 register */
+      [3] = (RW_ uint32_t* const)0x40017428U,   /** @brief Master timer compare 3 register */
+      [4] = (RW_ uint32_t* const)0x4001742CU,   /** @brief Master timer compare 4 register */
+    };
 
     /**** @subsection HRTIM_MASTER Register Reset Values ****/
 
@@ -20081,10 +19458,15 @@
     static const uint32_t HRTIM_MASTER_MCNTR_RST    = 0x00000000U;   /** @brief MCNTR register reset value. */
     static const uint32_t HRTIM_MASTER_MPER_RST     = 0x0000FFFFU;   /** @brief MPER register reset value. */
     static const uint32_t HRTIM_MASTER_MREP_RST     = 0x00000000U;   /** @brief MREP register reset value. */
-    static const uint32_t HRTIM_MASTER_MCMP1R_RST   = 0x00000000U;   /** @brief MCMP1R register reset value. */
-    static const uint32_t HRTIM_MASTER_MCMP2R_RST   = 0x00000000U;   /** @brief MCMP2R register reset value. */
-    static const uint32_t HRTIM_MASTER_MCMP3R_RST   = 0x00000000U;   /** @brief MCMP3R register reset value. */
-    static const uint32_t HRTIM_MASTER_MCMP4R_RST   = 0x00000000U;   /** @brief MCMP4R register reset value. */
+
+    /**** @subsection Enumerated HRTIM_MASTER Register Reset Values ****/
+
+    static const uint32_t HRTIM_MASTER_MCMPxR_RST[5] = {
+      [1] = 0x00000000U,   /** @brief MCMP1R register reset value. */
+      [2] = 0x00000000U,   /** @brief MCMP2R register reset value. */
+      [3] = 0x00000000U,   /** @brief MCMP3R register reset value. */
+      [4] = 0x00000000U,   /** @brief MCMP4R register reset value. */
+    };
 
     /**** @subsection Enumerated HRTIM_MASTER Register Value Types ****/
 
@@ -20095,10 +19477,7 @@
     typedef uint32_t HRTIM_MASTER_MCNTR_t;    /** @brief MCNTR register value type. */
     typedef uint32_t HRTIM_MASTER_MPER_t;     /** @brief MPER register value type. */
     typedef uint32_t HRTIM_MASTER_MREP_t;     /** @brief MREP register value type. */
-    typedef uint32_t HRTIM_MASTER_MCMP1R_t;   /** @brief MCMP1R register value type. */
-    typedef uint32_t HRTIM_MASTER_MCMP2R_t;   /** @brief MCMP2R register value type. */
-    typedef uint32_t HRTIM_MASTER_MCMP3R_t;   /** @brief MCMP3R register value type. */
-    typedef uint32_t HRTIM_MASTER_MCMP4R_t;   /** @brief MCMP4R register value type. */
+    typedef uint32_t HRTIM_MASTER_MCMPxR_t;   /** @brief MCMPxR register value type. */
 
     /**** @subsection Enumerated HRTIM_MASTER Register Pointer Types ****/
 
@@ -20109,10 +19488,7 @@
     typedef uint32_t* const HRTIM_MASTER_MCNTR_PTR_t;    /** @brief MCNTR register pointer type. */
     typedef uint32_t* const HRTIM_MASTER_MPER_PTR_t;     /** @brief MPER register pointer type. */
     typedef uint32_t* const HRTIM_MASTER_MREP_PTR_t;     /** @brief MREP register pointer type. */
-    typedef uint32_t* const HRTIM_MASTER_MCMP1R_PTR_t;   /** @brief MCMP1R register pointer type. */
-    typedef uint32_t* const HRTIM_MASTER_MCMP2R_PTR_t;   /** @brief MCMP2R register pointer type. */
-    typedef uint32_t* const HRTIM_MASTER_MCMP3R_PTR_t;   /** @brief MCMP3R register pointer type. */
-    typedef uint32_t* const HRTIM_MASTER_MCMP4R_PTR_t;   /** @brief MCMP4R register pointer type. */
+    typedef uint32_t* const HRTIM_MASTER_MCMPxR_PTR_t;   /** @brief MCMPxR register pointer type. */
 
     /**** @subsection HRTIM_MASTER Register Field Masks ****/
 
@@ -20150,10 +19526,7 @@
     static const uint32_t HRTIM_MASTER_MCNTR_MCNT_MASK      = 0x0000FFFFU;   /** @brief Counter value */
     static const uint32_t HRTIM_MASTER_MPER_MPER_MASK       = 0x0000FFFFU;   /** @brief Master timer period value */
     static const uint32_t HRTIM_MASTER_MREP_MREP_MASK       = 0x000000FFU;   /** @brief Master timer repetition counter value */
-    static const uint32_t HRTIM_MASTER_MCMP1R_MCMPx_MASK    = 0x0000FFFFU;   /** @brief Master timer compare 1 value */
-    static const uint32_t HRTIM_MASTER_MCMP2R_MCMPx_MASK    = 0x0000FFFFU;   /** @brief Master timer compare 2 value */
-    static const uint32_t HRTIM_MASTER_MCMP3R_MCMPx_MASK    = 0x0000FFFFU;   /** @brief Master timer compare 3 value */
-    static const uint32_t HRTIM_MASTER_MCMP4R_MCMPx_MASK    = 0x0000FFFFU;   /** @brief Master timer compare 4 value */
+    static const uint32_t HRTIM_MASTER_MCMPxR_MCMP1_MASK    = 0x0000FFFFU;   /** @brief Master timer compare 1 value */
 
     /**** @subsection Enumerated HRTIM_MASTER Register Field Masks ****/
 
@@ -20221,10 +19594,7 @@
     static const int32_t HRTIM_MASTER_MCNTR_MCNT_POS      = 0;    /** @brief Counter value */
     static const int32_t HRTIM_MASTER_MPER_MPER_POS       = 0;    /** @brief Master timer period value */
     static const int32_t HRTIM_MASTER_MREP_MREP_POS       = 0;    /** @brief Master timer repetition counter value */
-    static const int32_t HRTIM_MASTER_MCMP1R_MCMPx_POS    = 0;    /** @brief Master timer compare 1 value */
-    static const int32_t HRTIM_MASTER_MCMP2R_MCMPx_POS    = 0;    /** @brief Master timer compare 2 value */
-    static const int32_t HRTIM_MASTER_MCMP3R_MCMPx_POS    = 0;    /** @brief Master timer compare 3 value */
-    static const int32_t HRTIM_MASTER_MCMP4R_MCMPx_POS    = 0;    /** @brief Master timer compare 4 value */
+    static const int32_t HRTIM_MASTER_MCMPxR_MCMP1_POS    = 0;    /** @brief Master timer compare 1 value */
 
     /**** @subsection Enumerated HRTIM_MASTER Register Field Positions ****/
 
@@ -20262,18 +19632,14 @@
 
     /**** @subsection HRTIM_TIMA Register Pointers ****/
 
-    static RW_ uint32_t* const HRTIM_TIMA_TIMxCR_PTR      = (RW_ uint32_t* const)0x40017480U;   /** @brief Timerx control register */
-    static RO_ uint32_t* const HRTIM_TIMA_TIMxISR_PTR     = (RO_ uint32_t* const)0x40017484U;   /** @brief Timerx interrupt status register */
-    static RW_ uint32_t* const HRTIM_TIMA_TIMxICR_PTR     = (RW_ uint32_t* const)0x40017488U;   /** @brief Timerx interrupt clear register */
-    static RW_ uint32_t* const HRTIM_TIMA_TIMxDIER5_PTR   = (RW_ uint32_t* const)0x4001748CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMA_TIMACR_PTR      = (RW_ uint32_t* const)0x40017480U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMA_TIMAISR_PTR     = (RO_ uint32_t* const)0x40017484U;   /** @brief Timerx interrupt status register */
+    static RW_ uint32_t* const HRTIM_TIMA_TIMAICR_PTR     = (RW_ uint32_t* const)0x40017488U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMA_TIMADIER5_PTR   = (RW_ uint32_t* const)0x4001748CU;   /** @brief TIMxDIER5 */
     static RW_ uint32_t* const HRTIM_TIMA_CNTAR_PTR       = (RW_ uint32_t* const)0x40017490U;   /** @brief Timerx counter register */
     static RW_ uint32_t* const HRTIM_TIMA_PERAR_PTR       = (RW_ uint32_t* const)0x40017494U;   /** @brief Timerx period register */
     static RW_ uint32_t* const HRTIM_TIMA_REPAR_PTR       = (RW_ uint32_t* const)0x40017498U;   /** @brief Timerx repetition register */
-    static RW_ uint32_t* const HRTIM_TIMA_CMP1AR_PTR      = (RW_ uint32_t* const)0x4001749CU;   /** @brief Timerx compare 1 register */
     static RW_ uint32_t* const HRTIM_TIMA_CMP1CAR_PTR     = (RW_ uint32_t* const)0x400174A0U;   /** @brief Timerx compare 1 compound register */
-    static RW_ uint32_t* const HRTIM_TIMA_CMP2AR_PTR      = (RW_ uint32_t* const)0x400174A4U;   /** @brief Timerx compare 2 register */
-    static RW_ uint32_t* const HRTIM_TIMA_CMP3AR_PTR      = (RW_ uint32_t* const)0x400174A8U;   /** @brief Timerx compare 3 register */
-    static RW_ uint32_t* const HRTIM_TIMA_CMP4AR_PTR      = (RW_ uint32_t* const)0x400174ACU;   /** @brief Timerx compare 4 register */
     static RW_ uint32_t* const HRTIM_TIMA_DTAR_PTR        = (RW_ uint32_t* const)0x400174B8U;   /** @brief Timerx deadtime register */
     static RW_ uint32_t* const HRTIM_TIMA_EEFAR1_PTR      = (RW_ uint32_t* const)0x400174CCU;   /** @brief Timerx external event filtering register 1 */
     static RW_ uint32_t* const HRTIM_TIMA_EEFAR2_PTR      = (RW_ uint32_t* const)0x400174D0U;   /** @brief Timerx external event filtering register 2 */
@@ -20283,6 +19649,13 @@
     static RW_ uint32_t* const HRTIM_TIMA_FLTAR_PTR       = (RW_ uint32_t* const)0x400174E8U;   /** @brief Timerx fault register */
 
     /**** @subsection Enumerated HRTIM_TIMA Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIMA_CMPxAR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001749CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x400174A4U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x400174A8U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x400174ACU,   /** @brief Timerx compare 4 register */
+    };
 
     static RO_ uint32_t* const HRTIM_TIMA_CPTxAR_PTR[3] = {
       [1] = (RO_ uint32_t* const)0x400174B0U,   /** @brief Timerx capture 1 register */
@@ -20306,18 +19679,14 @@
 
     /**** @subsection HRTIM_TIMA Register Reset Values ****/
 
-    static const uint32_t HRTIM_TIMA_TIMxCR_RST      = 0x00000000U;   /** @brief TIMxCR register reset value. */
-    static const uint32_t HRTIM_TIMA_TIMxISR_RST     = 0x00000000U;   /** @brief TIMxISR register reset value. */
-    static const uint32_t HRTIM_TIMA_TIMxICR_RST     = 0x00000000U;   /** @brief TIMxICR register reset value. */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_RST   = 0x00000000U;   /** @brief TIMxDIER5 register reset value. */
+    static const uint32_t HRTIM_TIMA_TIMACR_RST      = 0x00000000U;   /** @brief TIMACR register reset value. */
+    static const uint32_t HRTIM_TIMA_TIMAISR_RST     = 0x00000000U;   /** @brief TIMAISR register reset value. */
+    static const uint32_t HRTIM_TIMA_TIMAICR_RST     = 0x00000000U;   /** @brief TIMAICR register reset value. */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RST   = 0x00000000U;   /** @brief TIMADIER5 register reset value. */
     static const uint32_t HRTIM_TIMA_CNTAR_RST       = 0x00000000U;   /** @brief CNTAR register reset value. */
     static const uint32_t HRTIM_TIMA_PERAR_RST       = 0x0000FFFFU;   /** @brief PERAR register reset value. */
     static const uint32_t HRTIM_TIMA_REPAR_RST       = 0x00000000U;   /** @brief REPAR register reset value. */
-    static const uint32_t HRTIM_TIMA_CMP1AR_RST      = 0x00000000U;   /** @brief CMP1AR register reset value. */
     static const uint32_t HRTIM_TIMA_CMP1CAR_RST     = 0x00000000U;   /** @brief CMP1CAR register reset value. */
-    static const uint32_t HRTIM_TIMA_CMP2AR_RST      = 0x00000000U;   /** @brief CMP2AR register reset value. */
-    static const uint32_t HRTIM_TIMA_CMP3AR_RST      = 0x00000000U;   /** @brief CMP3AR register reset value. */
-    static const uint32_t HRTIM_TIMA_CMP4AR_RST      = 0x00000000U;   /** @brief CMP4AR register reset value. */
     static const uint32_t HRTIM_TIMA_DTAR_RST        = 0x00000000U;   /** @brief DTAR register reset value. */
     static const uint32_t HRTIM_TIMA_EEFAR1_RST      = 0x00000000U;   /** @brief EEFAR1 register reset value. */
     static const uint32_t HRTIM_TIMA_EEFAR2_RST      = 0x00000000U;   /** @brief EEFAR2 register reset value. */
@@ -20327,6 +19696,13 @@
     static const uint32_t HRTIM_TIMA_FLTAR_RST       = 0x00000000U;   /** @brief FLTAR register reset value. */
 
     /**** @subsection Enumerated HRTIM_TIMA Register Reset Values ****/
+
+    static const uint32_t HRTIM_TIMA_CMPxAR_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CMP1AR register reset value. */
+      [2] = 0x00000000U,   /** @brief CMP2AR register reset value. */
+      [3] = 0x00000000U,   /** @brief CMP3AR register reset value. */
+      [4] = 0x00000000U,   /** @brief CMP4AR register reset value. */
+    };
 
     static const uint32_t HRTIM_TIMA_CPTxAR_RST[3] = {
       [1] = 0x00000000U,   /** @brief CPT1AR register reset value. */
@@ -20350,18 +19726,15 @@
 
     /**** @subsection Enumerated HRTIM_TIMA Register Value Types ****/
 
-    typedef uint32_t HRTIM_TIMA_TIMxCR_t;      /** @brief TIMxCR register value type. */
-    typedef uint32_t HRTIM_TIMA_TIMxISR_t;     /** @brief TIMxISR register value type. */
-    typedef uint32_t HRTIM_TIMA_TIMxICR_t;     /** @brief TIMxICR register value type. */
-    typedef uint32_t HRTIM_TIMA_TIMxDIER5_t;   /** @brief TIMxDIER5 register value type. */
+    typedef uint32_t HRTIM_TIMA_TIMACR_t;      /** @brief TIMACR register value type. */
+    typedef uint32_t HRTIM_TIMA_TIMAISR_t;     /** @brief TIMAISR register value type. */
+    typedef uint32_t HRTIM_TIMA_TIMAICR_t;     /** @brief TIMAICR register value type. */
+    typedef uint32_t HRTIM_TIMA_TIMADIER5_t;   /** @brief TIMADIER5 register value type. */
     typedef uint32_t HRTIM_TIMA_CNTAR_t;       /** @brief CNTAR register value type. */
     typedef uint32_t HRTIM_TIMA_PERAR_t;       /** @brief PERAR register value type. */
     typedef uint32_t HRTIM_TIMA_REPAR_t;       /** @brief REPAR register value type. */
-    typedef uint32_t HRTIM_TIMA_CMP1AR_t;      /** @brief CMP1AR register value type. */
+    typedef uint32_t HRTIM_TIMA_CMPxAR_t;      /** @brief CMPxAR register value type. */
     typedef uint32_t HRTIM_TIMA_CMP1CAR_t;     /** @brief CMP1CAR register value type. */
-    typedef uint32_t HRTIM_TIMA_CMP2AR_t;      /** @brief CMP2AR register value type. */
-    typedef uint32_t HRTIM_TIMA_CMP3AR_t;      /** @brief CMP3AR register value type. */
-    typedef uint32_t HRTIM_TIMA_CMP4AR_t;      /** @brief CMP4AR register value type. */
     typedef uint32_t HRTIM_TIMA_CPTxAR_t;      /** @brief CPTxAR register value type. */
     typedef uint32_t HRTIM_TIMA_DTAR_t;        /** @brief DTAR register value type. */
     typedef uint32_t HRTIM_TIMA_SETAxR_t;      /** @brief SETAxR register value type. */
@@ -20376,18 +19749,15 @@
 
     /**** @subsection Enumerated HRTIM_TIMA Register Pointer Types ****/
 
-    typedef uint32_t* const HRTIM_TIMA_TIMxCR_PTR_t;      /** @brief TIMxCR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_TIMxISR_PTR_t;     /** @brief TIMxISR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_TIMxICR_PTR_t;     /** @brief TIMxICR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_TIMxDIER5_PTR_t;   /** @brief TIMxDIER5 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMA_TIMACR_PTR_t;      /** @brief TIMACR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMA_TIMAISR_PTR_t;     /** @brief TIMAISR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMA_TIMAICR_PTR_t;     /** @brief TIMAICR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMA_TIMADIER5_PTR_t;   /** @brief TIMADIER5 register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_CNTAR_PTR_t;       /** @brief CNTAR register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_PERAR_PTR_t;       /** @brief PERAR register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_REPAR_PTR_t;       /** @brief REPAR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_CMP1AR_PTR_t;      /** @brief CMP1AR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMA_CMPxAR_PTR_t;      /** @brief CMPxAR register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_CMP1CAR_PTR_t;     /** @brief CMP1CAR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_CMP2AR_PTR_t;      /** @brief CMP2AR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_CMP3AR_PTR_t;      /** @brief CMP3AR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMA_CMP4AR_PTR_t;      /** @brief CMP4AR register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_CPTxAR_PTR_t;      /** @brief CPTxAR register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_DTAR_PTR_t;        /** @brief DTAR register pointer type. */
     typedef uint32_t* const HRTIM_TIMA_SETAxR_PTR_t;      /** @brief SETAxR register pointer type. */
@@ -20402,55 +19772,52 @@
 
     /**** @subsection HRTIM_TIMA Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMA_TIMxCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
-    static const uint32_t HRTIM_TIMA_TIMxCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
-    static const uint32_t HRTIM_TIMA_TIMxCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
-    static const uint32_t HRTIM_TIMA_TIMxCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
-    static const uint32_t HRTIM_TIMA_TIMxCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
-    static const uint32_t HRTIM_TIMA_TIMxCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
-    static const uint32_t HRTIM_TIMA_TIMxCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
-    static const uint32_t HRTIM_TIMA_TIMxCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
-    static const uint32_t HRTIM_TIMA_TIMxCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
-    static const uint32_t HRTIM_TIMA_TIMxCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
-    static const uint32_t HRTIM_TIMA_TIMxCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
-    static const uint32_t HRTIM_TIMA_TIMxCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
-    static const uint32_t HRTIM_TIMA_TIMxCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
-    static const uint32_t HRTIM_TIMA_TIMxCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
-    static const uint32_t HRTIM_TIMA_TIMxCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
-    static const uint32_t HRTIM_TIMA_TIMxCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
-    static const uint32_t HRTIM_TIMA_TIMxCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
-    static const uint32_t HRTIM_TIMA_TIMxISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
-    static const uint32_t HRTIM_TIMA_TIMxISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
-    static const uint32_t HRTIM_TIMA_TIMxISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
-    static const uint32_t HRTIM_TIMA_TIMxISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
-    static const uint32_t HRTIM_TIMA_TIMxISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
-    static const uint32_t HRTIM_TIMA_TIMxISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
-    static const uint32_t HRTIM_TIMA_TIMxICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
-    static const uint32_t HRTIM_TIMA_TIMxICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
-    static const uint32_t HRTIM_TIMA_TIMxICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
-    static const uint32_t HRTIM_TIMA_TIMxICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMA_TIMACR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMA_TIMACR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMA_TIMACR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMA_TIMACR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMA_TIMACR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMA_TIMACR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMA_TIMACR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMA_TIMACR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMA_TIMACR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMA_TIMACR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMA_TIMACR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMA_TIMACR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMA_TIMACR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMA_TIMAISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMA_TIMAISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMA_TIMAISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMA_TIMAISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMA_TIMAISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMA_TIMAISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMA_TIMAICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMA_TIMAICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMA_TIMAICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMA_TIMAICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
     static const uint32_t HRTIM_TIMA_CNTAR_CNTX_MASK           = 0x0000FFFFU;   /** @brief Timerx counter value */
     static const uint32_t HRTIM_TIMA_PERAR_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
     static const uint32_t HRTIM_TIMA_REPAR_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
-    static const uint32_t HRTIM_TIMA_CMP1AR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMA_CMPxAR_CMP1X_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
     static const uint32_t HRTIM_TIMA_CMP1CAR_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
     static const uint32_t HRTIM_TIMA_CMP1CAR_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMA_CMP2AR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 2 value */
-    static const uint32_t HRTIM_TIMA_CMP3AR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 3 value */
-    static const uint32_t HRTIM_TIMA_CMP4AR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 4 value */
-    static const uint32_t HRTIM_TIMA_CPTxAR_CPTxX_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMA_CPTxAR_CPT1X_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
     static const uint32_t HRTIM_TIMA_DTAR_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
     static const uint32_t HRTIM_TIMA_DTAR_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
     static const uint32_t HRTIM_TIMA_DTAR_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
@@ -20492,88 +19859,88 @@
 
     /**** @subsection Enumerated HRTIM_TIMA Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMA_TIMxCR_DELCMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMACR_DELCMPx_MASK[5] = {
       [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
       [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxISR_OxSTAT_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_OxSTAT_MASK[3] = {
       [1] = 0x00040000U,   /** @brief Output 1 state */
       [2] = 0x00080000U,   /** @brief Output 2 state */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxISR_RSTXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_RSTXx_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
       [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxISR_SETXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_SETXx_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
       [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxISR_CPTx_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_CPTx_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxISR_CMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_CMPx_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxICR_RSTXxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_RSTXxC_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
       [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxICR_SETxXC_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_SETxXC_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
       [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxICR_CPTxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_CPTxC_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxICR_CMPxC_MASK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_CMPxC_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_RSTXxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTXxDE_MASK[3] = {
       [1] = 0x04000000U,   /** @brief RSTx1DE */
       [2] = 0x10000000U,   /** @brief RSTx2DE */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_CPTxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CPTxDE_MASK[3] = {
       [1] = 0x00800000U,   /** @brief CPT1DE */
       [2] = 0x01000000U,   /** @brief CPT2DE */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_CMPxDE_MASK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CMPxDE_MASK[5] = {
       [1] = 0x00010000U,   /** @brief CMP1DE */
       [2] = 0x00020000U,   /** @brief CMP2DE */
       [3] = 0x00040000U,   /** @brief CMP3DE */
       [4] = 0x00080000U,   /** @brief CMP4DE */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_RSTXxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTXxIE_MASK[3] = {
       [1] = 0x00000400U,   /** @brief RSTx1IE */
       [2] = 0x00001000U,   /** @brief RSTx2IE */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_CPTxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CPTxIE_MASK[3] = {
       [1] = 0x00000080U,   /** @brief CPT1IE */
       [2] = 0x00000100U,   /** @brief CPT2IE */
     };
 
-    static const uint32_t HRTIM_TIMA_TIMxDIER5_CMPxIE_MASK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CMPxIE_MASK[5] = {
       [1] = 0x00000001U,   /** @brief CMP1IE */
       [2] = 0x00000002U,   /** @brief CMP2IE */
       [3] = 0x00000004U,   /** @brief CMP3IE */
@@ -20725,55 +20092,52 @@
 
     /**** @subsection HRTIM_TIMA Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMA_TIMxCR_UPDGAT_POS        = 28;   /** @brief Update gating */
-    static const int32_t HRTIM_TIMA_TIMxCR_PREEN_POS         = 27;   /** @brief Preload enable */
-    static const int32_t HRTIM_TIMA_TIMxCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
-    static const int32_t HRTIM_TIMA_TIMxCR_MSTU_POS          = 24;   /** @brief Master timer update */
-    static const int32_t HRTIM_TIMA_TIMxCR_TEU_POS           = 23;   /** @brief TEU */
-    static const int32_t HRTIM_TIMA_TIMxCR_TDU_POS           = 22;   /** @brief TDU */
-    static const int32_t HRTIM_TIMA_TIMxCR_TCU_POS           = 21;   /** @brief TCU */
-    static const int32_t HRTIM_TIMA_TIMxCR_TBU_POS           = 20;   /** @brief TBU */
-    static const int32_t HRTIM_TIMA_TIMxCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
-    static const int32_t HRTIM_TIMA_TIMxCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
-    static const int32_t HRTIM_TIMA_TIMxCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
-    static const int32_t HRTIM_TIMA_TIMxCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
-    static const int32_t HRTIM_TIMA_TIMxCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
-    static const int32_t HRTIM_TIMA_TIMxCR_HALF_POS          = 5;    /** @brief Half mode enable */
-    static const int32_t HRTIM_TIMA_TIMxCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
-    static const int32_t HRTIM_TIMA_TIMxCR_CONT_POS          = 3;    /** @brief Continuous mode */
-    static const int32_t HRTIM_TIMA_TIMxCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
-    static const int32_t HRTIM_TIMA_TIMxISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
-    static const int32_t HRTIM_TIMA_TIMxISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
-    static const int32_t HRTIM_TIMA_TIMxISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
-    static const int32_t HRTIM_TIMA_TIMxISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
-    static const int32_t HRTIM_TIMA_TIMxISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
-    static const int32_t HRTIM_TIMA_TIMxISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
-    static const int32_t HRTIM_TIMA_TIMxICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
-    static const int32_t HRTIM_TIMA_TIMxICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
-    static const int32_t HRTIM_TIMA_TIMxICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
-    static const int32_t HRTIM_TIMA_TIMxICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_REPDE_POS      = 20;   /** @brief REPDE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
-    static const int32_t HRTIM_TIMA_TIMxDIER5_REPIE_POS      = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMA_TIMACR_UPDGAT_POS        = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMA_TIMACR_PREEN_POS         = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMA_TIMACR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMA_TIMACR_MSTU_POS          = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMA_TIMACR_TEU_POS           = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMA_TIMACR_TDU_POS           = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMA_TIMACR_TCU_POS           = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMA_TIMACR_TBU_POS           = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMA_TIMACR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMA_TIMACR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMA_TIMACR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMA_TIMACR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMA_TIMACR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMA_TIMACR_HALF_POS          = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMA_TIMACR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMA_TIMACR_CONT_POS          = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMA_TIMACR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMA_TIMAISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMA_TIMAISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMA_TIMAISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMA_TIMAISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMA_TIMAISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMA_TIMAISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMA_TIMAICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMA_TIMAICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMA_TIMAICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMA_TIMAICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMA_TIMADIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_REPDE_POS      = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_REPIE_POS      = 4;    /** @brief REPIE */
     static const int32_t HRTIM_TIMA_CNTAR_CNTX_POS           = 0;    /** @brief Timerx counter value */
     static const int32_t HRTIM_TIMA_PERAR_PERX_POS           = 0;    /** @brief Timerx period value */
     static const int32_t HRTIM_TIMA_REPAR_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
-    static const int32_t HRTIM_TIMA_CMP1AR_CMPxX_POS         = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMA_CMPxAR_CMP1X_POS         = 0;    /** @brief Timerx compare 1 value */
     static const int32_t HRTIM_TIMA_CMP1CAR_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
     static const int32_t HRTIM_TIMA_CMP1CAR_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMA_CMP2AR_CMPxX_POS         = 0;    /** @brief Timerx compare 2 value */
-    static const int32_t HRTIM_TIMA_CMP3AR_CMPxX_POS         = 0;    /** @brief Timerx compare 3 value */
-    static const int32_t HRTIM_TIMA_CMP4AR_CMPxX_POS         = 0;    /** @brief Timerx compare 4 value */
-    static const int32_t HRTIM_TIMA_CPTxAR_CPTxX_POS         = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMA_CPTxAR_CPT1X_POS         = 0;    /** @brief Timerx capture 1 value */
     static const int32_t HRTIM_TIMA_DTAR_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
     static const int32_t HRTIM_TIMA_DTAR_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
     static const int32_t HRTIM_TIMA_DTAR_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
@@ -20815,88 +20179,88 @@
 
     /**** @subsection Enumerated HRTIM_TIMA Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMA_TIMxCR_DELCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMACR_DELCMPx_POS[5] = {
       [2] = 12,   /** @brief Delayed CMP2 mode */
       [4] = 14,   /** @brief Delayed CMP4 mode */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxISR_OxSTAT_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_OxSTAT_POS[3] = {
       [1] = 18,   /** @brief Output 1 state */
       [2] = 19,   /** @brief Output 2 state */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxISR_RSTXx_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_RSTXx_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset interrupt flag */
       [2] = 12,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxISR_SETXx_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_SETXx_POS[3] = {
       [1] = 9,    /** @brief Output 1 set interrupt flag */
       [2] = 11,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxISR_CPTx_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_CPTx_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag */
       [2] = 8,   /** @brief Capture2 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxISR_CMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_CMPx_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag */
       [2] = 1,   /** @brief Compare 2 interrupt flag */
       [3] = 2,   /** @brief Compare 3 interrupt flag */
       [4] = 3,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxICR_RSTXxC_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_RSTXxC_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset flag clear */
       [2] = 12,   /** @brief Output 2 reset flag clear */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxICR_SETxXC_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_SETxXC_POS[3] = {
       [1] = 9,    /** @brief Output 1 set flag clear */
       [2] = 11,   /** @brief Output 2 set flag clear */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxICR_CPTxC_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_CPTxC_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag clear */
       [2] = 8,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxICR_CMPxC_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_CMPxC_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag clear */
       [2] = 1,   /** @brief Compare 2 interrupt flag clear */
       [3] = 2,   /** @brief Compare 3 interrupt flag clear */
       [4] = 3,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxDIER5_RSTXxDE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTXxDE_POS[3] = {
       [1] = 26,   /** @brief RSTx1DE */
       [2] = 28,   /** @brief RSTx2DE */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxDIER5_CPTxDE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CPTxDE_POS[3] = {
       [1] = 23,   /** @brief CPT1DE */
       [2] = 24,   /** @brief CPT2DE */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxDIER5_CMPxDE_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CMPxDE_POS[5] = {
       [1] = 16,   /** @brief CMP1DE */
       [2] = 17,   /** @brief CMP2DE */
       [3] = 18,   /** @brief CMP3DE */
       [4] = 19,   /** @brief CMP4DE */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxDIER5_RSTXxIE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTXxIE_POS[3] = {
       [1] = 10,   /** @brief RSTx1IE */
       [2] = 12,   /** @brief RSTx2IE */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxDIER5_CPTxIE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CPTxIE_POS[3] = {
       [1] = 7,   /** @brief CPT1IE */
       [2] = 8,   /** @brief CPT2IE */
     };
 
-    static const int32_t HRTIM_TIMA_TIMxDIER5_CMPxIE_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CMPxIE_POS[5] = {
       [1] = 0,   /** @brief CMP1IE */
       [2] = 1,   /** @brief CMP2IE */
       [3] = 2,   /** @brief CMP3IE */
@@ -21052,18 +20416,14 @@
 
     /**** @subsection HRTIM_TIMB Register Pointers ****/
 
-    static RW_ uint32_t* const HRTIM_TIMB_TIMxCR_PTR      = (RW_ uint32_t* const)0x40017500U;   /** @brief Timerx control register */
-    static RO_ uint32_t* const HRTIM_TIMB_TIMxISR_PTR     = (RO_ uint32_t* const)0x40017504U;   /** @brief Timerx interrupt status register */
-    static RW_ uint32_t* const HRTIM_TIMB_TIMxICR_PTR     = (RW_ uint32_t* const)0x40017508U;   /** @brief Timerx interrupt clear register */
-    static RW_ uint32_t* const HRTIM_TIMB_TIMxDIER5_PTR   = (RW_ uint32_t* const)0x4001750CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMB_TIMBCR_PTR      = (RW_ uint32_t* const)0x40017500U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMB_TIMBISR_PTR     = (RO_ uint32_t* const)0x40017504U;   /** @brief Timerx interrupt status register */
+    static RW_ uint32_t* const HRTIM_TIMB_TIMBICR_PTR     = (RW_ uint32_t* const)0x40017508U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMB_TIMBDIER5_PTR   = (RW_ uint32_t* const)0x4001750CU;   /** @brief TIMxDIER5 */
     static RW_ uint32_t* const HRTIM_TIMB_CNTR_PTR        = (RW_ uint32_t* const)0x40017510U;   /** @brief Timerx counter register */
     static RW_ uint32_t* const HRTIM_TIMB_PERBR_PTR       = (RW_ uint32_t* const)0x40017514U;   /** @brief Timerx period register */
     static RW_ uint32_t* const HRTIM_TIMB_REPBR_PTR       = (RW_ uint32_t* const)0x40017518U;   /** @brief Timerx repetition register */
-    static RW_ uint32_t* const HRTIM_TIMB_CMP1BR_PTR      = (RW_ uint32_t* const)0x4001751CU;   /** @brief Timerx compare 1 register */
     static RW_ uint32_t* const HRTIM_TIMB_CMP1CBR_PTR     = (RW_ uint32_t* const)0x40017520U;   /** @brief Timerx compare 1 compound register */
-    static RW_ uint32_t* const HRTIM_TIMB_CMP2BR_PTR      = (RW_ uint32_t* const)0x40017524U;   /** @brief Timerx compare 2 register */
-    static RW_ uint32_t* const HRTIM_TIMB_CMP3BR_PTR      = (RW_ uint32_t* const)0x40017528U;   /** @brief Timerx compare 3 register */
-    static RW_ uint32_t* const HRTIM_TIMB_CMP4BR_PTR      = (RW_ uint32_t* const)0x4001752CU;   /** @brief Timerx compare 4 register */
     static RW_ uint32_t* const HRTIM_TIMB_DTBR_PTR        = (RW_ uint32_t* const)0x40017538U;   /** @brief Timerx deadtime register */
     static RW_ uint32_t* const HRTIM_TIMB_EEFBR1_PTR      = (RW_ uint32_t* const)0x4001754CU;   /** @brief Timerx external event filtering register 1 */
     static RW_ uint32_t* const HRTIM_TIMB_EEFBR2_PTR      = (RW_ uint32_t* const)0x40017550U;   /** @brief Timerx external event filtering register 2 */
@@ -21073,6 +20433,13 @@
     static RW_ uint32_t* const HRTIM_TIMB_FLTBR_PTR       = (RW_ uint32_t* const)0x40017568U;   /** @brief Timerx fault register */
 
     /**** @subsection Enumerated HRTIM_TIMB Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIMB_CMPxBR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001751CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x40017524U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x40017528U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x4001752CU,   /** @brief Timerx compare 4 register */
+    };
 
     static RO_ uint32_t* const HRTIM_TIMB_CPTxBR_PTR[3] = {
       [1] = (RO_ uint32_t* const)0x40017530U,   /** @brief Timerx capture 1 register */
@@ -21096,18 +20463,14 @@
 
     /**** @subsection HRTIM_TIMB Register Reset Values ****/
 
-    static const uint32_t HRTIM_TIMB_TIMxCR_RST      = 0x00000000U;   /** @brief TIMxCR register reset value. */
-    static const uint32_t HRTIM_TIMB_TIMxISR_RST     = 0x00000000U;   /** @brief TIMxISR register reset value. */
-    static const uint32_t HRTIM_TIMB_TIMxICR_RST     = 0x00000000U;   /** @brief TIMxICR register reset value. */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_RST   = 0x00000000U;   /** @brief TIMxDIER5 register reset value. */
+    static const uint32_t HRTIM_TIMB_TIMBCR_RST      = 0x00000000U;   /** @brief TIMBCR register reset value. */
+    static const uint32_t HRTIM_TIMB_TIMBISR_RST     = 0x00000000U;   /** @brief TIMBISR register reset value. */
+    static const uint32_t HRTIM_TIMB_TIMBICR_RST     = 0x00000000U;   /** @brief TIMBICR register reset value. */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RST   = 0x00000000U;   /** @brief TIMBDIER5 register reset value. */
     static const uint32_t HRTIM_TIMB_CNTR_RST        = 0x00000000U;   /** @brief CNTR register reset value. */
     static const uint32_t HRTIM_TIMB_PERBR_RST       = 0x0000FFFFU;   /** @brief PERBR register reset value. */
     static const uint32_t HRTIM_TIMB_REPBR_RST       = 0x00000000U;   /** @brief REPBR register reset value. */
-    static const uint32_t HRTIM_TIMB_CMP1BR_RST      = 0x00000000U;   /** @brief CMP1BR register reset value. */
     static const uint32_t HRTIM_TIMB_CMP1CBR_RST     = 0x00000000U;   /** @brief CMP1CBR register reset value. */
-    static const uint32_t HRTIM_TIMB_CMP2BR_RST      = 0x00000000U;   /** @brief CMP2BR register reset value. */
-    static const uint32_t HRTIM_TIMB_CMP3BR_RST      = 0x00000000U;   /** @brief CMP3BR register reset value. */
-    static const uint32_t HRTIM_TIMB_CMP4BR_RST      = 0x00000000U;   /** @brief CMP4BR register reset value. */
     static const uint32_t HRTIM_TIMB_DTBR_RST        = 0x00000000U;   /** @brief DTBR register reset value. */
     static const uint32_t HRTIM_TIMB_EEFBR1_RST      = 0x00000000U;   /** @brief EEFBR1 register reset value. */
     static const uint32_t HRTIM_TIMB_EEFBR2_RST      = 0x00000000U;   /** @brief EEFBR2 register reset value. */
@@ -21117,6 +20480,13 @@
     static const uint32_t HRTIM_TIMB_FLTBR_RST       = 0x00000000U;   /** @brief FLTBR register reset value. */
 
     /**** @subsection Enumerated HRTIM_TIMB Register Reset Values ****/
+
+    static const uint32_t HRTIM_TIMB_CMPxBR_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CMP1BR register reset value. */
+      [2] = 0x00000000U,   /** @brief CMP2BR register reset value. */
+      [3] = 0x00000000U,   /** @brief CMP3BR register reset value. */
+      [4] = 0x00000000U,   /** @brief CMP4BR register reset value. */
+    };
 
     static const uint32_t HRTIM_TIMB_CPTxBR_RST[3] = {
       [1] = 0x00000000U,   /** @brief CPT1BR register reset value. */
@@ -21140,18 +20510,15 @@
 
     /**** @subsection Enumerated HRTIM_TIMB Register Value Types ****/
 
-    typedef uint32_t HRTIM_TIMB_TIMxCR_t;      /** @brief TIMxCR register value type. */
-    typedef uint32_t HRTIM_TIMB_TIMxISR_t;     /** @brief TIMxISR register value type. */
-    typedef uint32_t HRTIM_TIMB_TIMxICR_t;     /** @brief TIMxICR register value type. */
-    typedef uint32_t HRTIM_TIMB_TIMxDIER5_t;   /** @brief TIMxDIER5 register value type. */
+    typedef uint32_t HRTIM_TIMB_TIMBCR_t;      /** @brief TIMBCR register value type. */
+    typedef uint32_t HRTIM_TIMB_TIMBISR_t;     /** @brief TIMBISR register value type. */
+    typedef uint32_t HRTIM_TIMB_TIMBICR_t;     /** @brief TIMBICR register value type. */
+    typedef uint32_t HRTIM_TIMB_TIMBDIER5_t;   /** @brief TIMBDIER5 register value type. */
     typedef uint32_t HRTIM_TIMB_CNTR_t;        /** @brief CNTR register value type. */
     typedef uint32_t HRTIM_TIMB_PERBR_t;       /** @brief PERBR register value type. */
     typedef uint32_t HRTIM_TIMB_REPBR_t;       /** @brief REPBR register value type. */
-    typedef uint32_t HRTIM_TIMB_CMP1BR_t;      /** @brief CMP1BR register value type. */
+    typedef uint32_t HRTIM_TIMB_CMPxBR_t;      /** @brief CMPxBR register value type. */
     typedef uint32_t HRTIM_TIMB_CMP1CBR_t;     /** @brief CMP1CBR register value type. */
-    typedef uint32_t HRTIM_TIMB_CMP2BR_t;      /** @brief CMP2BR register value type. */
-    typedef uint32_t HRTIM_TIMB_CMP3BR_t;      /** @brief CMP3BR register value type. */
-    typedef uint32_t HRTIM_TIMB_CMP4BR_t;      /** @brief CMP4BR register value type. */
     typedef uint32_t HRTIM_TIMB_CPTxBR_t;      /** @brief CPTxBR register value type. */
     typedef uint32_t HRTIM_TIMB_DTBR_t;        /** @brief DTBR register value type. */
     typedef uint32_t HRTIM_TIMB_SETBxR_t;      /** @brief SETBxR register value type. */
@@ -21166,18 +20533,15 @@
 
     /**** @subsection Enumerated HRTIM_TIMB Register Pointer Types ****/
 
-    typedef uint32_t* const HRTIM_TIMB_TIMxCR_PTR_t;      /** @brief TIMxCR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_TIMxISR_PTR_t;     /** @brief TIMxISR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_TIMxICR_PTR_t;     /** @brief TIMxICR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_TIMxDIER5_PTR_t;   /** @brief TIMxDIER5 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMB_TIMBCR_PTR_t;      /** @brief TIMBCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMB_TIMBISR_PTR_t;     /** @brief TIMBISR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMB_TIMBICR_PTR_t;     /** @brief TIMBICR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMB_TIMBDIER5_PTR_t;   /** @brief TIMBDIER5 register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_CNTR_PTR_t;        /** @brief CNTR register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_PERBR_PTR_t;       /** @brief PERBR register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_REPBR_PTR_t;       /** @brief REPBR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_CMP1BR_PTR_t;      /** @brief CMP1BR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMB_CMPxBR_PTR_t;      /** @brief CMPxBR register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_CMP1CBR_PTR_t;     /** @brief CMP1CBR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_CMP2BR_PTR_t;      /** @brief CMP2BR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_CMP3BR_PTR_t;      /** @brief CMP3BR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMB_CMP4BR_PTR_t;      /** @brief CMP4BR register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_CPTxBR_PTR_t;      /** @brief CPTxBR register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_DTBR_PTR_t;        /** @brief DTBR register pointer type. */
     typedef uint32_t* const HRTIM_TIMB_SETBxR_PTR_t;      /** @brief SETBxR register pointer type. */
@@ -21192,55 +20556,52 @@
 
     /**** @subsection HRTIM_TIMB Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMB_TIMxCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
-    static const uint32_t HRTIM_TIMB_TIMxCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
-    static const uint32_t HRTIM_TIMB_TIMxCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
-    static const uint32_t HRTIM_TIMB_TIMxCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
-    static const uint32_t HRTIM_TIMB_TIMxCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
-    static const uint32_t HRTIM_TIMB_TIMxCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
-    static const uint32_t HRTIM_TIMB_TIMxCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
-    static const uint32_t HRTIM_TIMB_TIMxCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
-    static const uint32_t HRTIM_TIMB_TIMxCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
-    static const uint32_t HRTIM_TIMB_TIMxCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
-    static const uint32_t HRTIM_TIMB_TIMxCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
-    static const uint32_t HRTIM_TIMB_TIMxCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
-    static const uint32_t HRTIM_TIMB_TIMxCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
-    static const uint32_t HRTIM_TIMB_TIMxCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
-    static const uint32_t HRTIM_TIMB_TIMxCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
-    static const uint32_t HRTIM_TIMB_TIMxCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
-    static const uint32_t HRTIM_TIMB_TIMxCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
-    static const uint32_t HRTIM_TIMB_TIMxISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
-    static const uint32_t HRTIM_TIMB_TIMxISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
-    static const uint32_t HRTIM_TIMB_TIMxISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
-    static const uint32_t HRTIM_TIMB_TIMxISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
-    static const uint32_t HRTIM_TIMB_TIMxISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
-    static const uint32_t HRTIM_TIMB_TIMxISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
-    static const uint32_t HRTIM_TIMB_TIMxICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
-    static const uint32_t HRTIM_TIMB_TIMxICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
-    static const uint32_t HRTIM_TIMB_TIMxICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
-    static const uint32_t HRTIM_TIMB_TIMxICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMB_TIMBCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMB_TIMBCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMB_TIMBCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMB_TIMBCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMB_TIMBCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMB_TIMBCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMB_TIMBCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMB_TIMBCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMB_TIMBCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMB_TIMBCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMB_TIMBCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMB_TIMBISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMB_TIMBISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMB_TIMBISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMB_TIMBISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMB_TIMBISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMB_TIMBISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMB_TIMBICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
     static const uint32_t HRTIM_TIMB_CNTR_CNTX_MASK            = 0x0000FFFFU;   /** @brief Timerx counter value */
     static const uint32_t HRTIM_TIMB_PERBR_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
     static const uint32_t HRTIM_TIMB_REPBR_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
-    static const uint32_t HRTIM_TIMB_CMP1BR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMB_CMPxBR_CMP1X_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
     static const uint32_t HRTIM_TIMB_CMP1CBR_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
     static const uint32_t HRTIM_TIMB_CMP1CBR_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMB_CMP2BR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 2 value */
-    static const uint32_t HRTIM_TIMB_CMP3BR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 3 value */
-    static const uint32_t HRTIM_TIMB_CMP4BR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 4 value */
-    static const uint32_t HRTIM_TIMB_CPTxBR_CPTxX_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMB_CPTxBR_CPT1X_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
     static const uint32_t HRTIM_TIMB_DTBR_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
     static const uint32_t HRTIM_TIMB_DTBR_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
     static const uint32_t HRTIM_TIMB_DTBR_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
@@ -21282,88 +20643,88 @@
 
     /**** @subsection Enumerated HRTIM_TIMB Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMB_TIMxCR_DELCMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMB_TIMBCR_DELCMPx_MASK[5] = {
       [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
       [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxISR_OxSTAT_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBISR_OxSTAT_MASK[3] = {
       [1] = 0x00040000U,   /** @brief Output 1 state */
       [2] = 0x00080000U,   /** @brief Output 2 state */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxISR_RSTXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBISR_RSTXx_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
       [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxISR_SETXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBISR_SETXx_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
       [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxISR_CPTx_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBISR_CPTx_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxISR_CMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMB_TIMBISR_CMPx_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxICR_RSTXxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBICR_RSTXxC_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
       [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxICR_SETxXC_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBICR_SETxXC_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
       [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxICR_CPTxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBICR_CPTxC_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxICR_CMPxC_MASK[5] = {
+    static const uint32_t HRTIM_TIMB_TIMBICR_CMPxC_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_RSTXxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTXxDE_MASK[3] = {
       [1] = 0x04000000U,   /** @brief RSTx1DE */
       [2] = 0x10000000U,   /** @brief RSTx2DE */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_CPTxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CPTxDE_MASK[3] = {
       [1] = 0x00800000U,   /** @brief CPT1DE */
       [2] = 0x01000000U,   /** @brief CPT2DE */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_CMPxDE_MASK[5] = {
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CMPxDE_MASK[5] = {
       [1] = 0x00010000U,   /** @brief CMP1DE */
       [2] = 0x00020000U,   /** @brief CMP2DE */
       [3] = 0x00040000U,   /** @brief CMP3DE */
       [4] = 0x00080000U,   /** @brief CMP4DE */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_RSTXxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTXxIE_MASK[3] = {
       [1] = 0x00000400U,   /** @brief RSTx1IE */
       [2] = 0x00001000U,   /** @brief RSTx2IE */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_CPTxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CPTxIE_MASK[3] = {
       [1] = 0x00000080U,   /** @brief CPT1IE */
       [2] = 0x00000100U,   /** @brief CPT2IE */
     };
 
-    static const uint32_t HRTIM_TIMB_TIMxDIER5_CMPxIE_MASK[5] = {
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CMPxIE_MASK[5] = {
       [1] = 0x00000001U,   /** @brief CMP1IE */
       [2] = 0x00000002U,   /** @brief CMP2IE */
       [3] = 0x00000004U,   /** @brief CMP3IE */
@@ -21515,55 +20876,52 @@
 
     /**** @subsection HRTIM_TIMB Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMB_TIMxCR_UPDGAT_POS        = 28;   /** @brief Update gating */
-    static const int32_t HRTIM_TIMB_TIMxCR_PREEN_POS         = 27;   /** @brief Preload enable */
-    static const int32_t HRTIM_TIMB_TIMxCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
-    static const int32_t HRTIM_TIMB_TIMxCR_MSTU_POS          = 24;   /** @brief Master timer update */
-    static const int32_t HRTIM_TIMB_TIMxCR_TEU_POS           = 23;   /** @brief TEU */
-    static const int32_t HRTIM_TIMB_TIMxCR_TDU_POS           = 22;   /** @brief TDU */
-    static const int32_t HRTIM_TIMB_TIMxCR_TCU_POS           = 21;   /** @brief TCU */
-    static const int32_t HRTIM_TIMB_TIMxCR_TBU_POS           = 20;   /** @brief TBU */
-    static const int32_t HRTIM_TIMB_TIMxCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
-    static const int32_t HRTIM_TIMB_TIMxCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
-    static const int32_t HRTIM_TIMB_TIMxCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
-    static const int32_t HRTIM_TIMB_TIMxCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
-    static const int32_t HRTIM_TIMB_TIMxCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
-    static const int32_t HRTIM_TIMB_TIMxCR_HALF_POS          = 5;    /** @brief Half mode enable */
-    static const int32_t HRTIM_TIMB_TIMxCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
-    static const int32_t HRTIM_TIMB_TIMxCR_CONT_POS          = 3;    /** @brief Continuous mode */
-    static const int32_t HRTIM_TIMB_TIMxCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
-    static const int32_t HRTIM_TIMB_TIMxISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
-    static const int32_t HRTIM_TIMB_TIMxISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
-    static const int32_t HRTIM_TIMB_TIMxISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
-    static const int32_t HRTIM_TIMB_TIMxISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
-    static const int32_t HRTIM_TIMB_TIMxISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
-    static const int32_t HRTIM_TIMB_TIMxISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
-    static const int32_t HRTIM_TIMB_TIMxICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
-    static const int32_t HRTIM_TIMB_TIMxICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
-    static const int32_t HRTIM_TIMB_TIMxICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
-    static const int32_t HRTIM_TIMB_TIMxICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_REPDE_POS      = 20;   /** @brief REPDE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
-    static const int32_t HRTIM_TIMB_TIMxDIER5_REPIE_POS      = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMB_TIMBCR_UPDGAT_POS        = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMB_TIMBCR_PREEN_POS         = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMB_TIMBCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMB_TIMBCR_MSTU_POS          = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMB_TIMBCR_TEU_POS           = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TDU_POS           = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TCU_POS           = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TBU_POS           = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMB_TIMBCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMB_TIMBCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMB_TIMBCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMB_TIMBCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMB_TIMBCR_HALF_POS          = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMB_TIMBCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMB_TIMBCR_CONT_POS          = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMB_TIMBCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMB_TIMBISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMB_TIMBISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMB_TIMBISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMB_TIMBISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMB_TIMBISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMB_TIMBISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMB_TIMBICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMB_TIMBICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMB_TIMBICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMB_TIMBICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_REPDE_POS      = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_REPIE_POS      = 4;    /** @brief REPIE */
     static const int32_t HRTIM_TIMB_CNTR_CNTX_POS            = 0;    /** @brief Timerx counter value */
     static const int32_t HRTIM_TIMB_PERBR_PERX_POS           = 0;    /** @brief Timerx period value */
     static const int32_t HRTIM_TIMB_REPBR_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
-    static const int32_t HRTIM_TIMB_CMP1BR_CMPxX_POS         = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMB_CMPxBR_CMP1X_POS         = 0;    /** @brief Timerx compare 1 value */
     static const int32_t HRTIM_TIMB_CMP1CBR_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
     static const int32_t HRTIM_TIMB_CMP1CBR_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMB_CMP2BR_CMPxX_POS         = 0;    /** @brief Timerx compare 2 value */
-    static const int32_t HRTIM_TIMB_CMP3BR_CMPxX_POS         = 0;    /** @brief Timerx compare 3 value */
-    static const int32_t HRTIM_TIMB_CMP4BR_CMPxX_POS         = 0;    /** @brief Timerx compare 4 value */
-    static const int32_t HRTIM_TIMB_CPTxBR_CPTxX_POS         = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMB_CPTxBR_CPT1X_POS         = 0;    /** @brief Timerx capture 1 value */
     static const int32_t HRTIM_TIMB_DTBR_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
     static const int32_t HRTIM_TIMB_DTBR_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
     static const int32_t HRTIM_TIMB_DTBR_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
@@ -21605,88 +20963,88 @@
 
     /**** @subsection Enumerated HRTIM_TIMB Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMB_TIMxCR_DELCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMB_TIMBCR_DELCMPx_POS[5] = {
       [2] = 12,   /** @brief Delayed CMP2 mode */
       [4] = 14,   /** @brief Delayed CMP4 mode */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxISR_OxSTAT_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBISR_OxSTAT_POS[3] = {
       [1] = 18,   /** @brief Output 1 state */
       [2] = 19,   /** @brief Output 2 state */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxISR_RSTXx_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBISR_RSTXx_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset interrupt flag */
       [2] = 12,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxISR_SETXx_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBISR_SETXx_POS[3] = {
       [1] = 9,    /** @brief Output 1 set interrupt flag */
       [2] = 11,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxISR_CPTx_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBISR_CPTx_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag */
       [2] = 8,   /** @brief Capture2 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxISR_CMPx_POS[5] = {
+    static const int32_t HRTIM_TIMB_TIMBISR_CMPx_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag */
       [2] = 1,   /** @brief Compare 2 interrupt flag */
       [3] = 2,   /** @brief Compare 3 interrupt flag */
       [4] = 3,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxICR_RSTXxC_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBICR_RSTXxC_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset flag clear */
       [2] = 12,   /** @brief Output 2 reset flag clear */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxICR_SETxXC_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBICR_SETxXC_POS[3] = {
       [1] = 9,    /** @brief Output 1 set flag clear */
       [2] = 11,   /** @brief Output 2 set flag clear */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxICR_CPTxC_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBICR_CPTxC_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag clear */
       [2] = 8,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxICR_CMPxC_POS[5] = {
+    static const int32_t HRTIM_TIMB_TIMBICR_CMPxC_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag clear */
       [2] = 1,   /** @brief Compare 2 interrupt flag clear */
       [3] = 2,   /** @brief Compare 3 interrupt flag clear */
       [4] = 3,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxDIER5_RSTXxDE_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTXxDE_POS[3] = {
       [1] = 26,   /** @brief RSTx1DE */
       [2] = 28,   /** @brief RSTx2DE */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxDIER5_CPTxDE_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CPTxDE_POS[3] = {
       [1] = 23,   /** @brief CPT1DE */
       [2] = 24,   /** @brief CPT2DE */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxDIER5_CMPxDE_POS[5] = {
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CMPxDE_POS[5] = {
       [1] = 16,   /** @brief CMP1DE */
       [2] = 17,   /** @brief CMP2DE */
       [3] = 18,   /** @brief CMP3DE */
       [4] = 19,   /** @brief CMP4DE */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxDIER5_RSTXxIE_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTXxIE_POS[3] = {
       [1] = 10,   /** @brief RSTx1IE */
       [2] = 12,   /** @brief RSTx2IE */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxDIER5_CPTxIE_POS[3] = {
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CPTxIE_POS[3] = {
       [1] = 7,   /** @brief CPT1IE */
       [2] = 8,   /** @brief CPT2IE */
     };
 
-    static const int32_t HRTIM_TIMB_TIMxDIER5_CMPxIE_POS[5] = {
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CMPxIE_POS[5] = {
       [1] = 0,   /** @brief CMP1IE */
       [2] = 1,   /** @brief CMP2IE */
       [3] = 2,   /** @brief CMP3IE */
@@ -21842,21 +21200,17 @@
 
     /**** @subsection HRTIM_TIMC Register Pointers ****/
 
-    static RW_ uint32_t* const HRTIM_TIMC_TIMxCR_PTR      = (RW_ uint32_t* const)0x40017580U;   /** @brief Timerx control register */
-    static RO_ uint32_t* const HRTIM_TIMC_TIMxISR_PTR     = (RO_ uint32_t* const)0x40017584U;   /** @brief Timerx interrupt status register */
-    static RW_ uint32_t* const HRTIM_TIMC_TIMxICR_PTR     = (RW_ uint32_t* const)0x40017588U;   /** @brief Timerx interrupt clear register */
-    static RW_ uint32_t* const HRTIM_TIMC_TIMxDIER5_PTR   = (RW_ uint32_t* const)0x4001758CU;   /** @brief TIMxDIER5 */
-    static RW_ uint32_t* const HRTIM_TIMC_CNTxR_PTR       = (RW_ uint32_t* const)0x40017590U;   /** @brief Timerx counter register */
-    static RW_ uint32_t* const HRTIM_TIMC_PERxR_PTR       = (RW_ uint32_t* const)0x40017594U;   /** @brief Timerx period register */
-    static RW_ uint32_t* const HRTIM_TIMC_REPxR_PTR       = (RW_ uint32_t* const)0x40017598U;   /** @brief Timerx repetition register */
-    static RW_ uint32_t* const HRTIM_TIMC_CMP1xR_PTR      = (RW_ uint32_t* const)0x4001759CU;   /** @brief Timerx compare 1 register */
-    static RW_ uint32_t* const HRTIM_TIMC_CMP1CxR_PTR     = (RW_ uint32_t* const)0x400175A0U;   /** @brief Timerx compare 1 compound register */
-    static RW_ uint32_t* const HRTIM_TIMC_CMP2xR_PTR      = (RW_ uint32_t* const)0x400175A4U;   /** @brief Timerx compare 2 register */
-    static RW_ uint32_t* const HRTIM_TIMC_CMP3xR_PTR      = (RW_ uint32_t* const)0x400175A8U;   /** @brief Timerx compare 3 register */
-    static RW_ uint32_t* const HRTIM_TIMC_CMP4xR_PTR      = (RW_ uint32_t* const)0x400175ACU;   /** @brief Timerx compare 4 register */
-    static RW_ uint32_t* const HRTIM_TIMC_DTxR_PTR        = (RW_ uint32_t* const)0x400175B8U;   /** @brief Timerx deadtime register */
-    static RW_ uint32_t* const HRTIM_TIMC_EEFxR1_PTR      = (RW_ uint32_t* const)0x400175CCU;   /** @brief Timerx external event filtering register 1 */
-    static RW_ uint32_t* const HRTIM_TIMC_EEFxR2_PTR      = (RW_ uint32_t* const)0x400175D0U;   /** @brief Timerx external event filtering register 2 */
+    static RW_ uint32_t* const HRTIM_TIMC_TIMCCR_PTR      = (RW_ uint32_t* const)0x40017580U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMC_TIMCISR_PTR     = (RO_ uint32_t* const)0x40017584U;   /** @brief Timerx interrupt status register */
+    static RW_ uint32_t* const HRTIM_TIMC_TIMCICR_PTR     = (RW_ uint32_t* const)0x40017588U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMC_TIMCDIER5_PTR   = (RW_ uint32_t* const)0x4001758CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMC_CNTCR_PTR       = (RW_ uint32_t* const)0x40017590U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMC_PERCR_PTR       = (RW_ uint32_t* const)0x40017594U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMC_REPCR_PTR       = (RW_ uint32_t* const)0x40017598U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIMC_CMP1CCR_PTR     = (RW_ uint32_t* const)0x400175A0U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIMC_DTCR_PTR        = (RW_ uint32_t* const)0x400175B8U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIMC_EEFCR1_PTR      = (RW_ uint32_t* const)0x400175CCU;   /** @brief Timerx external event filtering register 1 */
+    static RW_ uint32_t* const HRTIM_TIMC_EEFCR2_PTR      = (RW_ uint32_t* const)0x400175D0U;   /** @brief Timerx external event filtering register 2 */
     static RW_ uint32_t* const HRTIM_TIMC_RSTCR_PTR       = (RW_ uint32_t* const)0x400175D4U;   /** @brief TimerA reset register */
     static RW_ uint32_t* const HRTIM_TIMC_CHPCR_PTR       = (RW_ uint32_t* const)0x400175D8U;   /** @brief Timerx chopper register */
     static RW_ uint32_t* const HRTIM_TIMC_OUTCR_PTR       = (RW_ uint32_t* const)0x400175E4U;   /** @brief Timerx output register */
@@ -21864,17 +21218,24 @@
 
     /**** @subsection Enumerated HRTIM_TIMC Register Pointers ****/
 
-    static RO_ uint32_t* const HRTIM_TIMC_CPTxxR_PTR[3] = {
+    static RW_ uint32_t* const HRTIM_TIMC_CMPxCR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001759CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x400175A4U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x400175A8U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x400175ACU,   /** @brief Timerx compare 4 register */
+    };
+
+    static RO_ uint32_t* const HRTIM_TIMC_CPTxCR_PTR[3] = {
       [1] = (RO_ uint32_t* const)0x400175B0U,   /** @brief Timerx capture 1 register */
       [2] = (RO_ uint32_t* const)0x400175B4U,   /** @brief Timerx capture 2 register */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMC_SETxxR_PTR[3] = {
+    static RW_ uint32_t* const HRTIM_TIMC_SETCxR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x400175BCU,   /** @brief Timerx output1 set register */
       [2] = (RW_ uint32_t* const)0x400175C4U,   /** @brief Timerx output2 set register */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMC_RSTxxR_PTR[3] = {
+    static RW_ uint32_t* const HRTIM_TIMC_RSTCxR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x400175C0U,   /** @brief Timerx output1 reset register */
       [2] = (RW_ uint32_t* const)0x400175C8U,   /** @brief Timerx output2 reset register */
     };
@@ -21886,21 +21247,17 @@
 
     /**** @subsection HRTIM_TIMC Register Reset Values ****/
 
-    static const uint32_t HRTIM_TIMC_TIMxCR_RST      = 0x00000000U;   /** @brief TIMxCR register reset value. */
-    static const uint32_t HRTIM_TIMC_TIMxISR_RST     = 0x00000000U;   /** @brief TIMxISR register reset value. */
-    static const uint32_t HRTIM_TIMC_TIMxICR_RST     = 0x00000000U;   /** @brief TIMxICR register reset value. */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_RST   = 0x00000000U;   /** @brief TIMxDIER5 register reset value. */
-    static const uint32_t HRTIM_TIMC_CNTxR_RST       = 0x00000000U;   /** @brief CNTxR register reset value. */
-    static const uint32_t HRTIM_TIMC_PERxR_RST       = 0x0000FFFFU;   /** @brief PERxR register reset value. */
-    static const uint32_t HRTIM_TIMC_REPxR_RST       = 0x00000000U;   /** @brief REPxR register reset value. */
-    static const uint32_t HRTIM_TIMC_CMP1xR_RST      = 0x00000000U;   /** @brief CMP1xR register reset value. */
-    static const uint32_t HRTIM_TIMC_CMP1CxR_RST     = 0x00000000U;   /** @brief CMP1CxR register reset value. */
-    static const uint32_t HRTIM_TIMC_CMP2xR_RST      = 0x00000000U;   /** @brief CMP2xR register reset value. */
-    static const uint32_t HRTIM_TIMC_CMP3xR_RST      = 0x00000000U;   /** @brief CMP3xR register reset value. */
-    static const uint32_t HRTIM_TIMC_CMP4xR_RST      = 0x00000000U;   /** @brief CMP4xR register reset value. */
-    static const uint32_t HRTIM_TIMC_DTxR_RST        = 0x00000000U;   /** @brief DTxR register reset value. */
-    static const uint32_t HRTIM_TIMC_EEFxR1_RST      = 0x00000000U;   /** @brief EEFxR1 register reset value. */
-    static const uint32_t HRTIM_TIMC_EEFxR2_RST      = 0x00000000U;   /** @brief EEFxR2 register reset value. */
+    static const uint32_t HRTIM_TIMC_TIMCCR_RST      = 0x00000000U;   /** @brief TIMCCR register reset value. */
+    static const uint32_t HRTIM_TIMC_TIMCISR_RST     = 0x00000000U;   /** @brief TIMCISR register reset value. */
+    static const uint32_t HRTIM_TIMC_TIMCICR_RST     = 0x00000000U;   /** @brief TIMCICR register reset value. */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RST   = 0x00000000U;   /** @brief TIMCDIER5 register reset value. */
+    static const uint32_t HRTIM_TIMC_CNTCR_RST       = 0x00000000U;   /** @brief CNTCR register reset value. */
+    static const uint32_t HRTIM_TIMC_PERCR_RST       = 0x0000FFFFU;   /** @brief PERCR register reset value. */
+    static const uint32_t HRTIM_TIMC_REPCR_RST       = 0x00000000U;   /** @brief REPCR register reset value. */
+    static const uint32_t HRTIM_TIMC_CMP1CCR_RST     = 0x00000000U;   /** @brief CMP1CCR register reset value. */
+    static const uint32_t HRTIM_TIMC_DTCR_RST        = 0x00000000U;   /** @brief DTCR register reset value. */
+    static const uint32_t HRTIM_TIMC_EEFCR1_RST      = 0x00000000U;   /** @brief EEFCR1 register reset value. */
+    static const uint32_t HRTIM_TIMC_EEFCR2_RST      = 0x00000000U;   /** @brief EEFCR2 register reset value. */
     static const uint32_t HRTIM_TIMC_RSTCR_RST       = 0x00000000U;   /** @brief RSTCR register reset value. */
     static const uint32_t HRTIM_TIMC_CHPCR_RST       = 0x00000000U;   /** @brief CHPCR register reset value. */
     static const uint32_t HRTIM_TIMC_OUTCR_RST       = 0x00000000U;   /** @brief OUTCR register reset value. */
@@ -21908,19 +21265,26 @@
 
     /**** @subsection Enumerated HRTIM_TIMC Register Reset Values ****/
 
-    static const uint32_t HRTIM_TIMC_CPTxxR_RST[3] = {
-      [1] = 0x00000000U,   /** @brief CPT1xR register reset value. */
-      [2] = 0x00000000U,   /** @brief CPT2xR register reset value. */
+    static const uint32_t HRTIM_TIMC_CMPxCR_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CMP1CR register reset value. */
+      [2] = 0x00000000U,   /** @brief CMP2CR register reset value. */
+      [3] = 0x00000000U,   /** @brief CMP3CR register reset value. */
+      [4] = 0x00000000U,   /** @brief CMP4CR register reset value. */
     };
 
-    static const uint32_t HRTIM_TIMC_SETxxR_RST[3] = {
-      [1] = 0x00000000U,   /** @brief SETx1R register reset value. */
-      [2] = 0x00000000U,   /** @brief SETx2R register reset value. */
+    static const uint32_t HRTIM_TIMC_CPTxCR_RST[3] = {
+      [1] = 0x00000000U,   /** @brief CPT1CR register reset value. */
+      [2] = 0x00000000U,   /** @brief CPT2CR register reset value. */
     };
 
-    static const uint32_t HRTIM_TIMC_RSTxxR_RST[3] = {
-      [1] = 0x00000000U,   /** @brief RSTx1R register reset value. */
-      [2] = 0x00000000U,   /** @brief RSTx2R register reset value. */
+    static const uint32_t HRTIM_TIMC_SETCxR_RST[3] = {
+      [1] = 0x00000000U,   /** @brief SETC1R register reset value. */
+      [2] = 0x00000000U,   /** @brief SETC2R register reset value. */
+    };
+
+    static const uint32_t HRTIM_TIMC_RSTCxR_RST[3] = {
+      [1] = 0x00000000U,   /** @brief RSTC1R register reset value. */
+      [2] = 0x00000000U,   /** @brief RSTC2R register reset value. */
     };
 
     static const uint32_t HRTIM_TIMC_CPTxCCR_RST[3] = {
@@ -21930,24 +21294,21 @@
 
     /**** @subsection Enumerated HRTIM_TIMC Register Value Types ****/
 
-    typedef uint32_t HRTIM_TIMC_TIMxCR_t;      /** @brief TIMxCR register value type. */
-    typedef uint32_t HRTIM_TIMC_TIMxISR_t;     /** @brief TIMxISR register value type. */
-    typedef uint32_t HRTIM_TIMC_TIMxICR_t;     /** @brief TIMxICR register value type. */
-    typedef uint32_t HRTIM_TIMC_TIMxDIER5_t;   /** @brief TIMxDIER5 register value type. */
-    typedef uint32_t HRTIM_TIMC_CNTxR_t;       /** @brief CNTxR register value type. */
-    typedef uint32_t HRTIM_TIMC_PERxR_t;       /** @brief PERxR register value type. */
-    typedef uint32_t HRTIM_TIMC_REPxR_t;       /** @brief REPxR register value type. */
-    typedef uint32_t HRTIM_TIMC_CMP1xR_t;      /** @brief CMP1xR register value type. */
-    typedef uint32_t HRTIM_TIMC_CMP1CxR_t;     /** @brief CMP1CxR register value type. */
-    typedef uint32_t HRTIM_TIMC_CMP2xR_t;      /** @brief CMP2xR register value type. */
-    typedef uint32_t HRTIM_TIMC_CMP3xR_t;      /** @brief CMP3xR register value type. */
-    typedef uint32_t HRTIM_TIMC_CMP4xR_t;      /** @brief CMP4xR register value type. */
-    typedef uint32_t HRTIM_TIMC_CPTxxR_t;      /** @brief CPTxxR register value type. */
-    typedef uint32_t HRTIM_TIMC_DTxR_t;        /** @brief DTxR register value type. */
-    typedef uint32_t HRTIM_TIMC_SETxxR_t;      /** @brief SETxxR register value type. */
-    typedef uint32_t HRTIM_TIMC_RSTxxR_t;      /** @brief RSTxxR register value type. */
-    typedef uint32_t HRTIM_TIMC_EEFxR1_t;      /** @brief EEFxR1 register value type. */
-    typedef uint32_t HRTIM_TIMC_EEFxR2_t;      /** @brief EEFxR2 register value type. */
+    typedef uint32_t HRTIM_TIMC_TIMCCR_t;      /** @brief TIMCCR register value type. */
+    typedef uint32_t HRTIM_TIMC_TIMCISR_t;     /** @brief TIMCISR register value type. */
+    typedef uint32_t HRTIM_TIMC_TIMCICR_t;     /** @brief TIMCICR register value type. */
+    typedef uint32_t HRTIM_TIMC_TIMCDIER5_t;   /** @brief TIMCDIER5 register value type. */
+    typedef uint32_t HRTIM_TIMC_CNTCR_t;       /** @brief CNTCR register value type. */
+    typedef uint32_t HRTIM_TIMC_PERCR_t;       /** @brief PERCR register value type. */
+    typedef uint32_t HRTIM_TIMC_REPCR_t;       /** @brief REPCR register value type. */
+    typedef uint32_t HRTIM_TIMC_CMPxCR_t;      /** @brief CMPxCR register value type. */
+    typedef uint32_t HRTIM_TIMC_CMP1CCR_t;     /** @brief CMP1CCR register value type. */
+    typedef uint32_t HRTIM_TIMC_CPTxCR_t;      /** @brief CPTxCR register value type. */
+    typedef uint32_t HRTIM_TIMC_DTCR_t;        /** @brief DTCR register value type. */
+    typedef uint32_t HRTIM_TIMC_SETCxR_t;      /** @brief SETCxR register value type. */
+    typedef uint32_t HRTIM_TIMC_RSTCxR_t;      /** @brief RSTCxR register value type. */
+    typedef uint32_t HRTIM_TIMC_EEFCR1_t;      /** @brief EEFCR1 register value type. */
+    typedef uint32_t HRTIM_TIMC_EEFCR2_t;      /** @brief EEFCR2 register value type. */
     typedef uint32_t HRTIM_TIMC_RSTCR_t;       /** @brief RSTCR register value type. */
     typedef uint32_t HRTIM_TIMC_CHPCR_t;       /** @brief CHPCR register value type. */
     typedef uint32_t HRTIM_TIMC_CPTxCCR_t;     /** @brief CPTxCCR register value type. */
@@ -21956,24 +21317,21 @@
 
     /**** @subsection Enumerated HRTIM_TIMC Register Pointer Types ****/
 
-    typedef uint32_t* const HRTIM_TIMC_TIMxCR_PTR_t;      /** @brief TIMxCR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_TIMxISR_PTR_t;     /** @brief TIMxISR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_TIMxICR_PTR_t;     /** @brief TIMxICR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_TIMxDIER5_PTR_t;   /** @brief TIMxDIER5 register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CNTxR_PTR_t;       /** @brief CNTxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_PERxR_PTR_t;       /** @brief PERxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_REPxR_PTR_t;       /** @brief REPxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CMP1xR_PTR_t;      /** @brief CMP1xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CMP1CxR_PTR_t;     /** @brief CMP1CxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CMP2xR_PTR_t;      /** @brief CMP2xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CMP3xR_PTR_t;      /** @brief CMP3xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CMP4xR_PTR_t;      /** @brief CMP4xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_CPTxxR_PTR_t;      /** @brief CPTxxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_DTxR_PTR_t;        /** @brief DTxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_SETxxR_PTR_t;      /** @brief SETxxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_RSTxxR_PTR_t;      /** @brief RSTxxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_EEFxR1_PTR_t;      /** @brief EEFxR1 register pointer type. */
-    typedef uint32_t* const HRTIM_TIMC_EEFxR2_PTR_t;      /** @brief EEFxR2 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_TIMCCR_PTR_t;      /** @brief TIMCCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_TIMCISR_PTR_t;     /** @brief TIMCISR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_TIMCICR_PTR_t;     /** @brief TIMCICR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_TIMCDIER5_PTR_t;   /** @brief TIMCDIER5 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_CNTCR_PTR_t;       /** @brief CNTCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_PERCR_PTR_t;       /** @brief PERCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_REPCR_PTR_t;       /** @brief REPCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_CMPxCR_PTR_t;      /** @brief CMPxCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_CMP1CCR_PTR_t;     /** @brief CMP1CCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_CPTxCR_PTR_t;      /** @brief CPTxCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_DTCR_PTR_t;        /** @brief DTCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_SETCxR_PTR_t;      /** @brief SETCxR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_RSTCxR_PTR_t;      /** @brief RSTCxR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_EEFCR1_PTR_t;      /** @brief EEFCR1 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMC_EEFCR2_PTR_t;      /** @brief EEFCR2 register pointer type. */
     typedef uint32_t* const HRTIM_TIMC_RSTCR_PTR_t;       /** @brief RSTCR register pointer type. */
     typedef uint32_t* const HRTIM_TIMC_CHPCR_PTR_t;       /** @brief CHPCR register pointer type. */
     typedef uint32_t* const HRTIM_TIMC_CPTxCCR_PTR_t;     /** @brief CPTxCCR register pointer type. */
@@ -21982,74 +21340,71 @@
 
     /**** @subsection HRTIM_TIMC Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMC_TIMxCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
-    static const uint32_t HRTIM_TIMC_TIMxCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
-    static const uint32_t HRTIM_TIMC_TIMxCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
-    static const uint32_t HRTIM_TIMC_TIMxCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
-    static const uint32_t HRTIM_TIMC_TIMxCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
-    static const uint32_t HRTIM_TIMC_TIMxCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
-    static const uint32_t HRTIM_TIMC_TIMxCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
-    static const uint32_t HRTIM_TIMC_TIMxCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
-    static const uint32_t HRTIM_TIMC_TIMxCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
-    static const uint32_t HRTIM_TIMC_TIMxCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
-    static const uint32_t HRTIM_TIMC_TIMxCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
-    static const uint32_t HRTIM_TIMC_TIMxCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
-    static const uint32_t HRTIM_TIMC_TIMxCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
-    static const uint32_t HRTIM_TIMC_TIMxCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
-    static const uint32_t HRTIM_TIMC_TIMxCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
-    static const uint32_t HRTIM_TIMC_TIMxCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
-    static const uint32_t HRTIM_TIMC_TIMxCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
-    static const uint32_t HRTIM_TIMC_TIMxISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
-    static const uint32_t HRTIM_TIMC_TIMxISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
-    static const uint32_t HRTIM_TIMC_TIMxISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
-    static const uint32_t HRTIM_TIMC_TIMxISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
-    static const uint32_t HRTIM_TIMC_TIMxISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
-    static const uint32_t HRTIM_TIMC_TIMxISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
-    static const uint32_t HRTIM_TIMC_TIMxICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
-    static const uint32_t HRTIM_TIMC_TIMxICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
-    static const uint32_t HRTIM_TIMC_TIMxICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
-    static const uint32_t HRTIM_TIMC_TIMxICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
-    static const uint32_t HRTIM_TIMC_CNTxR_CNTX_MASK           = 0x0000FFFFU;   /** @brief Timerx counter value */
-    static const uint32_t HRTIM_TIMC_PERxR_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
-    static const uint32_t HRTIM_TIMC_REPxR_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
-    static const uint32_t HRTIM_TIMC_CMP1xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMC_CMP1CxR_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
-    static const uint32_t HRTIM_TIMC_CMP1CxR_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMC_CMP2xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 2 value */
-    static const uint32_t HRTIM_TIMC_CMP3xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 3 value */
-    static const uint32_t HRTIM_TIMC_CMP4xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 4 value */
-    static const uint32_t HRTIM_TIMC_CPTxxR_CPTxX_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
-    static const uint32_t HRTIM_TIMC_DTxR_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
-    static const uint32_t HRTIM_TIMC_DTxR_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
-    static const uint32_t HRTIM_TIMC_DTxR_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
-    static const uint32_t HRTIM_TIMC_DTxR_DTFX_MASK            = 0x01FF0000U;   /** @brief Deadtime falling value */
-    static const uint32_t HRTIM_TIMC_DTxR_DTRLKX_MASK          = 0x00008000U;   /** @brief Deadtime rising lock */
-    static const uint32_t HRTIM_TIMC_DTxR_DTRSLKX_MASK         = 0x00004000U;   /** @brief Deadtime rising sign lock */
-    static const uint32_t HRTIM_TIMC_DTxR_DTPRSC_MASK          = 0x00001C00U;   /** @brief Deadtime prescaler */
-    static const uint32_t HRTIM_TIMC_DTxR_SDTRX_MASK           = 0x00000200U;   /** @brief Sign deadtime rising value */
-    static const uint32_t HRTIM_TIMC_DTxR_DTRX_MASK            = 0x000001FFU;   /** @brief Deadtime rising value */
-    static const uint32_t HRTIM_TIMC_SETxxR_UPDATE_MASK        = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
-    static const uint32_t HRTIM_TIMC_SETxxR_MSTPER_MASK        = 0x00000080U;   /** @brief Master period */
-    static const uint32_t HRTIM_TIMC_SETxxR_PER_MASK           = 0x00000004U;   /** @brief Timer A period */
-    static const uint32_t HRTIM_TIMC_SETxxR_RESYNC_MASK        = 0x00000002U;   /** @brief Timer A resynchronizaton */
-    static const uint32_t HRTIM_TIMC_SETxxR_SST_MASK           = 0x00000001U;   /** @brief Software set trigger */
-    static const uint32_t HRTIM_TIMC_RSTxxR_UPDATE_MASK        = 0x80000000U;   /** @brief UPDATE */
-    static const uint32_t HRTIM_TIMC_RSTxxR_MSTPER_MASK        = 0x00000080U;   /** @brief MSTPER */
-    static const uint32_t HRTIM_TIMC_RSTxxR_PER_MASK           = 0x00000004U;   /** @brief PER */
-    static const uint32_t HRTIM_TIMC_RSTxxR_RESYNC_MASK        = 0x00000002U;   /** @brief RESYNC */
-    static const uint32_t HRTIM_TIMC_RSTxxR_SRT_MASK           = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIMC_TIMCCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMC_TIMCCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMC_TIMCCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMC_TIMCCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMC_TIMCCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMC_TIMCCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMC_TIMCCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMC_TIMCCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMC_TIMCCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMC_TIMCCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMC_TIMCCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMC_TIMCISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMC_TIMCISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMC_TIMCISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMC_TIMCISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMC_TIMCISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMC_TIMCISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMC_TIMCICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMC_CNTCR_CNTX_MASK           = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIMC_PERCR_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIMC_REPCR_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIMC_CMPxCR_CMP1X_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMC_CMP1CCR_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIMC_CMP1CCR_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMC_CPTxCR_CPT1X_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIMC_DTCR_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIMC_DTCR_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTFX_MASK            = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTRLKX_MASK          = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIMC_DTCR_DTRSLKX_MASK         = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIMC_DTCR_DTPRSC_MASK          = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIMC_DTCR_SDTRX_MASK           = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTRX_MASK            = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIMC_SETCxR_UPDATE_MASK        = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIMC_SETCxR_MSTPER_MASK        = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIMC_SETCxR_PER_MASK           = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIMC_SETCxR_RESYNC_MASK        = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIMC_SETCxR_SST_MASK           = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIMC_RSTCxR_UPDATE_MASK        = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIMC_RSTCxR_MSTPER_MASK        = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIMC_RSTCxR_PER_MASK           = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIMC_RSTCxR_RESYNC_MASK        = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIMC_RSTCxR_SRT_MASK           = 0x00000001U;   /** @brief SRT */
     static const uint32_t HRTIM_TIMC_RSTCR_MSTPER_MASK         = 0x00000010U;   /** @brief Master timer period */
     static const uint32_t HRTIM_TIMC_RSTCR_UPDT_MASK           = 0x00000002U;   /** @brief Timer A update reset */
     static const uint32_t HRTIM_TIMC_CHPCR_STRTPW_MASK         = 0x00000780U;   /** @brief STRTPW */
@@ -22072,95 +21427,95 @@
 
     /**** @subsection Enumerated HRTIM_TIMC Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMC_TIMxCR_DELCMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMC_TIMCCR_DELCMPx_MASK[5] = {
       [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
       [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxISR_OxSTAT_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCISR_OxSTAT_MASK[3] = {
       [1] = 0x00040000U,   /** @brief Output 1 state */
       [2] = 0x00080000U,   /** @brief Output 2 state */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxISR_RSTXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCISR_RSTXx_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
       [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxISR_SETXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCISR_SETXx_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
       [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxISR_CPTx_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCISR_CPTx_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxISR_CMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMC_TIMCISR_CMPx_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxICR_RSTXxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCICR_RSTXxC_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
       [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxICR_SETxXC_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCICR_SETxXC_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
       [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxICR_CPTxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCICR_CPTxC_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxICR_CMPxC_MASK[5] = {
+    static const uint32_t HRTIM_TIMC_TIMCICR_CMPxC_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_RSTXxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTXxDE_MASK[3] = {
       [1] = 0x04000000U,   /** @brief RSTx1DE */
       [2] = 0x10000000U,   /** @brief RSTx2DE */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_CPTxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CPTxDE_MASK[3] = {
       [1] = 0x00800000U,   /** @brief CPT1DE */
       [2] = 0x01000000U,   /** @brief CPT2DE */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_CMPxDE_MASK[5] = {
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CMPxDE_MASK[5] = {
       [1] = 0x00010000U,   /** @brief CMP1DE */
       [2] = 0x00020000U,   /** @brief CMP2DE */
       [3] = 0x00040000U,   /** @brief CMP3DE */
       [4] = 0x00080000U,   /** @brief CMP4DE */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_RSTXxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTXxIE_MASK[3] = {
       [1] = 0x00000400U,   /** @brief RSTx1IE */
       [2] = 0x00001000U,   /** @brief RSTx2IE */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_CPTxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CPTxIE_MASK[3] = {
       [1] = 0x00000080U,   /** @brief CPT1IE */
       [2] = 0x00000100U,   /** @brief CPT2IE */
     };
 
-    static const uint32_t HRTIM_TIMC_TIMxDIER5_CMPxIE_MASK[5] = {
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CMPxIE_MASK[5] = {
       [1] = 0x00000001U,   /** @brief CMP1IE */
       [2] = 0x00000002U,   /** @brief CMP2IE */
       [3] = 0x00000004U,   /** @brief CMP3IE */
       [4] = 0x00000008U,   /** @brief CMP4IE */
     };
 
-    static const uint32_t HRTIM_TIMC_SETxxR_EXTEVNTx_MASK[11] = {
+    static const uint32_t HRTIM_TIMC_SETCxR_EXTEVNTx_MASK[11] = {
       [1]  = 0x00200000U,   /** @brief External event 1 */
       [2]  = 0x00400000U,   /** @brief External event 2 */
       [3]  = 0x00800000U,   /** @brief External event 3 */
@@ -22173,7 +21528,7 @@
       [10] = 0x40000000U,   /** @brief External event 10 */
     };
 
-    static const uint32_t HRTIM_TIMC_SETxxR_TIMEVNTx_MASK[10] = {
+    static const uint32_t HRTIM_TIMC_SETCxR_TIMEVNTx_MASK[10] = {
       [1]  = 0x00001000U,   /** @brief Timer event 1 */
       [2]  = 0x00002000U,   /** @brief Timer event 2 */
       [3]  = 0x00004000U,   /** @brief Timer event 3 */
@@ -22185,14 +21540,14 @@
       [9]  = 0x00100000U,   /** @brief Timer event 9 */
     };
 
-    static const uint32_t HRTIM_TIMC_SETxxR_MSTCMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMC_SETCxR_MSTCMPx_MASK[5] = {
       [1] = 0x00000100U,   /** @brief Master compare 1 */
       [2] = 0x00000200U,   /** @brief Master compare 2 */
       [3] = 0x00000400U,   /** @brief Master compare 3 */
       [4] = 0x00000800U,   /** @brief Master compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMC_EEFxR1_EExFLTR_MASK[6] = {
+    static const uint32_t HRTIM_TIMC_EEFCR1_EExFLTR_MASK[6] = {
       [1] = 0x0000001EU,   /** @brief External event 1 filter */
       [2] = 0x00000780U,   /** @brief External event 2 filter */
       [3] = 0x0001E000U,   /** @brief External event 3 filter */
@@ -22200,7 +21555,7 @@
       [5] = 0x1E000000U,   /** @brief External event 5 filter */
     };
 
-    static const uint32_t HRTIM_TIMC_EEFxR1_EExLTCH_MASK[6] = {
+    static const uint32_t HRTIM_TIMC_EEFCR1_EExLTCH_MASK[6] = {
       [1] = 0x00000001U,   /** @brief External event 1 latch */
       [2] = 0x00000040U,   /** @brief External event 2 latch */
       [3] = 0x00001000U,   /** @brief External event 3 latch */
@@ -22305,74 +21660,71 @@
 
     /**** @subsection HRTIM_TIMC Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMC_TIMxCR_UPDGAT_POS        = 28;   /** @brief Update gating */
-    static const int32_t HRTIM_TIMC_TIMxCR_PREEN_POS         = 27;   /** @brief Preload enable */
-    static const int32_t HRTIM_TIMC_TIMxCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
-    static const int32_t HRTIM_TIMC_TIMxCR_MSTU_POS          = 24;   /** @brief Master timer update */
-    static const int32_t HRTIM_TIMC_TIMxCR_TEU_POS           = 23;   /** @brief TEU */
-    static const int32_t HRTIM_TIMC_TIMxCR_TDU_POS           = 22;   /** @brief TDU */
-    static const int32_t HRTIM_TIMC_TIMxCR_TCU_POS           = 21;   /** @brief TCU */
-    static const int32_t HRTIM_TIMC_TIMxCR_TBU_POS           = 20;   /** @brief TBU */
-    static const int32_t HRTIM_TIMC_TIMxCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
-    static const int32_t HRTIM_TIMC_TIMxCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
-    static const int32_t HRTIM_TIMC_TIMxCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
-    static const int32_t HRTIM_TIMC_TIMxCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
-    static const int32_t HRTIM_TIMC_TIMxCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
-    static const int32_t HRTIM_TIMC_TIMxCR_HALF_POS          = 5;    /** @brief Half mode enable */
-    static const int32_t HRTIM_TIMC_TIMxCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
-    static const int32_t HRTIM_TIMC_TIMxCR_CONT_POS          = 3;    /** @brief Continuous mode */
-    static const int32_t HRTIM_TIMC_TIMxCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
-    static const int32_t HRTIM_TIMC_TIMxISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
-    static const int32_t HRTIM_TIMC_TIMxISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
-    static const int32_t HRTIM_TIMC_TIMxISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
-    static const int32_t HRTIM_TIMC_TIMxISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
-    static const int32_t HRTIM_TIMC_TIMxISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
-    static const int32_t HRTIM_TIMC_TIMxISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
-    static const int32_t HRTIM_TIMC_TIMxICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
-    static const int32_t HRTIM_TIMC_TIMxICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
-    static const int32_t HRTIM_TIMC_TIMxICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
-    static const int32_t HRTIM_TIMC_TIMxICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_REPDE_POS      = 20;   /** @brief REPDE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
-    static const int32_t HRTIM_TIMC_TIMxDIER5_REPIE_POS      = 4;    /** @brief REPIE */
-    static const int32_t HRTIM_TIMC_CNTxR_CNTX_POS           = 0;    /** @brief Timerx counter value */
-    static const int32_t HRTIM_TIMC_PERxR_PERX_POS           = 0;    /** @brief Timerx period value */
-    static const int32_t HRTIM_TIMC_REPxR_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
-    static const int32_t HRTIM_TIMC_CMP1xR_CMPxX_POS         = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMC_CMP1CxR_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
-    static const int32_t HRTIM_TIMC_CMP1CxR_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMC_CMP2xR_CMPxX_POS         = 0;    /** @brief Timerx compare 2 value */
-    static const int32_t HRTIM_TIMC_CMP3xR_CMPxX_POS         = 0;    /** @brief Timerx compare 3 value */
-    static const int32_t HRTIM_TIMC_CMP4xR_CMPxX_POS         = 0;    /** @brief Timerx compare 4 value */
-    static const int32_t HRTIM_TIMC_CPTxxR_CPTxX_POS         = 0;    /** @brief Timerx capture 1 value */
-    static const int32_t HRTIM_TIMC_DTxR_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
-    static const int32_t HRTIM_TIMC_DTxR_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
-    static const int32_t HRTIM_TIMC_DTxR_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
-    static const int32_t HRTIM_TIMC_DTxR_DTFX_POS            = 16;   /** @brief Deadtime falling value */
-    static const int32_t HRTIM_TIMC_DTxR_DTRLKX_POS          = 15;   /** @brief Deadtime rising lock */
-    static const int32_t HRTIM_TIMC_DTxR_DTRSLKX_POS         = 14;   /** @brief Deadtime rising sign lock */
-    static const int32_t HRTIM_TIMC_DTxR_DTPRSC_POS          = 10;   /** @brief Deadtime prescaler */
-    static const int32_t HRTIM_TIMC_DTxR_SDTRX_POS           = 9;    /** @brief Sign deadtime rising value */
-    static const int32_t HRTIM_TIMC_DTxR_DTRX_POS            = 0;    /** @brief Deadtime rising value */
-    static const int32_t HRTIM_TIMC_SETxxR_UPDATE_POS        = 31;   /** @brief Registers update (transfer preload to active) */
-    static const int32_t HRTIM_TIMC_SETxxR_MSTPER_POS        = 7;    /** @brief Master period */
-    static const int32_t HRTIM_TIMC_SETxxR_PER_POS           = 2;    /** @brief Timer A period */
-    static const int32_t HRTIM_TIMC_SETxxR_RESYNC_POS        = 1;    /** @brief Timer A resynchronizaton */
-    static const int32_t HRTIM_TIMC_SETxxR_SST_POS           = 0;    /** @brief Software set trigger */
-    static const int32_t HRTIM_TIMC_RSTxxR_UPDATE_POS        = 31;   /** @brief UPDATE */
-    static const int32_t HRTIM_TIMC_RSTxxR_MSTPER_POS        = 7;    /** @brief MSTPER */
-    static const int32_t HRTIM_TIMC_RSTxxR_PER_POS           = 2;    /** @brief PER */
-    static const int32_t HRTIM_TIMC_RSTxxR_RESYNC_POS        = 1;    /** @brief RESYNC */
-    static const int32_t HRTIM_TIMC_RSTxxR_SRT_POS           = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIMC_TIMCCR_UPDGAT_POS        = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMC_TIMCCR_PREEN_POS         = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMC_TIMCCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMC_TIMCCR_MSTU_POS          = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMC_TIMCCR_TEU_POS           = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TDU_POS           = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TCU_POS           = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TBU_POS           = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMC_TIMCCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMC_TIMCCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMC_TIMCCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMC_TIMCCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMC_TIMCCR_HALF_POS          = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMC_TIMCCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMC_TIMCCR_CONT_POS          = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMC_TIMCCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMC_TIMCISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMC_TIMCISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMC_TIMCISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMC_TIMCISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMC_TIMCISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMC_TIMCISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMC_TIMCICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMC_TIMCICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMC_TIMCICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMC_TIMCICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_REPDE_POS      = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_REPIE_POS      = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMC_CNTCR_CNTX_POS           = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIMC_PERCR_PERX_POS           = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIMC_REPCR_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIMC_CMPxCR_CMP1X_POS         = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMC_CMP1CCR_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIMC_CMP1CCR_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMC_CPTxCR_CPT1X_POS         = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMC_DTCR_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIMC_DTCR_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIMC_DTCR_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIMC_DTCR_DTFX_POS            = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIMC_DTCR_DTRLKX_POS          = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIMC_DTCR_DTRSLKX_POS         = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIMC_DTCR_DTPRSC_POS          = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIMC_DTCR_SDTRX_POS           = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIMC_DTCR_DTRX_POS            = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIMC_SETCxR_UPDATE_POS        = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIMC_SETCxR_MSTPER_POS        = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIMC_SETCxR_PER_POS           = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIMC_SETCxR_RESYNC_POS        = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIMC_SETCxR_SST_POS           = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIMC_RSTCxR_UPDATE_POS        = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIMC_RSTCxR_MSTPER_POS        = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIMC_RSTCxR_PER_POS           = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIMC_RSTCxR_RESYNC_POS        = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIMC_RSTCxR_SRT_POS           = 0;    /** @brief SRT */
     static const int32_t HRTIM_TIMC_RSTCR_MSTPER_POS         = 4;    /** @brief Master timer period */
     static const int32_t HRTIM_TIMC_RSTCR_UPDT_POS           = 1;    /** @brief Timer A update reset */
     static const int32_t HRTIM_TIMC_CHPCR_STRTPW_POS         = 7;    /** @brief STRTPW */
@@ -22395,95 +21747,95 @@
 
     /**** @subsection Enumerated HRTIM_TIMC Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMC_TIMxCR_DELCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMC_TIMCCR_DELCMPx_POS[5] = {
       [2] = 12,   /** @brief Delayed CMP2 mode */
       [4] = 14,   /** @brief Delayed CMP4 mode */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxISR_OxSTAT_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCISR_OxSTAT_POS[3] = {
       [1] = 18,   /** @brief Output 1 state */
       [2] = 19,   /** @brief Output 2 state */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxISR_RSTXx_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCISR_RSTXx_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset interrupt flag */
       [2] = 12,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxISR_SETXx_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCISR_SETXx_POS[3] = {
       [1] = 9,    /** @brief Output 1 set interrupt flag */
       [2] = 11,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxISR_CPTx_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCISR_CPTx_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag */
       [2] = 8,   /** @brief Capture2 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxISR_CMPx_POS[5] = {
+    static const int32_t HRTIM_TIMC_TIMCISR_CMPx_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag */
       [2] = 1,   /** @brief Compare 2 interrupt flag */
       [3] = 2,   /** @brief Compare 3 interrupt flag */
       [4] = 3,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxICR_RSTXxC_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCICR_RSTXxC_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset flag clear */
       [2] = 12,   /** @brief Output 2 reset flag clear */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxICR_SETxXC_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCICR_SETxXC_POS[3] = {
       [1] = 9,    /** @brief Output 1 set flag clear */
       [2] = 11,   /** @brief Output 2 set flag clear */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxICR_CPTxC_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCICR_CPTxC_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag clear */
       [2] = 8,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxICR_CMPxC_POS[5] = {
+    static const int32_t HRTIM_TIMC_TIMCICR_CMPxC_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag clear */
       [2] = 1,   /** @brief Compare 2 interrupt flag clear */
       [3] = 2,   /** @brief Compare 3 interrupt flag clear */
       [4] = 3,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxDIER5_RSTXxDE_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTXxDE_POS[3] = {
       [1] = 26,   /** @brief RSTx1DE */
       [2] = 28,   /** @brief RSTx2DE */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxDIER5_CPTxDE_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CPTxDE_POS[3] = {
       [1] = 23,   /** @brief CPT1DE */
       [2] = 24,   /** @brief CPT2DE */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxDIER5_CMPxDE_POS[5] = {
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CMPxDE_POS[5] = {
       [1] = 16,   /** @brief CMP1DE */
       [2] = 17,   /** @brief CMP2DE */
       [3] = 18,   /** @brief CMP3DE */
       [4] = 19,   /** @brief CMP4DE */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxDIER5_RSTXxIE_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTXxIE_POS[3] = {
       [1] = 10,   /** @brief RSTx1IE */
       [2] = 12,   /** @brief RSTx2IE */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxDIER5_CPTxIE_POS[3] = {
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CPTxIE_POS[3] = {
       [1] = 7,   /** @brief CPT1IE */
       [2] = 8,   /** @brief CPT2IE */
     };
 
-    static const int32_t HRTIM_TIMC_TIMxDIER5_CMPxIE_POS[5] = {
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CMPxIE_POS[5] = {
       [1] = 0,   /** @brief CMP1IE */
       [2] = 1,   /** @brief CMP2IE */
       [3] = 2,   /** @brief CMP3IE */
       [4] = 3,   /** @brief CMP4IE */
     };
 
-    static const int32_t HRTIM_TIMC_SETxxR_EXTEVNTx_POS[11] = {
+    static const int32_t HRTIM_TIMC_SETCxR_EXTEVNTx_POS[11] = {
       [1]  = 21,   /** @brief External event 1 */
       [2]  = 22,   /** @brief External event 2 */
       [3]  = 23,   /** @brief External event 3 */
@@ -22496,7 +21848,7 @@
       [10] = 30,   /** @brief External event 10 */
     };
 
-    static const int32_t HRTIM_TIMC_SETxxR_TIMEVNTx_POS[10] = {
+    static const int32_t HRTIM_TIMC_SETCxR_TIMEVNTx_POS[10] = {
       [1]  = 12,   /** @brief Timer event 1 */
       [2]  = 13,   /** @brief Timer event 2 */
       [3]  = 14,   /** @brief Timer event 3 */
@@ -22508,14 +21860,14 @@
       [9]  = 20,   /** @brief Timer event 9 */
     };
 
-    static const int32_t HRTIM_TIMC_SETxxR_MSTCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMC_SETCxR_MSTCMPx_POS[5] = {
       [1] = 8,    /** @brief Master compare 1 */
       [2] = 9,    /** @brief Master compare 2 */
       [3] = 10,   /** @brief Master compare 3 */
       [4] = 11,   /** @brief Master compare 4 */
     };
 
-    static const int32_t HRTIM_TIMC_EEFxR1_EExFLTR_POS[6] = {
+    static const int32_t HRTIM_TIMC_EEFCR1_EExFLTR_POS[6] = {
       [1] = 1,    /** @brief External event 1 filter */
       [2] = 7,    /** @brief External event 2 filter */
       [3] = 13,   /** @brief External event 3 filter */
@@ -22523,7 +21875,7 @@
       [5] = 25,   /** @brief External event 5 filter */
     };
 
-    static const int32_t HRTIM_TIMC_EEFxR1_EExLTCH_POS[6] = {
+    static const int32_t HRTIM_TIMC_EEFCR1_EExLTCH_POS[6] = {
       [1] = 0,    /** @brief External event 1 latch */
       [2] = 6,    /** @brief External event 2 latch */
       [3] = 12,   /** @brief External event 3 latch */
@@ -22632,21 +21984,17 @@
 
     /**** @subsection HRTIM_TIMD Register Pointers ****/
 
-    static RW_ uint32_t* const HRTIM_TIMD_TIMxCR_PTR      = (RW_ uint32_t* const)0x40017600U;   /** @brief Timerx control register */
-    static RO_ uint32_t* const HRTIM_TIMD_TIMxISR_PTR     = (RO_ uint32_t* const)0x40017604U;   /** @brief Timerx interrupt status register */
-    static RW_ uint32_t* const HRTIM_TIMD_TIMxICR_PTR     = (RW_ uint32_t* const)0x40017608U;   /** @brief Timerx interrupt clear register */
-    static RW_ uint32_t* const HRTIM_TIMD_TIMxDIER5_PTR   = (RW_ uint32_t* const)0x4001760CU;   /** @brief TIMxDIER5 */
-    static RW_ uint32_t* const HRTIM_TIMD_CNTxR_PTR       = (RW_ uint32_t* const)0x40017610U;   /** @brief Timerx counter register */
-    static RW_ uint32_t* const HRTIM_TIMD_PERxR_PTR       = (RW_ uint32_t* const)0x40017614U;   /** @brief Timerx period register */
-    static RW_ uint32_t* const HRTIM_TIMD_REPxR_PTR       = (RW_ uint32_t* const)0x40017618U;   /** @brief Timerx repetition register */
-    static RW_ uint32_t* const HRTIM_TIMD_CMP1xR_PTR      = (RW_ uint32_t* const)0x4001761CU;   /** @brief Timerx compare 1 register */
-    static RW_ uint32_t* const HRTIM_TIMD_CMP1CxR_PTR     = (RW_ uint32_t* const)0x40017620U;   /** @brief Timerx compare 1 compound register */
-    static RW_ uint32_t* const HRTIM_TIMD_CMP2xR_PTR      = (RW_ uint32_t* const)0x40017624U;   /** @brief Timerx compare 2 register */
-    static RW_ uint32_t* const HRTIM_TIMD_CMP3xR_PTR      = (RW_ uint32_t* const)0x40017628U;   /** @brief Timerx compare 3 register */
-    static RW_ uint32_t* const HRTIM_TIMD_CMP4xR_PTR      = (RW_ uint32_t* const)0x4001762CU;   /** @brief Timerx compare 4 register */
-    static RW_ uint32_t* const HRTIM_TIMD_DTxR_PTR        = (RW_ uint32_t* const)0x40017638U;   /** @brief Timerx deadtime register */
-    static RW_ uint32_t* const HRTIM_TIMD_EEFxR1_PTR      = (RW_ uint32_t* const)0x4001764CU;   /** @brief Timerx external event filtering register 1 */
-    static RW_ uint32_t* const HRTIM_TIMD_EEFxR2_PTR      = (RW_ uint32_t* const)0x40017650U;   /** @brief Timerx external event filtering register 2 */
+    static RW_ uint32_t* const HRTIM_TIMD_TIMDCR_PTR      = (RW_ uint32_t* const)0x40017600U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMD_TIMDISR_PTR     = (RO_ uint32_t* const)0x40017604U;   /** @brief Timerx interrupt status register */
+    static RW_ uint32_t* const HRTIM_TIMD_TIMDICR_PTR     = (RW_ uint32_t* const)0x40017608U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMD_TIMDDIER5_PTR   = (RW_ uint32_t* const)0x4001760CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMD_CNTDR_PTR       = (RW_ uint32_t* const)0x40017610U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMD_PERDR_PTR       = (RW_ uint32_t* const)0x40017614U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMD_REPDR_PTR       = (RW_ uint32_t* const)0x40017618U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIMD_CMP1CDR_PTR     = (RW_ uint32_t* const)0x40017620U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIMD_DTDR_PTR        = (RW_ uint32_t* const)0x40017638U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIMD_EEFDR1_PTR      = (RW_ uint32_t* const)0x4001764CU;   /** @brief Timerx external event filtering register 1 */
+    static RW_ uint32_t* const HRTIM_TIMD_EEFDR2_PTR      = (RW_ uint32_t* const)0x40017650U;   /** @brief Timerx external event filtering register 2 */
     static RW_ uint32_t* const HRTIM_TIMD_RSTDR_PTR       = (RW_ uint32_t* const)0x40017654U;   /** @brief TimerA reset register */
     static RW_ uint32_t* const HRTIM_TIMD_CHPDR_PTR       = (RW_ uint32_t* const)0x40017658U;   /** @brief Timerx chopper register */
     static RW_ uint32_t* const HRTIM_TIMD_OUTDR_PTR       = (RW_ uint32_t* const)0x40017664U;   /** @brief Timerx output register */
@@ -22654,17 +22002,24 @@
 
     /**** @subsection Enumerated HRTIM_TIMD Register Pointers ****/
 
-    static RO_ uint32_t* const HRTIM_TIMD_CPTxxR_PTR[3] = {
+    static RW_ uint32_t* const HRTIM_TIMD_CMPxDR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001761CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x40017624U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x40017628U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x4001762CU,   /** @brief Timerx compare 4 register */
+    };
+
+    static RO_ uint32_t* const HRTIM_TIMD_CPTxDR_PTR[3] = {
       [1] = (RO_ uint32_t* const)0x40017630U,   /** @brief Timerx capture 1 register */
       [2] = (RO_ uint32_t* const)0x40017634U,   /** @brief Timerx capture 2 register */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMD_SETxxR_PTR[3] = {
+    static RW_ uint32_t* const HRTIM_TIMD_SETDxR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x4001763CU,   /** @brief Timerx output1 set register */
       [2] = (RW_ uint32_t* const)0x40017644U,   /** @brief Timerx output2 set register */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMD_RSTxxR_PTR[3] = {
+    static RW_ uint32_t* const HRTIM_TIMD_RSTDxR_PTR[3] = {
       [1] = (RW_ uint32_t* const)0x40017640U,   /** @brief Timerx output1 reset register */
       [2] = (RW_ uint32_t* const)0x40017648U,   /** @brief Timerx output2 reset register */
     };
@@ -22676,21 +22031,17 @@
 
     /**** @subsection HRTIM_TIMD Register Reset Values ****/
 
-    static const uint32_t HRTIM_TIMD_TIMxCR_RST      = 0x00000000U;   /** @brief TIMxCR register reset value. */
-    static const uint32_t HRTIM_TIMD_TIMxISR_RST     = 0x00000000U;   /** @brief TIMxISR register reset value. */
-    static const uint32_t HRTIM_TIMD_TIMxICR_RST     = 0x00000000U;   /** @brief TIMxICR register reset value. */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_RST   = 0x00000000U;   /** @brief TIMxDIER5 register reset value. */
-    static const uint32_t HRTIM_TIMD_CNTxR_RST       = 0x00000000U;   /** @brief CNTxR register reset value. */
-    static const uint32_t HRTIM_TIMD_PERxR_RST       = 0x0000FFFFU;   /** @brief PERxR register reset value. */
-    static const uint32_t HRTIM_TIMD_REPxR_RST       = 0x00000000U;   /** @brief REPxR register reset value. */
-    static const uint32_t HRTIM_TIMD_CMP1xR_RST      = 0x00000000U;   /** @brief CMP1xR register reset value. */
-    static const uint32_t HRTIM_TIMD_CMP1CxR_RST     = 0x00000000U;   /** @brief CMP1CxR register reset value. */
-    static const uint32_t HRTIM_TIMD_CMP2xR_RST      = 0x00000000U;   /** @brief CMP2xR register reset value. */
-    static const uint32_t HRTIM_TIMD_CMP3xR_RST      = 0x00000000U;   /** @brief CMP3xR register reset value. */
-    static const uint32_t HRTIM_TIMD_CMP4xR_RST      = 0x00000000U;   /** @brief CMP4xR register reset value. */
-    static const uint32_t HRTIM_TIMD_DTxR_RST        = 0x00000000U;   /** @brief DTxR register reset value. */
-    static const uint32_t HRTIM_TIMD_EEFxR1_RST      = 0x00000000U;   /** @brief EEFxR1 register reset value. */
-    static const uint32_t HRTIM_TIMD_EEFxR2_RST      = 0x00000000U;   /** @brief EEFxR2 register reset value. */
+    static const uint32_t HRTIM_TIMD_TIMDCR_RST      = 0x00000000U;   /** @brief TIMDCR register reset value. */
+    static const uint32_t HRTIM_TIMD_TIMDISR_RST     = 0x00000000U;   /** @brief TIMDISR register reset value. */
+    static const uint32_t HRTIM_TIMD_TIMDICR_RST     = 0x00000000U;   /** @brief TIMDICR register reset value. */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RST   = 0x00000000U;   /** @brief TIMDDIER5 register reset value. */
+    static const uint32_t HRTIM_TIMD_CNTDR_RST       = 0x00000000U;   /** @brief CNTDR register reset value. */
+    static const uint32_t HRTIM_TIMD_PERDR_RST       = 0x0000FFFFU;   /** @brief PERDR register reset value. */
+    static const uint32_t HRTIM_TIMD_REPDR_RST       = 0x00000000U;   /** @brief REPDR register reset value. */
+    static const uint32_t HRTIM_TIMD_CMP1CDR_RST     = 0x00000000U;   /** @brief CMP1CDR register reset value. */
+    static const uint32_t HRTIM_TIMD_DTDR_RST        = 0x00000000U;   /** @brief DTDR register reset value. */
+    static const uint32_t HRTIM_TIMD_EEFDR1_RST      = 0x00000000U;   /** @brief EEFDR1 register reset value. */
+    static const uint32_t HRTIM_TIMD_EEFDR2_RST      = 0x00000000U;   /** @brief EEFDR2 register reset value. */
     static const uint32_t HRTIM_TIMD_RSTDR_RST       = 0x00000000U;   /** @brief RSTDR register reset value. */
     static const uint32_t HRTIM_TIMD_CHPDR_RST       = 0x00000000U;   /** @brief CHPDR register reset value. */
     static const uint32_t HRTIM_TIMD_OUTDR_RST       = 0x00000000U;   /** @brief OUTDR register reset value. */
@@ -22698,19 +22049,26 @@
 
     /**** @subsection Enumerated HRTIM_TIMD Register Reset Values ****/
 
-    static const uint32_t HRTIM_TIMD_CPTxxR_RST[3] = {
-      [1] = 0x00000000U,   /** @brief CPT1xR register reset value. */
-      [2] = 0x00000000U,   /** @brief CPT2xR register reset value. */
+    static const uint32_t HRTIM_TIMD_CMPxDR_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CMP1DR register reset value. */
+      [2] = 0x00000000U,   /** @brief CMP2DR register reset value. */
+      [3] = 0x00000000U,   /** @brief CMP3DR register reset value. */
+      [4] = 0x00000000U,   /** @brief CMP4DR register reset value. */
     };
 
-    static const uint32_t HRTIM_TIMD_SETxxR_RST[3] = {
-      [1] = 0x00000000U,   /** @brief SETx1R register reset value. */
-      [2] = 0x00000000U,   /** @brief SETx2R register reset value. */
+    static const uint32_t HRTIM_TIMD_CPTxDR_RST[3] = {
+      [1] = 0x00000000U,   /** @brief CPT1DR register reset value. */
+      [2] = 0x00000000U,   /** @brief CPT2DR register reset value. */
     };
 
-    static const uint32_t HRTIM_TIMD_RSTxxR_RST[3] = {
-      [1] = 0x00000000U,   /** @brief RSTx1R register reset value. */
-      [2] = 0x00000000U,   /** @brief RSTx2R register reset value. */
+    static const uint32_t HRTIM_TIMD_SETDxR_RST[3] = {
+      [1] = 0x00000000U,   /** @brief SETD1R register reset value. */
+      [2] = 0x00000000U,   /** @brief SETD2R register reset value. */
+    };
+
+    static const uint32_t HRTIM_TIMD_RSTDxR_RST[3] = {
+      [1] = 0x00000000U,   /** @brief RSTD1R register reset value. */
+      [2] = 0x00000000U,   /** @brief RSTD2R register reset value. */
     };
 
     static const uint32_t HRTIM_TIMD_CPTxDCR_RST[3] = {
@@ -22720,24 +22078,21 @@
 
     /**** @subsection Enumerated HRTIM_TIMD Register Value Types ****/
 
-    typedef uint32_t HRTIM_TIMD_TIMxCR_t;      /** @brief TIMxCR register value type. */
-    typedef uint32_t HRTIM_TIMD_TIMxISR_t;     /** @brief TIMxISR register value type. */
-    typedef uint32_t HRTIM_TIMD_TIMxICR_t;     /** @brief TIMxICR register value type. */
-    typedef uint32_t HRTIM_TIMD_TIMxDIER5_t;   /** @brief TIMxDIER5 register value type. */
-    typedef uint32_t HRTIM_TIMD_CNTxR_t;       /** @brief CNTxR register value type. */
-    typedef uint32_t HRTIM_TIMD_PERxR_t;       /** @brief PERxR register value type. */
-    typedef uint32_t HRTIM_TIMD_REPxR_t;       /** @brief REPxR register value type. */
-    typedef uint32_t HRTIM_TIMD_CMP1xR_t;      /** @brief CMP1xR register value type. */
-    typedef uint32_t HRTIM_TIMD_CMP1CxR_t;     /** @brief CMP1CxR register value type. */
-    typedef uint32_t HRTIM_TIMD_CMP2xR_t;      /** @brief CMP2xR register value type. */
-    typedef uint32_t HRTIM_TIMD_CMP3xR_t;      /** @brief CMP3xR register value type. */
-    typedef uint32_t HRTIM_TIMD_CMP4xR_t;      /** @brief CMP4xR register value type. */
-    typedef uint32_t HRTIM_TIMD_CPTxxR_t;      /** @brief CPTxxR register value type. */
-    typedef uint32_t HRTIM_TIMD_DTxR_t;        /** @brief DTxR register value type. */
-    typedef uint32_t HRTIM_TIMD_SETxxR_t;      /** @brief SETxxR register value type. */
-    typedef uint32_t HRTIM_TIMD_RSTxxR_t;      /** @brief RSTxxR register value type. */
-    typedef uint32_t HRTIM_TIMD_EEFxR1_t;      /** @brief EEFxR1 register value type. */
-    typedef uint32_t HRTIM_TIMD_EEFxR2_t;      /** @brief EEFxR2 register value type. */
+    typedef uint32_t HRTIM_TIMD_TIMDCR_t;      /** @brief TIMDCR register value type. */
+    typedef uint32_t HRTIM_TIMD_TIMDISR_t;     /** @brief TIMDISR register value type. */
+    typedef uint32_t HRTIM_TIMD_TIMDICR_t;     /** @brief TIMDICR register value type. */
+    typedef uint32_t HRTIM_TIMD_TIMDDIER5_t;   /** @brief TIMDDIER5 register value type. */
+    typedef uint32_t HRTIM_TIMD_CNTDR_t;       /** @brief CNTDR register value type. */
+    typedef uint32_t HRTIM_TIMD_PERDR_t;       /** @brief PERDR register value type. */
+    typedef uint32_t HRTIM_TIMD_REPDR_t;       /** @brief REPDR register value type. */
+    typedef uint32_t HRTIM_TIMD_CMPxDR_t;      /** @brief CMPxDR register value type. */
+    typedef uint32_t HRTIM_TIMD_CMP1CDR_t;     /** @brief CMP1CDR register value type. */
+    typedef uint32_t HRTIM_TIMD_CPTxDR_t;      /** @brief CPTxDR register value type. */
+    typedef uint32_t HRTIM_TIMD_DTDR_t;        /** @brief DTDR register value type. */
+    typedef uint32_t HRTIM_TIMD_SETDxR_t;      /** @brief SETDxR register value type. */
+    typedef uint32_t HRTIM_TIMD_RSTDxR_t;      /** @brief RSTDxR register value type. */
+    typedef uint32_t HRTIM_TIMD_EEFDR1_t;      /** @brief EEFDR1 register value type. */
+    typedef uint32_t HRTIM_TIMD_EEFDR2_t;      /** @brief EEFDR2 register value type. */
     typedef uint32_t HRTIM_TIMD_RSTDR_t;       /** @brief RSTDR register value type. */
     typedef uint32_t HRTIM_TIMD_CHPDR_t;       /** @brief CHPDR register value type. */
     typedef uint32_t HRTIM_TIMD_CPTxDCR_t;     /** @brief CPTxDCR register value type. */
@@ -22746,24 +22101,21 @@
 
     /**** @subsection Enumerated HRTIM_TIMD Register Pointer Types ****/
 
-    typedef uint32_t* const HRTIM_TIMD_TIMxCR_PTR_t;      /** @brief TIMxCR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_TIMxISR_PTR_t;     /** @brief TIMxISR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_TIMxICR_PTR_t;     /** @brief TIMxICR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_TIMxDIER5_PTR_t;   /** @brief TIMxDIER5 register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CNTxR_PTR_t;       /** @brief CNTxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_PERxR_PTR_t;       /** @brief PERxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_REPxR_PTR_t;       /** @brief REPxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CMP1xR_PTR_t;      /** @brief CMP1xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CMP1CxR_PTR_t;     /** @brief CMP1CxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CMP2xR_PTR_t;      /** @brief CMP2xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CMP3xR_PTR_t;      /** @brief CMP3xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CMP4xR_PTR_t;      /** @brief CMP4xR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_CPTxxR_PTR_t;      /** @brief CPTxxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_DTxR_PTR_t;        /** @brief DTxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_SETxxR_PTR_t;      /** @brief SETxxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_RSTxxR_PTR_t;      /** @brief RSTxxR register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_EEFxR1_PTR_t;      /** @brief EEFxR1 register pointer type. */
-    typedef uint32_t* const HRTIM_TIMD_EEFxR2_PTR_t;      /** @brief EEFxR2 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_TIMDCR_PTR_t;      /** @brief TIMDCR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_TIMDISR_PTR_t;     /** @brief TIMDISR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_TIMDICR_PTR_t;     /** @brief TIMDICR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_TIMDDIER5_PTR_t;   /** @brief TIMDDIER5 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_CNTDR_PTR_t;       /** @brief CNTDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_PERDR_PTR_t;       /** @brief PERDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_REPDR_PTR_t;       /** @brief REPDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_CMPxDR_PTR_t;      /** @brief CMPxDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_CMP1CDR_PTR_t;     /** @brief CMP1CDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_CPTxDR_PTR_t;      /** @brief CPTxDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_DTDR_PTR_t;        /** @brief DTDR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_SETDxR_PTR_t;      /** @brief SETDxR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_RSTDxR_PTR_t;      /** @brief RSTDxR register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_EEFDR1_PTR_t;      /** @brief EEFDR1 register pointer type. */
+    typedef uint32_t* const HRTIM_TIMD_EEFDR2_PTR_t;      /** @brief EEFDR2 register pointer type. */
     typedef uint32_t* const HRTIM_TIMD_RSTDR_PTR_t;       /** @brief RSTDR register pointer type. */
     typedef uint32_t* const HRTIM_TIMD_CHPDR_PTR_t;       /** @brief CHPDR register pointer type. */
     typedef uint32_t* const HRTIM_TIMD_CPTxDCR_PTR_t;     /** @brief CPTxDCR register pointer type. */
@@ -22772,74 +22124,71 @@
 
     /**** @subsection HRTIM_TIMD Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMD_TIMxCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
-    static const uint32_t HRTIM_TIMD_TIMxCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
-    static const uint32_t HRTIM_TIMD_TIMxCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
-    static const uint32_t HRTIM_TIMD_TIMxCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
-    static const uint32_t HRTIM_TIMD_TIMxCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
-    static const uint32_t HRTIM_TIMD_TIMxCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
-    static const uint32_t HRTIM_TIMD_TIMxCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
-    static const uint32_t HRTIM_TIMD_TIMxCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
-    static const uint32_t HRTIM_TIMD_TIMxCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
-    static const uint32_t HRTIM_TIMD_TIMxCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
-    static const uint32_t HRTIM_TIMD_TIMxCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
-    static const uint32_t HRTIM_TIMD_TIMxCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
-    static const uint32_t HRTIM_TIMD_TIMxCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
-    static const uint32_t HRTIM_TIMD_TIMxCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
-    static const uint32_t HRTIM_TIMD_TIMxCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
-    static const uint32_t HRTIM_TIMD_TIMxCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
-    static const uint32_t HRTIM_TIMD_TIMxCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
-    static const uint32_t HRTIM_TIMD_TIMxISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
-    static const uint32_t HRTIM_TIMD_TIMxISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
-    static const uint32_t HRTIM_TIMD_TIMxISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
-    static const uint32_t HRTIM_TIMD_TIMxISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
-    static const uint32_t HRTIM_TIMD_TIMxISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
-    static const uint32_t HRTIM_TIMD_TIMxISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
-    static const uint32_t HRTIM_TIMD_TIMxICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
-    static const uint32_t HRTIM_TIMD_TIMxICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
-    static const uint32_t HRTIM_TIMD_TIMxICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
-    static const uint32_t HRTIM_TIMD_TIMxICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
-    static const uint32_t HRTIM_TIMD_CNTxR_CNTX_MASK           = 0x0000FFFFU;   /** @brief Timerx counter value */
-    static const uint32_t HRTIM_TIMD_PERxR_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
-    static const uint32_t HRTIM_TIMD_REPxR_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
-    static const uint32_t HRTIM_TIMD_CMP1xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMD_CMP1CxR_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
-    static const uint32_t HRTIM_TIMD_CMP1CxR_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMD_CMP2xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 2 value */
-    static const uint32_t HRTIM_TIMD_CMP3xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 3 value */
-    static const uint32_t HRTIM_TIMD_CMP4xR_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 4 value */
-    static const uint32_t HRTIM_TIMD_CPTxxR_CPTxX_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
-    static const uint32_t HRTIM_TIMD_DTxR_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
-    static const uint32_t HRTIM_TIMD_DTxR_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
-    static const uint32_t HRTIM_TIMD_DTxR_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
-    static const uint32_t HRTIM_TIMD_DTxR_DTFX_MASK            = 0x01FF0000U;   /** @brief Deadtime falling value */
-    static const uint32_t HRTIM_TIMD_DTxR_DTRLKX_MASK          = 0x00008000U;   /** @brief Deadtime rising lock */
-    static const uint32_t HRTIM_TIMD_DTxR_DTRSLKX_MASK         = 0x00004000U;   /** @brief Deadtime rising sign lock */
-    static const uint32_t HRTIM_TIMD_DTxR_DTPRSC_MASK          = 0x00001C00U;   /** @brief Deadtime prescaler */
-    static const uint32_t HRTIM_TIMD_DTxR_SDTRX_MASK           = 0x00000200U;   /** @brief Sign deadtime rising value */
-    static const uint32_t HRTIM_TIMD_DTxR_DTRX_MASK            = 0x000001FFU;   /** @brief Deadtime rising value */
-    static const uint32_t HRTIM_TIMD_SETxxR_UPDATE_MASK        = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
-    static const uint32_t HRTIM_TIMD_SETxxR_MSTPER_MASK        = 0x00000080U;   /** @brief Master period */
-    static const uint32_t HRTIM_TIMD_SETxxR_PER_MASK           = 0x00000004U;   /** @brief Timer A period */
-    static const uint32_t HRTIM_TIMD_SETxxR_RESYNC_MASK        = 0x00000002U;   /** @brief Timer A resynchronizaton */
-    static const uint32_t HRTIM_TIMD_SETxxR_SST_MASK           = 0x00000001U;   /** @brief Software set trigger */
-    static const uint32_t HRTIM_TIMD_RSTxxR_UPDATE_MASK        = 0x80000000U;   /** @brief UPDATE */
-    static const uint32_t HRTIM_TIMD_RSTxxR_MSTPER_MASK        = 0x00000080U;   /** @brief MSTPER */
-    static const uint32_t HRTIM_TIMD_RSTxxR_PER_MASK           = 0x00000004U;   /** @brief PER */
-    static const uint32_t HRTIM_TIMD_RSTxxR_RESYNC_MASK        = 0x00000002U;   /** @brief RESYNC */
-    static const uint32_t HRTIM_TIMD_RSTxxR_SRT_MASK           = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIMD_TIMDCR_UPDGAT_MASK        = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMD_TIMDCR_PREEN_MASK         = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMD_TIMDCR_DACSYNC_MASK       = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMD_TIMDCR_MSTU_MASK          = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TEU_MASK           = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TDU_MASK           = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TCU_MASK           = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TBU_MASK           = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TXRSTU_MASK        = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TXREPU_MASK        = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMD_TIMDCR_SYNCSTRTX_MASK     = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMD_TIMDCR_SYNCRSTX_MASK      = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMD_TIMDCR_PSHPLL_MASK        = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMD_TIMDCR_HALF_MASK          = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMD_TIMDCR_RETRIG_MASK        = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMD_TIMDCR_CONT_MASK          = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMD_TIMDCR_CK_PSCX_MASK       = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMD_TIMDISR_IPPSTAT_MASK      = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMD_TIMDISR_CPPSTAT_MASK      = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMD_TIMDISR_DLYPRT_MASK       = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMD_TIMDISR_RST_MASK          = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMD_TIMDISR_UPD_MASK          = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMD_TIMDISR_REP_MASK          = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMD_TIMDICR_DLYPRTC_MASK      = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDICR_RSTC_MASK         = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDICR_UPDC_MASK         = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDICR_REPC_MASK         = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_DLYPRTDE_MASK   = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTDE_MASK      = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SETX2DE_MASK    = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SET1XDE_MASK    = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_UPDDE_MASK      = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_REPDE_MASK      = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_DLYPRTIE_MASK   = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTIE_MASK      = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SETX2IE_MASK    = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SET1XIE_MASK    = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_UPDIE_MASK      = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_REPIE_MASK      = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMD_CNTDR_CNTX_MASK           = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIMD_PERDR_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIMD_REPDR_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIMD_CMPxDR_CMP1X_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMD_CMP1CDR_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIMD_CMP1CDR_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMD_CPTxDR_CPT1X_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIMD_DTDR_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIMD_DTDR_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTFX_MASK            = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTRLKX_MASK          = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIMD_DTDR_DTRSLKX_MASK         = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIMD_DTDR_DTPRSC_MASK          = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIMD_DTDR_SDTRX_MASK           = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTRX_MASK            = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIMD_SETDxR_UPDATE_MASK        = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIMD_SETDxR_MSTPER_MASK        = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIMD_SETDxR_PER_MASK           = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIMD_SETDxR_RESYNC_MASK        = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIMD_SETDxR_SST_MASK           = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIMD_RSTDxR_UPDATE_MASK        = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIMD_RSTDxR_MSTPER_MASK        = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIMD_RSTDxR_PER_MASK           = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIMD_RSTDxR_RESYNC_MASK        = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIMD_RSTDxR_SRT_MASK           = 0x00000001U;   /** @brief SRT */
     static const uint32_t HRTIM_TIMD_RSTDR_MSTPER_MASK         = 0x00000010U;   /** @brief Master timer period */
     static const uint32_t HRTIM_TIMD_RSTDR_UPDT_MASK           = 0x00000002U;   /** @brief Timer A update reset */
     static const uint32_t HRTIM_TIMD_CHPDR_STRTPW_MASK         = 0x00000780U;   /** @brief STRTPW */
@@ -22862,95 +22211,95 @@
 
     /**** @subsection Enumerated HRTIM_TIMD Register Field Masks ****/
 
-    static const uint32_t HRTIM_TIMD_TIMxCR_DELCMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMD_TIMDCR_DELCMPx_MASK[5] = {
       [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
       [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxISR_OxSTAT_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDISR_OxSTAT_MASK[3] = {
       [1] = 0x00040000U,   /** @brief Output 1 state */
       [2] = 0x00080000U,   /** @brief Output 2 state */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxISR_RSTXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDISR_RSTXx_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
       [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxISR_SETXx_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDISR_SETXx_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
       [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxISR_CPTx_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDISR_CPTx_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxISR_CMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMD_TIMDISR_CMPx_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxICR_RSTXxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDICR_RSTXxC_MASK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
       [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxICR_SETxXC_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDICR_SETxXC_MASK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
       [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxICR_CPTxC_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDICR_CPTxC_MASK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxICR_CMPxC_MASK[5] = {
+    static const uint32_t HRTIM_TIMD_TIMDICR_CMPxC_MASK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_RSTXxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTXxDE_MASK[3] = {
       [1] = 0x04000000U,   /** @brief RSTx1DE */
       [2] = 0x10000000U,   /** @brief RSTx2DE */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_CPTxDE_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CPTxDE_MASK[3] = {
       [1] = 0x00800000U,   /** @brief CPT1DE */
       [2] = 0x01000000U,   /** @brief CPT2DE */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_CMPxDE_MASK[5] = {
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CMPxDE_MASK[5] = {
       [1] = 0x00010000U,   /** @brief CMP1DE */
       [2] = 0x00020000U,   /** @brief CMP2DE */
       [3] = 0x00040000U,   /** @brief CMP3DE */
       [4] = 0x00080000U,   /** @brief CMP4DE */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_RSTXxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTXxIE_MASK[3] = {
       [1] = 0x00000400U,   /** @brief RSTx1IE */
       [2] = 0x00001000U,   /** @brief RSTx2IE */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_CPTxIE_MASK[3] = {
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CPTxIE_MASK[3] = {
       [1] = 0x00000080U,   /** @brief CPT1IE */
       [2] = 0x00000100U,   /** @brief CPT2IE */
     };
 
-    static const uint32_t HRTIM_TIMD_TIMxDIER5_CMPxIE_MASK[5] = {
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CMPxIE_MASK[5] = {
       [1] = 0x00000001U,   /** @brief CMP1IE */
       [2] = 0x00000002U,   /** @brief CMP2IE */
       [3] = 0x00000004U,   /** @brief CMP3IE */
       [4] = 0x00000008U,   /** @brief CMP4IE */
     };
 
-    static const uint32_t HRTIM_TIMD_SETxxR_EXTEVNTx_MASK[11] = {
+    static const uint32_t HRTIM_TIMD_SETDxR_EXTEVNTx_MASK[11] = {
       [1]  = 0x00200000U,   /** @brief External event 1 */
       [2]  = 0x00400000U,   /** @brief External event 2 */
       [3]  = 0x00800000U,   /** @brief External event 3 */
@@ -22963,7 +22312,7 @@
       [10] = 0x40000000U,   /** @brief External event 10 */
     };
 
-    static const uint32_t HRTIM_TIMD_SETxxR_TIMEVNTx_MASK[10] = {
+    static const uint32_t HRTIM_TIMD_SETDxR_TIMEVNTx_MASK[10] = {
       [1]  = 0x00001000U,   /** @brief Timer event 1 */
       [2]  = 0x00002000U,   /** @brief Timer event 2 */
       [3]  = 0x00004000U,   /** @brief Timer event 3 */
@@ -22975,14 +22324,14 @@
       [9]  = 0x00100000U,   /** @brief Timer event 9 */
     };
 
-    static const uint32_t HRTIM_TIMD_SETxxR_MSTCMPx_MASK[5] = {
+    static const uint32_t HRTIM_TIMD_SETDxR_MSTCMPx_MASK[5] = {
       [1] = 0x00000100U,   /** @brief Master compare 1 */
       [2] = 0x00000200U,   /** @brief Master compare 2 */
       [3] = 0x00000400U,   /** @brief Master compare 3 */
       [4] = 0x00000800U,   /** @brief Master compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMD_EEFxR1_EExFLTR_MASK[6] = {
+    static const uint32_t HRTIM_TIMD_EEFDR1_EExFLTR_MASK[6] = {
       [1] = 0x0000001EU,   /** @brief External event 1 filter */
       [2] = 0x00000780U,   /** @brief External event 2 filter */
       [3] = 0x0001E000U,   /** @brief External event 3 filter */
@@ -22990,7 +22339,7 @@
       [5] = 0x1E000000U,   /** @brief External event 5 filter */
     };
 
-    static const uint32_t HRTIM_TIMD_EEFxR1_EExLTCH_MASK[6] = {
+    static const uint32_t HRTIM_TIMD_EEFDR1_EExLTCH_MASK[6] = {
       [1] = 0x00000001U,   /** @brief External event 1 latch */
       [2] = 0x00000040U,   /** @brief External event 2 latch */
       [3] = 0x00001000U,   /** @brief External event 3 latch */
@@ -23095,74 +22444,71 @@
 
     /**** @subsection HRTIM_TIMD Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMD_TIMxCR_UPDGAT_POS        = 28;   /** @brief Update gating */
-    static const int32_t HRTIM_TIMD_TIMxCR_PREEN_POS         = 27;   /** @brief Preload enable */
-    static const int32_t HRTIM_TIMD_TIMxCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
-    static const int32_t HRTIM_TIMD_TIMxCR_MSTU_POS          = 24;   /** @brief Master timer update */
-    static const int32_t HRTIM_TIMD_TIMxCR_TEU_POS           = 23;   /** @brief TEU */
-    static const int32_t HRTIM_TIMD_TIMxCR_TDU_POS           = 22;   /** @brief TDU */
-    static const int32_t HRTIM_TIMD_TIMxCR_TCU_POS           = 21;   /** @brief TCU */
-    static const int32_t HRTIM_TIMD_TIMxCR_TBU_POS           = 20;   /** @brief TBU */
-    static const int32_t HRTIM_TIMD_TIMxCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
-    static const int32_t HRTIM_TIMD_TIMxCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
-    static const int32_t HRTIM_TIMD_TIMxCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
-    static const int32_t HRTIM_TIMD_TIMxCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
-    static const int32_t HRTIM_TIMD_TIMxCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
-    static const int32_t HRTIM_TIMD_TIMxCR_HALF_POS          = 5;    /** @brief Half mode enable */
-    static const int32_t HRTIM_TIMD_TIMxCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
-    static const int32_t HRTIM_TIMD_TIMxCR_CONT_POS          = 3;    /** @brief Continuous mode */
-    static const int32_t HRTIM_TIMD_TIMxCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
-    static const int32_t HRTIM_TIMD_TIMxISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
-    static const int32_t HRTIM_TIMD_TIMxISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
-    static const int32_t HRTIM_TIMD_TIMxISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
-    static const int32_t HRTIM_TIMD_TIMxISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
-    static const int32_t HRTIM_TIMD_TIMxISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
-    static const int32_t HRTIM_TIMD_TIMxISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
-    static const int32_t HRTIM_TIMD_TIMxICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
-    static const int32_t HRTIM_TIMD_TIMxICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
-    static const int32_t HRTIM_TIMD_TIMxICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
-    static const int32_t HRTIM_TIMD_TIMxICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_REPDE_POS      = 20;   /** @brief REPDE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
-    static const int32_t HRTIM_TIMD_TIMxDIER5_REPIE_POS      = 4;    /** @brief REPIE */
-    static const int32_t HRTIM_TIMD_CNTxR_CNTX_POS           = 0;    /** @brief Timerx counter value */
-    static const int32_t HRTIM_TIMD_PERxR_PERX_POS           = 0;    /** @brief Timerx period value */
-    static const int32_t HRTIM_TIMD_REPxR_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
-    static const int32_t HRTIM_TIMD_CMP1xR_CMPxX_POS         = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMD_CMP1CxR_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
-    static const int32_t HRTIM_TIMD_CMP1CxR_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMD_CMP2xR_CMPxX_POS         = 0;    /** @brief Timerx compare 2 value */
-    static const int32_t HRTIM_TIMD_CMP3xR_CMPxX_POS         = 0;    /** @brief Timerx compare 3 value */
-    static const int32_t HRTIM_TIMD_CMP4xR_CMPxX_POS         = 0;    /** @brief Timerx compare 4 value */
-    static const int32_t HRTIM_TIMD_CPTxxR_CPTxX_POS         = 0;    /** @brief Timerx capture 1 value */
-    static const int32_t HRTIM_TIMD_DTxR_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
-    static const int32_t HRTIM_TIMD_DTxR_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
-    static const int32_t HRTIM_TIMD_DTxR_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
-    static const int32_t HRTIM_TIMD_DTxR_DTFX_POS            = 16;   /** @brief Deadtime falling value */
-    static const int32_t HRTIM_TIMD_DTxR_DTRLKX_POS          = 15;   /** @brief Deadtime rising lock */
-    static const int32_t HRTIM_TIMD_DTxR_DTRSLKX_POS         = 14;   /** @brief Deadtime rising sign lock */
-    static const int32_t HRTIM_TIMD_DTxR_DTPRSC_POS          = 10;   /** @brief Deadtime prescaler */
-    static const int32_t HRTIM_TIMD_DTxR_SDTRX_POS           = 9;    /** @brief Sign deadtime rising value */
-    static const int32_t HRTIM_TIMD_DTxR_DTRX_POS            = 0;    /** @brief Deadtime rising value */
-    static const int32_t HRTIM_TIMD_SETxxR_UPDATE_POS        = 31;   /** @brief Registers update (transfer preload to active) */
-    static const int32_t HRTIM_TIMD_SETxxR_MSTPER_POS        = 7;    /** @brief Master period */
-    static const int32_t HRTIM_TIMD_SETxxR_PER_POS           = 2;    /** @brief Timer A period */
-    static const int32_t HRTIM_TIMD_SETxxR_RESYNC_POS        = 1;    /** @brief Timer A resynchronizaton */
-    static const int32_t HRTIM_TIMD_SETxxR_SST_POS           = 0;    /** @brief Software set trigger */
-    static const int32_t HRTIM_TIMD_RSTxxR_UPDATE_POS        = 31;   /** @brief UPDATE */
-    static const int32_t HRTIM_TIMD_RSTxxR_MSTPER_POS        = 7;    /** @brief MSTPER */
-    static const int32_t HRTIM_TIMD_RSTxxR_PER_POS           = 2;    /** @brief PER */
-    static const int32_t HRTIM_TIMD_RSTxxR_RESYNC_POS        = 1;    /** @brief RESYNC */
-    static const int32_t HRTIM_TIMD_RSTxxR_SRT_POS           = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIMD_TIMDCR_UPDGAT_POS        = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMD_TIMDCR_PREEN_POS         = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMD_TIMDCR_DACSYNC_POS       = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMD_TIMDCR_MSTU_POS          = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMD_TIMDCR_TEU_POS           = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TDU_POS           = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TCU_POS           = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TBU_POS           = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TXRSTU_POS        = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMD_TIMDCR_TXREPU_POS        = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMD_TIMDCR_SYNCSTRTX_POS     = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMD_TIMDCR_SYNCRSTX_POS      = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMD_TIMDCR_PSHPLL_POS        = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMD_TIMDCR_HALF_POS          = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMD_TIMDCR_RETRIG_POS        = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMD_TIMDCR_CONT_POS          = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMD_TIMDCR_CK_PSCX_POS       = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMD_TIMDISR_IPPSTAT_POS      = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMD_TIMDISR_CPPSTAT_POS      = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMD_TIMDISR_DLYPRT_POS       = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMD_TIMDISR_RST_POS          = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMD_TIMDISR_UPD_POS          = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMD_TIMDISR_REP_POS          = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMD_TIMDICR_DLYPRTC_POS      = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMD_TIMDICR_RSTC_POS         = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMD_TIMDICR_UPDC_POS         = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMD_TIMDICR_REPC_POS         = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_DLYPRTDE_POS   = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTDE_POS      = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SETX2DE_POS    = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SET1XDE_POS    = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_UPDDE_POS      = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_REPDE_POS      = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_DLYPRTIE_POS   = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTIE_POS      = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SETX2IE_POS    = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SET1XIE_POS    = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_UPDIE_POS      = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_REPIE_POS      = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMD_CNTDR_CNTX_POS           = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIMD_PERDR_PERX_POS           = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIMD_REPDR_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIMD_CMPxDR_CMP1X_POS         = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMD_CMP1CDR_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIMD_CMP1CDR_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMD_CPTxDR_CPT1X_POS         = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMD_DTDR_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIMD_DTDR_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIMD_DTDR_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIMD_DTDR_DTFX_POS            = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIMD_DTDR_DTRLKX_POS          = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIMD_DTDR_DTRSLKX_POS         = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIMD_DTDR_DTPRSC_POS          = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIMD_DTDR_SDTRX_POS           = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIMD_DTDR_DTRX_POS            = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIMD_SETDxR_UPDATE_POS        = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIMD_SETDxR_MSTPER_POS        = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIMD_SETDxR_PER_POS           = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIMD_SETDxR_RESYNC_POS        = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIMD_SETDxR_SST_POS           = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIMD_RSTDxR_UPDATE_POS        = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIMD_RSTDxR_MSTPER_POS        = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIMD_RSTDxR_PER_POS           = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIMD_RSTDxR_RESYNC_POS        = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIMD_RSTDxR_SRT_POS           = 0;    /** @brief SRT */
     static const int32_t HRTIM_TIMD_RSTDR_MSTPER_POS         = 4;    /** @brief Master timer period */
     static const int32_t HRTIM_TIMD_RSTDR_UPDT_POS           = 1;    /** @brief Timer A update reset */
     static const int32_t HRTIM_TIMD_CHPDR_STRTPW_POS         = 7;    /** @brief STRTPW */
@@ -23185,95 +22531,95 @@
 
     /**** @subsection Enumerated HRTIM_TIMD Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMD_TIMxCR_DELCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMD_TIMDCR_DELCMPx_POS[5] = {
       [2] = 12,   /** @brief Delayed CMP2 mode */
       [4] = 14,   /** @brief Delayed CMP4 mode */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxISR_OxSTAT_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDISR_OxSTAT_POS[3] = {
       [1] = 18,   /** @brief Output 1 state */
       [2] = 19,   /** @brief Output 2 state */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxISR_RSTXx_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDISR_RSTXx_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset interrupt flag */
       [2] = 12,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxISR_SETXx_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDISR_SETXx_POS[3] = {
       [1] = 9,    /** @brief Output 1 set interrupt flag */
       [2] = 11,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxISR_CPTx_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDISR_CPTx_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag */
       [2] = 8,   /** @brief Capture2 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxISR_CMPx_POS[5] = {
+    static const int32_t HRTIM_TIMD_TIMDISR_CMPx_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag */
       [2] = 1,   /** @brief Compare 2 interrupt flag */
       [3] = 2,   /** @brief Compare 3 interrupt flag */
       [4] = 3,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxICR_RSTXxC_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDICR_RSTXxC_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset flag clear */
       [2] = 12,   /** @brief Output 2 reset flag clear */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxICR_SETxXC_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDICR_SETxXC_POS[3] = {
       [1] = 9,    /** @brief Output 1 set flag clear */
       [2] = 11,   /** @brief Output 2 set flag clear */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxICR_CPTxC_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDICR_CPTxC_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag clear */
       [2] = 8,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxICR_CMPxC_POS[5] = {
+    static const int32_t HRTIM_TIMD_TIMDICR_CMPxC_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag clear */
       [2] = 1,   /** @brief Compare 2 interrupt flag clear */
       [3] = 2,   /** @brief Compare 3 interrupt flag clear */
       [4] = 3,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxDIER5_RSTXxDE_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTXxDE_POS[3] = {
       [1] = 26,   /** @brief RSTx1DE */
       [2] = 28,   /** @brief RSTx2DE */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxDIER5_CPTxDE_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CPTxDE_POS[3] = {
       [1] = 23,   /** @brief CPT1DE */
       [2] = 24,   /** @brief CPT2DE */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxDIER5_CMPxDE_POS[5] = {
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CMPxDE_POS[5] = {
       [1] = 16,   /** @brief CMP1DE */
       [2] = 17,   /** @brief CMP2DE */
       [3] = 18,   /** @brief CMP3DE */
       [4] = 19,   /** @brief CMP4DE */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxDIER5_RSTXxIE_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTXxIE_POS[3] = {
       [1] = 10,   /** @brief RSTx1IE */
       [2] = 12,   /** @brief RSTx2IE */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxDIER5_CPTxIE_POS[3] = {
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CPTxIE_POS[3] = {
       [1] = 7,   /** @brief CPT1IE */
       [2] = 8,   /** @brief CPT2IE */
     };
 
-    static const int32_t HRTIM_TIMD_TIMxDIER5_CMPxIE_POS[5] = {
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CMPxIE_POS[5] = {
       [1] = 0,   /** @brief CMP1IE */
       [2] = 1,   /** @brief CMP2IE */
       [3] = 2,   /** @brief CMP3IE */
       [4] = 3,   /** @brief CMP4IE */
     };
 
-    static const int32_t HRTIM_TIMD_SETxxR_EXTEVNTx_POS[11] = {
+    static const int32_t HRTIM_TIMD_SETDxR_EXTEVNTx_POS[11] = {
       [1]  = 21,   /** @brief External event 1 */
       [2]  = 22,   /** @brief External event 2 */
       [3]  = 23,   /** @brief External event 3 */
@@ -23286,7 +22632,7 @@
       [10] = 30,   /** @brief External event 10 */
     };
 
-    static const int32_t HRTIM_TIMD_SETxxR_TIMEVNTx_POS[10] = {
+    static const int32_t HRTIM_TIMD_SETDxR_TIMEVNTx_POS[10] = {
       [1]  = 12,   /** @brief Timer event 1 */
       [2]  = 13,   /** @brief Timer event 2 */
       [3]  = 14,   /** @brief Timer event 3 */
@@ -23298,14 +22644,14 @@
       [9]  = 20,   /** @brief Timer event 9 */
     };
 
-    static const int32_t HRTIM_TIMD_SETxxR_MSTCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMD_SETDxR_MSTCMPx_POS[5] = {
       [1] = 8,    /** @brief Master compare 1 */
       [2] = 9,    /** @brief Master compare 2 */
       [3] = 10,   /** @brief Master compare 3 */
       [4] = 11,   /** @brief Master compare 4 */
     };
 
-    static const int32_t HRTIM_TIMD_EEFxR1_EExFLTR_POS[6] = {
+    static const int32_t HRTIM_TIMD_EEFDR1_EExFLTR_POS[6] = {
       [1] = 1,    /** @brief External event 1 filter */
       [2] = 7,    /** @brief External event 2 filter */
       [3] = 13,   /** @brief External event 3 filter */
@@ -23313,7 +22659,7 @@
       [5] = 25,   /** @brief External event 5 filter */
     };
 
-    static const int32_t HRTIM_TIMD_EEFxR1_EExLTCH_POS[6] = {
+    static const int32_t HRTIM_TIMD_EEFDR1_EExLTCH_POS[6] = {
       [1] = 0,    /** @brief External event 1 latch */
       [2] = 6,    /** @brief External event 2 latch */
       [3] = 12,   /** @brief External event 3 latch */
@@ -23429,11 +22775,7 @@
     static RW_ uint32_t* const HRTIM_TIME_CNTER_PTR       = (RW_ uint32_t* const)0x40017690U;   /** @brief Timerx counter register */
     static RW_ uint32_t* const HRTIM_TIME_PERER_PTR       = (RW_ uint32_t* const)0x40017694U;   /** @brief Timerx period register */
     static RW_ uint32_t* const HRTIM_TIME_REPER_PTR       = (RW_ uint32_t* const)0x40017698U;   /** @brief Timerx repetition register */
-    static RW_ uint32_t* const HRTIM_TIME_CMP1ER_PTR      = (RW_ uint32_t* const)0x4001769CU;   /** @brief Timerx compare 1 register */
     static RW_ uint32_t* const HRTIM_TIME_CMP1CER_PTR     = (RW_ uint32_t* const)0x400176A0U;   /** @brief Timerx compare 1 compound register */
-    static RW_ uint32_t* const HRTIM_TIME_CMP2ER_PTR      = (RW_ uint32_t* const)0x400176A4U;   /** @brief Timerx compare 2 register */
-    static RW_ uint32_t* const HRTIM_TIME_CMP3ER_PTR      = (RW_ uint32_t* const)0x400176A8U;   /** @brief Timerx compare 3 register */
-    static RW_ uint32_t* const HRTIM_TIME_CMP4ER_PTR      = (RW_ uint32_t* const)0x400176ACU;   /** @brief Timerx compare 4 register */
     static RW_ uint32_t* const HRTIM_TIME_DTER_PTR        = (RW_ uint32_t* const)0x400176B8U;   /** @brief Timerx deadtime register */
     static RW_ uint32_t* const HRTIM_TIME_EEFER1_PTR      = (RW_ uint32_t* const)0x400176CCU;   /** @brief Timerx external event filtering register 1 */
     static RW_ uint32_t* const HRTIM_TIME_EEFER2_PTR      = (RW_ uint32_t* const)0x400176D0U;   /** @brief Timerx external event filtering register 2 */
@@ -23443,6 +22785,13 @@
     static RW_ uint32_t* const HRTIM_TIME_FLTER_PTR       = (RW_ uint32_t* const)0x400176E8U;   /** @brief Timerx fault register */
 
     /**** @subsection Enumerated HRTIM_TIME Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIME_CMPxER_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001769CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x400176A4U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x400176A8U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x400176ACU,   /** @brief Timerx compare 4 register */
+    };
 
     static RO_ uint32_t* const HRTIM_TIME_CPTxER_PTR[3] = {
       [1] = (RO_ uint32_t* const)0x400176B0U,   /** @brief Timerx capture 1 register */
@@ -23473,11 +22822,7 @@
     static const uint32_t HRTIM_TIME_CNTER_RST       = 0x00000000U;   /** @brief CNTER register reset value. */
     static const uint32_t HRTIM_TIME_PERER_RST       = 0x0000FFFFU;   /** @brief PERER register reset value. */
     static const uint32_t HRTIM_TIME_REPER_RST       = 0x00000000U;   /** @brief REPER register reset value. */
-    static const uint32_t HRTIM_TIME_CMP1ER_RST      = 0x00000000U;   /** @brief CMP1ER register reset value. */
     static const uint32_t HRTIM_TIME_CMP1CER_RST     = 0x00000000U;   /** @brief CMP1CER register reset value. */
-    static const uint32_t HRTIM_TIME_CMP2ER_RST      = 0x00000000U;   /** @brief CMP2ER register reset value. */
-    static const uint32_t HRTIM_TIME_CMP3ER_RST      = 0x00000000U;   /** @brief CMP3ER register reset value. */
-    static const uint32_t HRTIM_TIME_CMP4ER_RST      = 0x00000000U;   /** @brief CMP4ER register reset value. */
     static const uint32_t HRTIM_TIME_DTER_RST        = 0x00000000U;   /** @brief DTER register reset value. */
     static const uint32_t HRTIM_TIME_EEFER1_RST      = 0x00000000U;   /** @brief EEFER1 register reset value. */
     static const uint32_t HRTIM_TIME_EEFER2_RST      = 0x00000000U;   /** @brief EEFER2 register reset value. */
@@ -23487,6 +22832,13 @@
     static const uint32_t HRTIM_TIME_FLTER_RST       = 0x00000000U;   /** @brief FLTER register reset value. */
 
     /**** @subsection Enumerated HRTIM_TIME Register Reset Values ****/
+
+    static const uint32_t HRTIM_TIME_CMPxER_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CMP1ER register reset value. */
+      [2] = 0x00000000U,   /** @brief CMP2ER register reset value. */
+      [3] = 0x00000000U,   /** @brief CMP3ER register reset value. */
+      [4] = 0x00000000U,   /** @brief CMP4ER register reset value. */
+    };
 
     static const uint32_t HRTIM_TIME_CPTxER_RST[3] = {
       [1] = 0x00000000U,   /** @brief CPT1ER register reset value. */
@@ -23517,11 +22869,8 @@
     typedef uint32_t HRTIM_TIME_CNTER_t;       /** @brief CNTER register value type. */
     typedef uint32_t HRTIM_TIME_PERER_t;       /** @brief PERER register value type. */
     typedef uint32_t HRTIM_TIME_REPER_t;       /** @brief REPER register value type. */
-    typedef uint32_t HRTIM_TIME_CMP1ER_t;      /** @brief CMP1ER register value type. */
+    typedef uint32_t HRTIM_TIME_CMPxER_t;      /** @brief CMPxER register value type. */
     typedef uint32_t HRTIM_TIME_CMP1CER_t;     /** @brief CMP1CER register value type. */
-    typedef uint32_t HRTIM_TIME_CMP2ER_t;      /** @brief CMP2ER register value type. */
-    typedef uint32_t HRTIM_TIME_CMP3ER_t;      /** @brief CMP3ER register value type. */
-    typedef uint32_t HRTIM_TIME_CMP4ER_t;      /** @brief CMP4ER register value type. */
     typedef uint32_t HRTIM_TIME_CPTxER_t;      /** @brief CPTxER register value type. */
     typedef uint32_t HRTIM_TIME_DTER_t;        /** @brief DTER register value type. */
     typedef uint32_t HRTIM_TIME_SETExR_t;      /** @brief SETExR register value type. */
@@ -23543,11 +22892,8 @@
     typedef uint32_t* const HRTIM_TIME_CNTER_PTR_t;       /** @brief CNTER register pointer type. */
     typedef uint32_t* const HRTIM_TIME_PERER_PTR_t;       /** @brief PERER register pointer type. */
     typedef uint32_t* const HRTIM_TIME_REPER_PTR_t;       /** @brief REPER register pointer type. */
-    typedef uint32_t* const HRTIM_TIME_CMP1ER_PTR_t;      /** @brief CMP1ER register pointer type. */
+    typedef uint32_t* const HRTIM_TIME_CMPxER_PTR_t;      /** @brief CMPxER register pointer type. */
     typedef uint32_t* const HRTIM_TIME_CMP1CER_PTR_t;     /** @brief CMP1CER register pointer type. */
-    typedef uint32_t* const HRTIM_TIME_CMP2ER_PTR_t;      /** @brief CMP2ER register pointer type. */
-    typedef uint32_t* const HRTIM_TIME_CMP3ER_PTR_t;      /** @brief CMP3ER register pointer type. */
-    typedef uint32_t* const HRTIM_TIME_CMP4ER_PTR_t;      /** @brief CMP4ER register pointer type. */
     typedef uint32_t* const HRTIM_TIME_CPTxER_PTR_t;      /** @brief CPTxER register pointer type. */
     typedef uint32_t* const HRTIM_TIME_DTER_PTR_t;        /** @brief DTER register pointer type. */
     typedef uint32_t* const HRTIM_TIME_SETExR_PTR_t;      /** @brief SETExR register pointer type. */
@@ -23604,13 +22950,10 @@
     static const uint32_t HRTIM_TIME_CNTER_CNTX_MASK           = 0x0000FFFFU;   /** @brief Timerx counter value */
     static const uint32_t HRTIM_TIME_PERER_PERX_MASK           = 0x0000FFFFU;   /** @brief Timerx period value */
     static const uint32_t HRTIM_TIME_REPER_REPX_MASK           = 0x000000FFU;   /** @brief Timerx repetition counter value */
-    static const uint32_t HRTIM_TIME_CMP1ER_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIME_CMPxER_CMP1X_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
     static const uint32_t HRTIM_TIME_CMP1CER_REPX_MASK         = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
     static const uint32_t HRTIM_TIME_CMP1CER_CMP1X_MASK        = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIME_CMP2ER_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 2 value */
-    static const uint32_t HRTIM_TIME_CMP3ER_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 3 value */
-    static const uint32_t HRTIM_TIME_CMP4ER_CMPxX_MASK         = 0x0000FFFFU;   /** @brief Timerx compare 4 value */
-    static const uint32_t HRTIM_TIME_CPTxER_CPTxX_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIME_CPTxER_CPT1X_MASK         = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
     static const uint32_t HRTIM_TIME_DTER_DTFLKX_MASK          = 0x80000000U;   /** @brief Deadtime falling lock */
     static const uint32_t HRTIM_TIME_DTER_DTFSLKX_MASK         = 0x40000000U;   /** @brief Deadtime falling sign lock */
     static const uint32_t HRTIM_TIME_DTER_SDTFX_MASK           = 0x02000000U;   /** @brief Sign deadtime falling value */
@@ -23927,13 +23270,10 @@
     static const int32_t HRTIM_TIME_CNTER_CNTX_POS           = 0;    /** @brief Timerx counter value */
     static const int32_t HRTIM_TIME_PERER_PERX_POS           = 0;    /** @brief Timerx period value */
     static const int32_t HRTIM_TIME_REPER_REPX_POS           = 0;    /** @brief Timerx repetition counter value */
-    static const int32_t HRTIM_TIME_CMP1ER_CMPxX_POS         = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIME_CMPxER_CMP1X_POS         = 0;    /** @brief Timerx compare 1 value */
     static const int32_t HRTIM_TIME_CMP1CER_REPX_POS         = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
     static const int32_t HRTIM_TIME_CMP1CER_CMP1X_POS        = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIME_CMP2ER_CMPxX_POS         = 0;    /** @brief Timerx compare 2 value */
-    static const int32_t HRTIM_TIME_CMP3ER_CMPxX_POS         = 0;    /** @brief Timerx compare 3 value */
-    static const int32_t HRTIM_TIME_CMP4ER_CMPxX_POS         = 0;    /** @brief Timerx compare 4 value */
-    static const int32_t HRTIM_TIME_CPTxER_CPTxX_POS         = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIME_CPTxER_CPT1X_POS         = 0;    /** @brief Timerx capture 1 value */
     static const int32_t HRTIM_TIME_DTER_DTFLKX_POS          = 31;   /** @brief Deadtime falling lock */
     static const int32_t HRTIM_TIME_DTER_DTFSLKX_POS         = 30;   /** @brief Deadtime falling sign lock */
     static const int32_t HRTIM_TIME_DTER_SDTFX_POS           = 25;   /** @brief Sign deadtime falling value */
@@ -26381,7 +25721,7 @@
     static const uint32_t TIM15_PSC_PSC_MASK         = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t TIM15_ARR_ARR_MASK         = 0x0000FFFFU;   /** @brief Auto-reload value */
     static const uint32_t TIM15_RCR_REP_MASK         = 0x000000FFU;   /** @brief Repetition counter value */
-    static const uint32_t TIM15_CCRx_CCRx_MASK       = 0x0000FFFFU;   /** @brief Capture/Compare 1 value */
+    static const uint32_t TIM15_CCRx_CCR1_MASK       = 0x0000FFFFU;   /** @brief Capture/Compare 1 value */
     static const uint32_t TIM15_BDTR_MOE_MASK        = 0x00008000U;   /** @brief Main output enable */
     static const uint32_t TIM15_BDTR_AOE_MASK        = 0x00004000U;   /** @brief Automatic output enable */
     static const uint32_t TIM15_BDTR_BKP_MASK        = 0x00002000U;   /** @brief Break polarity */
@@ -26536,7 +25876,7 @@
     static const int32_t TIM15_PSC_PSC_POS         = 0;    /** @brief Prescaler value */
     static const int32_t TIM15_ARR_ARR_POS         = 0;    /** @brief Auto-reload value */
     static const int32_t TIM15_RCR_REP_POS         = 0;    /** @brief Repetition counter value */
-    static const int32_t TIM15_CCRx_CCRx_POS       = 0;    /** @brief Capture/Compare 1 value */
+    static const int32_t TIM15_CCRx_CCR1_POS       = 0;    /** @brief Capture/Compare 1 value */
     static const int32_t TIM15_BDTR_MOE_POS        = 15;   /** @brief Main output enable */
     static const int32_t TIM15_BDTR_AOE_POS        = 14;   /** @brief Automatic output enable */
     static const int32_t TIM15_BDTR_BKP_POS        = 13;   /** @brief Break polarity */
@@ -27850,10 +27190,10 @@
     static const uint32_t A_TIM1_CNT_UIFCPY_MASK            = 0x80000000U;   /** @brief UIF copy */
     static const uint32_t A_TIM1_PSC_PSC_MASK               = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t A_TIM1_ARR_ARR_MASK               = 0x0000FFFFU;   /** @brief Auto-reload value */
-    static const uint32_t A_TIM1_CCR1_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 1 value */
-    static const uint32_t A_TIM1_CCR2_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 2 value */
-    static const uint32_t A_TIM1_CCR3_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
-    static const uint32_t A_TIM1_CCR4_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
+    static const uint32_t A_TIM1_CCR1_CCR1_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 1 value */
+    static const uint32_t A_TIM1_CCR2_CCR2_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 2 value */
+    static const uint32_t A_TIM1_CCR3_CCR3_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
+    static const uint32_t A_TIM1_CCR4_CCR4_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
     static const uint32_t A_TIM1_DCR_DBL_MASK               = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t A_TIM1_DCR_DBA_MASK               = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t A_TIM1_DMAR_DMAB_MASK             = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -28095,10 +27435,10 @@
     static const int32_t A_TIM1_CNT_UIFCPY_POS            = 31;   /** @brief UIF copy */
     static const int32_t A_TIM1_PSC_PSC_POS               = 0;    /** @brief Prescaler value */
     static const int32_t A_TIM1_ARR_ARR_POS               = 0;    /** @brief Auto-reload value */
-    static const int32_t A_TIM1_CCR1_CCRx_POS             = 0;    /** @brief Capture/Compare 1 value */
-    static const int32_t A_TIM1_CCR2_CCRx_POS             = 0;    /** @brief Capture/Compare 2 value */
-    static const int32_t A_TIM1_CCR3_CCRx_POS             = 0;    /** @brief Capture/Compare value */
-    static const int32_t A_TIM1_CCR4_CCRx_POS             = 0;    /** @brief Capture/Compare value */
+    static const int32_t A_TIM1_CCR1_CCR1_POS             = 0;    /** @brief Capture/Compare 1 value */
+    static const int32_t A_TIM1_CCR2_CCR2_POS             = 0;    /** @brief Capture/Compare 2 value */
+    static const int32_t A_TIM1_CCR3_CCR3_POS             = 0;    /** @brief Capture/Compare value */
+    static const int32_t A_TIM1_CCR4_CCR4_POS             = 0;    /** @brief Capture/Compare value */
     static const int32_t A_TIM1_DCR_DBL_POS               = 8;    /** @brief DMA burst length */
     static const int32_t A_TIM1_DCR_DBA_POS               = 0;    /** @brief DMA base address */
     static const int32_t A_TIM1_DMAR_DMAB_POS             = 0;    /** @brief DMA register for burst accesses */
@@ -28468,10 +27808,10 @@
     static const uint32_t A_TIM8_CNT_UIFCPY_MASK            = 0x80000000U;   /** @brief UIF copy */
     static const uint32_t A_TIM8_PSC_PSC_MASK               = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t A_TIM8_ARR_ARR_MASK               = 0x0000FFFFU;   /** @brief Auto-reload value */
-    static const uint32_t A_TIM8_CCR1_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 1 value */
-    static const uint32_t A_TIM8_CCR2_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 2 value */
-    static const uint32_t A_TIM8_CCR3_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
-    static const uint32_t A_TIM8_CCR4_CCRx_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
+    static const uint32_t A_TIM8_CCR1_CCR1_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 1 value */
+    static const uint32_t A_TIM8_CCR2_CCR2_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare 2 value */
+    static const uint32_t A_TIM8_CCR3_CCR3_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
+    static const uint32_t A_TIM8_CCR4_CCR4_MASK             = 0x0000FFFFU;   /** @brief Capture/Compare value */
     static const uint32_t A_TIM8_DCR_DBL_MASK               = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t A_TIM8_DCR_DBA_MASK               = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t A_TIM8_DMAR_DMAB_MASK             = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -28713,10 +28053,10 @@
     static const int32_t A_TIM8_CNT_UIFCPY_POS            = 31;   /** @brief UIF copy */
     static const int32_t A_TIM8_PSC_PSC_POS               = 0;    /** @brief Prescaler value */
     static const int32_t A_TIM8_ARR_ARR_POS               = 0;    /** @brief Auto-reload value */
-    static const int32_t A_TIM8_CCR1_CCRx_POS             = 0;    /** @brief Capture/Compare 1 value */
-    static const int32_t A_TIM8_CCR2_CCRx_POS             = 0;    /** @brief Capture/Compare 2 value */
-    static const int32_t A_TIM8_CCR3_CCRx_POS             = 0;    /** @brief Capture/Compare value */
-    static const int32_t A_TIM8_CCR4_CCRx_POS             = 0;    /** @brief Capture/Compare value */
+    static const int32_t A_TIM8_CCR1_CCR1_POS             = 0;    /** @brief Capture/Compare 1 value */
+    static const int32_t A_TIM8_CCR2_CCR2_POS             = 0;    /** @brief Capture/Compare 2 value */
+    static const int32_t A_TIM8_CCR3_CCR3_POS             = 0;    /** @brief Capture/Compare value */
+    static const int32_t A_TIM8_CCR4_CCR4_POS             = 0;    /** @brief Capture/Compare value */
     static const int32_t A_TIM8_DCR_DBL_POS               = 8;    /** @brief DMA burst length */
     static const int32_t A_TIM8_DCR_DBA_POS               = 0;    /** @brief DMA base address */
     static const int32_t A_TIM8_DMAR_DMAB_POS             = 0;    /** @brief DMA register for burst accesses */
@@ -29823,7 +29163,7 @@
     static const uint32_t FDCANx_FDCAN_HPMS_MSI_MASK       = 0x000000C0U;   /** @brief Message storage indicator */
     static const uint32_t FDCANx_FDCAN_HPMS_FIDX_MASK      = 0x00007F00U;   /** @brief Filter index */
     static const uint32_t FDCANx_FDCAN_HPMS_FLST_MASK      = 0x00008000U;   /** @brief Filter list */
-    static const uint32_t FDCANx_FDCAN_RXF0C_FxSA_MASK     = 0x0000FFFCU;   /** @brief Rx FIFO 0 start address */
+    static const uint32_t FDCANx_FDCAN_RXF0C_F0SA_MASK     = 0x0000FFFCU;   /** @brief Rx FIFO 0 start address */
     static const uint32_t FDCANx_FDCAN_RXF0C_F0S_MASK      = 0x00FF0000U;   /** @brief Rx FIFO 0 size */
     static const uint32_t FDCANx_FDCAN_RXF0C_F0WM_MASK     = 0xFF000000U;   /** @brief FIFO 0 watermark */
     static const uint32_t FDCANx_FDCAN_RXF0S_F0FL_MASK     = 0x0000007FU;   /** @brief Rx FIFO 0 fill level */
@@ -29833,7 +29173,7 @@
     static const uint32_t FDCANx_FDCAN_RXF0S_RF0L_MASK     = 0x02000000U;   /** @brief Rx FIFO 0 message lost */
     static const uint32_t FDCANx_FDCAN_RXF0A_FA01_MASK     = 0x0000003FU;   /** @brief Rx FIFO 0 acknowledge index */
     static const uint32_t FDCANx_FDCAN_RXBC_RBSA_MASK      = 0x0000FFFCU;   /** @brief Rx buffer start address */
-    static const uint32_t FDCANx_FDCAN_RXF1C_FxSA_MASK     = 0x0000FFFCU;   /** @brief Rx FIFO 1 start address */
+    static const uint32_t FDCANx_FDCAN_RXF1C_F1SA_MASK     = 0x0000FFFCU;   /** @brief Rx FIFO 1 start address */
     static const uint32_t FDCANx_FDCAN_RXF1C_F1S_MASK      = 0x007F0000U;   /** @brief Rx FIFO 1 size */
     static const uint32_t FDCANx_FDCAN_RXF1C_F1WM_MASK     = 0x7F000000U;   /** @brief Rx FIFO 1 watermark */
     static const uint32_t FDCANx_FDCAN_RXF1S_F1FL_MASK     = 0x0000007FU;   /** @brief Rx FIFO 1 fill level */
@@ -30249,7 +29589,7 @@
     static const int32_t FDCANx_FDCAN_HPMS_MSI_POS       = 6;    /** @brief Message storage indicator */
     static const int32_t FDCANx_FDCAN_HPMS_FIDX_POS      = 8;    /** @brief Filter index */
     static const int32_t FDCANx_FDCAN_HPMS_FLST_POS      = 15;   /** @brief Filter list */
-    static const int32_t FDCANx_FDCAN_RXF0C_FxSA_POS     = 2;    /** @brief Rx FIFO 0 start address */
+    static const int32_t FDCANx_FDCAN_RXF0C_F0SA_POS     = 2;    /** @brief Rx FIFO 0 start address */
     static const int32_t FDCANx_FDCAN_RXF0C_F0S_POS      = 16;   /** @brief Rx FIFO 0 size */
     static const int32_t FDCANx_FDCAN_RXF0C_F0WM_POS     = 24;   /** @brief FIFO 0 watermark */
     static const int32_t FDCANx_FDCAN_RXF0S_F0FL_POS     = 0;    /** @brief Rx FIFO 0 fill level */
@@ -30259,7 +29599,7 @@
     static const int32_t FDCANx_FDCAN_RXF0S_RF0L_POS     = 25;   /** @brief Rx FIFO 0 message lost */
     static const int32_t FDCANx_FDCAN_RXF0A_FA01_POS     = 0;    /** @brief Rx FIFO 0 acknowledge index */
     static const int32_t FDCANx_FDCAN_RXBC_RBSA_POS      = 2;    /** @brief Rx buffer start address */
-    static const int32_t FDCANx_FDCAN_RXF1C_FxSA_POS     = 2;    /** @brief Rx FIFO 1 start address */
+    static const int32_t FDCANx_FDCAN_RXF1C_F1SA_POS     = 2;    /** @brief Rx FIFO 1 start address */
     static const int32_t FDCANx_FDCAN_RXF1C_F1S_POS      = 16;   /** @brief Rx FIFO 1 size */
     static const int32_t FDCANx_FDCAN_RXF1C_F1WM_POS     = 24;   /** @brief Rx FIFO 1 watermark */
     static const int32_t FDCANx_FDCAN_RXF1S_F1FL_POS     = 0;    /** @brief Rx FIFO 1 fill level */
@@ -30634,311 +29974,191 @@
 
     /**** @subsection MDIOS Register Pointers ****/
 
-    static RW_ uint32_t* const MDIOS_MDIOS_CR_PTR        = (RW_ uint32_t* const)0x40009400U;   /** @brief MDIOS configuration register */
-    static RO_ uint32_t* const MDIOS_MDIOS_WRFR_PTR      = (RO_ uint32_t* const)0x40009404U;   /** @brief MDIOS write flag register */
-    static RW_ uint32_t* const MDIOS_MDIOS_CWRFR_PTR     = (RW_ uint32_t* const)0x40009408U;   /** @brief MDIOS clear write flag register */
-    static RO_ uint32_t* const MDIOS_MDIOS_RDFR_PTR      = (RO_ uint32_t* const)0x4000940CU;   /** @brief MDIOS read flag register */
-    static RW_ uint32_t* const MDIOS_MDIOS_CRDFR_PTR     = (RW_ uint32_t* const)0x40009410U;   /** @brief MDIOS clear read flag register */
-    static RO_ uint32_t* const MDIOS_MDIOS_SR_PTR        = (RO_ uint32_t* const)0x40009414U;   /** @brief MDIOS status register */
-    static RW_ uint32_t* const MDIOS_MDIOS_CLRFR_PTR     = (RW_ uint32_t* const)0x40009418U;   /** @brief MDIOS clear flag register */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR0_PTR     = (RO_ uint32_t* const)0x4000941CU;   /** @brief MDIOS input data register 0 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR1_PTR     = (RO_ uint32_t* const)0x40009420U;   /** @brief MDIOS input data register 1 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR2_PTR     = (RO_ uint32_t* const)0x40009424U;   /** @brief MDIOS input data register 2 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR3_PTR     = (RO_ uint32_t* const)0x40009428U;   /** @brief MDIOS input data register 3 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR4_PTR     = (RO_ uint32_t* const)0x4000942CU;   /** @brief MDIOS input data register 4 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR5_PTR     = (RO_ uint32_t* const)0x40009430U;   /** @brief MDIOS input data register 5 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR6_PTR     = (RO_ uint32_t* const)0x40009434U;   /** @brief MDIOS input data register 6 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR7_PTR     = (RO_ uint32_t* const)0x40009438U;   /** @brief MDIOS input data register 7 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR8_PTR     = (RO_ uint32_t* const)0x4000943CU;   /** @brief MDIOS input data register 8 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR9_PTR     = (RO_ uint32_t* const)0x40009440U;   /** @brief MDIOS input data register 9 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR10_PTR    = (RO_ uint32_t* const)0x40009444U;   /** @brief MDIOS input data register 10 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR11_PTR    = (RO_ uint32_t* const)0x40009448U;   /** @brief MDIOS input data register 11 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR12_PTR    = (RO_ uint32_t* const)0x4000944CU;   /** @brief MDIOS input data register 12 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR13_PTR    = (RO_ uint32_t* const)0x40009450U;   /** @brief MDIOS input data register 13 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR14_PTR    = (RO_ uint32_t* const)0x40009454U;   /** @brief MDIOS input data register 14 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR15_PTR    = (RO_ uint32_t* const)0x40009458U;   /** @brief MDIOS input data register 15 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR16_PTR    = (RO_ uint32_t* const)0x4000945CU;   /** @brief MDIOS input data register 16 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR17_PTR    = (RO_ uint32_t* const)0x40009460U;   /** @brief MDIOS input data register 17 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR18_PTR    = (RO_ uint32_t* const)0x40009464U;   /** @brief MDIOS input data register 18 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR19_PTR    = (RO_ uint32_t* const)0x40009468U;   /** @brief MDIOS input data register 19 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR20_PTR    = (RO_ uint32_t* const)0x4000946CU;   /** @brief MDIOS input data register 20 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR21_PTR    = (RO_ uint32_t* const)0x40009470U;   /** @brief MDIOS input data register 21 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR22_PTR    = (RO_ uint32_t* const)0x40009474U;   /** @brief MDIOS input data register 22 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR23_PTR    = (RO_ uint32_t* const)0x40009478U;   /** @brief MDIOS input data register 23 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR24_PTR    = (RO_ uint32_t* const)0x4000947CU;   /** @brief MDIOS input data register 24 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR25_PTR    = (RO_ uint32_t* const)0x40009480U;   /** @brief MDIOS input data register 25 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR26_PTR    = (RO_ uint32_t* const)0x40009484U;   /** @brief MDIOS input data register 26 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR27_PTR    = (RO_ uint32_t* const)0x40009488U;   /** @brief MDIOS input data register 27 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR28_PTR    = (RO_ uint32_t* const)0x4000948CU;   /** @brief MDIOS input data register 28 */
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR29_PTR    = (RO_ uint32_t* const)0x40009490U;   /** @brief MDIOS input data register 29 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR0_PTR    = (RW_ uint32_t* const)0x4000949CU;   /** @brief MDIOS output data register 0 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR1_PTR    = (RW_ uint32_t* const)0x400094A0U;   /** @brief MDIOS output data register 1 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR2_PTR    = (RW_ uint32_t* const)0x400094A4U;   /** @brief MDIOS output data register 2 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR3_PTR    = (RW_ uint32_t* const)0x400094A8U;   /** @brief MDIOS output data register 3 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR4_PTR    = (RW_ uint32_t* const)0x400094ACU;   /** @brief MDIOS output data register 4 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR5_PTR    = (RW_ uint32_t* const)0x400094B0U;   /** @brief MDIOS output data register 5 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR6_PTR    = (RW_ uint32_t* const)0x400094B4U;   /** @brief MDIOS output data register 6 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR7_PTR    = (RW_ uint32_t* const)0x400094B8U;   /** @brief MDIOS output data register 7 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR8_PTR    = (RW_ uint32_t* const)0x400094BCU;   /** @brief MDIOS output data register 8 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR9_PTR    = (RW_ uint32_t* const)0x400094C0U;   /** @brief MDIOS output data register 9 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR10_PTR   = (RW_ uint32_t* const)0x400094C4U;   /** @brief MDIOS output data register 10 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR11_PTR   = (RW_ uint32_t* const)0x400094C8U;   /** @brief MDIOS output data register 11 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR12_PTR   = (RW_ uint32_t* const)0x400094CCU;   /** @brief MDIOS output data register 12 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR13_PTR   = (RW_ uint32_t* const)0x400094D0U;   /** @brief MDIOS output data register 13 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR14_PTR   = (RW_ uint32_t* const)0x400094D4U;   /** @brief MDIOS output data register 14 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR15_PTR   = (RW_ uint32_t* const)0x400094D8U;   /** @brief MDIOS output data register 15 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR16_PTR   = (RW_ uint32_t* const)0x400094DCU;   /** @brief MDIOS output data register 16 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR17_PTR   = (RW_ uint32_t* const)0x400094E0U;   /** @brief MDIOS output data register 17 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR18_PTR   = (RW_ uint32_t* const)0x400094E4U;   /** @brief MDIOS output data register 18 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR19_PTR   = (RW_ uint32_t* const)0x400094E8U;   /** @brief MDIOS output data register 19 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR20_PTR   = (RW_ uint32_t* const)0x400094ECU;   /** @brief MDIOS output data register 20 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR21_PTR   = (RW_ uint32_t* const)0x400094F0U;   /** @brief MDIOS output data register 21 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR22_PTR   = (RW_ uint32_t* const)0x400094F4U;   /** @brief MDIOS output data register 22 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR23_PTR   = (RW_ uint32_t* const)0x400094F8U;   /** @brief MDIOS output data register 23 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR24_PTR   = (RW_ uint32_t* const)0x400094FCU;   /** @brief MDIOS output data register 24 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR25_PTR   = (RW_ uint32_t* const)0x40009500U;   /** @brief MDIOS output data register 25 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR26_PTR   = (RW_ uint32_t* const)0x40009504U;   /** @brief MDIOS output data register 26 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR27_PTR   = (RW_ uint32_t* const)0x40009508U;   /** @brief MDIOS output data register 27 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR28_PTR   = (RW_ uint32_t* const)0x4000950CU;   /** @brief MDIOS output data register 28 */
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR29_PTR   = (RW_ uint32_t* const)0x40009510U;   /** @brief MDIOS output data register 29 */
+    static RW_ uint32_t* const MDIOS_MDIOS_CR_PTR      = (RW_ uint32_t* const)0x40009400U;   /** @brief MDIOS configuration register */
+    static RO_ uint32_t* const MDIOS_MDIOS_WRFR_PTR    = (RO_ uint32_t* const)0x40009404U;   /** @brief MDIOS write flag register */
+    static RW_ uint32_t* const MDIOS_MDIOS_CWRFR_PTR   = (RW_ uint32_t* const)0x40009408U;   /** @brief MDIOS clear write flag register */
+    static RO_ uint32_t* const MDIOS_MDIOS_RDFR_PTR    = (RO_ uint32_t* const)0x4000940CU;   /** @brief MDIOS read flag register */
+    static RW_ uint32_t* const MDIOS_MDIOS_CRDFR_PTR   = (RW_ uint32_t* const)0x40009410U;   /** @brief MDIOS clear read flag register */
+    static RO_ uint32_t* const MDIOS_MDIOS_SR_PTR      = (RO_ uint32_t* const)0x40009414U;   /** @brief MDIOS status register */
+    static RW_ uint32_t* const MDIOS_MDIOS_CLRFR_PTR   = (RW_ uint32_t* const)0x40009418U;   /** @brief MDIOS clear flag register */
 
     /**** @subsection Enumerated MDIOS Register Pointers ****/
 
-    static RO_ uint32_t* const MDIOS_MDIOS_DINR3x_PTR[2] = {
-      [0] = (RO_ uint32_t* const)0x40009494U,   /** @brief MDIOS input data register 30 */
-      [1] = (RO_ uint32_t* const)0x40009498U,   /** @brief MDIOS input data register 31 */
+    static RO_ uint32_t* const MDIOS_MDIOS_DINRx_PTR[32] = {
+      [0]  = (RO_ uint32_t* const)0x4000941CU,   /** @brief MDIOS input data register 0 */
+      [1]  = (RO_ uint32_t* const)0x40009420U,   /** @brief MDIOS input data register 1 */
+      [2]  = (RO_ uint32_t* const)0x40009424U,   /** @brief MDIOS input data register 2 */
+      [3]  = (RO_ uint32_t* const)0x40009428U,   /** @brief MDIOS input data register 3 */
+      [4]  = (RO_ uint32_t* const)0x4000942CU,   /** @brief MDIOS input data register 4 */
+      [5]  = (RO_ uint32_t* const)0x40009430U,   /** @brief MDIOS input data register 5 */
+      [6]  = (RO_ uint32_t* const)0x40009434U,   /** @brief MDIOS input data register 6 */
+      [7]  = (RO_ uint32_t* const)0x40009438U,   /** @brief MDIOS input data register 7 */
+      [8]  = (RO_ uint32_t* const)0x4000943CU,   /** @brief MDIOS input data register 8 */
+      [9]  = (RO_ uint32_t* const)0x40009440U,   /** @brief MDIOS input data register 9 */
+      [10] = (RO_ uint32_t* const)0x40009444U,   /** @brief MDIOS input data register 10 */
+      [11] = (RO_ uint32_t* const)0x40009448U,   /** @brief MDIOS input data register 11 */
+      [12] = (RO_ uint32_t* const)0x4000944CU,   /** @brief MDIOS input data register 12 */
+      [13] = (RO_ uint32_t* const)0x40009450U,   /** @brief MDIOS input data register 13 */
+      [14] = (RO_ uint32_t* const)0x40009454U,   /** @brief MDIOS input data register 14 */
+      [15] = (RO_ uint32_t* const)0x40009458U,   /** @brief MDIOS input data register 15 */
+      [16] = (RO_ uint32_t* const)0x4000945CU,   /** @brief MDIOS input data register 16 */
+      [17] = (RO_ uint32_t* const)0x40009460U,   /** @brief MDIOS input data register 17 */
+      [18] = (RO_ uint32_t* const)0x40009464U,   /** @brief MDIOS input data register 18 */
+      [19] = (RO_ uint32_t* const)0x40009468U,   /** @brief MDIOS input data register 19 */
+      [20] = (RO_ uint32_t* const)0x4000946CU,   /** @brief MDIOS input data register 20 */
+      [21] = (RO_ uint32_t* const)0x40009470U,   /** @brief MDIOS input data register 21 */
+      [22] = (RO_ uint32_t* const)0x40009474U,   /** @brief MDIOS input data register 22 */
+      [23] = (RO_ uint32_t* const)0x40009478U,   /** @brief MDIOS input data register 23 */
+      [24] = (RO_ uint32_t* const)0x4000947CU,   /** @brief MDIOS input data register 24 */
+      [25] = (RO_ uint32_t* const)0x40009480U,   /** @brief MDIOS input data register 25 */
+      [26] = (RO_ uint32_t* const)0x40009484U,   /** @brief MDIOS input data register 26 */
+      [27] = (RO_ uint32_t* const)0x40009488U,   /** @brief MDIOS input data register 27 */
+      [28] = (RO_ uint32_t* const)0x4000948CU,   /** @brief MDIOS input data register 28 */
+      [29] = (RO_ uint32_t* const)0x40009490U,   /** @brief MDIOS input data register 29 */
+      [30] = (RO_ uint32_t* const)0x40009494U,   /** @brief MDIOS input data register 30 */
+      [31] = (RO_ uint32_t* const)0x40009498U,   /** @brief MDIOS input data register 31 */
     };
 
-    static RW_ uint32_t* const MDIOS_MDIOS_DOUTR3x_PTR[2] = {
-      [0] = (RW_ uint32_t* const)0x40009514U,   /** @brief MDIOS output data register 30 */
-      [1] = (RW_ uint32_t* const)0x40009518U,   /** @brief MDIOS output data register 31 */
+    static RW_ uint32_t* const MDIOS_MDIOS_DOUTRx_PTR[32] = {
+      [0]  = (RW_ uint32_t* const)0x4000949CU,   /** @brief MDIOS output data register 0 */
+      [1]  = (RW_ uint32_t* const)0x400094A0U,   /** @brief MDIOS output data register 1 */
+      [2]  = (RW_ uint32_t* const)0x400094A4U,   /** @brief MDIOS output data register 2 */
+      [3]  = (RW_ uint32_t* const)0x400094A8U,   /** @brief MDIOS output data register 3 */
+      [4]  = (RW_ uint32_t* const)0x400094ACU,   /** @brief MDIOS output data register 4 */
+      [5]  = (RW_ uint32_t* const)0x400094B0U,   /** @brief MDIOS output data register 5 */
+      [6]  = (RW_ uint32_t* const)0x400094B4U,   /** @brief MDIOS output data register 6 */
+      [7]  = (RW_ uint32_t* const)0x400094B8U,   /** @brief MDIOS output data register 7 */
+      [8]  = (RW_ uint32_t* const)0x400094BCU,   /** @brief MDIOS output data register 8 */
+      [9]  = (RW_ uint32_t* const)0x400094C0U,   /** @brief MDIOS output data register 9 */
+      [10] = (RW_ uint32_t* const)0x400094C4U,   /** @brief MDIOS output data register 10 */
+      [11] = (RW_ uint32_t* const)0x400094C8U,   /** @brief MDIOS output data register 11 */
+      [12] = (RW_ uint32_t* const)0x400094CCU,   /** @brief MDIOS output data register 12 */
+      [13] = (RW_ uint32_t* const)0x400094D0U,   /** @brief MDIOS output data register 13 */
+      [14] = (RW_ uint32_t* const)0x400094D4U,   /** @brief MDIOS output data register 14 */
+      [15] = (RW_ uint32_t* const)0x400094D8U,   /** @brief MDIOS output data register 15 */
+      [16] = (RW_ uint32_t* const)0x400094DCU,   /** @brief MDIOS output data register 16 */
+      [17] = (RW_ uint32_t* const)0x400094E0U,   /** @brief MDIOS output data register 17 */
+      [18] = (RW_ uint32_t* const)0x400094E4U,   /** @brief MDIOS output data register 18 */
+      [19] = (RW_ uint32_t* const)0x400094E8U,   /** @brief MDIOS output data register 19 */
+      [20] = (RW_ uint32_t* const)0x400094ECU,   /** @brief MDIOS output data register 20 */
+      [21] = (RW_ uint32_t* const)0x400094F0U,   /** @brief MDIOS output data register 21 */
+      [22] = (RW_ uint32_t* const)0x400094F4U,   /** @brief MDIOS output data register 22 */
+      [23] = (RW_ uint32_t* const)0x400094F8U,   /** @brief MDIOS output data register 23 */
+      [24] = (RW_ uint32_t* const)0x400094FCU,   /** @brief MDIOS output data register 24 */
+      [25] = (RW_ uint32_t* const)0x40009500U,   /** @brief MDIOS output data register 25 */
+      [26] = (RW_ uint32_t* const)0x40009504U,   /** @brief MDIOS output data register 26 */
+      [27] = (RW_ uint32_t* const)0x40009508U,   /** @brief MDIOS output data register 27 */
+      [28] = (RW_ uint32_t* const)0x4000950CU,   /** @brief MDIOS output data register 28 */
+      [29] = (RW_ uint32_t* const)0x40009510U,   /** @brief MDIOS output data register 29 */
+      [30] = (RW_ uint32_t* const)0x40009514U,   /** @brief MDIOS output data register 30 */
+      [31] = (RW_ uint32_t* const)0x40009518U,   /** @brief MDIOS output data register 31 */
     };
 
     /**** @subsection MDIOS Register Reset Values ****/
 
-    static const uint32_t MDIOS_MDIOS_CR_RST        = 0x00000000U;   /** @brief MDIOS_CR register reset value. */
-    static const uint32_t MDIOS_MDIOS_WRFR_RST      = 0x00000000U;   /** @brief MDIOS_WRFR register reset value. */
-    static const uint32_t MDIOS_MDIOS_CWRFR_RST     = 0x00000000U;   /** @brief MDIOS_CWRFR register reset value. */
-    static const uint32_t MDIOS_MDIOS_RDFR_RST      = 0x00000000U;   /** @brief MDIOS_RDFR register reset value. */
-    static const uint32_t MDIOS_MDIOS_CRDFR_RST     = 0x00000000U;   /** @brief MDIOS_CRDFR register reset value. */
-    static const uint32_t MDIOS_MDIOS_SR_RST        = 0x00000000U;   /** @brief MDIOS_SR register reset value. */
-    static const uint32_t MDIOS_MDIOS_CLRFR_RST     = 0x00000000U;   /** @brief MDIOS_CLRFR register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR0_RST     = 0x00000000U;   /** @brief MDIOS_DINR0 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR1_RST     = 0x00000000U;   /** @brief MDIOS_DINR1 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR2_RST     = 0x00000000U;   /** @brief MDIOS_DINR2 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR3_RST     = 0x00000000U;   /** @brief MDIOS_DINR3 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR4_RST     = 0x00000000U;   /** @brief MDIOS_DINR4 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR5_RST     = 0x00000000U;   /** @brief MDIOS_DINR5 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR6_RST     = 0x00000000U;   /** @brief MDIOS_DINR6 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR7_RST     = 0x00000000U;   /** @brief MDIOS_DINR7 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR8_RST     = 0x00000000U;   /** @brief MDIOS_DINR8 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR9_RST     = 0x00000000U;   /** @brief MDIOS_DINR9 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR10_RST    = 0x00000000U;   /** @brief MDIOS_DINR10 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR11_RST    = 0x00000000U;   /** @brief MDIOS_DINR11 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR12_RST    = 0x00000000U;   /** @brief MDIOS_DINR12 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR13_RST    = 0x00000000U;   /** @brief MDIOS_DINR13 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR14_RST    = 0x00000000U;   /** @brief MDIOS_DINR14 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR15_RST    = 0x00000000U;   /** @brief MDIOS_DINR15 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR16_RST    = 0x00000000U;   /** @brief MDIOS_DINR16 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR17_RST    = 0x00000000U;   /** @brief MDIOS_DINR17 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR18_RST    = 0x00000000U;   /** @brief MDIOS_DINR18 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR19_RST    = 0x00000000U;   /** @brief MDIOS_DINR19 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR20_RST    = 0x00000000U;   /** @brief MDIOS_DINR20 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR21_RST    = 0x00000000U;   /** @brief MDIOS_DINR21 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR22_RST    = 0x00000000U;   /** @brief MDIOS_DINR22 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR23_RST    = 0x00000000U;   /** @brief MDIOS_DINR23 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR24_RST    = 0x00000000U;   /** @brief MDIOS_DINR24 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR25_RST    = 0x00000000U;   /** @brief MDIOS_DINR25 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR26_RST    = 0x00000000U;   /** @brief MDIOS_DINR26 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR27_RST    = 0x00000000U;   /** @brief MDIOS_DINR27 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR28_RST    = 0x00000000U;   /** @brief MDIOS_DINR28 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DINR29_RST    = 0x00000000U;   /** @brief MDIOS_DINR29 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR0_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR0 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR1_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR1 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR2_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR2 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR3_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR3 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR4_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR4 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR5_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR5 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR6_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR6 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR7_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR7 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR8_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR8 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR9_RST    = 0x00000000U;   /** @brief MDIOS_DOUTR9 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR10_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR10 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR11_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR11 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR12_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR12 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR13_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR13 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR14_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR14 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR15_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR15 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR16_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR16 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR17_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR17 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR18_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR18 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR19_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR19 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR20_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR20 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR21_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR21 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR22_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR22 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR23_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR23 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR24_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR24 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR25_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR25 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR26_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR26 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR27_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR27 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR28_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR28 register reset value. */
-    static const uint32_t MDIOS_MDIOS_DOUTR29_RST   = 0x00000000U;   /** @brief MDIOS_DOUTR29 register reset value. */
+    static const uint32_t MDIOS_MDIOS_CR_RST      = 0x00000000U;   /** @brief MDIOS_CR register reset value. */
+    static const uint32_t MDIOS_MDIOS_WRFR_RST    = 0x00000000U;   /** @brief MDIOS_WRFR register reset value. */
+    static const uint32_t MDIOS_MDIOS_CWRFR_RST   = 0x00000000U;   /** @brief MDIOS_CWRFR register reset value. */
+    static const uint32_t MDIOS_MDIOS_RDFR_RST    = 0x00000000U;   /** @brief MDIOS_RDFR register reset value. */
+    static const uint32_t MDIOS_MDIOS_CRDFR_RST   = 0x00000000U;   /** @brief MDIOS_CRDFR register reset value. */
+    static const uint32_t MDIOS_MDIOS_SR_RST      = 0x00000000U;   /** @brief MDIOS_SR register reset value. */
+    static const uint32_t MDIOS_MDIOS_CLRFR_RST   = 0x00000000U;   /** @brief MDIOS_CLRFR register reset value. */
 
     /**** @subsection Enumerated MDIOS Register Reset Values ****/
 
-    static const uint32_t MDIOS_MDIOS_DINR3x_RST[2] = {
-      [0] = 0x00000000U,   /** @brief MDIOS_DINR30 register reset value. */
-      [1] = 0x00000000U,   /** @brief MDIOS_DINR31 register reset value. */
+    static const uint32_t MDIOS_MDIOS_DINRx_RST[32] = {
+      [0]  = 0x00000000U,   /** @brief MDIOS_DINR0 register reset value. */
+      [1]  = 0x00000000U,   /** @brief MDIOS_DINR1 register reset value. */
+      [2]  = 0x00000000U,   /** @brief MDIOS_DINR2 register reset value. */
+      [3]  = 0x00000000U,   /** @brief MDIOS_DINR3 register reset value. */
+      [4]  = 0x00000000U,   /** @brief MDIOS_DINR4 register reset value. */
+      [5]  = 0x00000000U,   /** @brief MDIOS_DINR5 register reset value. */
+      [6]  = 0x00000000U,   /** @brief MDIOS_DINR6 register reset value. */
+      [7]  = 0x00000000U,   /** @brief MDIOS_DINR7 register reset value. */
+      [8]  = 0x00000000U,   /** @brief MDIOS_DINR8 register reset value. */
+      [9]  = 0x00000000U,   /** @brief MDIOS_DINR9 register reset value. */
+      [10] = 0x00000000U,   /** @brief MDIOS_DINR10 register reset value. */
+      [11] = 0x00000000U,   /** @brief MDIOS_DINR11 register reset value. */
+      [12] = 0x00000000U,   /** @brief MDIOS_DINR12 register reset value. */
+      [13] = 0x00000000U,   /** @brief MDIOS_DINR13 register reset value. */
+      [14] = 0x00000000U,   /** @brief MDIOS_DINR14 register reset value. */
+      [15] = 0x00000000U,   /** @brief MDIOS_DINR15 register reset value. */
+      [16] = 0x00000000U,   /** @brief MDIOS_DINR16 register reset value. */
+      [17] = 0x00000000U,   /** @brief MDIOS_DINR17 register reset value. */
+      [18] = 0x00000000U,   /** @brief MDIOS_DINR18 register reset value. */
+      [19] = 0x00000000U,   /** @brief MDIOS_DINR19 register reset value. */
+      [20] = 0x00000000U,   /** @brief MDIOS_DINR20 register reset value. */
+      [21] = 0x00000000U,   /** @brief MDIOS_DINR21 register reset value. */
+      [22] = 0x00000000U,   /** @brief MDIOS_DINR22 register reset value. */
+      [23] = 0x00000000U,   /** @brief MDIOS_DINR23 register reset value. */
+      [24] = 0x00000000U,   /** @brief MDIOS_DINR24 register reset value. */
+      [25] = 0x00000000U,   /** @brief MDIOS_DINR25 register reset value. */
+      [26] = 0x00000000U,   /** @brief MDIOS_DINR26 register reset value. */
+      [27] = 0x00000000U,   /** @brief MDIOS_DINR27 register reset value. */
+      [28] = 0x00000000U,   /** @brief MDIOS_DINR28 register reset value. */
+      [29] = 0x00000000U,   /** @brief MDIOS_DINR29 register reset value. */
+      [30] = 0x00000000U,   /** @brief MDIOS_DINR30 register reset value. */
+      [31] = 0x00000000U,   /** @brief MDIOS_DINR31 register reset value. */
     };
 
-    static const uint32_t MDIOS_MDIOS_DOUTR3x_RST[2] = {
-      [0] = 0x00000000U,   /** @brief MDIOS_DOUTR30 register reset value. */
-      [1] = 0x00000000U,   /** @brief MDIOS_DOUTR31 register reset value. */
+    static const uint32_t MDIOS_MDIOS_DOUTRx_RST[32] = {
+      [0]  = 0x00000000U,   /** @brief MDIOS_DOUTR0 register reset value. */
+      [1]  = 0x00000000U,   /** @brief MDIOS_DOUTR1 register reset value. */
+      [2]  = 0x00000000U,   /** @brief MDIOS_DOUTR2 register reset value. */
+      [3]  = 0x00000000U,   /** @brief MDIOS_DOUTR3 register reset value. */
+      [4]  = 0x00000000U,   /** @brief MDIOS_DOUTR4 register reset value. */
+      [5]  = 0x00000000U,   /** @brief MDIOS_DOUTR5 register reset value. */
+      [6]  = 0x00000000U,   /** @brief MDIOS_DOUTR6 register reset value. */
+      [7]  = 0x00000000U,   /** @brief MDIOS_DOUTR7 register reset value. */
+      [8]  = 0x00000000U,   /** @brief MDIOS_DOUTR8 register reset value. */
+      [9]  = 0x00000000U,   /** @brief MDIOS_DOUTR9 register reset value. */
+      [10] = 0x00000000U,   /** @brief MDIOS_DOUTR10 register reset value. */
+      [11] = 0x00000000U,   /** @brief MDIOS_DOUTR11 register reset value. */
+      [12] = 0x00000000U,   /** @brief MDIOS_DOUTR12 register reset value. */
+      [13] = 0x00000000U,   /** @brief MDIOS_DOUTR13 register reset value. */
+      [14] = 0x00000000U,   /** @brief MDIOS_DOUTR14 register reset value. */
+      [15] = 0x00000000U,   /** @brief MDIOS_DOUTR15 register reset value. */
+      [16] = 0x00000000U,   /** @brief MDIOS_DOUTR16 register reset value. */
+      [17] = 0x00000000U,   /** @brief MDIOS_DOUTR17 register reset value. */
+      [18] = 0x00000000U,   /** @brief MDIOS_DOUTR18 register reset value. */
+      [19] = 0x00000000U,   /** @brief MDIOS_DOUTR19 register reset value. */
+      [20] = 0x00000000U,   /** @brief MDIOS_DOUTR20 register reset value. */
+      [21] = 0x00000000U,   /** @brief MDIOS_DOUTR21 register reset value. */
+      [22] = 0x00000000U,   /** @brief MDIOS_DOUTR22 register reset value. */
+      [23] = 0x00000000U,   /** @brief MDIOS_DOUTR23 register reset value. */
+      [24] = 0x00000000U,   /** @brief MDIOS_DOUTR24 register reset value. */
+      [25] = 0x00000000U,   /** @brief MDIOS_DOUTR25 register reset value. */
+      [26] = 0x00000000U,   /** @brief MDIOS_DOUTR26 register reset value. */
+      [27] = 0x00000000U,   /** @brief MDIOS_DOUTR27 register reset value. */
+      [28] = 0x00000000U,   /** @brief MDIOS_DOUTR28 register reset value. */
+      [29] = 0x00000000U,   /** @brief MDIOS_DOUTR29 register reset value. */
+      [30] = 0x00000000U,   /** @brief MDIOS_DOUTR30 register reset value. */
+      [31] = 0x00000000U,   /** @brief MDIOS_DOUTR31 register reset value. */
     };
 
     /**** @subsection Enumerated MDIOS Register Value Types ****/
 
-    typedef uint32_t MDIOS_MDIOS_CR_t;        /** @brief MDIOS_CR register value type. */
-    typedef uint32_t MDIOS_MDIOS_WRFR_t;      /** @brief MDIOS_WRFR register value type. */
-    typedef uint32_t MDIOS_MDIOS_CWRFR_t;     /** @brief MDIOS_CWRFR register value type. */
-    typedef uint32_t MDIOS_MDIOS_RDFR_t;      /** @brief MDIOS_RDFR register value type. */
-    typedef uint32_t MDIOS_MDIOS_CRDFR_t;     /** @brief MDIOS_CRDFR register value type. */
-    typedef uint32_t MDIOS_MDIOS_SR_t;        /** @brief MDIOS_SR register value type. */
-    typedef uint32_t MDIOS_MDIOS_CLRFR_t;     /** @brief MDIOS_CLRFR register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR0_t;     /** @brief MDIOS_DINR0 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR1_t;     /** @brief MDIOS_DINR1 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR2_t;     /** @brief MDIOS_DINR2 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR3_t;     /** @brief MDIOS_DINR3 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR4_t;     /** @brief MDIOS_DINR4 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR5_t;     /** @brief MDIOS_DINR5 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR6_t;     /** @brief MDIOS_DINR6 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR7_t;     /** @brief MDIOS_DINR7 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR8_t;     /** @brief MDIOS_DINR8 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR9_t;     /** @brief MDIOS_DINR9 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR10_t;    /** @brief MDIOS_DINR10 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR11_t;    /** @brief MDIOS_DINR11 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR12_t;    /** @brief MDIOS_DINR12 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR13_t;    /** @brief MDIOS_DINR13 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR14_t;    /** @brief MDIOS_DINR14 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR15_t;    /** @brief MDIOS_DINR15 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR16_t;    /** @brief MDIOS_DINR16 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR17_t;    /** @brief MDIOS_DINR17 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR18_t;    /** @brief MDIOS_DINR18 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR19_t;    /** @brief MDIOS_DINR19 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR20_t;    /** @brief MDIOS_DINR20 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR21_t;    /** @brief MDIOS_DINR21 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR22_t;    /** @brief MDIOS_DINR22 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR23_t;    /** @brief MDIOS_DINR23 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR24_t;    /** @brief MDIOS_DINR24 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR25_t;    /** @brief MDIOS_DINR25 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR26_t;    /** @brief MDIOS_DINR26 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR27_t;    /** @brief MDIOS_DINR27 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR28_t;    /** @brief MDIOS_DINR28 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR29_t;    /** @brief MDIOS_DINR29 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DINR3x_t;    /** @brief MDIOS_DINR3x register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR0_t;    /** @brief MDIOS_DOUTR0 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR1_t;    /** @brief MDIOS_DOUTR1 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR2_t;    /** @brief MDIOS_DOUTR2 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR3_t;    /** @brief MDIOS_DOUTR3 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR4_t;    /** @brief MDIOS_DOUTR4 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR5_t;    /** @brief MDIOS_DOUTR5 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR6_t;    /** @brief MDIOS_DOUTR6 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR7_t;    /** @brief MDIOS_DOUTR7 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR8_t;    /** @brief MDIOS_DOUTR8 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR9_t;    /** @brief MDIOS_DOUTR9 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR10_t;   /** @brief MDIOS_DOUTR10 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR11_t;   /** @brief MDIOS_DOUTR11 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR12_t;   /** @brief MDIOS_DOUTR12 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR13_t;   /** @brief MDIOS_DOUTR13 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR14_t;   /** @brief MDIOS_DOUTR14 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR15_t;   /** @brief MDIOS_DOUTR15 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR16_t;   /** @brief MDIOS_DOUTR16 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR17_t;   /** @brief MDIOS_DOUTR17 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR18_t;   /** @brief MDIOS_DOUTR18 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR19_t;   /** @brief MDIOS_DOUTR19 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR20_t;   /** @brief MDIOS_DOUTR20 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR21_t;   /** @brief MDIOS_DOUTR21 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR22_t;   /** @brief MDIOS_DOUTR22 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR23_t;   /** @brief MDIOS_DOUTR23 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR24_t;   /** @brief MDIOS_DOUTR24 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR25_t;   /** @brief MDIOS_DOUTR25 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR26_t;   /** @brief MDIOS_DOUTR26 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR27_t;   /** @brief MDIOS_DOUTR27 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR28_t;   /** @brief MDIOS_DOUTR28 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR29_t;   /** @brief MDIOS_DOUTR29 register value type. */
-    typedef uint32_t MDIOS_MDIOS_DOUTR3x_t;   /** @brief MDIOS_DOUTR3x register value type. */
+    typedef uint32_t MDIOS_MDIOS_CR_t;       /** @brief MDIOS_CR register value type. */
+    typedef uint32_t MDIOS_MDIOS_WRFR_t;     /** @brief MDIOS_WRFR register value type. */
+    typedef uint32_t MDIOS_MDIOS_CWRFR_t;    /** @brief MDIOS_CWRFR register value type. */
+    typedef uint32_t MDIOS_MDIOS_RDFR_t;     /** @brief MDIOS_RDFR register value type. */
+    typedef uint32_t MDIOS_MDIOS_CRDFR_t;    /** @brief MDIOS_CRDFR register value type. */
+    typedef uint32_t MDIOS_MDIOS_SR_t;       /** @brief MDIOS_SR register value type. */
+    typedef uint32_t MDIOS_MDIOS_CLRFR_t;    /** @brief MDIOS_CLRFR register value type. */
+    typedef uint32_t MDIOS_MDIOS_DINRx_t;    /** @brief MDIOS_DINRx register value type. */
+    typedef uint32_t MDIOS_MDIOS_DOUTRx_t;   /** @brief MDIOS_DOUTRx register value type. */
 
     /**** @subsection Enumerated MDIOS Register Pointer Types ****/
 
-    typedef uint32_t* const MDIOS_MDIOS_CR_PTR_t;        /** @brief MDIOS_CR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_WRFR_PTR_t;      /** @brief MDIOS_WRFR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_CWRFR_PTR_t;     /** @brief MDIOS_CWRFR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_RDFR_PTR_t;      /** @brief MDIOS_RDFR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_CRDFR_PTR_t;     /** @brief MDIOS_CRDFR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_SR_PTR_t;        /** @brief MDIOS_SR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_CLRFR_PTR_t;     /** @brief MDIOS_CLRFR register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR0_PTR_t;     /** @brief MDIOS_DINR0 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR1_PTR_t;     /** @brief MDIOS_DINR1 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR2_PTR_t;     /** @brief MDIOS_DINR2 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR3_PTR_t;     /** @brief MDIOS_DINR3 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR4_PTR_t;     /** @brief MDIOS_DINR4 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR5_PTR_t;     /** @brief MDIOS_DINR5 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR6_PTR_t;     /** @brief MDIOS_DINR6 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR7_PTR_t;     /** @brief MDIOS_DINR7 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR8_PTR_t;     /** @brief MDIOS_DINR8 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR9_PTR_t;     /** @brief MDIOS_DINR9 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR10_PTR_t;    /** @brief MDIOS_DINR10 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR11_PTR_t;    /** @brief MDIOS_DINR11 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR12_PTR_t;    /** @brief MDIOS_DINR12 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR13_PTR_t;    /** @brief MDIOS_DINR13 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR14_PTR_t;    /** @brief MDIOS_DINR14 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR15_PTR_t;    /** @brief MDIOS_DINR15 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR16_PTR_t;    /** @brief MDIOS_DINR16 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR17_PTR_t;    /** @brief MDIOS_DINR17 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR18_PTR_t;    /** @brief MDIOS_DINR18 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR19_PTR_t;    /** @brief MDIOS_DINR19 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR20_PTR_t;    /** @brief MDIOS_DINR20 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR21_PTR_t;    /** @brief MDIOS_DINR21 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR22_PTR_t;    /** @brief MDIOS_DINR22 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR23_PTR_t;    /** @brief MDIOS_DINR23 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR24_PTR_t;    /** @brief MDIOS_DINR24 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR25_PTR_t;    /** @brief MDIOS_DINR25 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR26_PTR_t;    /** @brief MDIOS_DINR26 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR27_PTR_t;    /** @brief MDIOS_DINR27 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR28_PTR_t;    /** @brief MDIOS_DINR28 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR29_PTR_t;    /** @brief MDIOS_DINR29 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DINR3x_PTR_t;    /** @brief MDIOS_DINR3x register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR0_PTR_t;    /** @brief MDIOS_DOUTR0 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR1_PTR_t;    /** @brief MDIOS_DOUTR1 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR2_PTR_t;    /** @brief MDIOS_DOUTR2 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR3_PTR_t;    /** @brief MDIOS_DOUTR3 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR4_PTR_t;    /** @brief MDIOS_DOUTR4 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR5_PTR_t;    /** @brief MDIOS_DOUTR5 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR6_PTR_t;    /** @brief MDIOS_DOUTR6 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR7_PTR_t;    /** @brief MDIOS_DOUTR7 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR8_PTR_t;    /** @brief MDIOS_DOUTR8 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR9_PTR_t;    /** @brief MDIOS_DOUTR9 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR10_PTR_t;   /** @brief MDIOS_DOUTR10 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR11_PTR_t;   /** @brief MDIOS_DOUTR11 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR12_PTR_t;   /** @brief MDIOS_DOUTR12 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR13_PTR_t;   /** @brief MDIOS_DOUTR13 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR14_PTR_t;   /** @brief MDIOS_DOUTR14 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR15_PTR_t;   /** @brief MDIOS_DOUTR15 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR16_PTR_t;   /** @brief MDIOS_DOUTR16 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR17_PTR_t;   /** @brief MDIOS_DOUTR17 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR18_PTR_t;   /** @brief MDIOS_DOUTR18 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR19_PTR_t;   /** @brief MDIOS_DOUTR19 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR20_PTR_t;   /** @brief MDIOS_DOUTR20 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR21_PTR_t;   /** @brief MDIOS_DOUTR21 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR22_PTR_t;   /** @brief MDIOS_DOUTR22 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR23_PTR_t;   /** @brief MDIOS_DOUTR23 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR24_PTR_t;   /** @brief MDIOS_DOUTR24 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR25_PTR_t;   /** @brief MDIOS_DOUTR25 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR26_PTR_t;   /** @brief MDIOS_DOUTR26 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR27_PTR_t;   /** @brief MDIOS_DOUTR27 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR28_PTR_t;   /** @brief MDIOS_DOUTR28 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR29_PTR_t;   /** @brief MDIOS_DOUTR29 register pointer type. */
-    typedef uint32_t* const MDIOS_MDIOS_DOUTR3x_PTR_t;   /** @brief MDIOS_DOUTR3x register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_CR_PTR_t;       /** @brief MDIOS_CR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_WRFR_PTR_t;     /** @brief MDIOS_WRFR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_CWRFR_PTR_t;    /** @brief MDIOS_CWRFR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_RDFR_PTR_t;     /** @brief MDIOS_RDFR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_CRDFR_PTR_t;    /** @brief MDIOS_CRDFR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_SR_PTR_t;       /** @brief MDIOS_SR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_CLRFR_PTR_t;    /** @brief MDIOS_CLRFR register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_DINRx_PTR_t;    /** @brief MDIOS_DINRx register pointer type. */
+    typedef uint32_t* const MDIOS_MDIOS_DOUTRx_PTR_t;   /** @brief MDIOS_DOUTRx register pointer type. */
 
     /**** @subsection MDIOS Register Field Masks ****/
 
@@ -30954,68 +30174,8 @@
     static const uint32_t MDIOS_MDIOS_CLRFR_CPERF_MASK       = 0x00000001U;   /** @brief Clear the preamble error flag */
     static const uint32_t MDIOS_MDIOS_CLRFR_CSERF_MASK       = 0x00000002U;   /** @brief Clear the start error flag */
     static const uint32_t MDIOS_MDIOS_CLRFR_CTERF_MASK       = 0x00000004U;   /** @brief Clear the turnaround error flag */
-    static const uint32_t MDIOS_MDIOS_DINR0_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR1_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR2_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR3_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR4_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR5_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR6_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR7_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR8_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR9_DINx_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR10_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR11_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR12_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR13_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR14_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR15_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR16_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR17_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR18_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR19_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR20_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR21_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR22_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR23_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR24_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR25_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR26_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR27_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR28_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR29_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DINR3x_DINx_MASK       = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR0_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR1_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR2_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR3_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR4_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR5_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR6_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR7_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR8_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR9_DOUTx_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR10_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR11_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR12_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR13_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR14_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR15_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR16_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR17_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR18_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR19_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR20_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR21_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR22_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR23_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR24_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR25_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR26_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR27_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR28_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR29_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
-    static const uint32_t MDIOS_MDIOS_DOUTR3x_DOUTx_MASK     = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
+    static const uint32_t MDIOS_MDIOS_DINRx_DIN0_MASK        = 0x0000FFFFU;   /** @brief Input data received from MDIO master during write frames */
+    static const uint32_t MDIOS_MDIOS_DOUTRx_DOUT0_MASK      = 0x0000FFFFU;   /** @brief Output data sent to MDIO master during read frames */
 
     /**** @subsection MDIOS Register Field Positions ****/
 
@@ -31031,68 +30191,8 @@
     static const int32_t MDIOS_MDIOS_CLRFR_CPERF_POS       = 0;   /** @brief Clear the preamble error flag */
     static const int32_t MDIOS_MDIOS_CLRFR_CSERF_POS       = 1;   /** @brief Clear the start error flag */
     static const int32_t MDIOS_MDIOS_CLRFR_CTERF_POS       = 2;   /** @brief Clear the turnaround error flag */
-    static const int32_t MDIOS_MDIOS_DINR0_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR1_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR2_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR3_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR4_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR5_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR6_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR7_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR8_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR9_DINx_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR10_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR11_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR12_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR13_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR14_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR15_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR16_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR17_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR18_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR19_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR20_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR21_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR22_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR23_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR24_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR25_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR26_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR27_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR28_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR29_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DINR3x_DINx_POS       = 0;   /** @brief Input data received from MDIO master during write frames */
-    static const int32_t MDIOS_MDIOS_DOUTR0_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR1_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR2_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR3_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR4_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR5_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR6_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR7_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR8_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR9_DOUTx_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR10_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR11_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR12_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR13_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR14_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR15_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR16_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR17_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR18_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR19_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR20_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR21_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR22_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR23_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR24_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR25_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR26_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR27_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR28_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR29_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
-    static const int32_t MDIOS_MDIOS_DOUTR3x_DOUTx_POS     = 0;   /** @brief Output data sent to MDIO master during read frames */
+    static const int32_t MDIOS_MDIOS_DINRx_DIN0_POS        = 0;   /** @brief Input data received from MDIO master during write frames */
+    static const int32_t MDIOS_MDIOS_DOUTRx_DOUT0_POS      = 0;   /** @brief Output data sent to MDIO master during read frames */
 
     /**********************************************************************************************
      * @section OPAMP Register Information
@@ -31364,14 +30464,19 @@
     static RW_ uint32_t* const G_TIM2_CNT_PTR            = (RW_ uint32_t* const)0x40000024U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM2_PSC_PTR            = (RW_ uint32_t* const)0x40000028U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM2_ARR_PTR            = (RW_ uint32_t* const)0x4000002CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM2_CCR1_PTR           = (RW_ uint32_t* const)0x40000034U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM2_CCR2_PTR           = (RW_ uint32_t* const)0x40000038U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM2_CCR3_PTR           = (RW_ uint32_t* const)0x4000003CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM2_CCR4_PTR           = (RW_ uint32_t* const)0x40000040U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM2_DCR_PTR            = (RW_ uint32_t* const)0x40000048U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM2_DMAR_PTR           = (RW_ uint32_t* const)0x4000004CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM2_AF1_PTR            = (RW_ uint32_t* const)0x40000060U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM2_TISEL_PTR          = (RW_ uint32_t* const)0x40000068U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM2 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM2_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40000034U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40000038U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x4000003CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40000040U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM2 Register Reset Values ****/
 
@@ -31389,14 +30494,19 @@
     static const uint32_t G_TIM2_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM2_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM2_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM2_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM2_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM2_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM2_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM2_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM2_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM2_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM2_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM2 Register Reset Values ****/
+
+    static const uint32_t G_TIM2_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM2 Register Value Types ****/
 
@@ -31414,10 +30524,7 @@
     typedef uint32_t G_TIM2_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM2_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM2_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM2_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM2_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM2_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM2_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM2_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM2_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM2_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM2_AF1_t;            /** @brief AF1 register value type. */
@@ -31439,10 +30546,7 @@
     typedef uint32_t* const G_TIM2_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM2_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM2_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM2_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM2_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM2_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM2_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM2_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM2_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM2_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM2_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -31488,14 +30592,8 @@
     static const uint32_t G_TIM2_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM2_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM2_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM2_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM2_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM2_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM2_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM2_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM2_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM2_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM2_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM2_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM2_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM2_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM2_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM2_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -31646,14 +30744,8 @@
     static const int32_t G_TIM2_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM2_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM2_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM2_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM2_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM2_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM2_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM2_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM2_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM2_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM2_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM2_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM2_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM2_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM2_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM2_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */
@@ -31784,14 +30876,19 @@
     static RW_ uint32_t* const G_TIM3_CNT_PTR            = (RW_ uint32_t* const)0x40000424U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM3_PSC_PTR            = (RW_ uint32_t* const)0x40000428U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM3_ARR_PTR            = (RW_ uint32_t* const)0x4000042CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM3_CCR1_PTR           = (RW_ uint32_t* const)0x40000434U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM3_CCR2_PTR           = (RW_ uint32_t* const)0x40000438U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM3_CCR3_PTR           = (RW_ uint32_t* const)0x4000043CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM3_CCR4_PTR           = (RW_ uint32_t* const)0x40000440U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM3_DCR_PTR            = (RW_ uint32_t* const)0x40000448U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM3_DMAR_PTR           = (RW_ uint32_t* const)0x4000044CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM3_AF1_PTR            = (RW_ uint32_t* const)0x40000460U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM3_TISEL_PTR          = (RW_ uint32_t* const)0x40000468U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM3 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM3_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40000434U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40000438U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x4000043CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40000440U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM3 Register Reset Values ****/
 
@@ -31809,14 +30906,19 @@
     static const uint32_t G_TIM3_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM3_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM3_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM3_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM3_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM3_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM3_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM3_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM3_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM3_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM3_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM3 Register Reset Values ****/
+
+    static const uint32_t G_TIM3_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM3 Register Value Types ****/
 
@@ -31834,10 +30936,7 @@
     typedef uint32_t G_TIM3_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM3_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM3_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM3_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM3_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM3_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM3_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM3_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM3_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM3_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM3_AF1_t;            /** @brief AF1 register value type. */
@@ -31859,10 +30958,7 @@
     typedef uint32_t* const G_TIM3_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM3_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM3_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM3_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM3_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM3_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM3_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM3_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM3_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM3_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM3_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -31908,14 +31004,8 @@
     static const uint32_t G_TIM3_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM3_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM3_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM3_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM3_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM3_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM3_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM3_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM3_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM3_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM3_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM3_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM3_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM3_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM3_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM3_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -32066,14 +31156,8 @@
     static const int32_t G_TIM3_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM3_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM3_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM3_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM3_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM3_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM3_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM3_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM3_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM3_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM3_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM3_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM3_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM3_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM3_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM3_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */
@@ -32204,14 +31288,19 @@
     static RW_ uint32_t* const G_TIM4_CNT_PTR            = (RW_ uint32_t* const)0x40000824U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM4_PSC_PTR            = (RW_ uint32_t* const)0x40000828U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM4_ARR_PTR            = (RW_ uint32_t* const)0x4000082CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM4_CCR1_PTR           = (RW_ uint32_t* const)0x40000834U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM4_CCR2_PTR           = (RW_ uint32_t* const)0x40000838U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM4_CCR3_PTR           = (RW_ uint32_t* const)0x4000083CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM4_CCR4_PTR           = (RW_ uint32_t* const)0x40000840U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM4_DCR_PTR            = (RW_ uint32_t* const)0x40000848U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM4_DMAR_PTR           = (RW_ uint32_t* const)0x4000084CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM4_AF1_PTR            = (RW_ uint32_t* const)0x40000860U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM4_TISEL_PTR          = (RW_ uint32_t* const)0x40000868U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM4 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM4_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40000834U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40000838U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x4000083CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40000840U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM4 Register Reset Values ****/
 
@@ -32229,14 +31318,19 @@
     static const uint32_t G_TIM4_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM4_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM4_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM4_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM4_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM4_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM4_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM4_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM4_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM4_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM4_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM4 Register Reset Values ****/
+
+    static const uint32_t G_TIM4_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM4 Register Value Types ****/
 
@@ -32254,10 +31348,7 @@
     typedef uint32_t G_TIM4_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM4_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM4_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM4_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM4_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM4_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM4_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM4_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM4_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM4_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM4_AF1_t;            /** @brief AF1 register value type. */
@@ -32279,10 +31370,7 @@
     typedef uint32_t* const G_TIM4_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM4_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM4_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM4_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM4_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM4_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM4_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM4_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM4_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM4_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM4_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -32328,14 +31416,8 @@
     static const uint32_t G_TIM4_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM4_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM4_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM4_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM4_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM4_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM4_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM4_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM4_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM4_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM4_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM4_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM4_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM4_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM4_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM4_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -32486,14 +31568,8 @@
     static const int32_t G_TIM4_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM4_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM4_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM4_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM4_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM4_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM4_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM4_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM4_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM4_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM4_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM4_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM4_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM4_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM4_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM4_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */
@@ -32624,14 +31700,19 @@
     static RW_ uint32_t* const G_TIM5_CNT_PTR            = (RW_ uint32_t* const)0x40000C24U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM5_PSC_PTR            = (RW_ uint32_t* const)0x40000C28U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM5_ARR_PTR            = (RW_ uint32_t* const)0x40000C2CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM5_CCR1_PTR           = (RW_ uint32_t* const)0x40000C34U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM5_CCR2_PTR           = (RW_ uint32_t* const)0x40000C38U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM5_CCR3_PTR           = (RW_ uint32_t* const)0x40000C3CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM5_CCR4_PTR           = (RW_ uint32_t* const)0x40000C40U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM5_DCR_PTR            = (RW_ uint32_t* const)0x40000C48U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM5_DMAR_PTR           = (RW_ uint32_t* const)0x40000C4CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM5_AF1_PTR            = (RW_ uint32_t* const)0x40000C60U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM5_TISEL_PTR          = (RW_ uint32_t* const)0x40000C68U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM5 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM5_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40000C34U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40000C38U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x40000C3CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40000C40U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM5 Register Reset Values ****/
 
@@ -32649,14 +31730,19 @@
     static const uint32_t G_TIM5_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM5_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM5_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM5_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM5_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM5_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM5_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM5_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM5_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM5_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM5_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM5 Register Reset Values ****/
+
+    static const uint32_t G_TIM5_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM5 Register Value Types ****/
 
@@ -32674,10 +31760,7 @@
     typedef uint32_t G_TIM5_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM5_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM5_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM5_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM5_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM5_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM5_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM5_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM5_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM5_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM5_AF1_t;            /** @brief AF1 register value type. */
@@ -32699,10 +31782,7 @@
     typedef uint32_t* const G_TIM5_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM5_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM5_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM5_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM5_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM5_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM5_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM5_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM5_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM5_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM5_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -32748,14 +31828,8 @@
     static const uint32_t G_TIM5_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM5_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM5_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM5_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM5_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM5_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM5_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM5_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM5_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM5_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM5_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM5_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM5_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM5_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM5_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM5_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -32906,14 +31980,8 @@
     static const int32_t G_TIM5_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM5_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM5_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM5_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM5_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM5_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM5_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM5_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM5_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM5_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM5_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM5_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM5_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM5_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM5_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM5_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */
@@ -33044,14 +32112,19 @@
     static RW_ uint32_t* const G_TIM12_CNT_PTR            = (RW_ uint32_t* const)0x40001824U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM12_PSC_PTR            = (RW_ uint32_t* const)0x40001828U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM12_ARR_PTR            = (RW_ uint32_t* const)0x4000182CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM12_CCR1_PTR           = (RW_ uint32_t* const)0x40001834U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM12_CCR2_PTR           = (RW_ uint32_t* const)0x40001838U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM12_CCR3_PTR           = (RW_ uint32_t* const)0x4000183CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM12_CCR4_PTR           = (RW_ uint32_t* const)0x40001840U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM12_DCR_PTR            = (RW_ uint32_t* const)0x40001848U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM12_DMAR_PTR           = (RW_ uint32_t* const)0x4000184CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM12_AF1_PTR            = (RW_ uint32_t* const)0x40001860U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM12_TISEL_PTR          = (RW_ uint32_t* const)0x40001868U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM12 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM12_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40001834U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40001838U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x4000183CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40001840U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM12 Register Reset Values ****/
 
@@ -33069,14 +32142,19 @@
     static const uint32_t G_TIM12_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM12_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM12_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM12_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM12_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM12_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM12_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM12_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM12_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM12_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM12_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM12 Register Reset Values ****/
+
+    static const uint32_t G_TIM12_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM12 Register Value Types ****/
 
@@ -33094,10 +32172,7 @@
     typedef uint32_t G_TIM12_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM12_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM12_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM12_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM12_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM12_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM12_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM12_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM12_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM12_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM12_AF1_t;            /** @brief AF1 register value type. */
@@ -33119,10 +32194,7 @@
     typedef uint32_t* const G_TIM12_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM12_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM12_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM12_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM12_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM12_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM12_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM12_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM12_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM12_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM12_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -33168,14 +32240,8 @@
     static const uint32_t G_TIM12_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM12_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM12_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM12_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM12_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM12_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM12_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM12_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM12_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM12_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM12_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM12_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM12_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM12_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM12_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM12_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -33326,14 +32392,8 @@
     static const int32_t G_TIM12_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM12_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM12_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM12_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM12_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM12_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM12_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM12_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM12_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM12_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM12_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM12_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM12_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM12_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM12_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM12_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */
@@ -33464,14 +32524,19 @@
     static RW_ uint32_t* const G_TIM13_CNT_PTR            = (RW_ uint32_t* const)0x40001C24U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM13_PSC_PTR            = (RW_ uint32_t* const)0x40001C28U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM13_ARR_PTR            = (RW_ uint32_t* const)0x40001C2CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM13_CCR1_PTR           = (RW_ uint32_t* const)0x40001C34U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM13_CCR2_PTR           = (RW_ uint32_t* const)0x40001C38U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM13_CCR3_PTR           = (RW_ uint32_t* const)0x40001C3CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM13_CCR4_PTR           = (RW_ uint32_t* const)0x40001C40U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM13_DCR_PTR            = (RW_ uint32_t* const)0x40001C48U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM13_DMAR_PTR           = (RW_ uint32_t* const)0x40001C4CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM13_AF1_PTR            = (RW_ uint32_t* const)0x40001C60U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM13_TISEL_PTR          = (RW_ uint32_t* const)0x40001C68U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM13 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM13_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40001C34U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40001C38U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x40001C3CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40001C40U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM13 Register Reset Values ****/
 
@@ -33489,14 +32554,19 @@
     static const uint32_t G_TIM13_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM13_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM13_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM13_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM13_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM13_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM13_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM13_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM13_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM13_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM13_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM13 Register Reset Values ****/
+
+    static const uint32_t G_TIM13_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM13 Register Value Types ****/
 
@@ -33514,10 +32584,7 @@
     typedef uint32_t G_TIM13_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM13_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM13_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM13_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM13_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM13_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM13_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM13_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM13_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM13_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM13_AF1_t;            /** @brief AF1 register value type. */
@@ -33539,10 +32606,7 @@
     typedef uint32_t* const G_TIM13_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM13_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM13_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM13_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM13_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM13_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM13_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM13_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM13_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM13_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM13_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -33588,14 +32652,8 @@
     static const uint32_t G_TIM13_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM13_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM13_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM13_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM13_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM13_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM13_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM13_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM13_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM13_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM13_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM13_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM13_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM13_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM13_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM13_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -33746,14 +32804,8 @@
     static const int32_t G_TIM13_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM13_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM13_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM13_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM13_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM13_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM13_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM13_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM13_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM13_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM13_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM13_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM13_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM13_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM13_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM13_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */
@@ -33884,14 +32936,19 @@
     static RW_ uint32_t* const G_TIM14_CNT_PTR            = (RW_ uint32_t* const)0x40002024U;   /** @brief Counter */
     static RW_ uint32_t* const G_TIM14_PSC_PTR            = (RW_ uint32_t* const)0x40002028U;   /** @brief Prescaler */
     static RW_ uint32_t* const G_TIM14_ARR_PTR            = (RW_ uint32_t* const)0x4000202CU;   /** @brief Auto-reload register */
-    static RW_ uint32_t* const G_TIM14_CCR1_PTR           = (RW_ uint32_t* const)0x40002034U;   /** @brief Capture/compare register 1 */
-    static RW_ uint32_t* const G_TIM14_CCR2_PTR           = (RW_ uint32_t* const)0x40002038U;   /** @brief Capture/compare register 2 */
-    static RW_ uint32_t* const G_TIM14_CCR3_PTR           = (RW_ uint32_t* const)0x4000203CU;   /** @brief Capture/compare register 3 */
-    static RW_ uint32_t* const G_TIM14_CCR4_PTR           = (RW_ uint32_t* const)0x40002040U;   /** @brief Capture/compare register 4 */
     static RW_ uint32_t* const G_TIM14_DCR_PTR            = (RW_ uint32_t* const)0x40002048U;   /** @brief DMA control register */
     static RW_ uint32_t* const G_TIM14_DMAR_PTR           = (RW_ uint32_t* const)0x4000204CU;   /** @brief DMA address for full transfer */
     static RW_ uint32_t* const G_TIM14_AF1_PTR            = (RW_ uint32_t* const)0x40002060U;   /** @brief TIM alternate function option register 1 */
     static RW_ uint32_t* const G_TIM14_TISEL_PTR          = (RW_ uint32_t* const)0x40002068U;   /** @brief TIM timer input selection register */
+
+    /**** @subsection Enumerated G_TIM14 Register Pointers ****/
+
+    static RW_ uint32_t* const G_TIM14_CCRx_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x40002034U,   /** @brief Capture/compare register 1 */
+      [2] = (RW_ uint32_t* const)0x40002038U,   /** @brief Capture/compare register 2 */
+      [3] = (RW_ uint32_t* const)0x4000203CU,   /** @brief Capture/compare register 3 */
+      [4] = (RW_ uint32_t* const)0x40002040U,   /** @brief Capture/compare register 4 */
+    };
 
     /**** @subsection G_TIM14 Register Reset Values ****/
 
@@ -33909,14 +32966,19 @@
     static const uint32_t G_TIM14_CNT_RST            = 0x00000000U;   /** @brief CNT register reset value. */
     static const uint32_t G_TIM14_PSC_RST            = 0x00000000U;   /** @brief PSC register reset value. */
     static const uint32_t G_TIM14_ARR_RST            = 0x00000000U;   /** @brief ARR register reset value. */
-    static const uint32_t G_TIM14_CCR1_RST           = 0x00000000U;   /** @brief CCR1 register reset value. */
-    static const uint32_t G_TIM14_CCR2_RST           = 0x00000000U;   /** @brief CCR2 register reset value. */
-    static const uint32_t G_TIM14_CCR3_RST           = 0x00000000U;   /** @brief CCR3 register reset value. */
-    static const uint32_t G_TIM14_CCR4_RST           = 0x00000000U;   /** @brief CCR4 register reset value. */
     static const uint32_t G_TIM14_DCR_RST            = 0x00000000U;   /** @brief DCR register reset value. */
     static const uint32_t G_TIM14_DMAR_RST           = 0x00000000U;   /** @brief DMAR register reset value. */
     static const uint32_t G_TIM14_AF1_RST            = 0x00000000U;   /** @brief AF1 register reset value. */
     static const uint32_t G_TIM14_TISEL_RST          = 0x00000000U;   /** @brief TISEL register reset value. */
+
+    /**** @subsection Enumerated G_TIM14 Register Reset Values ****/
+
+    static const uint32_t G_TIM14_CCRx_RST[5] = {
+      [1] = 0x00000000U,   /** @brief CCR1 register reset value. */
+      [2] = 0x00000000U,   /** @brief CCR2 register reset value. */
+      [3] = 0x00000000U,   /** @brief CCR3 register reset value. */
+      [4] = 0x00000000U,   /** @brief CCR4 register reset value. */
+    };
 
     /**** @subsection Enumerated G_TIM14 Register Value Types ****/
 
@@ -33934,10 +32996,7 @@
     typedef uint32_t G_TIM14_CNT_t;            /** @brief CNT register value type. */
     typedef uint32_t G_TIM14_PSC_t;            /** @brief PSC register value type. */
     typedef uint32_t G_TIM14_ARR_t;            /** @brief ARR register value type. */
-    typedef uint32_t G_TIM14_CCR1_t;           /** @brief CCR1 register value type. */
-    typedef uint32_t G_TIM14_CCR2_t;           /** @brief CCR2 register value type. */
-    typedef uint32_t G_TIM14_CCR3_t;           /** @brief CCR3 register value type. */
-    typedef uint32_t G_TIM14_CCR4_t;           /** @brief CCR4 register value type. */
+    typedef uint32_t G_TIM14_CCRx_t;           /** @brief CCRx register value type. */
     typedef uint32_t G_TIM14_DCR_t;            /** @brief DCR register value type. */
     typedef uint32_t G_TIM14_DMAR_t;           /** @brief DMAR register value type. */
     typedef uint32_t G_TIM14_AF1_t;            /** @brief AF1 register value type. */
@@ -33959,10 +33018,7 @@
     typedef uint32_t* const G_TIM14_CNT_PTR_t;            /** @brief CNT register pointer type. */
     typedef uint32_t* const G_TIM14_PSC_PTR_t;            /** @brief PSC register pointer type. */
     typedef uint32_t* const G_TIM14_ARR_PTR_t;            /** @brief ARR register pointer type. */
-    typedef uint32_t* const G_TIM14_CCR1_PTR_t;           /** @brief CCR1 register pointer type. */
-    typedef uint32_t* const G_TIM14_CCR2_PTR_t;           /** @brief CCR2 register pointer type. */
-    typedef uint32_t* const G_TIM14_CCR3_PTR_t;           /** @brief CCR3 register pointer type. */
-    typedef uint32_t* const G_TIM14_CCR4_PTR_t;           /** @brief CCR4 register pointer type. */
+    typedef uint32_t* const G_TIM14_CCRx_PTR_t;           /** @brief CCRx register pointer type. */
     typedef uint32_t* const G_TIM14_DCR_PTR_t;            /** @brief DCR register pointer type. */
     typedef uint32_t* const G_TIM14_DMAR_PTR_t;           /** @brief DMAR register pointer type. */
     typedef uint32_t* const G_TIM14_AF1_PTR_t;            /** @brief AF1 register pointer type. */
@@ -34008,14 +33064,8 @@
     static const uint32_t G_TIM14_PSC_PSC_MASK              = 0x0000FFFFU;   /** @brief Prescaler value */
     static const uint32_t G_TIM14_ARR_ARR_H_MASK            = 0xFFFF0000U;   /** @brief High auto-reload value */
     static const uint32_t G_TIM14_ARR_ARR_L_MASK            = 0x0000FFFFU;   /** @brief Low auto-reload value */
-    static const uint32_t G_TIM14_CCR1_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
-    static const uint32_t G_TIM14_CCR1_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
-    static const uint32_t G_TIM14_CCR2_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 2 value */
-    static const uint32_t G_TIM14_CCR2_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 2 value */
-    static const uint32_t G_TIM14_CCR3_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM14_CCR3_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
-    static const uint32_t G_TIM14_CCR4_CCRx_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare value */
-    static const uint32_t G_TIM14_CCR4_CCRx_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare value */
+    static const uint32_t G_TIM14_CCRx_CCR1_H_MASK          = 0xFFFF0000U;   /** @brief High capture/compare 1 value */
+    static const uint32_t G_TIM14_CCRx_CCR1_L_MASK          = 0x0000FFFFU;   /** @brief Low capture/compare 1 value */
     static const uint32_t G_TIM14_DCR_DBL_MASK              = 0x00001F00U;   /** @brief DMA burst length */
     static const uint32_t G_TIM14_DCR_DBA_MASK              = 0x0000001FU;   /** @brief DMA base address */
     static const uint32_t G_TIM14_DMAR_DMAB_MASK            = 0x0000FFFFU;   /** @brief DMA register for burst accesses */
@@ -34166,14 +33216,8 @@
     static const int32_t G_TIM14_PSC_PSC_POS              = 0;    /** @brief Prescaler value */
     static const int32_t G_TIM14_ARR_ARR_H_POS            = 16;   /** @brief High auto-reload value */
     static const int32_t G_TIM14_ARR_ARR_L_POS            = 0;    /** @brief Low auto-reload value */
-    static const int32_t G_TIM14_CCR1_CCRx_H_POS          = 16;   /** @brief High capture/compare 1 value */
-    static const int32_t G_TIM14_CCR1_CCRx_L_POS          = 0;    /** @brief Low capture/compare 1 value */
-    static const int32_t G_TIM14_CCR2_CCRx_H_POS          = 16;   /** @brief High capture/compare 2 value */
-    static const int32_t G_TIM14_CCR2_CCRx_L_POS          = 0;    /** @brief Low capture/compare 2 value */
-    static const int32_t G_TIM14_CCR3_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM14_CCR3_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
-    static const int32_t G_TIM14_CCR4_CCRx_H_POS          = 16;   /** @brief High capture/compare value */
-    static const int32_t G_TIM14_CCR4_CCRx_L_POS          = 0;    /** @brief Low capture/compare value */
+    static const int32_t G_TIM14_CCRx_CCR1_H_POS          = 16;   /** @brief High capture/compare 1 value */
+    static const int32_t G_TIM14_CCRx_CCR1_L_POS          = 0;    /** @brief Low capture/compare 1 value */
     static const int32_t G_TIM14_DCR_DBL_POS              = 8;    /** @brief DMA burst length */
     static const int32_t G_TIM14_DCR_DBA_POS              = 0;    /** @brief DMA base address */
     static const int32_t G_TIM14_DMAR_DMAB_POS            = 0;    /** @brief DMA register for burst accesses */

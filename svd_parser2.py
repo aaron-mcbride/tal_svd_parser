@@ -6,7 +6,6 @@
 import cmsis_svd as svd
 
 # Standard libraries
-import copy
 import re
 import os
 
@@ -61,7 +60,7 @@ MAX_FIELD_ENUM_LEN: int = 100
 INDENT: str = "    "
 
 ###################################################################################################
-# SVD PROCESSING
+# COMMON FUNCTIONS
 ###################################################################################################
 
 parser = svd.SVDParser.for_packaged_svd(package_root = SVD_PKG_PATH, vendor = VENDOR_NAME, filename = SVD_NAME)
@@ -92,29 +91,22 @@ def diff_start_alpha(text1: str, text2: str):
             len(text1) == len(text2) and 
             (len(text1) == 1 or text1[1] == text2[1]))
 
-# Compares the fields of two registers by digits
-def cmp_fields_dig(x, y, x_num, y_num):
+###################################################################################################
+# DE-ENUMERATION FUNCTIONS
+###################################################################################################
+
+# De-enumerate all elements within a register based on a common numeric difference
+def de_enum_fields_dig(x: svd.parser.SVDRegister, y: svd.parser.SVDRegister, 
+                   x_num: int, y_num: int):
     if x.fields:
-        if not y.fields:
-            return False
-        if len(x.fields) != len(y.fields):
-            return False
-        new_x_fields = x.fields.copy()
-        new_y_fields = y.fields.copy()
         for field1 in x.fields:
-            field_found: bool = False
-            for field2 in y.fields:
-                if field1.name == field2.name:
-                    if (field1.bit_offset == field2.bit_offset and
-                        field1.bit_width == field2.bit_width and
-                        field1.access == field2.access):
-                        field_found = True
-                    else:
-                        return False
-                elif field1.bit_offset == field2.bit_offset and field1.bit_width == field2.bit_width:
-                    if field1.access != field2.access:
-                        return False
-                    else:
+            if not field1.dim_index_separator:
+                for field2 in y.fields:
+                    if (not field2.dim_index_separator and
+                        field1.name != field2.name and
+                        field1.bit_offset == field2.bit_offset and 
+                        field1.bit_width == field2.bit_width and 
+                        field1.access != field2.access):
                         for i in range(min(len(field1.name), len(field2.name))):
                             if diff_start_digit(field1.name[i:], field2.name[i:]):
                                 field1_cname = field1.name[:i] + field1.name[i:].lstrip('0123456789')
@@ -124,48 +116,26 @@ def cmp_fields_dig(x, y, x_num, y_num):
                                     field1_num = int(re.search('[0-9]+', field1.name[i:]).group())
                                     field2_num = int(re.search('[0-9]+', field2.name[i:]).group())
                                     if field1_num == x_num and field2_num == y_num:
-                                        field_found = True
-                                        for xf in new_x_fields:
+                                        for xf in x.fields:
                                             if xf.name == field1.name:
-                                                xf.name = common_name
-                                        for yf in new_y_fields:
+                                                xf.dim_index_separator = common_name
+                                        for yf in y.fields:
                                             if yf.name == field2.name:
-                                                yf.name = common_name
+                                                yf.dim_index_separator = common_name
                                         break
-                                    else:
-                                        return False
-                        if field_found == False and x.get_parent_peripheral().name == "MDMA":
-                            print(f'{field1.name}, {field2.name}')
-            if not field_found:
-                return False
-        return (new_x_fields, new_y_fields)
-    return (None, None)
 
-# Compares the fields of two registers by alphabet
-def cmp_fields_alpha(x, y, x_alpha, y_alpha):
+# De-enumerate all elements within a peripheral based on a common alphnumeric difference
+def de_enum_fields_alpha(x: svd.parser.SVDRegister, y: svd.parser.SVDRegister, 
+                     x_alpha: str, y_alpha: str):
     if x.fields:
-        if not y.fields:
-            return False
-        if len(x.fields) != len(y.fields):
-            return False
-        new_x_fields = x.fields.copy()
-        new_y_fields = y.fields.copy()
         for field1 in x.fields:
-            field_found: bool = False
-            for field2 in y.fields:
-                if field_found: break
-                if field1.name == field2.name:
-                    if (field1.bit_offset == field2.bit_offset and
+            if not field1.dim_index_separator:
+                for field2 in y.fields:                        
+                    if (not field2.dim_index_separator and
+                        field1.name != field2.name and 
+                        field1.bit_offset == field2.bit_offset and
                         field1.bit_width == field2.bit_width and
                         field1.access == field2.access):
-                        field_found = True
-                        break
-                    else:
-                        return False
-                elif field1.bit_offset == field2.bit_offset and field1.bit_width == field2.bit_width:
-                    if field1.access != field2.access:
-                        return False
-                    else:
                         for i in range(min(len(field1.name), len(field2.name))):
                             if diff_start_alpha(field1.name[i:], field2.name[i:]):
                                 field1_cname = field1.name[:i] + field1.name[(i + 1):]
@@ -175,126 +145,77 @@ def cmp_fields_alpha(x, y, x_alpha, y_alpha):
                                     field1_num = ord(field1.name[i].lower()) - ord('a')
                                     field2_num = ord(field2.name[i].lower()) - ord('a')
                                     if field1_num == x_alpha and field2_num == y_alpha:
-                                        field_found = True
-                                        for xf in new_x_fields:
+                                        for xf in x.fields:
                                             if xf.name == field1:
-                                                xf.name = common_name
-                                        for yf in new_y_fields:
+                                                xf.dim_index_seperator = common_name
+                                        for yf in y.fields:
                                             if yf.name == field2:
-                                                yf.name = common_name
-                                        break
-                                    else:
-                                        return False
-            if not field_found:
-                return False
-        return (new_x_fields, new_y_fields)
-    return (None, None)
-        
-# Compares the registers of two peripherals
-def cmp_registers_dig(x, y, x_num, y_num):
-    if x.registers:
-        if not y.registers:
-            return False
-        if len(x.registers) != len(y.registers):
-            return False
-        new_x_regs = x.registers.copy()
-        new_y_regs = y.registers.copy()
-        for reg1 in x.registers:
-            reg_found: bool = None
-            for reg2 in y.registers:
-                if reg_found: break
-                if reg1.name == reg2.name:
-                    if (reg1.address_offset == reg2.address_offset and
-                        reg1.size == reg2.size and
-                        reg1.access == reg2.access and
-                        cmp_fields_dig(reg1, reg2, x_num, y_num) is not False):
-                        reg_found = True
-                        break
-                    else:
-                        return False
-                elif reg1.address_offset == reg2.address_offset and reg1.size == reg2.size:
-                    new_fields = cmp_fields_dig(reg1, reg2, x_num, y_num)
-                    if reg1.access != reg2.access or new_fields is False:
-                        return False
-                    else:
-                        for i in range(min(len(reg1.name), len(reg2.name))):
-                            if diff_start_digit(reg1.name[i:], reg2.name[i:]):
-                                reg1_cname = reg1.name[:i] + reg1.name[i:].lstrip('0123456789')
-                                reg2_cname = reg2.name[:i] + reg2.name[i:].lstrip('0123456789')
-                                common_name = reg1.name[:i] + "x" + reg1.name[i:].lstrip('0123456789')
-                                if reg1_cname == reg2_cname:
-                                    reg1_num = int(re.search('[0-9]+', reg1.name[i:]).group())
-                                    reg2_num = int(re.search('[0-9]+', reg2.name[i:]).group())
-                                    if reg1_num == 0 and reg2_num == 0:
-                                        reg_found = True
-                                        for xr in new_x_regs:
-                                            if xr == reg1:
-                                                xr.name = common_name
-                                                xr.fields = new_fields[0]
-                                        for yr in new_y_regs:
-                                            if yr == reg2:
-                                                yr.name = common_name
-                                                yr.fields = new_fields[1]
-                                        break
-                                    else:
-                                        return False
-            if not reg_found:
-                return False
-        return (new_x_regs, new_y_regs)
-    return (None, None)
+                                                yf.dim_index_seperator = common_name
+                                        break        
 
-# Compares the registers of two peripherals by alphabet
-def cmp_registers_alpha(x, y, x_alpha, y_alpha):
+# De-enumerate all elements within a peripheral based on a common numeric difference
+def de_enum_registers_dig(x: svd.parser.SVDPeripheral, y: svd.parser.SVDPeripheral, 
+                      x_num: int, y_num: int):
     if x.registers:
-        if not y.registers:
-            return False
-        if len(x.registers) != len(y.registers):
-            return False
-        new_x_regs = x.registers.copy()
-        new_y_regs = y.registers.copy()
         for reg1 in x.registers:
-            reg_found: bool = None
-            for reg2 in y.registers:
-                if reg_found: break
-                if reg1.name == reg2.name:
-                    if (reg1.address_offset == reg2.address_offset and
-                        reg1.size == reg2.size and
-                        reg1.access == reg2.access and
-                        cmp_fields_alpha(reg1, reg2, x_alpha, y_alpha) is not False):
-                        reg_found = True
-                        break
-                    else:
-                        return False
-                elif reg1.address_offset == reg2.address_offset and reg1.size == reg2.size:
-                    new_fields = cmp_fields_alpha(reg1, reg2, x_alpha, y_alpha)
-                    if reg1.access != reg2.access or new_fields is False:
-                        return False
-                    else:
-                        for i in range(min(len(reg1.name), len(reg2.name))):
-                            if diff_start_alpha(reg1.name[i:], reg2.name[i:]):
-                                reg1_cname = reg1.name[:i] + reg1.name[(i + 1):]
-                                reg2_cname = reg2.name[:i] + reg2.name[(i + 1):]
-                                common_name = reg1.name[:i] + "x" + reg1.name[(i + 1):]
-                                if reg1_cname == reg2_cname:
-                                    reg1_num = ord(reg1.name[i].lower()) - ord('a')
-                                    reg2_num = ord(reg2.name[i].lower()) - ord('a')
-                                    if reg1_num == x_alpha and reg2_num == y_alpha:
-                                        reg_found = True
-                                        for xr in new_x_regs:
-                                            if xr == reg1:
-                                                xr.name = common_name
-                                                xr.fields = new_fields[0]
-                                        for yr in new_y_regs:
-                                            if yr == reg2:
-                                                yr.name = common_name
-                                                yr.fields = new_fields[1]
-                                        break
-                                    else:
-                                        return False
-            if not reg_found:
-                return False
-        return (new_x_regs, new_y_regs)
-    return (None, None)
+            if not reg1.dim_index_separator:
+                for reg2 in y.registers:
+                    if not reg2.dim_index_separator:
+                        de_enum_fields_dig(reg1, reg2, x_num, y_num)
+                        if (reg1.name != reg2.name and
+                            reg1.address_offset == reg2.address_offset and
+                            reg1.size == reg2.size and
+                            reg1.access == reg2.access):
+                            for i in range(min(len(reg1.name), len(reg2.name))):
+                                if diff_start_digit(reg1.name[i:], reg2.name[i:]):
+                                    reg1_cname = reg1.name[:i] + reg1.name[i:].lstrip('0123456789')
+                                    reg2_cname = reg2.name[:i] + reg2.name[i:].lstrip('0123456789')
+                                    common_name = reg1.name[:i] + "x" + reg1.name[i:].lstrip('0123456789')
+                                    if reg1_cname == reg2_cname:
+                                        reg1_num = int(re.search('[0-9]+', reg1.name[i:]).group())
+                                        reg2_num = int(re.search('[0-9]+', reg2.name[i:]).group())
+                                        if reg1_num == 0 and reg2_num == 0:
+                                            for xr in x.registers:
+                                                if xr.name == reg1.name:
+                                                    xr.dim_index_separator = common_name
+                                            for yr in y.registers:
+                                                if yr == reg2:
+                                                    yr.dim_index_separator = common_name
+                                            break
+
+# De-enumerate all elements within a peripheral based on a common alphnumeric difference
+def de_enum_registers_alpha(x: svd.parser.SVDPeripheral, y: svd.parser.SVDPeripheral, 
+                        x_alpha: str, y_alpha: str):
+    if x.registers:
+        for reg1 in x.registers:
+            if not reg1.dim_index_separator:
+                for reg2 in y.registers:
+                    if not reg2.dim_index_separator:
+                        de_enum_fields_alpha(reg1, reg2, x_alpha, y_alpha)
+                        if (reg1.name != reg2.name and
+                            reg1.address_offset == reg2.address_offset and
+                            reg1.size == reg2.size and
+                            reg1.access == reg2.access):
+                            for i in range(min(len(reg1.name), len(reg2.name))):
+                                if diff_start_alpha(reg1.name[i:], reg2.name[i:]):
+                                    reg1_cname = reg1.name[:i] + reg1.name[(i + 1):]
+                                    reg2_cname = reg2.name[:i] + reg2.name[(i + 1):]
+                                    common_name = reg1.name[:i] + "x" + reg1.name[(i + 1):]
+                                    if reg1_cname == reg2_cname:
+                                        reg1_num = ord(reg1.name[i].lower()) - ord('a')
+                                        reg2_num = ord(reg2.name[i].lower()) - ord('a')
+                                        if reg1_num == x_alpha and reg2_num == y_alpha:
+                                            for xr in x.registers:
+                                                if xr == reg1:
+                                                    xr.dim_index_separator = common_name
+                                            for yr in y.registers:
+                                                if yr == reg2:
+                                                    yr.dim_index_separator = common_name
+                                            break
+
+###################################################################################################
+# SVD PRE-FORMATTING
+###################################################################################################
 
 # Formats a SVD description string
 def fmt_desc(desc: str) -> str:
@@ -422,7 +343,6 @@ periph_dim: dict[str, int] = {}
 periph_cname_xlist: list[str] = []
 for periph1 in device.peripherals:
     if periph1.dim_name is None:
-        dim_valid: bool = True
         def abort(common_name):
             periph_dim[common_name] = None
             periph_cname_xlist.append(common_name)
@@ -430,9 +350,14 @@ for periph1 in device.peripherals:
                 if periph3.dim_name == common_name:
                     periph3.dim_name = None
                     periph3.dim_index = None
+                    if periph3.registers:
+                        for reg3 in periph3.registers:
+                            reg3.dim_index_separator = None
+                            if reg3.fields:
+                                for field3 in reg3.fields:
+                                    field3.dim_index_separator = None
         cur_common_name: str = None
         periph_num_list: list[int] = []
-        new_periph: svd.parser.SVDPeripheralArray = copy.deepcopy(device.peripherals)
         for periph2 in device.peripherals:
             if periph2.dim_name is None and periph1.name != periph2.name:
                 for c1, c2, i in zip(periph1.name, periph2.name, range(min(len(periph1.name), len(periph2.name)))):
@@ -442,14 +367,9 @@ for periph1 in device.peripherals:
                         common_name = periph1.name[:i] + "x" + periph1.name[i:].lstrip('0123456789')
                         periph1_num = int(re.search('[0-9]+', periph1.name[i:]).group())
                         periph2_num = int(re.search('[0-9]+', periph2.name[i:]).group())
-                        new_registers = cmp_registers_dig(periph1, periph2, periph1_num, periph2_num)
                         if periph1_cname == periph2_cname and common_name not in periph_cname_xlist:
-                            if max(periph1_num, periph2_num) < MAX_PERIPH_ENUM_LEN and new_registers is not False:
-                                    for np in new_periph:
-                                        if np.name == periph1.name:
-                                            np.registers = new_registers[0]
-                                        if np.name == periph2.name:
-                                            np.registers = new_registers[1]
+                            if (max(periph1_num, periph2_num) < MAX_PERIPH_ENUM_LEN):
+                                    de_enum_registers_dig(periph1, periph2, periph1_num, periph2_num)
                                     cur_common_name = common_name
                                     periph1.dim_name = common_name
                                     periph1.dim_index = periph1_num
@@ -462,7 +382,6 @@ for periph1 in device.peripherals:
                                         periph_num_list.append(periph1_num)
                                         periph_dim[common_name] = max(periph1_num, periph2_num) + 1
                             else:
-                                dim_valid = False
                                 abort(common_name)
                 if periph2.dim_name is None:
                     for c1, c2, i in zip(periph1.name, periph2.name, range(min(len(periph1.name), len(periph2.name)))):
@@ -473,14 +392,9 @@ for periph1 in device.peripherals:
                             common_name = periph1.name[:i] + "x" + periph1.name[(i + 1):]
                             periph1_num = ord(periph1.name[i].lower()) - ord('a')
                             periph2_num = ord(periph2.name[i].lower()) - ord('a')
-                            new_registers = cmp_registers_alpha(periph1, periph2, periph1_num, periph2_num)
                             if periph1_cname == periph2_cname and common_name not in periph_cname_xlist:
-                                if max(periph1_num, periph2_num) < MAX_PERIPH_ENUM_LEN and new_registers is not False:
-                                    for np in new_periph:
-                                        if np.name == periph1.name:
-                                            np.registers = new_registers[0]
-                                        if np.name == periph2.name:
-                                            np.registers = new_registers[1]
+                                if (max(periph1_num, periph2_num) < MAX_PERIPH_ENUM_LEN):
+                                    de_enum_registers_alpha(periph1, periph2, periph1_num, periph2_num)
                                     cur_common_name = common_name
                                     periph1.dim_name = common_name
                                     periph1.dim_index = periph1_num
@@ -493,17 +407,23 @@ for periph1 in device.peripherals:
                                         periph_num_list.append(periph1_num)
                                         periph_dim[common_name] = max(periph1_num, periph2_num) + 1
                                 else:
-                                    dim_valid = False
                                     abort(common_name)
         if len(periph_num_list) > 0:
             if len(periph_num_list) < MIN_PERIPH_ENUM_LEN:
                 abort(cur_common_name)
-        if dim_valid:
-            for o_periph in device.peripherals:
-                for n_periph in new_periph:
-                    if o_periph.name == n_periph.name:
-                        o_periph.registers = n_periph.registers
-                        break
+
+# Update de-enumerated register and field names
+for periph in device.peripherals:
+    if periph.registers:
+        for reg in periph.registers:
+            if reg.dim_index_separator is not None:
+                reg.name = reg.dim_index_separator
+                reg.dim_index_separator = None
+            if reg.fields:
+                for field in reg.fields:
+                    if field.dim_index_separator is not None:
+                        field.name = field.dim_index_separator
+                        field.dim_index_separator = None
       
 # Format registers
 reg_dim: dict[str, int] = {}
@@ -519,9 +439,11 @@ for periph in device.peripherals:
                         if reg3.dim_name == common_name:
                             reg3.dim_name = None
                             reg3.dim_index = None
+                            if reg3.fields:
+                                for field3 in reg3.fields:
+                                    field3.dim_index_separator = None
                 cur_common_name: str = None
                 dim_num_list: list[int] = []
-                new_reg: svd.parser.SVDRegisterArray = copy.deepcopy(periph.registers)
                 for reg2 in periph.registers:
                     if reg2.dim_name is None and reg1.name != reg2.name and ((reg1.fields == None) == (reg2.fields == None)):
                         for c1, c2, i in zip(reg1.name, reg2.name, range(min(len(reg1.name), len(reg2.name)))):
@@ -532,14 +454,9 @@ for periph in device.peripherals:
                                 common_name = reg1.name[:i] + "x" + reg1.name[i:].lstrip('0123456789')
                                 reg1_num = int(re.search('[0-9]+', reg1.name[i:]).group())
                                 reg2_num = int(re.search('[0-9]+', reg2.name[i:]).group())
-                                new_fields = cmp_fields_dig(reg1, reg2, reg1_num, reg2_num)
                                 if reg1_cname == reg2_cname and common_name not in reg_cname_xlist:
-                                    if max(reg1_num, reg2_num) < MAX_REG_ENUM_LEN and new_fields is not False:
-                                        for nr in new_reg:
-                                            if nr.name == reg1.name:
-                                                nr.fields = new_fields[0]
-                                            if nr.name == reg2.name:
-                                                nr.fields = new_fields[1]
+                                    if (max(reg1_num, reg2_num) < MAX_REG_ENUM_LEN):
+                                        de_enum_fields_dig(reg1, reg2, reg1_num, reg2_num)
                                         cur_common_name = common_name
                                         reg1.dim_name = common_name
                                         reg1.dim_index = reg1_num
@@ -563,14 +480,9 @@ for periph in device.peripherals:
                                     common_name = reg1.name[:i] + "x" + reg1.name[(i + 1):]
                                     reg1_num = ord(reg1.name[i].lower()) - ord('a')
                                     reg2_num = ord(reg2.name[i].lower()) - ord('a')
-                                    new_fields = cmp_fields_alpha(reg1, reg2, reg1_num, reg2_num)
                                     if reg1_cname == reg2_cname and common_name not in reg_cname_xlist:
-                                        if max(reg1_num, reg2_num) < MAX_REG_ENUM_LEN and new_fields is not False:
-                                            for nr in new_reg:
-                                                if nr.name == reg1.name:
-                                                    nr.fields = new_fields[0]
-                                                if nr.name == reg2.name:
-                                                    nr.fields = new_fields[1]
+                                        if (max(reg1_num, reg2_num) < MAX_REG_ENUM_LEN):
+                                            de_enum_fields_alpha(reg1, reg2, reg1_num, reg2_num)
                                             cur_common_name = common_name
                                             reg1.dim_name = common_name
                                             reg1.dim_index = reg1_num
@@ -588,11 +500,16 @@ for periph in device.peripherals:
                 if len(dim_num_list) > 0:
                     if len(dim_num_list) < MIN_REG_ENUM_LEN:
                         abort(cur_common_name)
-                if reg1.dim_name:
-                    for o_reg in periph.registers:
-                        for n_reg in new_reg:
-                            if o_reg.name == n_reg.name:
-                                o_reg.fields = n_reg.fields
+
+# Update de-enumerated field names
+for periph in device.peripherals:
+    if periph.registers:
+        for reg in periph.registers:
+            if reg.fields:
+                for field in reg.fields:
+                    if field.dim_index_separator is not None:
+                        field.name = field.dim_index_separator
+                        field.dim_index_separator = None
 
 # Format fields
 field_dim: dict[str, int] = {}
