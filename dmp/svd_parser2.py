@@ -591,9 +591,9 @@ for periph in device.peripherals:
 # Qualifiers associated with different register access types
 REG_QUAL: dict[svd.parser.SVDAccessType, str] = {
     svd.parser.SVDAccessType.READ_ONLY: "RO_",
-    svd.parser.SVDAccessType.WRITE_ONLY: "WO_",
+    svd.parser.SVDAccessType.WRITE_ONLY: "RW_",
     svd.parser.SVDAccessType.READ_WRITE: "RW_",
-    svd.parser.SVDAccessType.WRITE_ONCE: "WO_",
+    svd.parser.SVDAccessType.WRITE_ONCE: "RW_",
     svd.parser.SVDAccessType.READ_WRITE_ONCE: "RW_"
 }
 
@@ -615,68 +615,67 @@ with open(OUTPUT_PATH, 'w') as file:
     write_header("Implementation Resources")
     file.write(f'{INDENT}#define RO_ const volatile\n')
     file.write(f'{INDENT}#define RW_ volatile\n')
-    file.write(f'{INDENT}#define WO_ volatile\n')
     file.write("\n")
 
-    # Write interrupt definitions
-    isr_xlist: list[str] = []
-    isr_comment_list: list[str] = []
-    isr_array_list: list[bool] = []
-    irq_decl_list: list[str] = []
-    irq_def_list: list[str] = []
-    isr_value_list: list[int] = []
-    for periph1 in device.peripherals:
-        if periph1.interrupts:
-            for isr in periph1.interrupts:
-                if isr_dim_name.get(isr.value) is not None:
-                    if isr_dim_name[isr.value] in isr_xlist: continue
-                    isr_xlist.append(isr_dim_name[isr.value])
-                    dim_value_list: list[str] = []
-                    dim_comment_list: list[str] = []
-                    for i in range(isr_dim[isr_dim_name[isr.value]]):
-                        for periph2 in device.peripherals:
-                            if periph2.interrupts:
-                                for isr2 in periph2.interrupts:
-                                    if (isr_dim_name.get(isr2.value) == isr_dim_name[isr.value] and 
-                                        isr_dim_index[isr2.value] == i and isr2.value not in isr_value_list):
-                                        max_dim_idx_len: int = len(str(isr_dim[isr_dim_name[isr.value]])) + 1
-                                        dim_value_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= {isr2.value}')
-                                        dim_comment_list.append(f'/** @brief {isr2.description} */')
-                                        isr_value_list.append(isr2.value)
-                    max_index_len = max([len(x) for x in dim_value_list], default = 1) + 3
-                    irq_decl_list.append(f'{isr_dim_name[isr.value]}_IRQ'
-                        f'[{isr_dim[isr_dim_name[isr.value]]}]')
-                    irq_def_list.append(f'{{\n{("".join(f'{INDENT}  {x}, {" "*(max_index_len - len(x))}{cmt}\n' 
-                        for x, cmt in zip(dim_value_list, dim_comment_list)))}{INDENT}}}')
-                    isr_comment_list.append("")
-                    isr_array_list.append(True)
-                else:
-                    if isr.value not in isr_value_list:
-                        isr_value_list.append(isr.value)
-                        irq_decl_list.append(f'{isr.name}_IRQ')
-                        irq_def_list.append(str(isr.value))
-                        isr_array_list.append(False)
-                        isr_comment_list.append(f'/** @brief {isr.description} */')
-    if len(isr_array_list) > 0:
-        write_header("Interrupt Definitions")
-        if any(not x for x in isr_array_list):
-            file.write(f'{INDENT}/**** @subsection IRQ Interrupt Value Definitions ****/\n')
-            file.write("\n")
-            max_isr_decl_len = max([len(x) for x in irq_decl_list if not isr_array_list[irq_decl_list.index(x)]], default = 1)
-            max_isr_def_len = max([len(x) for x in irq_def_list if not isr_array_list[irq_def_list.index(x)]], default = 1)
-            for isr_decl, isr_def, isr_comment, isr_array in zip(irq_decl_list, irq_def_list, isr_comment_list, isr_array_list):
-                if not isr_array:
-                    isr_def_gap = (max_isr_decl_len - len(isr_decl)) + 1
-                    isr_cmt_gap = (max_isr_def_len - len(isr_def)) + 3
-                    file.write(f'{INDENT}static const int32_t {isr_decl}{" "*isr_def_gap}= {isr_def};{" "*isr_cmt_gap}{isr_comment}\n')
-            file.write("\n")
-        if any(x for x in isr_array_list):
-            file.write(f'{INDENT}/**** @subsection IRQ Interrupt Array Definitions ****/\n')
-            file.write("\n")
-            for isr_decl, isr_def, isr_array in zip(irq_decl_list, irq_def_list, isr_array_list):
-                if isr_array:
-                    file.write(f'{INDENT}static const int32_t {isr_decl} = {isr_def};\n')
-                    file.write("\n")
+    # # Write interrupt definitions
+    # isr_xlist: list[str] = []
+    # isr_comment_list: list[str] = []
+    # isr_array_list: list[bool] = []
+    # irq_decl_list: list[str] = []
+    # irq_def_list: list[str] = []
+    # isr_value_list: list[int] = []
+    # for periph1 in device.peripherals:
+    #     if periph1.interrupts:
+    #         for isr in periph1.interrupts:
+    #             if isr_dim_name.get(isr.value) is not None:
+    #                 if isr_dim_name[isr.value] in isr_xlist: continue
+    #                 isr_xlist.append(isr_dim_name[isr.value])
+    #                 dim_value_list: list[str] = []
+    #                 dim_comment_list: list[str] = []
+    #                 for i in range(isr_dim[isr_dim_name[isr.value]]):
+    #                     for periph2 in device.peripherals:
+    #                         if periph2.interrupts:
+    #                             for isr2 in periph2.interrupts:
+    #                                 if (isr_dim_name.get(isr2.value) == isr_dim_name[isr.value] and 
+    #                                     isr_dim_index[isr2.value] == i and isr2.value not in isr_value_list):
+    #                                     max_dim_idx_len: int = len(str(isr_dim[isr_dim_name[isr.value]])) + 1
+    #                                     dim_value_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= {isr2.value}')
+    #                                     dim_comment_list.append(f'/** @brief {isr2.description} */')
+    #                                     isr_value_list.append(isr2.value)
+    #                 max_index_len = max([len(x) for x in dim_value_list], default = 1) + 3
+    #                 irq_decl_list.append(f'{isr_dim_name[isr.value]}_IRQ'
+    #                     f'[{isr_dim[isr_dim_name[isr.value]]}]')
+    #                 irq_def_list.append(f'{{\n{("".join(f'{INDENT}  {x}, {" "*(max_index_len - len(x))}{cmt}\n' 
+    #                     for x, cmt in zip(dim_value_list, dim_comment_list)))}{INDENT}}}')
+    #                 isr_comment_list.append("")
+    #                 isr_array_list.append(True)
+    #             else:
+    #                 if isr.value not in isr_value_list:
+    #                     isr_value_list.append(isr.value)
+    #                     irq_decl_list.append(f'{isr.name}_IRQ')
+    #                     irq_def_list.append(str(isr.value))
+    #                     isr_array_list.append(False)
+    #                     isr_comment_list.append(f'/** @brief {isr.description} */')
+    # if len(isr_array_list) > 0:
+    #     write_header("Interrupt Definitions")
+    #     if any(not x for x in isr_array_list):
+    #         file.write(f'{INDENT}/**** @subsection IRQ Interrupt Value Definitions ****/\n')
+    #         file.write("\n")
+    #         max_isr_decl_len = max([len(x) for x in irq_decl_list if not isr_array_list[irq_decl_list.index(x)]], default = 1)
+    #         max_isr_def_len = max([len(x) for x in irq_def_list if not isr_array_list[irq_def_list.index(x)]], default = 1)
+    #         for isr_decl, isr_def, isr_comment, isr_array in zip(irq_decl_list, irq_def_list, isr_comment_list, isr_array_list):
+    #             if not isr_array:
+    #                 isr_def_gap = (max_isr_decl_len - len(isr_decl)) + 3
+    #                 isr_cmt_gap = (max_isr_def_len - len(isr_def)) + 3
+    #                 file.write(f'{INDENT}static const int32_t {isr_decl}{" "*isr_def_gap}= {isr_def};{" "*isr_cmt_gap}{isr_comment}\n')
+    #         file.write("\n")
+    #     if any(x for x in isr_array_list):
+    #         file.write(f'{INDENT}/**** @subsection IRQ Interrupt Array Definitions ****/\n')
+    #         file.write("\n")
+    #         for isr_decl, isr_def, isr_array in zip(irq_decl_list, irq_def_list, isr_array_list):
+    #             if isr_array:
+    #                 file.write(f'{INDENT}static const int32_t {isr_decl} = {isr_def};\n')
+    #                 file.write("\n")
 
     periph_xlist: list[str] = []
     for periph1 in device.peripherals:
@@ -691,6 +690,37 @@ with open(OUTPUT_PATH, 'w') as file:
         # Write section header
         if periph1.registers:
             write_header(f'{periph_name} Register Information')
+
+        # # General peripheral information              
+        # file.write(f'{INDENT}/**** @subsection {periph_name} General Peripheral Information ****/\n')
+        # file.write("\n")
+        # if periph1.dim_name:
+        #     base_def_list: list[str] = []
+        #     size_def_list: list[str] = []
+        #     size_cmt_list: list[str] = []
+        #     base_cmt_list: list[str] = []
+        #     for i in range(periph_dim[periph1.dim_name]):
+        #         for periph2 in device.peripherals:
+        #             if periph2.dim_name == periph1.dim_name and periph2.dim_index == i:
+        #                 dim_idx_gap = (len(str(periph_dim[periph1.dim_name])) - len(str(i))) + 1
+        #                 base_def_list.append(f'{INDENT}  [{i}]{dim_idx_gap}= 0x{periph2.base_address:08X}U,\n')
+        #                 size_def_list.append(f'{INDENT}  [{i}]{dim_idx_gap}= {periph2.size},\n')
+        #                 base_cmt_list.append(f'/** @brief {periph2.name} register block base address. */')
+        #                 size_cmt_list.append(f'/** @brief {periph2.name} register block base address. */')
+        #     file.write(f'{INDENT}static const uint32_t {periph_name}_BASE[{periph_dim[periph1.dim_name]}] = {{\n')
+        #     for x in base_def_list:
+        #         file.write(x)
+        #     file.write(f'{INDENT}}};\n')
+        #     file.write("\n")
+        #     file.write(f'{INDENT}static const int32_t {periph_name}_SIZE[{periph_dim[periph1.dim_name]}] = {{\n')
+        #     for x in size_def_list:
+        #         file.write(x)
+        #     file.write(f'{INDENT}}};\n')
+        #     file.write("\n")
+        # else:
+        #     file.write(f'{INDENT}static const uint32_t {periph_name}_BASE = 0x{periph1.base_address:08X}U;\n')
+        #     file.write(f'{INDENT}static const int32_t {periph_name}_SIZE  = {periph1.size};\n')
+        #     file.write("\n")
             
         # Write register definitions
         if periph1.registers:
@@ -786,7 +816,7 @@ with open(OUTPUT_PATH, 'w') as file:
                     max_reg_def_len = max([len(x) for x in reg_def_list if not reg_array_list[reg_def_list.index(x)]], default = 1)
                     for reg_pre, reg_decl, reg_def, reg_cmt, reg_array in zip(reg_pre_list, reg_decl_list, reg_def_list, reg_cmt_list, reg_array_list):
                         if not reg_array:
-                            reg_def_gap = ((max_reg_decl_len + max_reg_pre_len) - (len(reg_pre) + len(reg_decl))) + 1
+                            reg_def_gap = ((max_reg_decl_len + max_reg_pre_len) - (len(reg_pre) + len(reg_decl))) + 3
                             reg_cmt_gap = (max_reg_def_len - len(reg_def)) + 3
                             file.write(f'{INDENT}{reg_pre} {reg_decl}{" "*reg_def_gap}= {reg_def};{" "*reg_cmt_gap}{reg_cmt}\n')
                     file.write("\n")
@@ -796,7 +826,143 @@ with open(OUTPUT_PATH, 'w') as file:
                     for reg_pre, reg_decl, reg_def, reg_array in zip(reg_pre_list, reg_decl_list, reg_def_list, reg_array_list):
                         if reg_array:
                             file.write(f'{INDENT}{reg_pre} {reg_decl} = {reg_def};\n')
-                            file.write("\n")               
+                            file.write("\n")
+
+        # Write register reset values
+        if periph1.registers:
+            first_reg: bool = True
+            reg_pre_list: list[str] = []
+            reg_decl_list: list[str] = []
+            reg_def_list: list[str] = []
+            reg_array_list: list[bool] = []
+            reg_cmt_list: list[str] = []
+            reg_xlist: list[str] = []
+            for reg1 in periph1.registers:
+                reg_cast: str = f''
+                if reg1.dim_name:
+                    if reg1.dim_name in reg_xlist: continue
+                    reg_xlist.append(reg1.dim_name)
+                    if periph1.dim_name:
+                        dim1_def_list: list[str] = []
+                        for i in range(periph_dim[periph1.dim_name]):
+                            dim2_def_list: list[str] = []
+                            dim2_cmt_list: list[str] = []
+                            for periph2 in device.peripherals:
+                                if periph2.dim_name == periph1.dim_name and periph2.dim_index == i:
+                                    for j in range(reg_dim[f'{periph1.name}_{reg1.dim_name}']):
+                                        for reg2 in periph2.registers:
+                                            if reg2.dim_name == reg1.dim_name and reg2.dim_index == j:
+                                                max_dim2_idx_len: int = len(str(reg_dim[f'{periph1.name}_{reg1.dim_name}'])) + 1
+                                                dim2_def_list.append(f'[{j}]{" "*(max_dim2_idx_len - len(str(j)))}= {reg_cast}0x{reg2.reset_value:08X}U')
+                                                dim2_cmt_list.append(f'/** @brief {reg2.name} register reset value. */')
+                            if len(dim2_def_list) > 1:
+                                max_dim_def_len = max([len(x) for x in dim2_def_list], default = 1) + 3
+                                dim1_def_list.append(f'{{\n{("".join(f'{INDENT}    {x},{" "*(max_dim_def_len - len(x))}{cmt}\n' 
+                                    for x, cmt in zip(dim2_def_list, dim2_cmt_list)))}{INDENT}  }}')
+                        if len(dim1_def_list) > 1:
+                            reg_decl_list.append(f'{periph_name}_{reg1.dim_name}_RST'
+                                f'[{periph_dim[periph1.dim_name]}][{reg_dim[f"{periph1.name}_{reg1.dim_name}"]}]')
+                            max_dim_idx_len: int = len(str(periph_dim[periph1.dim_name])) + 1
+                            reg_def_list.append(f'{{\n{("".join(f'{INDENT}  [{i}]{" "*(max_dim_idx_len - len(str(i)))}= {x},\n' 
+                                for x, i in zip(dim1_def_list, range(len(dim1_def_list)))))}{INDENT}}}')
+                            reg_array_list.append(True)
+                            reg_cmt_list.append("")
+                    else:
+                        dim_def_list: list[str] = []
+                        dim_cmt_list: list[str] = []
+                        for i in range(reg_dim[f'{periph1.name}_{reg1.dim_name}']):
+                            for reg2 in periph1.registers:
+                                if reg2.dim_name == reg1.dim_name and reg2.dim_index == i:
+                                    max_dim_idx_len: int = len(str(reg_dim[f'{periph1.name}_{reg1.dim_name}'])) + 1
+                                    dim_def_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= {reg_cast}0x{reg2.reset_value:08X}U')
+                                    dim_cmt_list.append(f'/** @brief {reg2.name} register reset value. */')
+                        reg_decl_list.append(f'{periph_name}_{reg1.dim_name}_RST'
+                            f'[{reg_dim[f"{periph1.name}_{reg1.dim_name}"]}]')
+                        max_dim_def_len = max([len(x) for x in dim_def_list], default = 1) + 3
+                        reg_def_list.append(f'{{\n{("".join(f'{INDENT}  {x},{" "*(max_dim_def_len - len(x))}{cmt}\n' 
+                            for x, cmt in zip(dim_def_list, dim_cmt_list)))}{INDENT}}}')
+                        reg_array_list.append(True)
+                        reg_cmt_list.append("")
+                else:
+                    if periph1.dim_name:
+                        dim_def_list: list[str] = []
+                        dim_cmt_list: list[str] = []
+                        for i in range(periph_dim[periph1.dim_name]):
+                            for periph2 in device.peripherals:
+                                if periph2.dim_name == periph1.dim_name and periph2.dim_index == i:
+                                    for reg2 in periph2.registers:
+                                        if reg2.address_offset == reg1.address_offset:
+                                            max_dim_idx_len: int = len(str(periph_dim[periph1.dim_name])) + 1
+                                            dim_def_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= {reg_cast}0x{reg2.reset_value:08X}U')
+                                            dim_cmt_list.append(f'/** @brief {reg2.name} register reset value */')
+                                            break
+                        reg_decl_list.append(f'{periph_name}_{reg1.name}_RST'
+                            f'[{periph_dim[periph1.dim_name]}]')
+                        max_dim_def_len = max([len(x) for x in dim_def_list], default = 1) + 3
+                        reg_def_list.append(f'{{\n{("".join(f'{INDENT}  {x},{" "*(max_dim_def_len - len(x))}{cmt}\n' 
+                            for x, cmt in zip(dim_def_list, dim_cmt_list)))}{INDENT}}}')
+                        reg_array_list.append(True)
+                        reg_cmt_list.append("")
+                    else:
+                        reg_decl_list.append(f'{periph_name}_{reg1.name}_RST')
+                        reg_def_list.append(f'{reg_cast}0x{reg1.reset_value:08X}U')
+                        reg_array_list.append(False)
+                        reg_cmt_list.append(f'/** @brief {reg1.name} register reset value. */')
+                reg_pre_list.append(f'static const uint{reg1.size}_t')
+            if len(reg_decl_list) > 0:
+                if any(not x for x in reg_array_list):
+                    file.write(f'{INDENT}/**** @subsection {periph_name} Register Reset Values ****/\n')
+                    file.write("\n")
+                    max_reg_pre_len = max([len(x) for x in reg_pre_list if not reg_array_list[reg_pre_list.index(x)]], default = 1)
+                    max_reg_decl_len = max([len(x) for x in reg_decl_list if not reg_array_list[reg_decl_list.index(x)]], default = 1)
+                    max_reg_def_len = max([len(x) for x in reg_def_list if not reg_array_list[reg_def_list.index(x)]], default = 1)
+                    for reg_pre, reg_decl, reg_def, reg_cmt, reg_array in zip(reg_pre_list, reg_decl_list, reg_def_list, reg_cmt_list, reg_array_list):
+                        if not reg_array:
+                            reg_def_gap = ((max_reg_decl_len + max_reg_pre_len) - (len(reg_pre) + len(reg_decl))) + 3
+                            reg_cmt_gap = (max_reg_def_len - len(reg_def)) + 3
+                            file.write(f'{INDENT}{reg_pre} {reg_decl}{" "*reg_def_gap}= {reg_def};{" "*reg_cmt_gap}{reg_cmt}\n')
+                    file.write("\n")
+                if any(x for x in reg_array_list):
+                    file.write(f'{INDENT}/**** @subsection Enumerated {periph_name} Register Reset Values ****/\n')
+                    file.write("\n")
+                    for reg_pre, reg_decl, reg_def, reg_array in zip(reg_pre_list, reg_decl_list, reg_def_list, reg_array_list):
+                        if reg_array:
+                            file.write(f'{INDENT}{reg_pre} {reg_decl} = {reg_def};\n')
+                            file.write("\n")
+
+        # Write register type definitions
+        reg_xlist: list[str] = []
+        reg_vt_def_list: list[str] = []
+        reg_pt_def_list: list[str] = []
+        reg_vt_cmt_list: list[str] = []
+        reg_pt_cmt_list: list[str] = []
+        for reg in periph1.registers:
+            if reg.dim_name:
+                if reg.dim_name in reg_xlist: continue
+                reg_xlist.append(reg.dim_name)
+                treg_name = reg.dim_name
+            else:
+                treg_name = reg.name
+            reg_vt_def_list.append(f'typedef uint{reg.size}_t {periph_name}_{treg_name}_t;')
+            reg_pt_def_list.append(f'typedef uint{reg.size}_t* const {periph_name}_{treg_name}_PTR_t;')
+            reg_vt_cmt_list.append(f'/** @brief {treg_name} register value type. */')
+            reg_pt_cmt_list.append(f'/** @brief {treg_name} register pointer type. */')
+        if len(reg_vt_def_list) > 0:
+            file.write(f'{INDENT}/**** @subsection Enumerated {periph_name} Register Value Types ****/\n')
+            file.write("\n")
+            max_vt_def_len = max([len(x) for x in reg_vt_def_list], default = 1)
+            for reg_vt_def, reg_vt_cmt in zip(reg_vt_def_list, reg_vt_cmt_list):
+                cmt_gap: int = (max_vt_def_len - len(reg_vt_def)) + 3
+                file.write(f'{INDENT}{reg_vt_def}{" "*cmt_gap}{reg_vt_cmt}\n')
+            file.write("\n")
+            file.write(f'{INDENT}/**** @subsection Enumerated {periph_name} Register Pointer Types ****/\n')
+            file.write("\n")
+            max_pt_def_len = max([len(x) for x in reg_pt_def_list], default = 1)
+            for reg_pt_def, reg_pt_cmt in zip(reg_pt_def_list, reg_pt_cmt_list):
+                cmt_gap: int = (max_pt_def_len - len(reg_pt_def)) + 3
+                file.write(f'{INDENT}{reg_pt_def}{" "*cmt_gap}{reg_pt_cmt}\n')
+            file.write("\n")
+                
 
         # Write field mask definitions
         reg_xlist: list[str] = []
@@ -828,7 +994,7 @@ with open(OUTPUT_PATH, 'w') as file:
                                         dim_mask_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= 0x{mask_value:08X}U')
                                         dim_cmt_list.append(f'/** @brief {field2.description} */')
                             max_def_len: int = max([len(x) for x in dim_mask_list], default = 1) + 3
-                            field_decl_list.append(f'{periph_name}_{reg_name}_{field1.dim_name}_MSK'
+                            field_decl_list.append(f'{periph_name}_{reg_name}_{field1.dim_name}_MASK'
                                 f'[{field_dim[f"{periph1.name}_{reg.name}_{field1.dim_name}"]}]')
                             field_def_list.append(f'{{\n{("".join(f'{INDENT}  {x},{" "*(max_def_len - len(x))}{cmt}\n' 
                                 for x, cmt in zip(dim_mask_list, dim_cmt_list)))}{INDENT}}}')
@@ -836,7 +1002,7 @@ with open(OUTPUT_PATH, 'w') as file:
                             field_cmt_list.append("")
                         else:
                             mask_value: int = ((1 << field1.bit_width) - 1) << field1.bit_offset
-                            field_decl_list.append(f'{periph_name}_{reg_name}_{field1.name}_MSK')
+                            field_decl_list.append(f'{periph_name}_{reg_name}_{field1.name}_MASK')
                             field_def_list.append(f'0x{mask_value:08X}U')
                             field_array_list.append(False)
                             field_cmt_list.append(f'/** @brief {field1.description} */')
@@ -848,7 +1014,7 @@ with open(OUTPUT_PATH, 'w') as file:
                 max_field_def_len = max([len(x) for x in field_def_list if not field_array_list[field_def_list.index(x)]], default = 1)
                 for field_decl, field_def, field_cmt, field_array in zip(field_decl_list, field_def_list, field_cmt_list, field_array_list):
                     if not field_array:
-                        field_def_gap = (max_field_decl_len - len(field_decl)) + 1
+                        field_def_gap = (max_field_decl_len - len(field_decl)) + 3
                         field_cmt_gap = ((max_field_def_len) - len(field_def)) + 3
                         file.write(f'{INDENT}static const uint32_t {field_decl}{" "*field_def_gap}= {field_def};{" "*field_cmt_gap}{field_cmt}\n')
                 file.write("\n")
@@ -908,7 +1074,7 @@ with open(OUTPUT_PATH, 'w') as file:
                 max_field_decl_len = max([len(x) for x in field_decl_list if not field_array_list[field_decl_list.index(x)]], default = 1)
                 for field_decl, field_def, field_cmt, field_array in zip(field_decl_list, field_def_list, field_cmt_list, field_array_list):
                     if not field_array:
-                        field_def_gap = (max_field_decl_len - len(field_decl)) + 1
+                        field_def_gap = (max_field_decl_len - len(field_decl)) + 3
                         field_cmt_gap = ((max_field_def_len - len(field_def))) + 3
                         file.write(f'{INDENT}static const int32_t {field_decl}{" "*field_def_gap}= {field_def};{" "*field_cmt_gap}{field_cmt}\n')
                 file.write("\n")
