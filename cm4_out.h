@@ -28,8 +28,8 @@
     static const int32_t RTC_TAMP_STAMP_CSS_LSE_IRQ = 17;    /** @brief RTC tamper, timestamp */
     static const int32_t RTC_WKUP_IRQ               = 18;    /** @brief RTC wakeup interrupt */
     static const int32_t RTC_ALARM_IRQ              = 56;    /** @brief RTC alarms (A and B) */
-    static const int32_t WWDG1_IRQ                  = 15;    /** @brief Window watchdog interrupt */
-    static const int32_t WWDG2_RST_IRQ              = 158;   /** @brief Window watchdog interrupt */
+    static const int32_t WWDG1_RST_IRQ              = 158;   /** @brief Window watchdog interrupt */
+    static const int32_t WWDG2_IRQ                  = 15;    /** @brief Window watchdog interrupt */
     static const int32_t LTDC_IRQ                   = 103;   /** @brief LCD-TFT global interrupt */
     static const int32_t LTDC_ER_IRQ                = 104;   /** @brief LCD-TFT error interrupt */
     static const int32_t SPDIF_IRQ                  = 112;   /** @brief SPDIFRX global interrupt */
@@ -41,9 +41,9 @@
     static const int32_t PVD_PVM_IRQ                = 16;    /** @brief PVD through EXTI line */
     static const int32_t EXTI9_5_IRQ                = 38;    /** @brief EXTI line[9:5] interrupts */
     static const int32_t EXTI15_10_IRQ              = 55;    /** @brief EXTI line[15:10] interrupts */
-    static const int32_t cm4_sev_it_IRQ             = 80;    /** @brief Arm cortex-m4 send even interrupt */
+    static const int32_t cm7_sev_it_IRQ             = 79;    /** @brief ArmÃ‚Â® cortexã‚â®-m7 send */
     static const int32_t WKUP_IRQ                   = 164;   /** @brief WKUP1 to WKUP6 pins */
-    static const int32_t HOLD_CORE_IRQ              = 163;   /** @brief CPU1 hold */
+    static const int32_t HOLD_CORE_IRQ              = 163;   /** @brief CPU2 hold */
     static const int32_t FLASH_IRQ                  = 19;    /** @brief Flash memory */
     static const int32_t HASH_RNG_IRQ               = 95;    /** @brief HASH and RNG */
     static const int32_t CRYP_IRQ                   = 94;    /** @brief CRYP global interrupt */
@@ -107,9 +107,9 @@
       [3] = 129,    /** @brief SAI3 global interrupt */
     };
 
-    static const int32_t SDMMCx_IRQ[2] = {
-      [0] = 139,    /** @brief SDMMC global interrupt */
-      [1] = 64,     /** @brief SDMMC global interrupt */
+    static const int32_t SDMMCx_IRQ[3] = {
+      [1] = 64,     /** @brief SDMMC1 global interrupt */
+      [2] = 139,    /** @brief SDMMC2 global interrupt */
     };
 
     static const int32_t SPIx_IRQ[7] = {
@@ -316,88 +316,73 @@
     };
 
     /**********************************************************************************************
-     * @section CRx Register Information
+     * @section CRS Register Information
      **********************************************************************************************/
 
-    /**** @subsection CRx Register Pointers ****/
+    /**** @subsection CRS Register Pointers ****/
 
-    static RW_ uint32_t* const CRx_CR_PTR[19] = {
-      [2]  = (RW_ uint32_t* const)0x58024C00U,   /** @brief Data register */
-      [18] = (RW_ uint32_t* const)0x40008400U,   /** @brief CRS control register */
-    };
+    static RW_ uint32_t* const CRS_CR_PTR   = (RW_ uint32_t* const)0x40008400U;   /** @brief CRS control register */
+    static RW_ uint32_t* const CRS_CFGR_PTR = (RW_ uint32_t* const)0x40008404U;   /** @brief This register can be written only when the frequency error counter is disabled (CEN bit is cleared in CRS_CR). When the counter is enabled, this register is write-protected. */
+    static RO_ uint32_t* const CRS_ISR_PTR  = (RO_ uint32_t* const)0x40008408U;   /** @brief CRS interrupt and status register */
+    static RW_ uint32_t* const CRS_ICR_PTR  = (RW_ uint32_t* const)0x4000840CU;   /** @brief CRS interrupt flag clear register */
 
-    static RW_ uint32_t* const CRx_CFGR_PTR[19] = {
-      [2]  = (RW_ uint32_t* const)0x58024C04U,   /** @brief Independent data register */
-      [18] = (RW_ uint32_t* const)0x40008404U,   /** @brief This register can be written only when the frequency error counter is disabled (CEN bit is cleared in CRS_CR). When the counter is enabled, this register is write-protected. */
-    };
+    /**** @subsection CRS Register Field Masks ****/
 
-    static RO_ uint32_t* const CRx_ISR_PTR[19] = {
-      [2]  = (RO_ uint32_t* const)0x58024C08U,   /** @brief Control register */
-      [18] = (RO_ uint32_t* const)0x40008408U,   /** @brief CRS interrupt and status register */
-    };
+    static const uint32_t CRS_CR_SYNCOKIE_MSK   = 0x00000001U;   /** @brief SYNC event OK interrupt enable */
+    static const uint32_t CRS_CR_SYNCWARNIE_MSK = 0x00000002U;   /** @brief SYNC warning interrupt enable */
+    static const uint32_t CRS_CR_ERRIE_MSK      = 0x00000004U;   /** @brief Synchronization or trimming error interrupt enable */
+    static const uint32_t CRS_CR_ESYNCIE_MSK    = 0x00000008U;   /** @brief Expected SYNC interrupt enable */
+    static const uint32_t CRS_CR_CEN_MSK        = 0x00000020U;   /** @brief Frequency error counter enable this bit enables the oscillator clock for the frequency error counter. When this bit is set, the CRS_CFGR register is write-protected and cannot be modified. */
+    static const uint32_t CRS_CR_AUTOTRIMEN_MSK = 0x00000040U;   /** @brief Automatic trimming enable this bit enables the automatic hardware adjustment of TRIM bits according to the measured frequency error between two SYNC events. If this bit is set, the TRIM bits are read-only. The TRIM value can be adjusted by hardware by one or two steps at a time, depending on the measured frequency error value. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details. */
+    static const uint32_t CRS_CR_SWSYNC_MSK     = 0x00000080U;   /** @brief Generate software SYNC event this bit is set by software in order to generate a software SYNC event. It is automatically cleared by hardware. */
+    static const uint32_t CRS_CR_TRIM_MSK       = 0x00003F00U;   /** @brief HSI48 oscillator smooth trimming these bits provide a user-programmable trimming value to the HSI48 oscillator. They can be programmed to adjust to variations in voltage and temperature that influence the frequency of the HSI48. The default value is 32, which corresponds to the middle of the trimming interval. The trimming step is around 67 khz between two consecutive TRIM steps. A higher TRIM value corresponds to a higher output frequency. When the AUTOTRIMEN bit is set, this field is controlled by hardware and is read-only. */
+    static const uint32_t CRS_CFGR_RELOAD_MSK   = 0x0000FFFFU;   /** @brief Counter reload value RELOAD is the value to be loaded in the frequency error counter with each SYNC event. Refer to section7.3.3: frequency error measurement for more details about counter behavior. */
+    static const uint32_t CRS_CFGR_FELIM_MSK    = 0x00FF0000U;   /** @brief Frequency error limit FELIM contains the value to be used to evaluate the captured frequency error value latched in the FECAP[15:0] bits of the CRS_ISR register. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP evaluation. */
+    static const uint32_t CRS_CFGR_SYNCDIV_MSK  = 0x07000000U;   /** @brief SYNC divider these bits are set and cleared by software to control the division factor of the SYNC signal. */
+    static const uint32_t CRS_CFGR_SYNCSRC_MSK  = 0x30000000U;   /** @brief SYNC signal source selection these bits are set and cleared by software to select the SYNC signal source. Note: when using USB LPM (link power management) and the device is in sleep mode, the periodic USB SOF will not be generated by the host. No SYNC signal will therefore be provided to the CRS to calibrate the HSI48 on the run. To guarantee the required clock precision after waking up from sleep mode, the LSE or reference clock on the gpios should be used as SYNC signal. */
+    static const uint32_t CRS_CFGR_SYNCPOL_MSK  = 0x80000000U;   /** @brief SYNC polarity selection this bit is set and cleared by software to select the input polarity for the SYNC signal source. */
+    static const uint32_t CRS_ISR_SYNCOKF_MSK   = 0x00000001U;   /** @brief SYNC event OK flag this flag is set by hardware when the measured frequency error is smaller than FELIM * 3. This means that either no adjustment of the TRIM value is needed or that an adjustment by one trimming step is enough to compensate the frequency error. An interrupt is generated if the SYNCOKIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCOKC bit in the CRS_ICR register. */
+    static const uint32_t CRS_ISR_SYNCWARNF_MSK = 0x00000002U;   /** @brief SYNC warning flag this flag is set by hardware when the measured frequency error is greater than or equal to FELIM * 3, but smaller than FELIM * 128. This means that to compensate the frequency error, the TRIM value must be adjusted by two steps or more. An interrupt is generated if the SYNCWARNIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCWARNC bit in the CRS_ICR register. */
+    static const uint32_t CRS_ISR_ERRF_MSK      = 0x00000004U;   /** @brief Error flag this flag is set by hardware in case of any synchronization or trimming error. It is the logical OR of the TRIMOVF, SYNCMISS and SYNCERR bits. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software in reaction to setting the ERRC bit in the CRS_ICR register, which clears the TRIMOVF, SYNCMISS and SYNCERR bits. */
+    static const uint32_t CRS_ISR_ESYNCF_MSK    = 0x00000008U;   /** @brief Expected SYNC flag this flag is set by hardware when the frequency error counter reached a zero value. An interrupt is generated if the ESYNCIE bit is set in the CRS_CR register. It is cleared by software by setting the ESYNCC bit in the CRS_ICR register. */
+    static const uint32_t CRS_ISR_SYNCERR_MSK   = 0x00000100U;   /** @brief SYNC error this flag is set by hardware when the SYNC pulse arrives before the ESYNC event and the measured frequency error is greater than or equal to FELIM * 128. This means that the frequency error is too big (internal frequency too low) to be compensated by adjusting the TRIM value, and that some other action should be taken. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
+    static const uint32_t CRS_ISR_SYNCMISS_MSK  = 0x00000200U;   /** @brief SYNC missed this flag is set by hardware when the frequency error counter reached value FELIM * 128 and no SYNC was detected, meaning either that a SYNC pulse was missed or that the frequency error is too big (internal frequency too high) to be compensated by adjusting the TRIM value, and that some other action should be taken. At this point, the frequency error counter is stopped (waiting for a next SYNC) and an interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
+    static const uint32_t CRS_ISR_TRIMOVF_MSK   = 0x00000400U;   /** @brief Trimming overflow or underflow this flag is set by hardware when the automatic trimming tries to over- or under-flow the TRIM value. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
+    static const uint32_t CRS_ISR_FEDIR_MSK     = 0x00008000U;   /** @brief Frequency error direction FEDIR is the counting direction of the frequency error counter latched in the time of the last SYNC event. It shows whether the actual frequency is below or above the target. */
+    static const uint32_t CRS_ISR_FECAP_MSK     = 0xFFFF0000U;   /** @brief Frequency error capture FECAP is the frequency error counter value latched in the time of the last SYNC event. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP usage. */
+    static const uint32_t CRS_ICR_SYNCOKC_MSK   = 0x00000001U;   /** @brief SYNC event OK clear flag writing 1 to this bit clears the SYNCOKF flag in the CRS_ISR register. */
+    static const uint32_t CRS_ICR_SYNCWARNC_MSK = 0x00000002U;   /** @brief SYNC warning clear flag writing 1 to this bit clears the SYNCWARNF flag in the CRS_ISR register. */
+    static const uint32_t CRS_ICR_ERRC_MSK      = 0x00000004U;   /** @brief Error clear flag writing 1 to this bit clears TRIMOVF, SYNCMISS and SYNCERR bits and consequently also the ERRF flag in the CRS_ISR register. */
+    static const uint32_t CRS_ICR_ESYNCC_MSK    = 0x00000008U;   /** @brief Expected SYNC clear flag writing 1 to this bit clears the ESYNCF flag in the CRS_ISR register. */
 
-    static RW_ uint32_t* const CRx_ICR_PTR[19] = {
-      [2]  = (RW_ uint32_t* const)0x58024C0CU,   /** @brief Initial CRC value */
-      [18] = (RW_ uint32_t* const)0x4000840CU,   /** @brief CRS interrupt flag clear register */
-    };
+    /**** @subsection CRS Register Field Positions ****/
 
-    /**** @subsection CRx Register Field Masks ****/
-
-    static const uint32_t CRx_CR_SYNCOKIE_MSK   = 0x00000001U;   /** @brief SYNC event OK interrupt enable */
-    static const uint32_t CRx_CR_SYNCWARNIE_MSK = 0x00000002U;   /** @brief SYNC warning interrupt enable */
-    static const uint32_t CRx_CR_ERRIE_MSK      = 0x00000004U;   /** @brief Synchronization or trimming error interrupt enable */
-    static const uint32_t CRx_CR_ESYNCIE_MSK    = 0x00000008U;   /** @brief Expected SYNC interrupt enable */
-    static const uint32_t CRx_CR_CEN_MSK        = 0x00000020U;   /** @brief Frequency error counter enable this bit enables the oscillator clock for the frequency error counter. When this bit is set, the CRS_CFGR register is write-protected and cannot be modified. */
-    static const uint32_t CRx_CR_AUTOTRIMEN_MSK = 0x00000040U;   /** @brief Automatic trimming enable this bit enables the automatic hardware adjustment of TRIM bits according to the measured frequency error between two SYNC events. If this bit is set, the TRIM bits are read-only. The TRIM value can be adjusted by hardware by one or two steps at a time, depending on the measured frequency error value. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details. */
-    static const uint32_t CRx_CR_SWSYNC_MSK     = 0x00000080U;   /** @brief Generate software SYNC event this bit is set by software in order to generate a software SYNC event. It is automatically cleared by hardware. */
-    static const uint32_t CRx_CR_TRIM_MSK       = 0x00003F00U;   /** @brief HSI48 oscillator smooth trimming these bits provide a user-programmable trimming value to the HSI48 oscillator. They can be programmed to adjust to variations in voltage and temperature that influence the frequency of the HSI48. The default value is 32, which corresponds to the middle of the trimming interval. The trimming step is around 67 khz between two consecutive TRIM steps. A higher TRIM value corresponds to a higher output frequency. When the AUTOTRIMEN bit is set, this field is controlled by hardware and is read-only. */
-    static const uint32_t CRx_CFGR_RELOAD_MSK   = 0x0000FFFFU;   /** @brief Counter reload value RELOAD is the value to be loaded in the frequency error counter with each SYNC event. Refer to section7.3.3: frequency error measurement for more details about counter behavior. */
-    static const uint32_t CRx_CFGR_FELIM_MSK    = 0x00FF0000U;   /** @brief Frequency error limit FELIM contains the value to be used to evaluate the captured frequency error value latched in the FECAP[15:0] bits of the CRS_ISR register. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP evaluation. */
-    static const uint32_t CRx_CFGR_SYNCDIV_MSK  = 0x07000000U;   /** @brief SYNC divider these bits are set and cleared by software to control the division factor of the SYNC signal. */
-    static const uint32_t CRx_CFGR_SYNCSRC_MSK  = 0x30000000U;   /** @brief SYNC signal source selection these bits are set and cleared by software to select the SYNC signal source. Note: when using USB LPM (link power management) and the device is in sleep mode, the periodic USB SOF will not be generated by the host. No SYNC signal will therefore be provided to the CRS to calibrate the HSI48 on the run. To guarantee the required clock precision after waking up from sleep mode, the LSE or reference clock on the gpios should be used as SYNC signal. */
-    static const uint32_t CRx_CFGR_SYNCPOL_MSK  = 0x80000000U;   /** @brief SYNC polarity selection this bit is set and cleared by software to select the input polarity for the SYNC signal source. */
-    static const uint32_t CRx_ISR_SYNCOKF_MSK   = 0x00000001U;   /** @brief SYNC event OK flag this flag is set by hardware when the measured frequency error is smaller than FELIM * 3. This means that either no adjustment of the TRIM value is needed or that an adjustment by one trimming step is enough to compensate the frequency error. An interrupt is generated if the SYNCOKIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCOKC bit in the CRS_ICR register. */
-    static const uint32_t CRx_ISR_SYNCWARNF_MSK = 0x00000002U;   /** @brief SYNC warning flag this flag is set by hardware when the measured frequency error is greater than or equal to FELIM * 3, but smaller than FELIM * 128. This means that to compensate the frequency error, the TRIM value must be adjusted by two steps or more. An interrupt is generated if the SYNCWARNIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCWARNC bit in the CRS_ICR register. */
-    static const uint32_t CRx_ISR_ERRF_MSK      = 0x00000004U;   /** @brief Error flag this flag is set by hardware in case of any synchronization or trimming error. It is the logical OR of the TRIMOVF, SYNCMISS and SYNCERR bits. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software in reaction to setting the ERRC bit in the CRS_ICR register, which clears the TRIMOVF, SYNCMISS and SYNCERR bits. */
-    static const uint32_t CRx_ISR_ESYNCF_MSK    = 0x00000008U;   /** @brief Expected SYNC flag this flag is set by hardware when the frequency error counter reached a zero value. An interrupt is generated if the ESYNCIE bit is set in the CRS_CR register. It is cleared by software by setting the ESYNCC bit in the CRS_ICR register. */
-    static const uint32_t CRx_ISR_SYNCERR_MSK   = 0x00000100U;   /** @brief SYNC error this flag is set by hardware when the SYNC pulse arrives before the ESYNC event and the measured frequency error is greater than or equal to FELIM * 128. This means that the frequency error is too big (internal frequency too low) to be compensated by adjusting the TRIM value, and that some other action should be taken. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
-    static const uint32_t CRx_ISR_SYNCMISS_MSK  = 0x00000200U;   /** @brief SYNC missed this flag is set by hardware when the frequency error counter reached value FELIM * 128 and no SYNC was detected, meaning either that a SYNC pulse was missed or that the frequency error is too big (internal frequency too high) to be compensated by adjusting the TRIM value, and that some other action should be taken. At this point, the frequency error counter is stopped (waiting for a next SYNC) and an interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
-    static const uint32_t CRx_ISR_TRIMOVF_MSK   = 0x00000400U;   /** @brief Trimming overflow or underflow this flag is set by hardware when the automatic trimming tries to over- or under-flow the TRIM value. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
-    static const uint32_t CRx_ISR_FEDIR_MSK     = 0x00008000U;   /** @brief Frequency error direction FEDIR is the counting direction of the frequency error counter latched in the time of the last SYNC event. It shows whether the actual frequency is below or above the target. */
-    static const uint32_t CRx_ISR_FECAP_MSK     = 0xFFFF0000U;   /** @brief Frequency error capture FECAP is the frequency error counter value latched in the time of the last SYNC event. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP usage. */
-    static const uint32_t CRx_ICR_SYNCOKC_MSK   = 0x00000001U;   /** @brief SYNC event OK clear flag writing 1 to this bit clears the SYNCOKF flag in the CRS_ISR register. */
-    static const uint32_t CRx_ICR_SYNCWARNC_MSK = 0x00000002U;   /** @brief SYNC warning clear flag writing 1 to this bit clears the SYNCWARNF flag in the CRS_ISR register. */
-    static const uint32_t CRx_ICR_ERRC_MSK      = 0x00000004U;   /** @brief Error clear flag writing 1 to this bit clears TRIMOVF, SYNCMISS and SYNCERR bits and consequently also the ERRF flag in the CRS_ISR register. */
-    static const uint32_t CRx_ICR_ESYNCC_MSK    = 0x00000008U;   /** @brief Expected SYNC clear flag writing 1 to this bit clears the ESYNCF flag in the CRS_ISR register. */
-
-    /**** @subsection CRx Register Field Positions ****/
-
-    static const int32_t CRx_CR_SYNCOKIE_POS   = 0;    /** @brief SYNC event OK interrupt enable */
-    static const int32_t CRx_CR_SYNCWARNIE_POS = 1;    /** @brief SYNC warning interrupt enable */
-    static const int32_t CRx_CR_ERRIE_POS      = 2;    /** @brief Synchronization or trimming error interrupt enable */
-    static const int32_t CRx_CR_ESYNCIE_POS    = 3;    /** @brief Expected SYNC interrupt enable */
-    static const int32_t CRx_CR_CEN_POS        = 5;    /** @brief Frequency error counter enable this bit enables the oscillator clock for the frequency error counter. When this bit is set, the CRS_CFGR register is write-protected and cannot be modified. */
-    static const int32_t CRx_CR_AUTOTRIMEN_POS = 6;    /** @brief Automatic trimming enable this bit enables the automatic hardware adjustment of TRIM bits according to the measured frequency error between two SYNC events. If this bit is set, the TRIM bits are read-only. The TRIM value can be adjusted by hardware by one or two steps at a time, depending on the measured frequency error value. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details. */
-    static const int32_t CRx_CR_SWSYNC_POS     = 7;    /** @brief Generate software SYNC event this bit is set by software in order to generate a software SYNC event. It is automatically cleared by hardware. */
-    static const int32_t CRx_CR_TRIM_POS       = 8;    /** @brief HSI48 oscillator smooth trimming these bits provide a user-programmable trimming value to the HSI48 oscillator. They can be programmed to adjust to variations in voltage and temperature that influence the frequency of the HSI48. The default value is 32, which corresponds to the middle of the trimming interval. The trimming step is around 67 khz between two consecutive TRIM steps. A higher TRIM value corresponds to a higher output frequency. When the AUTOTRIMEN bit is set, this field is controlled by hardware and is read-only. */
-    static const int32_t CRx_CFGR_RELOAD_POS   = 0;    /** @brief Counter reload value RELOAD is the value to be loaded in the frequency error counter with each SYNC event. Refer to section7.3.3: frequency error measurement for more details about counter behavior. */
-    static const int32_t CRx_CFGR_FELIM_POS    = 16;   /** @brief Frequency error limit FELIM contains the value to be used to evaluate the captured frequency error value latched in the FECAP[15:0] bits of the CRS_ISR register. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP evaluation. */
-    static const int32_t CRx_CFGR_SYNCDIV_POS  = 24;   /** @brief SYNC divider these bits are set and cleared by software to control the division factor of the SYNC signal. */
-    static const int32_t CRx_CFGR_SYNCSRC_POS  = 28;   /** @brief SYNC signal source selection these bits are set and cleared by software to select the SYNC signal source. Note: when using USB LPM (link power management) and the device is in sleep mode, the periodic USB SOF will not be generated by the host. No SYNC signal will therefore be provided to the CRS to calibrate the HSI48 on the run. To guarantee the required clock precision after waking up from sleep mode, the LSE or reference clock on the gpios should be used as SYNC signal. */
-    static const int32_t CRx_CFGR_SYNCPOL_POS  = 31;   /** @brief SYNC polarity selection this bit is set and cleared by software to select the input polarity for the SYNC signal source. */
-    static const int32_t CRx_ISR_SYNCOKF_POS   = 0;    /** @brief SYNC event OK flag this flag is set by hardware when the measured frequency error is smaller than FELIM * 3. This means that either no adjustment of the TRIM value is needed or that an adjustment by one trimming step is enough to compensate the frequency error. An interrupt is generated if the SYNCOKIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCOKC bit in the CRS_ICR register. */
-    static const int32_t CRx_ISR_SYNCWARNF_POS = 1;    /** @brief SYNC warning flag this flag is set by hardware when the measured frequency error is greater than or equal to FELIM * 3, but smaller than FELIM * 128. This means that to compensate the frequency error, the TRIM value must be adjusted by two steps or more. An interrupt is generated if the SYNCWARNIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCWARNC bit in the CRS_ICR register. */
-    static const int32_t CRx_ISR_ERRF_POS      = 2;    /** @brief Error flag this flag is set by hardware in case of any synchronization or trimming error. It is the logical OR of the TRIMOVF, SYNCMISS and SYNCERR bits. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software in reaction to setting the ERRC bit in the CRS_ICR register, which clears the TRIMOVF, SYNCMISS and SYNCERR bits. */
-    static const int32_t CRx_ISR_ESYNCF_POS    = 3;    /** @brief Expected SYNC flag this flag is set by hardware when the frequency error counter reached a zero value. An interrupt is generated if the ESYNCIE bit is set in the CRS_CR register. It is cleared by software by setting the ESYNCC bit in the CRS_ICR register. */
-    static const int32_t CRx_ISR_SYNCERR_POS   = 8;    /** @brief SYNC error this flag is set by hardware when the SYNC pulse arrives before the ESYNC event and the measured frequency error is greater than or equal to FELIM * 128. This means that the frequency error is too big (internal frequency too low) to be compensated by adjusting the TRIM value, and that some other action should be taken. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
-    static const int32_t CRx_ISR_SYNCMISS_POS  = 9;    /** @brief SYNC missed this flag is set by hardware when the frequency error counter reached value FELIM * 128 and no SYNC was detected, meaning either that a SYNC pulse was missed or that the frequency error is too big (internal frequency too high) to be compensated by adjusting the TRIM value, and that some other action should be taken. At this point, the frequency error counter is stopped (waiting for a next SYNC) and an interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
-    static const int32_t CRx_ISR_TRIMOVF_POS   = 10;   /** @brief Trimming overflow or underflow this flag is set by hardware when the automatic trimming tries to over- or under-flow the TRIM value. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
-    static const int32_t CRx_ISR_FEDIR_POS     = 15;   /** @brief Frequency error direction FEDIR is the counting direction of the frequency error counter latched in the time of the last SYNC event. It shows whether the actual frequency is below or above the target. */
-    static const int32_t CRx_ISR_FECAP_POS     = 16;   /** @brief Frequency error capture FECAP is the frequency error counter value latched in the time of the last SYNC event. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP usage. */
-    static const int32_t CRx_ICR_SYNCOKC_POS   = 0;    /** @brief SYNC event OK clear flag writing 1 to this bit clears the SYNCOKF flag in the CRS_ISR register. */
-    static const int32_t CRx_ICR_SYNCWARNC_POS = 1;    /** @brief SYNC warning clear flag writing 1 to this bit clears the SYNCWARNF flag in the CRS_ISR register. */
-    static const int32_t CRx_ICR_ERRC_POS      = 2;    /** @brief Error clear flag writing 1 to this bit clears TRIMOVF, SYNCMISS and SYNCERR bits and consequently also the ERRF flag in the CRS_ISR register. */
-    static const int32_t CRx_ICR_ESYNCC_POS    = 3;    /** @brief Expected SYNC clear flag writing 1 to this bit clears the ESYNCF flag in the CRS_ISR register. */
+    static const int32_t CRS_CR_SYNCOKIE_POS   = 0;    /** @brief SYNC event OK interrupt enable */
+    static const int32_t CRS_CR_SYNCWARNIE_POS = 1;    /** @brief SYNC warning interrupt enable */
+    static const int32_t CRS_CR_ERRIE_POS      = 2;    /** @brief Synchronization or trimming error interrupt enable */
+    static const int32_t CRS_CR_ESYNCIE_POS    = 3;    /** @brief Expected SYNC interrupt enable */
+    static const int32_t CRS_CR_CEN_POS        = 5;    /** @brief Frequency error counter enable this bit enables the oscillator clock for the frequency error counter. When this bit is set, the CRS_CFGR register is write-protected and cannot be modified. */
+    static const int32_t CRS_CR_AUTOTRIMEN_POS = 6;    /** @brief Automatic trimming enable this bit enables the automatic hardware adjustment of TRIM bits according to the measured frequency error between two SYNC events. If this bit is set, the TRIM bits are read-only. The TRIM value can be adjusted by hardware by one or two steps at a time, depending on the measured frequency error value. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details. */
+    static const int32_t CRS_CR_SWSYNC_POS     = 7;    /** @brief Generate software SYNC event this bit is set by software in order to generate a software SYNC event. It is automatically cleared by hardware. */
+    static const int32_t CRS_CR_TRIM_POS       = 8;    /** @brief HSI48 oscillator smooth trimming these bits provide a user-programmable trimming value to the HSI48 oscillator. They can be programmed to adjust to variations in voltage and temperature that influence the frequency of the HSI48. The default value is 32, which corresponds to the middle of the trimming interval. The trimming step is around 67 khz between two consecutive TRIM steps. A higher TRIM value corresponds to a higher output frequency. When the AUTOTRIMEN bit is set, this field is controlled by hardware and is read-only. */
+    static const int32_t CRS_CFGR_RELOAD_POS   = 0;    /** @brief Counter reload value RELOAD is the value to be loaded in the frequency error counter with each SYNC event. Refer to section7.3.3: frequency error measurement for more details about counter behavior. */
+    static const int32_t CRS_CFGR_FELIM_POS    = 16;   /** @brief Frequency error limit FELIM contains the value to be used to evaluate the captured frequency error value latched in the FECAP[15:0] bits of the CRS_ISR register. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP evaluation. */
+    static const int32_t CRS_CFGR_SYNCDIV_POS  = 24;   /** @brief SYNC divider these bits are set and cleared by software to control the division factor of the SYNC signal. */
+    static const int32_t CRS_CFGR_SYNCSRC_POS  = 28;   /** @brief SYNC signal source selection these bits are set and cleared by software to select the SYNC signal source. Note: when using USB LPM (link power management) and the device is in sleep mode, the periodic USB SOF will not be generated by the host. No SYNC signal will therefore be provided to the CRS to calibrate the HSI48 on the run. To guarantee the required clock precision after waking up from sleep mode, the LSE or reference clock on the gpios should be used as SYNC signal. */
+    static const int32_t CRS_CFGR_SYNCPOL_POS  = 31;   /** @brief SYNC polarity selection this bit is set and cleared by software to select the input polarity for the SYNC signal source. */
+    static const int32_t CRS_ISR_SYNCOKF_POS   = 0;    /** @brief SYNC event OK flag this flag is set by hardware when the measured frequency error is smaller than FELIM * 3. This means that either no adjustment of the TRIM value is needed or that an adjustment by one trimming step is enough to compensate the frequency error. An interrupt is generated if the SYNCOKIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCOKC bit in the CRS_ICR register. */
+    static const int32_t CRS_ISR_SYNCWARNF_POS = 1;    /** @brief SYNC warning flag this flag is set by hardware when the measured frequency error is greater than or equal to FELIM * 3, but smaller than FELIM * 128. This means that to compensate the frequency error, the TRIM value must be adjusted by two steps or more. An interrupt is generated if the SYNCWARNIE bit is set in the CRS_CR register. It is cleared by software by setting the SYNCWARNC bit in the CRS_ICR register. */
+    static const int32_t CRS_ISR_ERRF_POS      = 2;    /** @brief Error flag this flag is set by hardware in case of any synchronization or trimming error. It is the logical OR of the TRIMOVF, SYNCMISS and SYNCERR bits. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software in reaction to setting the ERRC bit in the CRS_ICR register, which clears the TRIMOVF, SYNCMISS and SYNCERR bits. */
+    static const int32_t CRS_ISR_ESYNCF_POS    = 3;    /** @brief Expected SYNC flag this flag is set by hardware when the frequency error counter reached a zero value. An interrupt is generated if the ESYNCIE bit is set in the CRS_CR register. It is cleared by software by setting the ESYNCC bit in the CRS_ICR register. */
+    static const int32_t CRS_ISR_SYNCERR_POS   = 8;    /** @brief SYNC error this flag is set by hardware when the SYNC pulse arrives before the ESYNC event and the measured frequency error is greater than or equal to FELIM * 128. This means that the frequency error is too big (internal frequency too low) to be compensated by adjusting the TRIM value, and that some other action should be taken. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
+    static const int32_t CRS_ISR_SYNCMISS_POS  = 9;    /** @brief SYNC missed this flag is set by hardware when the frequency error counter reached value FELIM * 128 and no SYNC was detected, meaning either that a SYNC pulse was missed or that the frequency error is too big (internal frequency too high) to be compensated by adjusting the TRIM value, and that some other action should be taken. At this point, the frequency error counter is stopped (waiting for a next SYNC) and an interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
+    static const int32_t CRS_ISR_TRIMOVF_POS   = 10;   /** @brief Trimming overflow or underflow this flag is set by hardware when the automatic trimming tries to over- or under-flow the TRIM value. An interrupt is generated if the ERRIE bit is set in the CRS_CR register. It is cleared by software by setting the ERRC bit in the CRS_ICR register. */
+    static const int32_t CRS_ISR_FEDIR_POS     = 15;   /** @brief Frequency error direction FEDIR is the counting direction of the frequency error counter latched in the time of the last SYNC event. It shows whether the actual frequency is below or above the target. */
+    static const int32_t CRS_ISR_FECAP_POS     = 16;   /** @brief Frequency error capture FECAP is the frequency error counter value latched in the time of the last SYNC event. Refer to section7.3.4: frequency error evaluation and automatic trimming for more details about FECAP usage. */
+    static const int32_t CRS_ICR_SYNCOKC_POS   = 0;    /** @brief SYNC event OK clear flag writing 1 to this bit clears the SYNCOKF flag in the CRS_ISR register. */
+    static const int32_t CRS_ICR_SYNCWARNC_POS = 1;    /** @brief SYNC warning clear flag writing 1 to this bit clears the SYNCWARNF flag in the CRS_ISR register. */
+    static const int32_t CRS_ICR_ERRC_POS      = 2;    /** @brief Error clear flag writing 1 to this bit clears TRIMOVF, SYNCMISS and SYNCERR bits and consequently also the ERRF flag in the CRS_ISR register. */
+    static const int32_t CRS_ICR_ESYNCC_POS    = 3;    /** @brief Expected SYNC clear flag writing 1 to this bit clears the ESYNCF flag in the CRS_ISR register. */
 
     /**********************************************************************************************
      * @section DAC Register Information
@@ -633,37 +618,75 @@
     };
 
     /**********************************************************************************************
-     * @section xDMA Register Information
+     * @section BDMA Register Information
      **********************************************************************************************/
 
-    /**** @subsection xDMA Register Pointers ****/
+    /**** @subsection BDMA Register Pointers ****/
 
-    static RO_ uint32_t* const xDMA_ISR_PTR[13] = {
-      [1]  = (RO_ uint32_t* const)0x58025400U,   /** @brief DMA interrupt status register */
-      [12] = (RO_ uint32_t* const)0x52000000U,   /** @brief MDMA global interrupt/status register */
+    static RO_ uint32_t* const BDMA_ISR_PTR  = (RO_ uint32_t* const)0x58025400U;   /** @brief DMA interrupt status register */
+    static WO_ uint32_t* const BDMA_IFCR_PTR = (WO_ uint32_t* const)0x58025404U;   /** @brief DMA interrupt flag clear register */
+
+    static RW_ uint32_t* const BDMA_CCRx_PTR[9] = {
+      [1] = (RW_ uint32_t* const)0x58025408U,   /** @brief DMA channel x configuration register */
+      [2] = (RW_ uint32_t* const)0x5802541CU,   /** @brief DMA channel x configuration register */
+      [3] = (RW_ uint32_t* const)0x58025430U,   /** @brief DMA channel x configuration register */
+      [4] = (RW_ uint32_t* const)0x58025444U,   /** @brief DMA channel x configuration register */
+      [5] = (RW_ uint32_t* const)0x58025458U,   /** @brief DMA channel x configuration register */
+      [6] = (RW_ uint32_t* const)0x5802546CU,   /** @brief DMA channel x configuration register */
+      [7] = (RW_ uint32_t* const)0x58025480U,   /** @brief DMA channel x configuration register */
+      [8] = (RW_ uint32_t* const)0x58025494U,   /** @brief DMA channel x configuration register */
     };
 
-    static WO_ uint32_t* const xDMA_IFCR_PTR[13] = {
-      [1]  = (WO_ uint32_t* const)0x58025404U,   /** @brief DMA interrupt flag clear register */
+    static RW_ uint32_t* const BDMA_CNDTRx_PTR[9] = {
+      [1] = (RW_ uint32_t* const)0x5802540CU,   /** @brief DMA channel x number of data register */
+      [2] = (RW_ uint32_t* const)0x58025420U,   /** @brief DMA channel x number of data register */
+      [3] = (RW_ uint32_t* const)0x58025434U,   /** @brief DMA channel x number of data register */
+      [4] = (RW_ uint32_t* const)0x58025448U,   /** @brief DMA channel x number of data register */
+      [5] = (RW_ uint32_t* const)0x5802545CU,   /** @brief DMA channel x number of data register */
+      [6] = (RW_ uint32_t* const)0x58025470U,   /** @brief DMA channel x number of data register */
+      [7] = (RW_ uint32_t* const)0x58025484U,   /** @brief DMA channel x number of data register */
+      [8] = (RW_ uint32_t* const)0x58025498U,   /** @brief DMA channel x number of data register */
     };
 
-    /**** @subsection xDMA Register Field Masks ****/
+    static RW_ uint32_t* const BDMA_CPARx_PTR[9] = {
+      [1] = (RW_ uint32_t* const)0x58025410U,   /** @brief This register must not be written when the channel is enabled. */
+      [2] = (RW_ uint32_t* const)0x58025424U,   /** @brief This register must not be written when the channel is enabled. */
+      [3] = (RW_ uint32_t* const)0x58025438U,   /** @brief This register must not be written when the channel is enabled. */
+      [4] = (RW_ uint32_t* const)0x5802544CU,   /** @brief This register must not be written when the channel is enabled. */
+      [5] = (RW_ uint32_t* const)0x58025460U,   /** @brief This register must not be written when the channel is enabled. */
+      [6] = (RW_ uint32_t* const)0x58025474U,   /** @brief This register must not be written when the channel is enabled. */
+      [7] = (RW_ uint32_t* const)0x58025488U,   /** @brief This register must not be written when the channel is enabled. */
+      [8] = (RW_ uint32_t* const)0x5802549CU,   /** @brief This register must not be written when the channel is enabled. */
+    };
 
-    static const uint32_t xDMA_CCRx_EN_MSK      = 0x00000001U;   /** @brief Channel enable this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_TCIE_MSK    = 0x00000002U;   /** @brief Transfer complete interrupt enable this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_HTIE_MSK    = 0x00000004U;   /** @brief Half transfer interrupt enable this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_TEIE_MSK    = 0x00000008U;   /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_DIR_MSK     = 0x00000010U;   /** @brief Data transfer direction this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_CIRC_MSK    = 0x00000020U;   /** @brief Circular mode this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_PINC_MSK    = 0x00000040U;   /** @brief Peripheral increment mode this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_MINC_MSK    = 0x00000080U;   /** @brief Memory increment mode this bit is set and cleared by software. */
-    static const uint32_t xDMA_CCRx_PSIZE_MSK   = 0x00000300U;   /** @brief Peripheral size these bits are set and cleared by software. */
-    static const uint32_t xDMA_CCRx_MSIZE_MSK   = 0x00000C00U;   /** @brief Memory size these bits are set and cleared by software. */
-    static const uint32_t xDMA_CCRx_PL_MSK      = 0x00003000U;   /** @brief Channel priority level these bits are set and cleared by software. */
-    static const uint32_t xDMA_CCRx_MEM2MEM_MSK = 0x00004000U;   /** @brief Memory to memory mode this bit is set and cleared by software. */
-    static const uint32_t xDMA_CNDTRx_NDT_MSK   = 0x0000FFFFU;   /** @brief Number of data to transfer number of data to be transferred (0 up to 65535). This register can only be written when the channel is disabled. Once the channel is enabled, this register is read-only, indicating the remaining bytes to be transmitted. This register decrements after each DMA transfer. Once the transfer is completed, this register can either stay at zero or be reloaded automatically by the value previously programmed if the channel is configured in auto-reload mode. If this register is zero, no transaction can be served whether the channel is enabled or not. */
+    static RW_ uint32_t* const BDMA_CMARx_PTR[9] = {
+      [1] = (RW_ uint32_t* const)0x58025414U,   /** @brief This register must not be written when the channel is enabled. */
+      [2] = (RW_ uint32_t* const)0x58025428U,   /** @brief This register must not be written when the channel is enabled. */
+      [3] = (RW_ uint32_t* const)0x5802543CU,   /** @brief This register must not be written when the channel is enabled. */
+      [4] = (RW_ uint32_t* const)0x58025450U,   /** @brief This register must not be written when the channel is enabled. */
+      [5] = (RW_ uint32_t* const)0x58025464U,   /** @brief This register must not be written when the channel is enabled. */
+      [6] = (RW_ uint32_t* const)0x58025478U,   /** @brief This register must not be written when the channel is enabled. */
+      [7] = (RW_ uint32_t* const)0x5802548CU,   /** @brief This register must not be written when the channel is enabled. */
+      [8] = (RW_ uint32_t* const)0x580254A0U,   /** @brief This register must not be written when the channel is enabled. */
+    };
 
-    static const uint32_t xDMA_ISR_GIFx_MSK[9] = {
+    /**** @subsection BDMA Register Field Masks ****/
+
+    static const uint32_t BDMA_CCRx_EN_MSK      = 0x00000001U;   /** @brief Channel enable this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_TCIE_MSK    = 0x00000002U;   /** @brief Transfer complete interrupt enable this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_HTIE_MSK    = 0x00000004U;   /** @brief Half transfer interrupt enable this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_TEIE_MSK    = 0x00000008U;   /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_DIR_MSK     = 0x00000010U;   /** @brief Data transfer direction this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_CIRC_MSK    = 0x00000020U;   /** @brief Circular mode this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_PINC_MSK    = 0x00000040U;   /** @brief Peripheral increment mode this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_MINC_MSK    = 0x00000080U;   /** @brief Memory increment mode this bit is set and cleared by software. */
+    static const uint32_t BDMA_CCRx_PSIZE_MSK   = 0x00000300U;   /** @brief Peripheral size these bits are set and cleared by software. */
+    static const uint32_t BDMA_CCRx_MSIZE_MSK   = 0x00000C00U;   /** @brief Memory size these bits are set and cleared by software. */
+    static const uint32_t BDMA_CCRx_PL_MSK      = 0x00003000U;   /** @brief Channel priority level these bits are set and cleared by software. */
+    static const uint32_t BDMA_CCRx_MEM2MEM_MSK = 0x00004000U;   /** @brief Memory to memory mode this bit is set and cleared by software. */
+    static const uint32_t BDMA_CNDTRx_NDT_MSK   = 0x0000FFFFU;   /** @brief Number of data to transfer number of data to be transferred (0 up to 65535). This register can only be written when the channel is disabled. Once the channel is enabled, this register is read-only, indicating the remaining bytes to be transmitted. This register decrements after each DMA transfer. Once the transfer is completed, this register can either stay at zero or be reloaded automatically by the value previously programmed if the channel is configured in auto-reload mode. If this register is zero, no transaction can be served whether the channel is enabled or not. */
+
+    static const uint32_t BDMA_ISR_GIFx_MSK[9] = {
       [1] = 0x00000001U,   /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 0x00000010U,   /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 0x00000100U,   /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -674,7 +697,7 @@
       [8] = 0x10000000U,   /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const uint32_t xDMA_ISR_TCIFx_MSK[9] = {
+    static const uint32_t BDMA_ISR_TCIFx_MSK[9] = {
       [1] = 0x00000002U,   /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 0x00000020U,   /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 0x00000200U,   /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -685,7 +708,7 @@
       [8] = 0x20000000U,   /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const uint32_t xDMA_ISR_HTIFx_MSK[9] = {
+    static const uint32_t BDMA_ISR_HTIFx_MSK[9] = {
       [1] = 0x00000004U,   /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 0x00000040U,   /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 0x00000400U,   /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -696,7 +719,7 @@
       [8] = 0x40000000U,   /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const uint32_t xDMA_ISR_TEIFx_MSK[9] = {
+    static const uint32_t BDMA_ISR_TEIFx_MSK[9] = {
       [1] = 0x00000008U,   /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 0x00000080U,   /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 0x00000800U,   /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -707,7 +730,7 @@
       [8] = 0x80000000U,   /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const uint32_t xDMA_IFCR_CGIFx_MSK[9] = {
+    static const uint32_t BDMA_IFCR_CGIFx_MSK[9] = {
       [1] = 0x00000001U,   /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
       [2] = 0x00000010U,   /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
       [3] = 0x00000100U,   /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
@@ -718,7 +741,7 @@
       [8] = 0x10000000U,   /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
     };
 
-    static const uint32_t xDMA_IFCR_CTCIFx_MSK[9] = {
+    static const uint32_t BDMA_IFCR_CTCIFx_MSK[9] = {
       [1] = 0x00000002U,   /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
       [2] = 0x00000020U,   /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
       [3] = 0x00000200U,   /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
@@ -729,7 +752,7 @@
       [8] = 0x20000000U,   /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
     };
 
-    static const uint32_t xDMA_IFCR_CHTIFx_MSK[9] = {
+    static const uint32_t BDMA_IFCR_CHTIFx_MSK[9] = {
       [1] = 0x00000004U,   /** @brief Channel x half transfer clear this bit is set and cleared by software. */
       [2] = 0x00000040U,   /** @brief Channel x half transfer clear this bit is set and cleared by software. */
       [3] = 0x00000400U,   /** @brief Channel x half transfer clear this bit is set and cleared by software. */
@@ -740,7 +763,7 @@
       [8] = 0x40000000U,   /** @brief Channel x half transfer clear this bit is set and cleared by software. */
     };
 
-    static const uint32_t xDMA_IFCR_CTEIFx_MSK[9] = {
+    static const uint32_t BDMA_IFCR_CTEIFx_MSK[9] = {
       [1] = 0x00000008U,   /** @brief Channel x transfer error clear this bit is set and cleared by software. */
       [2] = 0x00000080U,   /** @brief Channel x transfer error clear this bit is set and cleared by software. */
       [3] = 0x00000800U,   /** @brief Channel x transfer error clear this bit is set and cleared by software. */
@@ -751,23 +774,23 @@
       [8] = 0x80000000U,   /** @brief Channel x transfer error clear this bit is set and cleared by software. */
     };
 
-    /**** @subsection xDMA Register Field Positions ****/
+    /**** @subsection BDMA Register Field Positions ****/
 
-    static const int32_t xDMA_CCRx_EN_POS      = 0;    /** @brief Channel enable this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_TCIE_POS    = 1;    /** @brief Transfer complete interrupt enable this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_HTIE_POS    = 2;    /** @brief Half transfer interrupt enable this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_TEIE_POS    = 3;    /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_DIR_POS     = 4;    /** @brief Data transfer direction this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_CIRC_POS    = 5;    /** @brief Circular mode this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_PINC_POS    = 6;    /** @brief Peripheral increment mode this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_MINC_POS    = 7;    /** @brief Memory increment mode this bit is set and cleared by software. */
-    static const int32_t xDMA_CCRx_PSIZE_POS   = 8;    /** @brief Peripheral size these bits are set and cleared by software. */
-    static const int32_t xDMA_CCRx_MSIZE_POS   = 10;   /** @brief Memory size these bits are set and cleared by software. */
-    static const int32_t xDMA_CCRx_PL_POS      = 12;   /** @brief Channel priority level these bits are set and cleared by software. */
-    static const int32_t xDMA_CCRx_MEM2MEM_POS = 14;   /** @brief Memory to memory mode this bit is set and cleared by software. */
-    static const int32_t xDMA_CNDTRx_NDT_POS   = 0;    /** @brief Number of data to transfer number of data to be transferred (0 up to 65535). This register can only be written when the channel is disabled. Once the channel is enabled, this register is read-only, indicating the remaining bytes to be transmitted. This register decrements after each DMA transfer. Once the transfer is completed, this register can either stay at zero or be reloaded automatically by the value previously programmed if the channel is configured in auto-reload mode. If this register is zero, no transaction can be served whether the channel is enabled or not. */
+    static const int32_t BDMA_CCRx_EN_POS      = 0;    /** @brief Channel enable this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_TCIE_POS    = 1;    /** @brief Transfer complete interrupt enable this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_HTIE_POS    = 2;    /** @brief Half transfer interrupt enable this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_TEIE_POS    = 3;    /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_DIR_POS     = 4;    /** @brief Data transfer direction this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_CIRC_POS    = 5;    /** @brief Circular mode this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_PINC_POS    = 6;    /** @brief Peripheral increment mode this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_MINC_POS    = 7;    /** @brief Memory increment mode this bit is set and cleared by software. */
+    static const int32_t BDMA_CCRx_PSIZE_POS   = 8;    /** @brief Peripheral size these bits are set and cleared by software. */
+    static const int32_t BDMA_CCRx_MSIZE_POS   = 10;   /** @brief Memory size these bits are set and cleared by software. */
+    static const int32_t BDMA_CCRx_PL_POS      = 12;   /** @brief Channel priority level these bits are set and cleared by software. */
+    static const int32_t BDMA_CCRx_MEM2MEM_POS = 14;   /** @brief Memory to memory mode this bit is set and cleared by software. */
+    static const int32_t BDMA_CNDTRx_NDT_POS   = 0;    /** @brief Number of data to transfer number of data to be transferred (0 up to 65535). This register can only be written when the channel is disabled. Once the channel is enabled, this register is read-only, indicating the remaining bytes to be transmitted. This register decrements after each DMA transfer. Once the transfer is completed, this register can either stay at zero or be reloaded automatically by the value previously programmed if the channel is configured in auto-reload mode. If this register is zero, no transaction can be served whether the channel is enabled or not. */
 
-    static const int32_t xDMA_ISR_GIFx_POS[9] = {
+    static const int32_t BDMA_ISR_GIFx_POS[9] = {
       [1] = 0,    /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 4,    /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 8,    /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -778,7 +801,7 @@
       [8] = 28,   /** @brief Channel x global interrupt flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const int32_t xDMA_ISR_TCIFx_POS[9] = {
+    static const int32_t BDMA_ISR_TCIFx_POS[9] = {
       [1] = 1,    /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 5,    /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 9,    /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -789,7 +812,7 @@
       [8] = 29,   /** @brief Channel x transfer complete flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const int32_t xDMA_ISR_HTIFx_POS[9] = {
+    static const int32_t BDMA_ISR_HTIFx_POS[9] = {
       [1] = 2,    /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 6,    /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 10,   /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -800,7 +823,7 @@
       [8] = 30,   /** @brief Channel x half transfer flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const int32_t xDMA_ISR_TEIFx_POS[9] = {
+    static const int32_t BDMA_ISR_TEIFx_POS[9] = {
       [1] = 3,    /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [2] = 7,    /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
       [3] = 11,   /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
@@ -811,7 +834,7 @@
       [8] = 31,   /** @brief Channel x transfer error flag (x = 1..8) this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the DMA_IFCR register. */
     };
 
-    static const int32_t xDMA_IFCR_CGIFx_POS[9] = {
+    static const int32_t BDMA_IFCR_CGIFx_POS[9] = {
       [1] = 0,    /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
       [2] = 4,    /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
       [3] = 8,    /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
@@ -822,7 +845,7 @@
       [8] = 28,   /** @brief Channel x global interrupt clear this bit is set and cleared by software. */
     };
 
-    static const int32_t xDMA_IFCR_CTCIFx_POS[9] = {
+    static const int32_t BDMA_IFCR_CTCIFx_POS[9] = {
       [1] = 1,    /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
       [2] = 5,    /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
       [3] = 9,    /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
@@ -833,7 +856,7 @@
       [8] = 29,   /** @brief Channel x transfer complete clear this bit is set and cleared by software. */
     };
 
-    static const int32_t xDMA_IFCR_CHTIFx_POS[9] = {
+    static const int32_t BDMA_IFCR_CHTIFx_POS[9] = {
       [1] = 2,    /** @brief Channel x half transfer clear this bit is set and cleared by software. */
       [2] = 6,    /** @brief Channel x half transfer clear this bit is set and cleared by software. */
       [3] = 10,   /** @brief Channel x half transfer clear this bit is set and cleared by software. */
@@ -844,7 +867,7 @@
       [8] = 30,   /** @brief Channel x half transfer clear this bit is set and cleared by software. */
     };
 
-    static const int32_t xDMA_IFCR_CTEIFx_POS[9] = {
+    static const int32_t BDMA_IFCR_CTEIFx_POS[9] = {
       [1] = 3,    /** @brief Channel x transfer error clear this bit is set and cleared by software. */
       [2] = 7,    /** @brief Channel x transfer error clear this bit is set and cleared by software. */
       [3] = 11,   /** @brief Channel x transfer error clear this bit is set and cleared by software. */
@@ -2444,6 +2467,407 @@
     static const int32_t JPEG_CFR_CHPDF_POS    = 6;    /** @brief Clear header parsing done flag writing 1 clears the header parsing done flag of the JPEG status register. */
 
     /**********************************************************************************************
+     * @section MDMA Register Information
+     **********************************************************************************************/
+
+    /**** @subsection MDMA Register Pointers ****/
+
+    static RO_ uint32_t* const MDMA_MDMA_GISR0_PTR = (RO_ uint32_t* const)0x52000000U;   /** @brief MDMA global interrupt/status register */
+
+    static RO_ uint32_t* const MDMA_MDMA_CxISR_PTR[16] = {
+      [0]  = (RO_ uint32_t* const)0x52000040U,   /** @brief MDMA channel x interrupt/status register */
+      [1]  = (RO_ uint32_t* const)0x52000080U,   /** @brief MDMA channel x interrupt/status register */
+      [2]  = (RO_ uint32_t* const)0x520000C0U,   /** @brief MDMA channel x interrupt/status register */
+      [3]  = (RO_ uint32_t* const)0x52000100U,   /** @brief MDMA channel x interrupt/status register */
+      [4]  = (RO_ uint32_t* const)0x52000140U,   /** @brief MDMA channel x interrupt/status register */
+      [5]  = (RO_ uint32_t* const)0x52000180U,   /** @brief MDMA channel x interrupt/status register */
+      [6]  = (RO_ uint32_t* const)0x520001C0U,   /** @brief MDMA channel x interrupt/status register */
+      [7]  = (RO_ uint32_t* const)0x52000200U,   /** @brief MDMA channel x interrupt/status register */
+      [8]  = (RO_ uint32_t* const)0x52000240U,   /** @brief MDMA channel x interrupt/status register */
+      [9]  = (RO_ uint32_t* const)0x52000280U,   /** @brief MDMA channel x interrupt/status register */
+      [10] = (RO_ uint32_t* const)0x520002C0U,   /** @brief MDMA channel x interrupt/status register */
+      [11] = (RO_ uint32_t* const)0x52000300U,   /** @brief MDMA channel x interrupt/status register */
+      [12] = (RO_ uint32_t* const)0x52000340U,   /** @brief MDMA channel x interrupt/status register */
+      [13] = (RO_ uint32_t* const)0x52000380U,   /** @brief MDMA channel x interrupt/status register */
+      [14] = (RO_ uint32_t* const)0x520003C0U,   /** @brief MDMA channel x interrupt/status register */
+      [15] = (RO_ uint32_t* const)0x52000400U,   /** @brief MDMA channel x interrupt/status register */
+    };
+
+    static WO_ uint32_t* const MDMA_MDMA_CxIFCR_PTR[16] = {
+      [0]  = (WO_ uint32_t* const)0x52000044U,   /** @brief MDMA channel x interrupt flag clear register */
+      [1]  = (WO_ uint32_t* const)0x52000084U,   /** @brief MDMA channel x interrupt flag clear register */
+      [2]  = (WO_ uint32_t* const)0x520000C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [3]  = (WO_ uint32_t* const)0x52000104U,   /** @brief MDMA channel x interrupt flag clear register */
+      [4]  = (WO_ uint32_t* const)0x52000144U,   /** @brief MDMA channel x interrupt flag clear register */
+      [5]  = (WO_ uint32_t* const)0x52000184U,   /** @brief MDMA channel x interrupt flag clear register */
+      [6]  = (WO_ uint32_t* const)0x520001C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [7]  = (WO_ uint32_t* const)0x52000204U,   /** @brief MDMA channel x interrupt flag clear register */
+      [8]  = (WO_ uint32_t* const)0x52000244U,   /** @brief MDMA channel x interrupt flag clear register */
+      [9]  = (WO_ uint32_t* const)0x52000284U,   /** @brief MDMA channel x interrupt flag clear register */
+      [10] = (WO_ uint32_t* const)0x520002C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [11] = (WO_ uint32_t* const)0x52000304U,   /** @brief MDMA channel x interrupt flag clear register */
+      [12] = (WO_ uint32_t* const)0x52000344U,   /** @brief MDMA channel x interrupt flag clear register */
+      [13] = (WO_ uint32_t* const)0x52000384U,   /** @brief MDMA channel x interrupt flag clear register */
+      [14] = (WO_ uint32_t* const)0x520003C4U,   /** @brief MDMA channel x interrupt flag clear register */
+      [15] = (WO_ uint32_t* const)0x52000404U,   /** @brief MDMA channel x interrupt flag clear register */
+    };
+
+    static RO_ uint32_t* const MDMA_MDMA_CxESR_PTR[16] = {
+      [0]  = (RO_ uint32_t* const)0x52000048U,   /** @brief MDMA channel x error status register */
+      [1]  = (RO_ uint32_t* const)0x52000088U,   /** @brief MDMA channel x error status register */
+      [2]  = (RO_ uint32_t* const)0x520000C8U,   /** @brief MDMA channel x error status register */
+      [3]  = (RO_ uint32_t* const)0x52000108U,   /** @brief MDMA channel x error status register */
+      [4]  = (RO_ uint32_t* const)0x52000148U,   /** @brief MDMA channel x error status register */
+      [5]  = (RO_ uint32_t* const)0x52000188U,   /** @brief MDMA channel x error status register */
+      [6]  = (RO_ uint32_t* const)0x520001C8U,   /** @brief MDMA channel x error status register */
+      [7]  = (RO_ uint32_t* const)0x52000208U,   /** @brief MDMA channel x error status register */
+      [8]  = (RO_ uint32_t* const)0x52000248U,   /** @brief MDMA channel x error status register */
+      [9]  = (RO_ uint32_t* const)0x52000288U,   /** @brief MDMA channel x error status register */
+      [10] = (RO_ uint32_t* const)0x520002C8U,   /** @brief MDMA channel x error status register */
+      [11] = (RO_ uint32_t* const)0x52000308U,   /** @brief MDMA channel x error status register */
+      [12] = (RO_ uint32_t* const)0x52000348U,   /** @brief MDMA channel x error status register */
+      [13] = (RO_ uint32_t* const)0x52000388U,   /** @brief MDMA channel x error status register */
+      [14] = (RO_ uint32_t* const)0x520003C8U,   /** @brief MDMA channel x error status register */
+      [15] = (RO_ uint32_t* const)0x52000408U,   /** @brief MDMA channel x error status register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxCR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x5200004CU,   /** @brief This register is used to control the concerned channel. */
+      [1]  = (RW_ uint32_t* const)0x5200008CU,   /** @brief This register is used to control the concerned channel. */
+      [2]  = (RW_ uint32_t* const)0x520000CCU,   /** @brief This register is used to control the concerned channel. */
+      [3]  = (RW_ uint32_t* const)0x5200010CU,   /** @brief This register is used to control the concerned channel. */
+      [4]  = (RW_ uint32_t* const)0x5200014CU,   /** @brief This register is used to control the concerned channel. */
+      [5]  = (RW_ uint32_t* const)0x5200018CU,   /** @brief This register is used to control the concerned channel. */
+      [6]  = (RW_ uint32_t* const)0x520001CCU,   /** @brief This register is used to control the concerned channel. */
+      [7]  = (RW_ uint32_t* const)0x5200020CU,   /** @brief This register is used to control the concerned channel. */
+      [8]  = (RW_ uint32_t* const)0x5200024CU,   /** @brief This register is used to control the concerned channel. */
+      [9]  = (RW_ uint32_t* const)0x5200028CU,   /** @brief This register is used to control the concerned channel. */
+      [10] = (RW_ uint32_t* const)0x520002CCU,   /** @brief This register is used to control the concerned channel. */
+      [11] = (RW_ uint32_t* const)0x5200030CU,   /** @brief This register is used to control the concerned channel. */
+      [12] = (RW_ uint32_t* const)0x5200034CU,   /** @brief This register is used to control the concerned channel. */
+      [13] = (RW_ uint32_t* const)0x5200038CU,   /** @brief This register is used to control the concerned channel. */
+      [14] = (RW_ uint32_t* const)0x520003CCU,   /** @brief This register is used to control the concerned channel. */
+      [15] = (RW_ uint32_t* const)0x5200040CU,   /** @brief This register is used to control the concerned channel. */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxTCR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000050U,   /** @brief This register is used to configure the concerned channel. */
+      [1]  = (RW_ uint32_t* const)0x52000090U,   /** @brief This register is used to configure the concerned channel. */
+      [2]  = (RW_ uint32_t* const)0x520000D0U,   /** @brief This register is used to configure the concerned channel. */
+      [3]  = (RW_ uint32_t* const)0x52000110U,   /** @brief This register is used to configure the concerned channel. */
+      [4]  = (RW_ uint32_t* const)0x52000150U,   /** @brief This register is used to configure the concerned channel. */
+      [5]  = (RW_ uint32_t* const)0x52000190U,   /** @brief This register is used to configure the concerned channel. */
+      [6]  = (RW_ uint32_t* const)0x520001D0U,   /** @brief This register is used to configure the concerned channel. */
+      [7]  = (RW_ uint32_t* const)0x52000210U,   /** @brief This register is used to configure the concerned channel. */
+      [8]  = (RW_ uint32_t* const)0x52000250U,   /** @brief This register is used to configure the concerned channel. */
+      [9]  = (RW_ uint32_t* const)0x52000290U,   /** @brief This register is used to configure the concerned channel. */
+      [10] = (RW_ uint32_t* const)0x520002D0U,   /** @brief This register is used to configure the concerned channel. */
+      [11] = (RW_ uint32_t* const)0x52000310U,   /** @brief This register is used to configure the concerned channel. */
+      [12] = (RW_ uint32_t* const)0x52000350U,   /** @brief This register is used to configure the concerned channel. */
+      [13] = (RW_ uint32_t* const)0x52000390U,   /** @brief This register is used to configure the concerned channel. */
+      [14] = (RW_ uint32_t* const)0x520003D0U,   /** @brief This register is used to configure the concerned channel. */
+      [15] = (RW_ uint32_t* const)0x52000410U,   /** @brief This register is used to configure the concerned channel. */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxBNDTR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000054U,   /** @brief MDMA channel x block number of data register */
+      [1]  = (RW_ uint32_t* const)0x52000094U,   /** @brief MDMA channel x block number of data register */
+      [2]  = (RW_ uint32_t* const)0x520000D4U,   /** @brief MDMA channel x block number of data register */
+      [3]  = (RW_ uint32_t* const)0x52000114U,   /** @brief MDMA channel x block number of data register */
+      [4]  = (RW_ uint32_t* const)0x52000154U,   /** @brief MDMA channel x block number of data register */
+      [5]  = (RW_ uint32_t* const)0x52000194U,   /** @brief MDMA channel x block number of data register */
+      [6]  = (RW_ uint32_t* const)0x520001D4U,   /** @brief MDMA channel x block number of data register */
+      [7]  = (RW_ uint32_t* const)0x52000214U,   /** @brief MDMA channel x block number of data register */
+      [8]  = (RW_ uint32_t* const)0x52000254U,   /** @brief MDMA channel x block number of data register */
+      [9]  = (RW_ uint32_t* const)0x52000294U,   /** @brief MDMA channel x block number of data register */
+      [10] = (RW_ uint32_t* const)0x520002D4U,   /** @brief MDMA channel x block number of data register */
+      [11] = (RW_ uint32_t* const)0x52000314U,   /** @brief MDMA channel x block number of data register */
+      [12] = (RW_ uint32_t* const)0x52000354U,   /** @brief MDMA channel x block number of data register */
+      [13] = (RW_ uint32_t* const)0x52000394U,   /** @brief MDMA channel x block number of data register */
+      [14] = (RW_ uint32_t* const)0x520003D4U,   /** @brief MDMA channel x block number of data register */
+      [15] = (RW_ uint32_t* const)0x52000414U,   /** @brief MDMA channel x block number of data register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxSAR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000058U,   /** @brief MDMA channel x source address register */
+      [1]  = (RW_ uint32_t* const)0x52000098U,   /** @brief MDMA channel x source address register */
+      [2]  = (RW_ uint32_t* const)0x520000D8U,   /** @brief MDMA channel x source address register */
+      [3]  = (RW_ uint32_t* const)0x52000118U,   /** @brief MDMA channel x source address register */
+      [4]  = (RW_ uint32_t* const)0x52000158U,   /** @brief MDMA channel x source address register */
+      [5]  = (RW_ uint32_t* const)0x52000198U,   /** @brief MDMA channel x source address register */
+      [6]  = (RW_ uint32_t* const)0x520001D8U,   /** @brief MDMA channel x source address register */
+      [7]  = (RW_ uint32_t* const)0x52000218U,   /** @brief MDMA channel x source address register */
+      [8]  = (RW_ uint32_t* const)0x52000258U,   /** @brief MDMA channel x source address register */
+      [9]  = (RW_ uint32_t* const)0x52000298U,   /** @brief MDMA channel x source address register */
+      [10] = (RW_ uint32_t* const)0x520002D8U,   /** @brief MDMA channel x source address register */
+      [11] = (RW_ uint32_t* const)0x52000318U,   /** @brief MDMA channel x source address register */
+      [12] = (RW_ uint32_t* const)0x52000358U,   /** @brief MDMA channel x source address register */
+      [13] = (RW_ uint32_t* const)0x52000398U,   /** @brief MDMA channel x source address register */
+      [14] = (RW_ uint32_t* const)0x520003D8U,   /** @brief MDMA channel x source address register */
+      [15] = (RW_ uint32_t* const)0x52000418U,   /** @brief MDMA channel x source address register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxDAR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x5200005CU,   /** @brief MDMA channel x destination address register */
+      [1]  = (RW_ uint32_t* const)0x5200009CU,   /** @brief MDMA channel x destination address register */
+      [2]  = (RW_ uint32_t* const)0x520000DCU,   /** @brief MDMA channel x destination address register */
+      [3]  = (RW_ uint32_t* const)0x5200011CU,   /** @brief MDMA channel x destination address register */
+      [4]  = (RW_ uint32_t* const)0x5200015CU,   /** @brief MDMA channel x destination address register */
+      [5]  = (RW_ uint32_t* const)0x5200019CU,   /** @brief MDMA channel x destination address register */
+      [6]  = (RW_ uint32_t* const)0x520001DCU,   /** @brief MDMA channel x destination address register */
+      [7]  = (RW_ uint32_t* const)0x5200021CU,   /** @brief MDMA channel x destination address register */
+      [8]  = (RW_ uint32_t* const)0x5200025CU,   /** @brief MDMA channel x destination address register */
+      [9]  = (RW_ uint32_t* const)0x5200029CU,   /** @brief MDMA channel x destination address register */
+      [10] = (RW_ uint32_t* const)0x520002DCU,   /** @brief MDMA channel x destination address register */
+      [11] = (RW_ uint32_t* const)0x5200031CU,   /** @brief MDMA channel x destination address register */
+      [12] = (RW_ uint32_t* const)0x5200035CU,   /** @brief MDMA channel x destination address register */
+      [13] = (RW_ uint32_t* const)0x5200039CU,   /** @brief MDMA channel x destination address register */
+      [14] = (RW_ uint32_t* const)0x520003DCU,   /** @brief MDMA channel x destination address register */
+      [15] = (RW_ uint32_t* const)0x5200041CU,   /** @brief MDMA channel x destination address register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxBRUR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000060U,   /** @brief MDMA channel x block repeat address update register */
+      [1]  = (RW_ uint32_t* const)0x520000A0U,   /** @brief MDMA channel x block repeat address update register */
+      [2]  = (RW_ uint32_t* const)0x520000E0U,   /** @brief MDMA channel x block repeat address update register */
+      [3]  = (RW_ uint32_t* const)0x52000120U,   /** @brief MDMA channel x block repeat address update register */
+      [4]  = (RW_ uint32_t* const)0x52000160U,   /** @brief MDMA channel x block repeat address update register */
+      [5]  = (RW_ uint32_t* const)0x520001A0U,   /** @brief MDMA channel x block repeat address update register */
+      [6]  = (RW_ uint32_t* const)0x520001E0U,   /** @brief MDMA channel x block repeat address update register */
+      [7]  = (RW_ uint32_t* const)0x52000220U,   /** @brief MDMA channel x block repeat address update register */
+      [8]  = (RW_ uint32_t* const)0x52000260U,   /** @brief MDMA channel x block repeat address update register */
+      [9]  = (RW_ uint32_t* const)0x520002A0U,   /** @brief MDMA channel x block repeat address update register */
+      [10] = (RW_ uint32_t* const)0x520002E0U,   /** @brief MDMA channel x block repeat address update register */
+      [11] = (RW_ uint32_t* const)0x52000320U,   /** @brief MDMA channel x block repeat address update register */
+      [12] = (RW_ uint32_t* const)0x52000360U,   /** @brief MDMA channel x block repeat address update register */
+      [13] = (RW_ uint32_t* const)0x520003A0U,   /** @brief MDMA channel x block repeat address update register */
+      [14] = (RW_ uint32_t* const)0x520003E0U,   /** @brief MDMA channel x block repeat address update register */
+      [15] = (RW_ uint32_t* const)0x52000420U,   /** @brief MDMA channel x block repeat address update register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxLAR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000064U,   /** @brief MDMA channel x link address register */
+      [1]  = (RW_ uint32_t* const)0x520000A4U,   /** @brief MDMA channel x link address register */
+      [2]  = (RW_ uint32_t* const)0x520000E4U,   /** @brief MDMA channel x link address register */
+      [3]  = (RW_ uint32_t* const)0x52000124U,   /** @brief MDMA channel x link address register */
+      [4]  = (RW_ uint32_t* const)0x52000164U,   /** @brief MDMA channel x link address register */
+      [5]  = (RW_ uint32_t* const)0x520001A4U,   /** @brief MDMA channel x link address register */
+      [6]  = (RW_ uint32_t* const)0x520001E4U,   /** @brief MDMA channel x link address register */
+      [7]  = (RW_ uint32_t* const)0x52000224U,   /** @brief MDMA channel x link address register */
+      [8]  = (RW_ uint32_t* const)0x52000264U,   /** @brief MDMA channel x link address register */
+      [9]  = (RW_ uint32_t* const)0x520002A4U,   /** @brief MDMA channel x link address register */
+      [10] = (RW_ uint32_t* const)0x520002E4U,   /** @brief MDMA channel x link address register */
+      [11] = (RW_ uint32_t* const)0x52000324U,   /** @brief MDMA channel x link address register */
+      [12] = (RW_ uint32_t* const)0x52000364U,   /** @brief MDMA channel x link address register */
+      [13] = (RW_ uint32_t* const)0x520003A4U,   /** @brief MDMA channel x link address register */
+      [14] = (RW_ uint32_t* const)0x520003E4U,   /** @brief MDMA channel x link address register */
+      [15] = (RW_ uint32_t* const)0x52000424U,   /** @brief MDMA channel x link address register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxTBR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000068U,   /** @brief MDMA channel x trigger and bus selection register */
+      [1]  = (RW_ uint32_t* const)0x520000A8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [2]  = (RW_ uint32_t* const)0x520000E8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [3]  = (RW_ uint32_t* const)0x52000128U,   /** @brief MDMA channel x trigger and bus selection register */
+      [4]  = (RW_ uint32_t* const)0x52000168U,   /** @brief MDMA channel x trigger and bus selection register */
+      [5]  = (RW_ uint32_t* const)0x520001A8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [6]  = (RW_ uint32_t* const)0x520001E8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [7]  = (RW_ uint32_t* const)0x52000228U,   /** @brief MDMA channel x trigger and bus selection register */
+      [8]  = (RW_ uint32_t* const)0x52000268U,   /** @brief MDMA channel x trigger and bus selection register */
+      [9]  = (RW_ uint32_t* const)0x520002A8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [10] = (RW_ uint32_t* const)0x520002E8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [11] = (RW_ uint32_t* const)0x52000328U,   /** @brief MDMA channel x trigger and bus selection register */
+      [12] = (RW_ uint32_t* const)0x52000368U,   /** @brief MDMA channel x trigger and bus selection register */
+      [13] = (RW_ uint32_t* const)0x520003A8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [14] = (RW_ uint32_t* const)0x520003E8U,   /** @brief MDMA channel x trigger and bus selection register */
+      [15] = (RW_ uint32_t* const)0x52000428U,   /** @brief MDMA channel x trigger and bus selection register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxMAR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000070U,   /** @brief MDMA channel x mask address register */
+      [1]  = (RW_ uint32_t* const)0x520000B0U,   /** @brief MDMA channel x mask address register */
+      [2]  = (RW_ uint32_t* const)0x520000F0U,   /** @brief MDMA channel x mask address register */
+      [3]  = (RW_ uint32_t* const)0x52000130U,   /** @brief MDMA channel x mask address register */
+      [4]  = (RW_ uint32_t* const)0x52000170U,   /** @brief MDMA channel x mask address register */
+      [5]  = (RW_ uint32_t* const)0x520001B0U,   /** @brief MDMA channel x mask address register */
+      [6]  = (RW_ uint32_t* const)0x520001F0U,   /** @brief MDMA channel x mask address register */
+      [7]  = (RW_ uint32_t* const)0x52000230U,   /** @brief MDMA channel x mask address register */
+      [8]  = (RW_ uint32_t* const)0x52000270U,   /** @brief MDMA channel x mask address register */
+      [9]  = (RW_ uint32_t* const)0x520002B0U,   /** @brief MDMA channel x mask address register */
+      [10] = (RW_ uint32_t* const)0x520002F0U,   /** @brief MDMA channel x mask address register */
+      [11] = (RW_ uint32_t* const)0x52000330U,   /** @brief MDMA channel x mask address register */
+      [12] = (RW_ uint32_t* const)0x52000370U,   /** @brief MDMA channel x mask address register */
+      [13] = (RW_ uint32_t* const)0x520003B0U,   /** @brief MDMA channel x mask address register */
+      [14] = (RW_ uint32_t* const)0x520003F0U,   /** @brief MDMA channel x mask address register */
+      [15] = (RW_ uint32_t* const)0x52000430U,   /** @brief MDMA channel x mask address register */
+    };
+
+    static RW_ uint32_t* const MDMA_MDMA_CxMDR_PTR[16] = {
+      [0]  = (RW_ uint32_t* const)0x52000074U,   /** @brief MDMA channel x mask data register */
+      [1]  = (RW_ uint32_t* const)0x520000B4U,   /** @brief MDMA channel x mask data register */
+      [2]  = (RW_ uint32_t* const)0x520000F4U,   /** @brief MDMA channel x mask data register */
+      [3]  = (RW_ uint32_t* const)0x52000134U,   /** @brief MDMA channel x mask data register */
+      [4]  = (RW_ uint32_t* const)0x52000174U,   /** @brief MDMA channel x mask data register */
+      [5]  = (RW_ uint32_t* const)0x520001B4U,   /** @brief MDMA channel x mask data register */
+      [6]  = (RW_ uint32_t* const)0x520001F4U,   /** @brief MDMA channel x mask data register */
+      [7]  = (RW_ uint32_t* const)0x52000234U,   /** @brief MDMA channel x mask data register */
+      [8]  = (RW_ uint32_t* const)0x52000274U,   /** @brief MDMA channel x mask data register */
+      [9]  = (RW_ uint32_t* const)0x520002B4U,   /** @brief MDMA channel x mask data register */
+      [10] = (RW_ uint32_t* const)0x520002F4U,   /** @brief MDMA channel x mask data register */
+      [11] = (RW_ uint32_t* const)0x52000334U,   /** @brief MDMA channel x mask data register */
+      [12] = (RW_ uint32_t* const)0x52000374U,   /** @brief MDMA channel x mask data register */
+      [13] = (RW_ uint32_t* const)0x520003B4U,   /** @brief MDMA channel x mask data register */
+      [14] = (RW_ uint32_t* const)0x520003F4U,   /** @brief MDMA channel x mask data register */
+      [15] = (RW_ uint32_t* const)0x52000434U,   /** @brief MDMA channel x mask data register */
+    };
+
+    /**** @subsection MDMA Register Field Masks ****/
+
+    static const uint32_t MDMA_MDMA_CxISR_TEIF0_MSK    = 0x00000001U;   /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxISR_CTCIF0_MSK   = 0x00000002U;   /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
+    static const uint32_t MDMA_MDMA_CxISR_BRTIF0_MSK   = 0x00000004U;   /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxISR_BTIF0_MSK    = 0x00000008U;   /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxISR_TCIF0_MSK    = 0x00000010U;   /** @brief Channel x buffer transfer complete */
+    static const uint32_t MDMA_MDMA_CxISR_CRQA0_MSK    = 0x00010000U;   /** @brief Channel x request active flag */
+    static const uint32_t MDMA_MDMA_CxIFCR_CTEIF0_MSK  = 0x00000001U;   /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CCTCIF0_MSK = 0x00000002U;   /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CBRTIF0_MSK = 0x00000004U;   /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CBTIF0_MSK  = 0x00000008U;   /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxIFCR_CLTCIF0_MSK = 0x00000010U;   /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
+    static const uint32_t MDMA_MDMA_CxESR_TEA_MSK      = 0x0000007FU;   /** @brief Transfer error address these bits are set and cleared by HW, in case of an MDMA data transfer error. It is used in conjunction with TED. This field indicates the 7 lsbits of the address which generated a transfer/access error. It may be used by SW to retrieve the failing address, by adding this value (truncated to the buffer transfer length size) to the current SAR/DAR value. Note: the SAR/DAR current value doesnt reflect this last address due to the FIFO management system. The SAR/DAR are only updated at the end of a (buffer) transfer (of TLEN+1 bytes). Note: it is not set in case of a link data error. */
+    static const uint32_t MDMA_MDMA_CxESR_TED_MSK      = 0x00000080U;   /** @brief Transfer error direction these bit is set and cleared by HW, in case of an MDMA data transfer error. */
+    static const uint32_t MDMA_MDMA_CxESR_TELD_MSK     = 0x00000100U;   /** @brief Transfer error link data these bit is set by HW, in case of a transfer error while reading the block link data structure. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxESR_TEMD_MSK     = 0x00000200U;   /** @brief Transfer error mask data these bit is set by HW, in case of a transfer error while writing the mask data. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxESR_ASE_MSK      = 0x00000400U;   /** @brief Address/Size error these bit is set by HW, when the programmed address is not aligned with the data size. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxESR_BSE_MSK      = 0x00000800U;   /** @brief Block size error these bit is set by HW, when the block size is not an integer multiple of the data size either for source or destination. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const uint32_t MDMA_MDMA_CxCR_EN_MSK        = 0x00000001U;   /** @brief Channel enable */
+    static const uint32_t MDMA_MDMA_CxCR_TEIE_MSK      = 0x00000002U;   /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_CTCIE_MSK     = 0x00000004U;   /** @brief Channel transfer complete interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_BRTIE_MSK     = 0x00000008U;   /** @brief Block repeat transfer interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_BTIE_MSK      = 0x00000010U;   /** @brief Block transfer interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_TCIE_MSK      = 0x00000020U;   /** @brief Buffer transfer complete interrupt enable this bit is set and cleared by software. */
+    static const uint32_t MDMA_MDMA_CxCR_PL_MSK        = 0x000000C0U;   /** @brief Priority level these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxCR_BEX_MSK       = 0x00001000U;   /** @brief Byte endianness exchange */
+    static const uint32_t MDMA_MDMA_CxCR_HEX_MSK       = 0x00002000U;   /** @brief Half word endianes exchange */
+    static const uint32_t MDMA_MDMA_CxCR_WEX_MSK       = 0x00004000U;   /** @brief Word endianness exchange */
+    static const uint32_t MDMA_MDMA_CxCR_SWRQ_MSK      = 0x00010000U;   /** @brief SW request writing a 1 into this bit sets the crqax in mdma_isry register, activating the request on channel x note: either the whole cxcr register or the 8-bit/16-bit register @ address offset: 0x4e + 0x40 chn may be used for SWRQ activation. In case of a SW request, acknowledge is not generated (neither HW signal, nor cxmar write access). */
+    static const uint32_t MDMA_MDMA_CxTCR_SINC_MSK     = 0x00000003U;   /** @brief Source increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when source is AHB (SBUS=1), SINC = 00 is forbidden. In linked list mode, at the end of a block (single or last block in repeated block transfer mode), this register will be loaded from memory (from address given by current LAR[31:0] + 0x00). */
+    static const uint32_t MDMA_MDMA_CxTCR_DINC_MSK     = 0x0000000CU;   /** @brief Destination increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when destination is AHB (DBUS=1), DINC = 00 is forbidden. */
+    static const uint32_t MDMA_MDMA_CxTCR_SSIZE_MSK    = 0x00000030U;   /** @brief Source data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if SINCOS &lt; SSIZE and SINC &#8800; 00, the result will be unpredictable. Note: SSIZE = 11 (double-word) is forbidden when source is TCM/AHB bus (SBUS=1). */
+    static const uint32_t MDMA_MDMA_CxTCR_DSIZE_MSK    = 0x000000C0U;   /** @brief Destination data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. Note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if DINCOS &lt; DSIZE and DINC &#8800; 00, the result will be unpredictable. Note: DSIZE = 11 (double-word) is forbidden when destination is TCM/AHB bus (DBUS=1). */
+    static const uint32_t MDMA_MDMA_CxTCR_SINCOS_MSK   = 0x00000300U;   /** @brief Source increment offset size */
+    static const uint32_t MDMA_MDMA_CxTCR_DINCOS_MSK   = 0x00000C00U;   /** @brief Destination increment offset */
+    static const uint32_t MDMA_MDMA_CxTCR_SBURST_MSK   = 0x00007000U;   /** @brief Source burst transfer configuration */
+    static const uint32_t MDMA_MDMA_CxTCR_DBURST_MSK   = 0x00038000U;   /** @brief Destination burst transfer configuration */
+    static const uint32_t MDMA_MDMA_CxTCR_TLEN_MSK     = 0x01FC0000U;   /** @brief Buffer transfer lengh */
+    static const uint32_t MDMA_MDMA_CxTCR_PKE_MSK      = 0x02000000U;   /** @brief PacK enable these bit is set and cleared by software. If the source size is smaller than the destination, it will be padded according to the PAM value. If the source data size is larger than the destination one, it will be truncated. The alignment will be done according to the PAM[0] value. This bit is protected and can be written only if EN is 0 */
+    static const uint32_t MDMA_MDMA_CxTCR_PAM_MSK      = 0x0C000000U;   /** @brief Padding/Alignement mode these bits are set and cleared by software. Case 1: source data size smaller than destination data size - 3 options are valid. Case 2: source data size larger than destination data size. The remainder part is discarded. When PKE = 1 or DSIZE=SSIZE, these bits are ignored. These bits are protected and can be written only if EN is 0 */
+    static const uint32_t MDMA_MDMA_CxTCR_TRGM_MSK     = 0x30000000U;   /** @brief Trigger mode these bits are set and cleared by software. Note: if TRGM is 11 for the current block, all the values loaded at the end of the current block through the linked list mechanism must keep the same value (TRGM=11) and the same SWRM value, otherwise the result is undefined. These bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxTCR_SWRM_MSK     = 0x40000000U;   /** @brief SW request mode this bit is set and cleared by software. If a HW or SW request is currently active, the bit change will be delayed until the current transfer is completed. If the cxmar contains a valid address, the cxmdr value will also be written @ cxmar address. This bit is protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxTCR_BWM_MSK      = 0x80000000U;   /** @brief Bufferable write mode this bit is set and cleared by software. This bit is protected and can be written only if EN is 0. Note: all MDMA destination accesses are non-cacheable. */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BNDT_MSK   = 0x0001FFFFU;   /** @brief Block number of data to transfer */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BRSUM_MSK  = 0x00040000U;   /** @brief Block repeat source address update mode these bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BRDUM_MSK  = 0x00080000U;   /** @brief Block repeat destination address update mode these bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxBNDTR_BRC_MSK    = 0xFFF00000U;   /** @brief Block repeat count this field contains the number of repetitions of the current block (0 to 4095). When the channel is enabled, this register is read-only, indicating the remaining number of blocks, excluding the current one. This register decrements after each complete block transfer. Once the last block transfer has completed, this register can either stay at zero or be reloaded automatically from memory (in linked list mode - i.e. Link address valid). These bits are protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxBRUR_SUV_MSK     = 0x0000FFFFU;   /** @brief Source adresse update value */
+    static const uint32_t MDMA_MDMA_CxBRUR_DUV_MSK     = 0xFFFF0000U;   /** @brief Destination address update */
+    static const uint32_t MDMA_MDMA_CxTBR_TSEL_MSK     = 0x0000003FU;   /** @brief Trigger selection */
+    static const uint32_t MDMA_MDMA_CxTBR_SBUS_MSK     = 0x00010000U;   /** @brief Source BUS select this bit is protected and can be written only if EN is 0. */
+    static const uint32_t MDMA_MDMA_CxTBR_DBUS_MSK     = 0x00020000U;   /** @brief Destination BUS slect this bit is protected and can be written only if EN is 0. */
+
+    static const uint32_t MDMA_MDMA_GISR0_GIFx_MSK[16] = {
+      [0]  = 0x00000001U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [1]  = 0x00000002U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [2]  = 0x00000004U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [3]  = 0x00000008U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [4]  = 0x00000010U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [5]  = 0x00000020U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [6]  = 0x00000040U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [7]  = 0x00000080U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [8]  = 0x00000100U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [9]  = 0x00000200U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [10] = 0x00000400U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [11] = 0x00000800U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [12] = 0x00001000U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [13] = 0x00002000U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [14] = 0x00004000U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [15] = 0x00008000U,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+    };
+
+    /**** @subsection MDMA Register Field Positions ****/
+
+    static const int32_t MDMA_MDMA_CxISR_TEIF0_POS    = 0;    /** @brief Channel x transfer error interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxISR_CTCIF0_POS   = 1;    /** @brief Channel x channel transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. CTC is set when the last block was transferred and the channel has been automatically disabled. CTC is also set when the channel is suspended, as a result of writing EN bit to 0. */
+    static const int32_t MDMA_MDMA_CxISR_BRTIF0_POS   = 2;    /** @brief Channel x block repeat transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxISR_BTIF0_POS    = 3;    /** @brief Channel x block transfer complete interrupt flag this bit is set by hardware. It is cleared by software writing 1 to the corresponding bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxISR_TCIF0_POS    = 4;    /** @brief Channel x buffer transfer complete */
+    static const int32_t MDMA_MDMA_CxISR_CRQA0_POS    = 16;   /** @brief Channel x request active flag */
+    static const int32_t MDMA_MDMA_CxIFCR_CTEIF0_POS  = 0;    /** @brief Channel x clear transfer error interrupt flag writing a 1 into this bit clears teifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CCTCIF0_POS = 1;    /** @brief Clear channel transfer complete interrupt flag for channel x writing a 1 into this bit clears ctcifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CBRTIF0_POS = 2;    /** @brief Channel x clear block repeat transfer complete interrupt flag writing a 1 into this bit clears brtifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CBTIF0_POS  = 3;    /** @brief Channel x clear block transfer complete interrupt flag writing a 1 into this bit clears btifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxIFCR_CLTCIF0_POS = 4;    /** @brief CLear buffer transfer complete interrupt flag for channel x writing a 1 into this bit clears tcifx in the mdma_isry register */
+    static const int32_t MDMA_MDMA_CxESR_TEA_POS      = 0;    /** @brief Transfer error address these bits are set and cleared by HW, in case of an MDMA data transfer error. It is used in conjunction with TED. This field indicates the 7 lsbits of the address which generated a transfer/access error. It may be used by SW to retrieve the failing address, by adding this value (truncated to the buffer transfer length size) to the current SAR/DAR value. Note: the SAR/DAR current value doesnt reflect this last address due to the FIFO management system. The SAR/DAR are only updated at the end of a (buffer) transfer (of TLEN+1 bytes). Note: it is not set in case of a link data error. */
+    static const int32_t MDMA_MDMA_CxESR_TED_POS      = 7;    /** @brief Transfer error direction these bit is set and cleared by HW, in case of an MDMA data transfer error. */
+    static const int32_t MDMA_MDMA_CxESR_TELD_POS     = 8;    /** @brief Transfer error link data these bit is set by HW, in case of a transfer error while reading the block link data structure. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxESR_TEMD_POS     = 9;    /** @brief Transfer error mask data these bit is set by HW, in case of a transfer error while writing the mask data. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxESR_ASE_POS      = 10;   /** @brief Address/Size error these bit is set by HW, when the programmed address is not aligned with the data size. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxESR_BSE_POS      = 11;   /** @brief Block size error these bit is set by HW, when the block size is not an integer multiple of the data size either for source or destination. TED will indicate whether the problem is on the source or destination. It is cleared by software writing 1 to the cteifx bit in the dma_ifcry register. */
+    static const int32_t MDMA_MDMA_CxCR_EN_POS        = 0;    /** @brief Channel enable */
+    static const int32_t MDMA_MDMA_CxCR_TEIE_POS      = 1;    /** @brief Transfer error interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_CTCIE_POS     = 2;    /** @brief Channel transfer complete interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_BRTIE_POS     = 3;    /** @brief Block repeat transfer interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_BTIE_POS      = 4;    /** @brief Block transfer interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_TCIE_POS      = 5;    /** @brief Buffer transfer complete interrupt enable this bit is set and cleared by software. */
+    static const int32_t MDMA_MDMA_CxCR_PL_POS        = 6;    /** @brief Priority level these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxCR_BEX_POS       = 12;   /** @brief Byte endianness exchange */
+    static const int32_t MDMA_MDMA_CxCR_HEX_POS       = 13;   /** @brief Half word endianes exchange */
+    static const int32_t MDMA_MDMA_CxCR_WEX_POS       = 14;   /** @brief Word endianness exchange */
+    static const int32_t MDMA_MDMA_CxCR_SWRQ_POS      = 16;   /** @brief SW request writing a 1 into this bit sets the crqax in mdma_isry register, activating the request on channel x note: either the whole cxcr register or the 8-bit/16-bit register @ address offset: 0x4e + 0x40 chn may be used for SWRQ activation. In case of a SW request, acknowledge is not generated (neither HW signal, nor cxmar write access). */
+    static const int32_t MDMA_MDMA_CxTCR_SINC_POS     = 0;    /** @brief Source increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when source is AHB (SBUS=1), SINC = 00 is forbidden. In linked list mode, at the end of a block (single or last block in repeated block transfer mode), this register will be loaded from memory (from address given by current LAR[31:0] + 0x00). */
+    static const int32_t MDMA_MDMA_CxTCR_DINC_POS     = 2;    /** @brief Destination increment mode these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: when destination is AHB (DBUS=1), DINC = 00 is forbidden. */
+    static const int32_t MDMA_MDMA_CxTCR_SSIZE_POS    = 4;    /** @brief Source data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0 note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if SINCOS &lt; SSIZE and SINC &#8800; 00, the result will be unpredictable. Note: SSIZE = 11 (double-word) is forbidden when source is TCM/AHB bus (SBUS=1). */
+    static const int32_t MDMA_MDMA_CxTCR_DSIZE_POS    = 6;    /** @brief Destination data size these bits are set and cleared by software. These bits are protected and can be written only if EN is 0. Note: if a value of 11 is programmed for the TCM access/ahb port, a transfer error will occur (TEIF bit set) if DINCOS &lt; DSIZE and DINC &#8800; 00, the result will be unpredictable. Note: DSIZE = 11 (double-word) is forbidden when destination is TCM/AHB bus (DBUS=1). */
+    static const int32_t MDMA_MDMA_CxTCR_SINCOS_POS   = 8;    /** @brief Source increment offset size */
+    static const int32_t MDMA_MDMA_CxTCR_DINCOS_POS   = 10;   /** @brief Destination increment offset */
+    static const int32_t MDMA_MDMA_CxTCR_SBURST_POS   = 12;   /** @brief Source burst transfer configuration */
+    static const int32_t MDMA_MDMA_CxTCR_DBURST_POS   = 15;   /** @brief Destination burst transfer configuration */
+    static const int32_t MDMA_MDMA_CxTCR_TLEN_POS     = 18;   /** @brief Buffer transfer lengh */
+    static const int32_t MDMA_MDMA_CxTCR_PKE_POS      = 25;   /** @brief PacK enable these bit is set and cleared by software. If the source size is smaller than the destination, it will be padded according to the PAM value. If the source data size is larger than the destination one, it will be truncated. The alignment will be done according to the PAM[0] value. This bit is protected and can be written only if EN is 0 */
+    static const int32_t MDMA_MDMA_CxTCR_PAM_POS      = 26;   /** @brief Padding/Alignement mode these bits are set and cleared by software. Case 1: source data size smaller than destination data size - 3 options are valid. Case 2: source data size larger than destination data size. The remainder part is discarded. When PKE = 1 or DSIZE=SSIZE, these bits are ignored. These bits are protected and can be written only if EN is 0 */
+    static const int32_t MDMA_MDMA_CxTCR_TRGM_POS     = 28;   /** @brief Trigger mode these bits are set and cleared by software. Note: if TRGM is 11 for the current block, all the values loaded at the end of the current block through the linked list mechanism must keep the same value (TRGM=11) and the same SWRM value, otherwise the result is undefined. These bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxTCR_SWRM_POS     = 30;   /** @brief SW request mode this bit is set and cleared by software. If a HW or SW request is currently active, the bit change will be delayed until the current transfer is completed. If the cxmar contains a valid address, the cxmdr value will also be written @ cxmar address. This bit is protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxTCR_BWM_POS      = 31;   /** @brief Bufferable write mode this bit is set and cleared by software. This bit is protected and can be written only if EN is 0. Note: all MDMA destination accesses are non-cacheable. */
+    static const int32_t MDMA_MDMA_CxBNDTR_BNDT_POS   = 0;    /** @brief Block number of data to transfer */
+    static const int32_t MDMA_MDMA_CxBNDTR_BRSUM_POS  = 18;   /** @brief Block repeat source address update mode these bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxBNDTR_BRDUM_POS  = 19;   /** @brief Block repeat destination address update mode these bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxBNDTR_BRC_POS    = 20;   /** @brief Block repeat count this field contains the number of repetitions of the current block (0 to 4095). When the channel is enabled, this register is read-only, indicating the remaining number of blocks, excluding the current one. This register decrements after each complete block transfer. Once the last block transfer has completed, this register can either stay at zero or be reloaded automatically from memory (in linked list mode - i.e. Link address valid). These bits are protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxBRUR_SUV_POS     = 0;    /** @brief Source adresse update value */
+    static const int32_t MDMA_MDMA_CxBRUR_DUV_POS     = 16;   /** @brief Destination address update */
+    static const int32_t MDMA_MDMA_CxTBR_TSEL_POS     = 0;    /** @brief Trigger selection */
+    static const int32_t MDMA_MDMA_CxTBR_SBUS_POS     = 16;   /** @brief Source BUS select this bit is protected and can be written only if EN is 0. */
+    static const int32_t MDMA_MDMA_CxTBR_DBUS_POS     = 17;   /** @brief Destination BUS slect this bit is protected and can be written only if EN is 0. */
+
+    static const int32_t MDMA_MDMA_GISR0_GIFx_POS[16] = {
+      [0]  = 0,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [1]  = 1,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [2]  = 2,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [3]  = 3,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [4]  = 4,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [5]  = 5,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [6]  = 6,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [7]  = 7,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [8]  = 8,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [9]  = 9,    /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [10] = 10,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [11] = 11,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [12] = 12,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [13] = 13,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [14] = 14,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+      [15] = 15,   /** @brief Channel x global interrupt flag (x=...) this bit is set and reset by hardware. It is a logical OR of all the channel x interrupt flags (ctcifx, btifx, brtifx, teifx) which are enabled in the interrupt mask register (ctciex, btiex, brtiex, teiex) */
+    };
+
+    /**********************************************************************************************
      * @section QUADSPI Register Information
      **********************************************************************************************/
 
@@ -2590,714 +3014,374 @@
     static const int32_t RNG_SR_SEIS_POS  = 6;   /** @brief Seed error interrupt status this bit is set at the same time as SECS. It is cleared by writing it to 0. ** more than 64 consecutive bits at the same value (0 or 1) ** more than 32 consecutive alternances of 0 and 1 (0101010101...01) an interrupt is pending if IE = 1 in the RNG_CR register. */
 
     /**********************************************************************************************
-     * @section RxC Register Information
+     * @section RTC Register Information
      **********************************************************************************************/
 
-    /**** @subsection RxC Register Pointers ****/
+    /**** @subsection RTC Register Pointers ****/
 
-    static RW_ uint32_t* const RxC_RTC_TR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024400U,   /** @brief Clock control register */
-      [19] = (RW_ uint32_t* const)0x58004000U,   /** @brief The RTC_TR is the calendar time shadow register. This register must be written in initialization mode only. Refer to calendar initialization and configuration on page9 and reading the calendar on page10.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_TR_PTR       = (RW_ uint32_t* const)0x58004000U;   /** @brief The RTC_TR is the calendar time shadow register. This register must be written in initialization mode only. Refer to calendar initialization and configuration on page9 and reading the calendar on page10.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_DR_PTR       = (RW_ uint32_t* const)0x58004004U;   /** @brief The RTC_DR is the calendar date shadow register. This register must be written in initialization mode only. Refer to calendar initialization and configuration on page9 and reading the calendar on page10.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_CR_PTR       = (RW_ uint32_t* const)0x58004008U;   /** @brief RTC control register */
+    static RW_ uint32_t* const RTC_RTC_ISR_PTR      = (RW_ uint32_t* const)0x5800400CU;   /** @brief This register is write protected (except for RTC_ISR[13:8] bits). The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_PRER_PTR     = (RW_ uint32_t* const)0x58004010U;   /** @brief This register must be written in initialization mode only. The initialization must be performed in two separate write accesses. Refer to calendar initialization and configuration on page9.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_WUTR_PTR     = (RW_ uint32_t* const)0x58004014U;   /** @brief This register can be written only when WUTWF is set to 1 in rtc_isr.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_ALRMAR_PTR   = (RW_ uint32_t* const)0x5800401CU;   /** @brief This register can be written only when ALRAWF is set to 1 in RTC_ISR, or in initialization mode.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_ALRMBR_PTR   = (RW_ uint32_t* const)0x58004020U;   /** @brief This register can be written only when ALRBWF is set to 1 in RTC_ISR, or in initialization mode.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static WO_ uint32_t* const RTC_RTC_WPR_PTR      = (WO_ uint32_t* const)0x58004024U;   /** @brief RTC write protection register */
+    static RO_ uint32_t* const RTC_RTC_SSR_PTR      = (RO_ uint32_t* const)0x58004028U;   /** @brief RTC sub second register */
+    static WO_ uint32_t* const RTC_RTC_SHIFTR_PTR   = (WO_ uint32_t* const)0x5800402CU;   /** @brief This register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RO_ uint32_t* const RTC_RTC_TSTR_PTR     = (RO_ uint32_t* const)0x58004030U;   /** @brief The content of this register is valid only when TSF is set to 1 in RTC_ISR. It is cleared when TSF bit is reset. */
+    static RO_ uint32_t* const RTC_RTC_TSDR_PTR     = (RO_ uint32_t* const)0x58004034U;   /** @brief The content of this register is valid only when TSF is set to 1 in RTC_ISR. It is cleared when TSF bit is reset. */
+    static RO_ uint32_t* const RTC_RTC_TSSSR_PTR    = (RO_ uint32_t* const)0x58004038U;   /** @brief The content of this register is valid only when RTC_ISR/TSF is set. It is cleared when the RTC_ISR/TSF bit is reset. */
+    static RW_ uint32_t* const RTC_RTC_CALR_PTR     = (RW_ uint32_t* const)0x5800403CU;   /** @brief This register is write protected. The write access procedure is described in RTC register write protection on page9. */
+    static RW_ uint32_t* const RTC_RTC_TAMPCR_PTR   = (RW_ uint32_t* const)0x58004040U;   /** @brief RTC tamper and alternate function configuration register */
+    static RW_ uint32_t* const RTC_RTC_ALRMASSR_PTR = (RW_ uint32_t* const)0x58004044U;   /** @brief This register can be written only when ALRAE is reset in RTC_CR register, or in initialization mode.this register is write protected. The write access procedure is described in RTC register write protection on page9 */
+    static RW_ uint32_t* const RTC_RTC_ALRMBSSR_PTR = (RW_ uint32_t* const)0x58004048U;   /** @brief This register can be written only when ALRBE is reset in RTC_CR register, or in initialization mode.this register is write protected.the write access procedure is described in section: RTC register write protection. */
+    static RW_ uint32_t* const RTC_RTC_OR_PTR       = (RW_ uint32_t* const)0x5800404CU;   /** @brief RTC option register */
+
+    static RW_ uint32_t* const RTC_RTC_BKPxR_PTR[32] = {
+      [0]  = (RW_ uint32_t* const)0x58004050U,   /** @brief RTC backup registers */
+      [1]  = (RW_ uint32_t* const)0x58004054U,   /** @brief RTC backup registers */
+      [2]  = (RW_ uint32_t* const)0x58004058U,   /** @brief RTC backup registers */
+      [3]  = (RW_ uint32_t* const)0x5800405CU,   /** @brief RTC backup registers */
+      [4]  = (RW_ uint32_t* const)0x58004060U,   /** @brief RTC backup registers */
+      [5]  = (RW_ uint32_t* const)0x58004064U,   /** @brief RTC backup registers */
+      [6]  = (RW_ uint32_t* const)0x58004068U,   /** @brief RTC backup registers */
+      [7]  = (RW_ uint32_t* const)0x5800406CU,   /** @brief RTC backup registers */
+      [8]  = (RW_ uint32_t* const)0x58004070U,   /** @brief RTC backup registers */
+      [9]  = (RW_ uint32_t* const)0x58004074U,   /** @brief RTC backup registers */
+      [10] = (RW_ uint32_t* const)0x58004078U,   /** @brief RTC backup registers */
+      [11] = (RW_ uint32_t* const)0x5800407CU,   /** @brief RTC backup registers */
+      [12] = (RW_ uint32_t* const)0x58004080U,   /** @brief RTC backup registers */
+      [13] = (RW_ uint32_t* const)0x58004084U,   /** @brief RTC backup registers */
+      [14] = (RW_ uint32_t* const)0x58004088U,   /** @brief RTC backup registers */
+      [15] = (RW_ uint32_t* const)0x5800408CU,   /** @brief RTC backup registers */
+      [16] = (RW_ uint32_t* const)0x58004090U,   /** @brief RTC backup registers */
+      [17] = (RW_ uint32_t* const)0x58004094U,   /** @brief RTC backup registers */
+      [18] = (RW_ uint32_t* const)0x58004098U,   /** @brief RTC backup registers */
+      [19] = (RW_ uint32_t* const)0x5800409CU,   /** @brief RTC backup registers */
+      [20] = (RW_ uint32_t* const)0x580040A0U,   /** @brief RTC backup registers */
+      [21] = (RW_ uint32_t* const)0x580040A4U,   /** @brief RTC backup registers */
+      [22] = (RW_ uint32_t* const)0x580040A8U,   /** @brief RTC backup registers */
+      [23] = (RW_ uint32_t* const)0x580040ACU,   /** @brief RTC backup registers */
+      [24] = (RW_ uint32_t* const)0x580040B0U,   /** @brief RTC backup registers */
+      [25] = (RW_ uint32_t* const)0x580040B4U,   /** @brief RTC backup registers */
+      [26] = (RW_ uint32_t* const)0x580040B8U,   /** @brief RTC backup registers */
+      [27] = (RW_ uint32_t* const)0x580040BCU,   /** @brief RTC backup registers */
+      [28] = (RW_ uint32_t* const)0x580040C0U,   /** @brief RTC backup registers */
+      [29] = (RW_ uint32_t* const)0x580040C4U,   /** @brief RTC backup registers */
+      [30] = (RW_ uint32_t* const)0x580040C8U,   /** @brief RTC backup registers */
+      [31] = (RW_ uint32_t* const)0x580040CCU,   /** @brief RTC backup registers */
     };
 
-    static RW_ uint32_t* const RxC_RTC_DR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024404U,   /** @brief RCC internal clock source calibration register */
-      [19] = (RW_ uint32_t* const)0x58004004U,   /** @brief The RTC_DR is the calendar date shadow register. This register must be written in initialization mode only. Refer to calendar initialization and configuration on page9 and reading the calendar on page10.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
+    /**** @subsection RTC Register Field Masks ****/
 
-    static RW_ uint32_t* const RxC_RTC_CR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024408U,   /** @brief RCC clock recovery RC register */
-      [19] = (RW_ uint32_t* const)0x58004008U,   /** @brief RTC control register */
-    };
+    static const uint32_t RTC_RTC_TR_SU_MSK             = 0x0000000FU;   /** @brief Second units in BCD format */
+    static const uint32_t RTC_RTC_TR_ST_MSK             = 0x00000070U;   /** @brief Second tens in BCD format */
+    static const uint32_t RTC_RTC_TR_MNU_MSK            = 0x00000F00U;   /** @brief Minute units in BCD format */
+    static const uint32_t RTC_RTC_TR_MNT_MSK            = 0x00007000U;   /** @brief Minute tens in BCD format */
+    static const uint32_t RTC_RTC_TR_HU_MSK             = 0x000F0000U;   /** @brief Hour units in BCD format */
+    static const uint32_t RTC_RTC_TR_HT_MSK             = 0x00300000U;   /** @brief Hour tens in BCD format */
+    static const uint32_t RTC_RTC_TR_PM_MSK             = 0x00400000U;   /** @brief AM/PM notation */
+    static const uint32_t RTC_RTC_DR_DU_MSK             = 0x0000000FU;   /** @brief Date units in BCD format */
+    static const uint32_t RTC_RTC_DR_DT_MSK             = 0x00000030U;   /** @brief Date tens in BCD format */
+    static const uint32_t RTC_RTC_DR_MU_MSK             = 0x00000F00U;   /** @brief Month units in BCD format */
+    static const uint32_t RTC_RTC_DR_MT_MSK             = 0x00001000U;   /** @brief Month tens in BCD format */
+    static const uint32_t RTC_RTC_DR_WDU_MSK            = 0x0000E000U;   /** @brief Week day units */
+    static const uint32_t RTC_RTC_DR_YU_MSK             = 0x000F0000U;   /** @brief Year units in BCD format */
+    static const uint32_t RTC_RTC_DR_YT_MSK             = 0x00F00000U;   /** @brief Year tens in BCD format */
+    static const uint32_t RTC_RTC_CR_WUCKSEL_MSK        = 0x00000007U;   /** @brief Wakeup clock selection */
+    static const uint32_t RTC_RTC_CR_TSEDGE_MSK         = 0x00000008U;   /** @brief Time-stamp event active edge TSE must be reset when TSEDGE is changed to avoid unwanted TSF setting. */
+    static const uint32_t RTC_RTC_CR_REFCKON_MSK        = 0x00000010U;   /** @brief RTC_REFIN reference clock detection enable (50 or 60hz) note: PREDIV_S must be 0x00ff. */
+    static const uint32_t RTC_RTC_CR_BYPSHAD_MSK        = 0x00000020U;   /** @brief Bypass the shadow registers note: if the frequency of the APB clock is less than seven times the frequency of RTCCLK, BYPSHAD must be set to 1. */
+    static const uint32_t RTC_RTC_CR_FMT_MSK            = 0x00000040U;   /** @brief Hour format */
+    static const uint32_t RTC_RTC_CR_ALRAE_MSK          = 0x00000100U;   /** @brief Alarm A enable */
+    static const uint32_t RTC_RTC_CR_ALRBE_MSK          = 0x00000200U;   /** @brief Alarm B enable */
+    static const uint32_t RTC_RTC_CR_WUTE_MSK           = 0x00000400U;   /** @brief Wakeup timer enable */
+    static const uint32_t RTC_RTC_CR_TSE_MSK            = 0x00000800U;   /** @brief Timestamp enable */
+    static const uint32_t RTC_RTC_CR_ALRAIE_MSK         = 0x00001000U;   /** @brief Alarm A interrupt enable */
+    static const uint32_t RTC_RTC_CR_ALRBIE_MSK         = 0x00002000U;   /** @brief Alarm B interrupt enable */
+    static const uint32_t RTC_RTC_CR_WUTIE_MSK          = 0x00004000U;   /** @brief Wakeup timer interrupt enable */
+    static const uint32_t RTC_RTC_CR_TSIE_MSK           = 0x00008000U;   /** @brief Time-stamp interrupt enable */
+    static const uint32_t RTC_RTC_CR_ADD1H_MSK          = 0x00010000U;   /** @brief Add 1 hour (summer time change) when this bit is set outside initialization mode, 1 hour is added to the calendar time. This bit is always read as 0. */
+    static const uint32_t RTC_RTC_CR_SUB1H_MSK          = 0x00020000U;   /** @brief Subtract 1 hour (winter time change) when this bit is set outside initialization mode, 1 hour is subtracted to the calendar time if the current hour is not 0. This bit is always read as 0. Setting this bit has no effect when current hour is 0. */
+    static const uint32_t RTC_RTC_CR_BKP_MSK            = 0x00040000U;   /** @brief Backup this bit can be written by the user to memorize whether the daylight saving time change has been performed or not. */
+    static const uint32_t RTC_RTC_CR_COSEL_MSK          = 0x00080000U;   /** @brief Calibration output selection when COE=1, this bit selects which signal is output on RTC_CALIB. These frequencies are valid for RTCCLK at 32.768 khz and prescalers at their default values (PREDIV_A=127 and PREDIV_S=255). Refer to section24.3.15: calibration clock output */
+    static const uint32_t RTC_RTC_CR_POL_MSK            = 0x00100000U;   /** @brief Output polarity this bit is used to configure the polarity of RTC_ALARM output */
+    static const uint32_t RTC_RTC_CR_OSEL_MSK           = 0x00600000U;   /** @brief Output selection these bits are used to select the flag to be routed to RTC_ALARM output */
+    static const uint32_t RTC_RTC_CR_COE_MSK            = 0x00800000U;   /** @brief Calibration output enable this bit enables the RTC_CALIB output */
+    static const uint32_t RTC_RTC_CR_ITSE_MSK           = 0x01000000U;   /** @brief Timestamp on internal event enable */
+    static const uint32_t RTC_RTC_ISR_ALRAWF_MSK        = 0x00000001U;   /** @brief Alarm A write flag this bit is set by hardware when alarm A values can be changed, after the ALRAE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
+    static const uint32_t RTC_RTC_ISR_ALRBWF_MSK        = 0x00000002U;   /** @brief Alarm B write flag this bit is set by hardware when alarm B values can be changed, after the ALRBE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
+    static const uint32_t RTC_RTC_ISR_WUTWF_MSK         = 0x00000004U;   /** @brief Wakeup timer write flag this bit is set by hardware up to 2 RTCCLK cycles after the WUTE bit has been set to 0 in RTC_CR, and is cleared up to 2 RTCCLK cycles after the WUTE bit has been set to 1. The wakeup timer values can be changed when WUTE bit is cleared and WUTWF is set. */
+    static const uint32_t RTC_RTC_ISR_SHPF_MSK          = 0x00000008U;   /** @brief Shift operation pending this flag is set by hardware as soon as a shift operation is initiated by a write to the RTC_SHIFTR register. It is cleared by hardware when the corresponding shift operation has been executed. Writing to the SHPF bit has no effect. */
+    static const uint32_t RTC_RTC_ISR_INITS_MSK         = 0x00000010U;   /** @brief Initialization status flag this bit is set by hardware when the calendar year field is different from 0 (backup domain reset state). */
+    static const uint32_t RTC_RTC_ISR_RSF_MSK           = 0x00000020U;   /** @brief Registers synchronization flag this bit is set by hardware each time the calendar registers are copied into the shadow registers (rtc_ssrx, rtc_trx and rtc_drx). This bit is cleared by hardware in initialization mode, while a shift operation is pending (SHPF=1), or when in bypass shadow register mode (BYPSHAD=1). This bit can also be cleared by software. It is cleared either by software or by hardware in initialization mode. */
+    static const uint32_t RTC_RTC_ISR_INITF_MSK         = 0x00000040U;   /** @brief Initialization flag when this bit is set to 1, the RTC is in initialization state, and the time, date and prescaler registers can be updated. */
+    static const uint32_t RTC_RTC_ISR_INIT_MSK          = 0x00000080U;   /** @brief Initialization mode */
+    static const uint32_t RTC_RTC_ISR_ALRAF_MSK         = 0x00000100U;   /** @brief Alarm A flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm A register (RTC_ALRMAR). This flag is cleared by software by writing 0. */
+    static const uint32_t RTC_RTC_ISR_ALRBF_MSK         = 0x00000200U;   /** @brief Alarm B flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm B register (RTC_ALRMBR). This flag is cleared by software by writing 0. */
+    static const uint32_t RTC_RTC_ISR_WUTF_MSK          = 0x00000400U;   /** @brief Wakeup timer flag this flag is set by hardware when the wakeup auto-reload counter reaches 0. This flag is cleared by software by writing 0. This flag must be cleared by software at least 1.5 RTCCLK periods before WUTF is set to 1 again. */
+    static const uint32_t RTC_RTC_ISR_TSF_MSK           = 0x00000800U;   /** @brief Time-stamp flag this flag is set by hardware when a time-stamp event occurs. This flag is cleared by software by writing 0. */
+    static const uint32_t RTC_RTC_ISR_TSOVF_MSK         = 0x00001000U;   /** @brief Time-stamp overflow flag this flag is set by hardware when a time-stamp event occurs while TSF is already set. This flag is cleared by software by writing 0. It is recommended to check and then clear TSOVF only after clearing the TSF bit. Otherwise, an overflow might not be noticed if a time-stamp event occurs immediately before the TSF bit is cleared. */
+    static const uint32_t RTC_RTC_ISR_RECALPF_MSK       = 0x00010000U;   /** @brief Recalibration pending flag the RECALPF status flag is automatically set to 1 when software writes to the RTC_CALR register, indicating that the RTC_CALR register is blocked. When the new calibration settings are taken into account, this bit returns to 0. Refer to re-calibration on-the-fly. */
+    static const uint32_t RTC_RTC_ISR_ITSF_MSK          = 0x00020000U;   /** @brief Internal ttime-stamp flag */
+    static const uint32_t RTC_RTC_PRER_PREDIV_S_MSK     = 0x00007FFFU;   /** @brief Synchronous prescaler factor this is the synchronous division factor: ck_spre frequency = ck_apre frequency/(prediv_s+1) */
+    static const uint32_t RTC_RTC_PRER_PREDIV_A_MSK     = 0x007F0000U;   /** @brief Asynchronous prescaler factor this is the asynchronous division factor: ck_apre frequency = RTCCLK frequency/(prediv_a+1) */
+    static const uint32_t RTC_RTC_WUTR_WUT_MSK          = 0x0000FFFFU;   /** @brief Wakeup auto-reload value bits when the wakeup timer is enabled (WUTE set to 1), the WUTF flag is set every (WUT[15:0] + 1) ck_wut cycles. The ck_wut period is selected through WUCKSEL[2:0] bits of the RTC_CR register when WUCKSEL[2] = 1, the wakeup timer becomes 17-bits and WUCKSEL[1] effectively becomes WUT[16] the most-significant bit to be reloaded into the timer. The first assertion of WUTF occurs (WUT+1) ck_wut cycles after WUTE is set. Setting WUT[15:0] to 0x0000 with WUCKSEL[2:0] =011 (RTCCLK/2) is forbidden. */
+    static const uint32_t RTC_RTC_ALRMAR_SU_MSK         = 0x0000000FU;   /** @brief Second units in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_ST_MSK         = 0x00000070U;   /** @brief Second tens in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_MNU_MSK        = 0x00000F00U;   /** @brief Minute units in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_MNT_MSK        = 0x00007000U;   /** @brief Minute tens in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_HU_MSK         = 0x000F0000U;   /** @brief Hour units in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_HT_MSK         = 0x00300000U;   /** @brief Hour tens in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_PM_MSK         = 0x00400000U;   /** @brief AM/PM notation */
+    static const uint32_t RTC_RTC_ALRMAR_DU_MSK         = 0x0F000000U;   /** @brief Date units or day in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_DT_MSK         = 0x30000000U;   /** @brief Date tens in BCD format. */
+    static const uint32_t RTC_RTC_ALRMAR_WDSEL_MSK      = 0x40000000U;   /** @brief Week day selection */
+    static const uint32_t RTC_RTC_ALRMBR_SU_MSK         = 0x0000000FU;   /** @brief Second units in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_ST_MSK         = 0x00000070U;   /** @brief Second tens in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_MNU_MSK        = 0x00000F00U;   /** @brief Minute units in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_MNT_MSK        = 0x00007000U;   /** @brief Minute tens in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_HU_MSK         = 0x000F0000U;   /** @brief Hour units in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_HT_MSK         = 0x00300000U;   /** @brief Hour tens in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_PM_MSK         = 0x00400000U;   /** @brief AM/PM notation */
+    static const uint32_t RTC_RTC_ALRMBR_DU_MSK         = 0x0F000000U;   /** @brief Date units or day in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_DT_MSK         = 0x30000000U;   /** @brief Date tens in BCD format */
+    static const uint32_t RTC_RTC_ALRMBR_WDSEL_MSK      = 0x40000000U;   /** @brief Week day selection */
+    static const uint32_t RTC_RTC_WPR_KEY_MSK           = 0x000000FFU;   /** @brief Write protection key this byte is written by software. Reading this byte always returns 0x00. Refer to RTC register write protection for a description of how to unlock RTC register write protection. */
+    static const uint32_t RTC_RTC_SSR_SS_MSK            = 0x0000FFFFU;   /** @brief Sub second value SS[15:0] is the value in the synchronous prescaler counter. The fraction of a second is given by the formula below: second fraction = (PREDIV_S - SS) / (PREDIV_S + 1) note: SS can be larger than PREDIV_S only after a shift operation. In that case, the correct time/date is one second less than as indicated by RTC_TR/RTC_DR. */
+    static const uint32_t RTC_RTC_SHIFTR_SUBFS_MSK      = 0x00007FFFU;   /** @brief Subtract a fraction of a second these bits are write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). The value which is written to SUBFS is added to the synchronous prescaler counter. Since this counter counts down, this operation effectively subtracts from (delays) the clock by: delay (seconds) = SUBFS / (PREDIV_S + 1) A fraction of a second can effectively be added to the clock (advancing the clock) when the ADD1S function is used in conjunction with SUBFS, effectively advancing the clock by: advance (seconds) = (1 - (SUBFS / (PREDIV_S + 1))). Note: writing to SUBFS causes RSF to be cleared. Software can then wait until RSF=1 to be sure that the shadow registers have been updated with the shifted time. */
+    static const uint32_t RTC_RTC_SHIFTR_ADD1S_MSK      = 0x80000000U;   /** @brief Add one second this bit is write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). This function is intended to be used with SUBFS (see description below) in order to effectively add a fraction of a second to the clock in an atomic operation. */
+    static const uint32_t RTC_RTC_TSTR_SU_MSK           = 0x0000000FU;   /** @brief Second units in BCD format. */
+    static const uint32_t RTC_RTC_TSTR_ST_MSK           = 0x00000070U;   /** @brief Second tens in BCD format. */
+    static const uint32_t RTC_RTC_TSTR_MNU_MSK          = 0x00000F00U;   /** @brief Minute units in BCD format. */
+    static const uint32_t RTC_RTC_TSTR_MNT_MSK          = 0x00007000U;   /** @brief Minute tens in BCD format. */
+    static const uint32_t RTC_RTC_TSTR_HU_MSK           = 0x000F0000U;   /** @brief Hour units in BCD format. */
+    static const uint32_t RTC_RTC_TSTR_HT_MSK           = 0x00300000U;   /** @brief Hour tens in BCD format. */
+    static const uint32_t RTC_RTC_TSTR_PM_MSK           = 0x00400000U;   /** @brief AM/PM notation */
+    static const uint32_t RTC_RTC_TSDR_DU_MSK           = 0x0000000FU;   /** @brief Date units in BCD format */
+    static const uint32_t RTC_RTC_TSDR_DT_MSK           = 0x00000030U;   /** @brief Date tens in BCD format */
+    static const uint32_t RTC_RTC_TSDR_MU_MSK           = 0x00000F00U;   /** @brief Month units in BCD format */
+    static const uint32_t RTC_RTC_TSDR_MT_MSK           = 0x00001000U;   /** @brief Month tens in BCD format */
+    static const uint32_t RTC_RTC_TSDR_WDU_MSK          = 0x0000E000U;   /** @brief Week day units */
+    static const uint32_t RTC_RTC_TSSSR_SS_MSK          = 0x0000FFFFU;   /** @brief Sub second value SS[15:0] is the value of the synchronous prescaler counter when the timestamp event occurred. */
+    static const uint32_t RTC_RTC_CALR_CALM_MSK         = 0x000001FFU;   /** @brief Calibration minus the frequency of the calendar is reduced by masking CALM out of 220 RTCCLK pulses (32 seconds if the input frequency is 32768 hz). This decreases the frequency of the calendar with a resolution of 0.9537 ppm. To increase the frequency of the calendar, this feature should be used in conjunction with CALP. See section24.3.12: RTC smooth digital calibration on page13. */
+    static const uint32_t RTC_RTC_CALR_CALP_MSK         = 0x00008000U;   /** @brief Increase frequency of RTC by 488.5 ppm this feature is intended to be used in conjunction with CALM, which lowers the frequency of the calendar with a fine resolution. If the input frequency is 32768 hz, the number of RTCCLK pulses added during a 32-second window is calculated as follows: (512 * CALP) - CALM. Refer to section24.3.12: RTC smooth digital calibration. */
+    static const uint32_t RTC_RTC_TAMPCR_TAMPIE_MSK     = 0x00000004U;   /** @brief Tamper interrupt enable */
+    static const uint32_t RTC_RTC_TAMPCR_TAMPTS_MSK     = 0x00000080U;   /** @brief Activate timestamp on tamper detection event TAMPTS is valid even if TSE=0 in the RTC_CR register. */
+    static const uint32_t RTC_RTC_TAMPCR_TAMPFREQ_MSK   = 0x00000700U;   /** @brief Tamper sampling frequency determines the frequency at which each of the rtc_tampx inputs are sampled. */
+    static const uint32_t RTC_RTC_TAMPCR_TAMPFLT_MSK    = 0x00001800U;   /** @brief RTC_TAMPx filter count these bits determines the number of consecutive samples at the specified level (TAMP*TRG) needed to activate a tamper event. TAMPFLT is valid for each of the rtc_tampx inputs. */
+    static const uint32_t RTC_RTC_TAMPCR_TAMPPRCH_MSK   = 0x00006000U;   /** @brief RTC_TAMPx precharge duration these bit determines the duration of time during which the pull-up/is activated before each sample. TAMPPRCH is valid for each of the rtc_tampx inputs. */
+    static const uint32_t RTC_RTC_TAMPCR_TAMPPUDIS_MSK  = 0x00008000U;   /** @brief RTC_TAMPx pull-up disable this bit determines if each of the rtc_tampx pins are pre-charged before each sample. */
+    static const uint32_t RTC_RTC_ALRMASSR_SS_MSK       = 0x00007FFFU;   /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm A is to be activated. Only bits 0 up MASKSS-1 are compared. */
+    static const uint32_t RTC_RTC_ALRMASSR_MASKSS_MSK   = 0x0F000000U;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
+    static const uint32_t RTC_RTC_ALRMBSSR_SS_MSK       = 0x00007FFFU;   /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm B is to be activated. Only bits 0 up to MASKSS-1 are compared. */
+    static const uint32_t RTC_RTC_ALRMBSSR_MASKSS_MSK   = 0x0F000000U;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
+    static const uint32_t RTC_RTC_OR_RTC_ALARM_TYPE_MSK = 0x00000001U;   /** @brief RTC_ALARM output type on PC13 */
+    static const uint32_t RTC_RTC_OR_RTC_OUT_RMP_MSK    = 0x00000002U;   /** @brief RTC_OUT remap */
 
-    static RW_ uint32_t* const RxC_RTC_ISR_PTR[20] = {
-      [19] = (RW_ uint32_t* const)0x5800400CU,   /** @brief This register is write protected (except for RTC_ISR[13:8] bits). The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_PRER_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024410U,   /** @brief RCC clock configuration register */
-      [19] = (RW_ uint32_t* const)0x58004010U,   /** @brief This register must be written in initialization mode only. The initialization must be performed in two separate write accesses. Refer to calendar initialization and configuration on page9.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_WUTR_PTR[20] = {
-      [19] = (RW_ uint32_t* const)0x58004014U,   /** @brief This register can be written only when WUTWF is set to 1 in rtc_isr.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_ALRMAR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x5802441CU,   /** @brief RCC domain 2 clock configuration register */
-      [19] = (RW_ uint32_t* const)0x5800401CU,   /** @brief This register can be written only when ALRAWF is set to 1 in RTC_ISR, or in initialization mode.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_ALRMBR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024420U,   /** @brief RCC domain 3 clock configuration register */
-      [19] = (RW_ uint32_t* const)0x58004020U,   /** @brief This register can be written only when ALRBWF is set to 1 in RTC_ISR, or in initialization mode.this register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static WO_ uint32_t* const RxC_RTC_WPR_PTR[20] = {
-      [19] = (WO_ uint32_t* const)0x58004024U,   /** @brief RTC write protection register */
-    };
-
-    static RO_ uint32_t* const RxC_RTC_SSR_PTR[20] = {
-      [2]  = (RO_ uint32_t* const)0x58024428U,   /** @brief RCC plls clock source selection register */
-      [19] = (RO_ uint32_t* const)0x58004028U,   /** @brief RTC sub second register */
-    };
-
-    static WO_ uint32_t* const RxC_RTC_SHIFTR_PTR[20] = {
-      [2]  = (WO_ uint32_t* const)0x5802442CU,   /** @brief RCC plls configuration register */
-      [19] = (WO_ uint32_t* const)0x5800402CU,   /** @brief This register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static RO_ uint32_t* const RxC_RTC_TSTR_PTR[20] = {
-      [2]  = (RO_ uint32_t* const)0x58024430U,   /** @brief RCC PLL1 dividers configuration register */
-      [19] = (RO_ uint32_t* const)0x58004030U,   /** @brief The content of this register is valid only when TSF is set to 1 in RTC_ISR. It is cleared when TSF bit is reset. */
-    };
-
-    static RO_ uint32_t* const RxC_RTC_TSDR_PTR[20] = {
-      [2]  = (RO_ uint32_t* const)0x58024434U,   /** @brief RCC PLL1 fractional divider register */
-      [19] = (RO_ uint32_t* const)0x58004034U,   /** @brief The content of this register is valid only when TSF is set to 1 in RTC_ISR. It is cleared when TSF bit is reset. */
-    };
-
-    static RO_ uint32_t* const RxC_RTC_TSSSR_PTR[20] = {
-      [2]  = (RO_ uint32_t* const)0x58024438U,   /** @brief RCC PLL2 dividers configuration register */
-      [19] = (RO_ uint32_t* const)0x58004038U,   /** @brief The content of this register is valid only when RTC_ISR/TSF is set. It is cleared when the RTC_ISR/TSF bit is reset. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_CALR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x5802443CU,   /** @brief RCC PLL2 fractional divider register */
-      [19] = (RW_ uint32_t* const)0x5800403CU,   /** @brief This register is write protected. The write access procedure is described in RTC register write protection on page9. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_TAMPCR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024440U,   /** @brief RCC PLL3 dividers configuration register */
-      [19] = (RW_ uint32_t* const)0x58004040U,   /** @brief RTC tamper and alternate function configuration register */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_ALRMASSR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x58024444U,   /** @brief RCC PLL3 fractional divider register */
-      [19] = (RW_ uint32_t* const)0x58004044U,   /** @brief This register can be written only when ALRAE is reset in RTC_CR register, or in initialization mode.this register is write protected. The write access procedure is described in RTC register write protection on page9 */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_ALRMBSSR_PTR[20] = {
-      [19] = (RW_ uint32_t* const)0x58004048U,   /** @brief This register can be written only when ALRBE is reset in RTC_CR register, or in initialization mode.this register is write protected.the write access procedure is described in section: RTC register write protection. */
-    };
-
-    static RW_ uint32_t* const RxC_RTC_OR_PTR[20] = {
-      [2]  = (RW_ uint32_t* const)0x5802444CU,   /** @brief RCC domain 1 kernel clock configuration register */
-      [19] = (RW_ uint32_t* const)0x5800404CU,   /** @brief RTC option register */
-    };
-
-    /**** @subsection RxC Register Field Masks ****/
-
-    static const uint32_t RxC_RTC_TR_SU_MSK             = 0x0000000FU;   /** @brief Second units in BCD format */
-    static const uint32_t RxC_RTC_TR_ST_MSK             = 0x00000070U;   /** @brief Second tens in BCD format */
-    static const uint32_t RxC_RTC_TR_MNU_MSK            = 0x00000F00U;   /** @brief Minute units in BCD format */
-    static const uint32_t RxC_RTC_TR_MNT_MSK            = 0x00007000U;   /** @brief Minute tens in BCD format */
-    static const uint32_t RxC_RTC_TR_HU_MSK             = 0x000F0000U;   /** @brief Hour units in BCD format */
-    static const uint32_t RxC_RTC_TR_HT_MSK             = 0x00300000U;   /** @brief Hour tens in BCD format */
-    static const uint32_t RxC_RTC_TR_PM_MSK             = 0x00400000U;   /** @brief AM/PM notation */
-    static const uint32_t RxC_RTC_DR_DU_MSK             = 0x0000000FU;   /** @brief Date units in BCD format */
-    static const uint32_t RxC_RTC_DR_DT_MSK             = 0x00000030U;   /** @brief Date tens in BCD format */
-    static const uint32_t RxC_RTC_DR_MU_MSK             = 0x00000F00U;   /** @brief Month units in BCD format */
-    static const uint32_t RxC_RTC_DR_MT_MSK             = 0x00001000U;   /** @brief Month tens in BCD format */
-    static const uint32_t RxC_RTC_DR_WDU_MSK            = 0x0000E000U;   /** @brief Week day units */
-    static const uint32_t RxC_RTC_DR_YU_MSK             = 0x000F0000U;   /** @brief Year units in BCD format */
-    static const uint32_t RxC_RTC_DR_YT_MSK             = 0x00F00000U;   /** @brief Year tens in BCD format */
-    static const uint32_t RxC_RTC_CR_WUCKSEL_MSK        = 0x00000007U;   /** @brief Wakeup clock selection */
-    static const uint32_t RxC_RTC_CR_TSEDGE_MSK         = 0x00000008U;   /** @brief Time-stamp event active edge TSE must be reset when TSEDGE is changed to avoid unwanted TSF setting. */
-    static const uint32_t RxC_RTC_CR_REFCKON_MSK        = 0x00000010U;   /** @brief RTC_REFIN reference clock detection enable (50 or 60hz) note: PREDIV_S must be 0x00ff. */
-    static const uint32_t RxC_RTC_CR_BYPSHAD_MSK        = 0x00000020U;   /** @brief Bypass the shadow registers note: if the frequency of the APB clock is less than seven times the frequency of RTCCLK, BYPSHAD must be set to 1. */
-    static const uint32_t RxC_RTC_CR_FMT_MSK            = 0x00000040U;   /** @brief Hour format */
-    static const uint32_t RxC_RTC_CR_ALRAE_MSK          = 0x00000100U;   /** @brief Alarm A enable */
-    static const uint32_t RxC_RTC_CR_ALRBE_MSK          = 0x00000200U;   /** @brief Alarm B enable */
-    static const uint32_t RxC_RTC_CR_WUTE_MSK           = 0x00000400U;   /** @brief Wakeup timer enable */
-    static const uint32_t RxC_RTC_CR_TSE_MSK            = 0x00000800U;   /** @brief Timestamp enable */
-    static const uint32_t RxC_RTC_CR_ALRAIE_MSK         = 0x00001000U;   /** @brief Alarm A interrupt enable */
-    static const uint32_t RxC_RTC_CR_ALRBIE_MSK         = 0x00002000U;   /** @brief Alarm B interrupt enable */
-    static const uint32_t RxC_RTC_CR_WUTIE_MSK          = 0x00004000U;   /** @brief Wakeup timer interrupt enable */
-    static const uint32_t RxC_RTC_CR_TSIE_MSK           = 0x00008000U;   /** @brief Time-stamp interrupt enable */
-    static const uint32_t RxC_RTC_CR_ADD1H_MSK          = 0x00010000U;   /** @brief Add 1 hour (summer time change) when this bit is set outside initialization mode, 1 hour is added to the calendar time. This bit is always read as 0. */
-    static const uint32_t RxC_RTC_CR_SUB1H_MSK          = 0x00020000U;   /** @brief Subtract 1 hour (winter time change) when this bit is set outside initialization mode, 1 hour is subtracted to the calendar time if the current hour is not 0. This bit is always read as 0. Setting this bit has no effect when current hour is 0. */
-    static const uint32_t RxC_RTC_CR_BKP_MSK            = 0x00040000U;   /** @brief Backup this bit can be written by the user to memorize whether the daylight saving time change has been performed or not. */
-    static const uint32_t RxC_RTC_CR_COSEL_MSK          = 0x00080000U;   /** @brief Calibration output selection when COE=1, this bit selects which signal is output on RTC_CALIB. These frequencies are valid for RTCCLK at 32.768 khz and prescalers at their default values (PREDIV_A=127 and PREDIV_S=255). Refer to section24.3.15: calibration clock output */
-    static const uint32_t RxC_RTC_CR_POL_MSK            = 0x00100000U;   /** @brief Output polarity this bit is used to configure the polarity of RTC_ALARM output */
-    static const uint32_t RxC_RTC_CR_OSEL_MSK           = 0x00600000U;   /** @brief Output selection these bits are used to select the flag to be routed to RTC_ALARM output */
-    static const uint32_t RxC_RTC_CR_COE_MSK            = 0x00800000U;   /** @brief Calibration output enable this bit enables the RTC_CALIB output */
-    static const uint32_t RxC_RTC_CR_ITSE_MSK           = 0x01000000U;   /** @brief Timestamp on internal event enable */
-    static const uint32_t RxC_RTC_ISR_ALRAWF_MSK        = 0x00000001U;   /** @brief Alarm A write flag this bit is set by hardware when alarm A values can be changed, after the ALRAE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
-    static const uint32_t RxC_RTC_ISR_ALRBWF_MSK        = 0x00000002U;   /** @brief Alarm B write flag this bit is set by hardware when alarm B values can be changed, after the ALRBE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
-    static const uint32_t RxC_RTC_ISR_WUTWF_MSK         = 0x00000004U;   /** @brief Wakeup timer write flag this bit is set by hardware up to 2 RTCCLK cycles after the WUTE bit has been set to 0 in RTC_CR, and is cleared up to 2 RTCCLK cycles after the WUTE bit has been set to 1. The wakeup timer values can be changed when WUTE bit is cleared and WUTWF is set. */
-    static const uint32_t RxC_RTC_ISR_SHPF_MSK          = 0x00000008U;   /** @brief Shift operation pending this flag is set by hardware as soon as a shift operation is initiated by a write to the RTC_SHIFTR register. It is cleared by hardware when the corresponding shift operation has been executed. Writing to the SHPF bit has no effect. */
-    static const uint32_t RxC_RTC_ISR_INITS_MSK         = 0x00000010U;   /** @brief Initialization status flag this bit is set by hardware when the calendar year field is different from 0 (backup domain reset state). */
-    static const uint32_t RxC_RTC_ISR_RSF_MSK           = 0x00000020U;   /** @brief Registers synchronization flag this bit is set by hardware each time the calendar registers are copied into the shadow registers (rtc_ssrx, rtc_trx and rtc_drx). This bit is cleared by hardware in initialization mode, while a shift operation is pending (SHPF=1), or when in bypass shadow register mode (BYPSHAD=1). This bit can also be cleared by software. It is cleared either by software or by hardware in initialization mode. */
-    static const uint32_t RxC_RTC_ISR_INITF_MSK         = 0x00000040U;   /** @brief Initialization flag when this bit is set to 1, the RTC is in initialization state, and the time, date and prescaler registers can be updated. */
-    static const uint32_t RxC_RTC_ISR_INIT_MSK          = 0x00000080U;   /** @brief Initialization mode */
-    static const uint32_t RxC_RTC_ISR_ALRAF_MSK         = 0x00000100U;   /** @brief Alarm A flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm A register (RTC_ALRMAR). This flag is cleared by software by writing 0. */
-    static const uint32_t RxC_RTC_ISR_ALRBF_MSK         = 0x00000200U;   /** @brief Alarm B flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm B register (RTC_ALRMBR). This flag is cleared by software by writing 0. */
-    static const uint32_t RxC_RTC_ISR_WUTF_MSK          = 0x00000400U;   /** @brief Wakeup timer flag this flag is set by hardware when the wakeup auto-reload counter reaches 0. This flag is cleared by software by writing 0. This flag must be cleared by software at least 1.5 RTCCLK periods before WUTF is set to 1 again. */
-    static const uint32_t RxC_RTC_ISR_TSF_MSK           = 0x00000800U;   /** @brief Time-stamp flag this flag is set by hardware when a time-stamp event occurs. This flag is cleared by software by writing 0. */
-    static const uint32_t RxC_RTC_ISR_TSOVF_MSK         = 0x00001000U;   /** @brief Time-stamp overflow flag this flag is set by hardware when a time-stamp event occurs while TSF is already set. This flag is cleared by software by writing 0. It is recommended to check and then clear TSOVF only after clearing the TSF bit. Otherwise, an overflow might not be noticed if a time-stamp event occurs immediately before the TSF bit is cleared. */
-    static const uint32_t RxC_RTC_ISR_RECALPF_MSK       = 0x00010000U;   /** @brief Recalibration pending flag the RECALPF status flag is automatically set to 1 when software writes to the RTC_CALR register, indicating that the RTC_CALR register is blocked. When the new calibration settings are taken into account, this bit returns to 0. Refer to re-calibration on-the-fly. */
-    static const uint32_t RxC_RTC_ISR_ITSF_MSK          = 0x00020000U;   /** @brief Internal ttime-stamp flag */
-    static const uint32_t RxC_RTC_PRER_PREDIV_S_MSK     = 0x00007FFFU;   /** @brief Synchronous prescaler factor this is the synchronous division factor: ck_spre frequency = ck_apre frequency/(prediv_s+1) */
-    static const uint32_t RxC_RTC_PRER_PREDIV_A_MSK     = 0x007F0000U;   /** @brief Asynchronous prescaler factor this is the asynchronous division factor: ck_apre frequency = RTCCLK frequency/(prediv_a+1) */
-    static const uint32_t RxC_RTC_WUTR_WUT_MSK          = 0x0000FFFFU;   /** @brief Wakeup auto-reload value bits when the wakeup timer is enabled (WUTE set to 1), the WUTF flag is set every (WUT[15:0] + 1) ck_wut cycles. The ck_wut period is selected through WUCKSEL[2:0] bits of the RTC_CR register when WUCKSEL[2] = 1, the wakeup timer becomes 17-bits and WUCKSEL[1] effectively becomes WUT[16] the most-significant bit to be reloaded into the timer. The first assertion of WUTF occurs (WUT+1) ck_wut cycles after WUTE is set. Setting WUT[15:0] to 0x0000 with WUCKSEL[2:0] =011 (RTCCLK/2) is forbidden. */
-    static const uint32_t RxC_RTC_ALRMAR_SU_MSK         = 0x0000000FU;   /** @brief Second units in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_ST_MSK         = 0x00000070U;   /** @brief Second tens in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_MNU_MSK        = 0x00000F00U;   /** @brief Minute units in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_MNT_MSK        = 0x00007000U;   /** @brief Minute tens in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_HU_MSK         = 0x000F0000U;   /** @brief Hour units in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_HT_MSK         = 0x00300000U;   /** @brief Hour tens in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_PM_MSK         = 0x00400000U;   /** @brief AM/PM notation */
-    static const uint32_t RxC_RTC_ALRMAR_DU_MSK         = 0x0F000000U;   /** @brief Date units or day in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_DT_MSK         = 0x30000000U;   /** @brief Date tens in BCD format. */
-    static const uint32_t RxC_RTC_ALRMAR_WDSEL_MSK      = 0x40000000U;   /** @brief Week day selection */
-    static const uint32_t RxC_RTC_ALRMBR_SU_MSK         = 0x0000000FU;   /** @brief Second units in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_ST_MSK         = 0x00000070U;   /** @brief Second tens in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_MNU_MSK        = 0x00000F00U;   /** @brief Minute units in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_MNT_MSK        = 0x00007000U;   /** @brief Minute tens in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_HU_MSK         = 0x000F0000U;   /** @brief Hour units in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_HT_MSK         = 0x00300000U;   /** @brief Hour tens in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_PM_MSK         = 0x00400000U;   /** @brief AM/PM notation */
-    static const uint32_t RxC_RTC_ALRMBR_DU_MSK         = 0x0F000000U;   /** @brief Date units or day in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_DT_MSK         = 0x30000000U;   /** @brief Date tens in BCD format */
-    static const uint32_t RxC_RTC_ALRMBR_WDSEL_MSK      = 0x40000000U;   /** @brief Week day selection */
-    static const uint32_t RxC_RTC_WPR_KEY_MSK           = 0x000000FFU;   /** @brief Write protection key this byte is written by software. Reading this byte always returns 0x00. Refer to RTC register write protection for a description of how to unlock RTC register write protection. */
-    static const uint32_t RxC_RTC_SSR_SS_MSK            = 0x0000FFFFU;   /** @brief Sub second value SS[15:0] is the value in the synchronous prescaler counter. The fraction of a second is given by the formula below: second fraction = (PREDIV_S - SS) / (PREDIV_S + 1) note: SS can be larger than PREDIV_S only after a shift operation. In that case, the correct time/date is one second less than as indicated by RTC_TR/RTC_DR. */
-    static const uint32_t RxC_RTC_SHIFTR_SUBFS_MSK      = 0x00007FFFU;   /** @brief Subtract a fraction of a second these bits are write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). The value which is written to SUBFS is added to the synchronous prescaler counter. Since this counter counts down, this operation effectively subtracts from (delays) the clock by: delay (seconds) = SUBFS / (PREDIV_S + 1) A fraction of a second can effectively be added to the clock (advancing the clock) when the ADD1S function is used in conjunction with SUBFS, effectively advancing the clock by: advance (seconds) = (1 - (SUBFS / (PREDIV_S + 1))). Note: writing to SUBFS causes RSF to be cleared. Software can then wait until RSF=1 to be sure that the shadow registers have been updated with the shifted time. */
-    static const uint32_t RxC_RTC_SHIFTR_ADD1S_MSK      = 0x80000000U;   /** @brief Add one second this bit is write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). This function is intended to be used with SUBFS (see description below) in order to effectively add a fraction of a second to the clock in an atomic operation. */
-    static const uint32_t RxC_RTC_TSTR_SU_MSK           = 0x0000000FU;   /** @brief Second units in BCD format. */
-    static const uint32_t RxC_RTC_TSTR_ST_MSK           = 0x00000070U;   /** @brief Second tens in BCD format. */
-    static const uint32_t RxC_RTC_TSTR_MNU_MSK          = 0x00000F00U;   /** @brief Minute units in BCD format. */
-    static const uint32_t RxC_RTC_TSTR_MNT_MSK          = 0x00007000U;   /** @brief Minute tens in BCD format. */
-    static const uint32_t RxC_RTC_TSTR_HU_MSK           = 0x000F0000U;   /** @brief Hour units in BCD format. */
-    static const uint32_t RxC_RTC_TSTR_HT_MSK           = 0x00300000U;   /** @brief Hour tens in BCD format. */
-    static const uint32_t RxC_RTC_TSTR_PM_MSK           = 0x00400000U;   /** @brief AM/PM notation */
-    static const uint32_t RxC_RTC_TSDR_DU_MSK           = 0x0000000FU;   /** @brief Date units in BCD format */
-    static const uint32_t RxC_RTC_TSDR_DT_MSK           = 0x00000030U;   /** @brief Date tens in BCD format */
-    static const uint32_t RxC_RTC_TSDR_MU_MSK           = 0x00000F00U;   /** @brief Month units in BCD format */
-    static const uint32_t RxC_RTC_TSDR_MT_MSK           = 0x00001000U;   /** @brief Month tens in BCD format */
-    static const uint32_t RxC_RTC_TSDR_WDU_MSK          = 0x0000E000U;   /** @brief Week day units */
-    static const uint32_t RxC_RTC_TSSSR_SS_MSK          = 0x0000FFFFU;   /** @brief Sub second value SS[15:0] is the value of the synchronous prescaler counter when the timestamp event occurred. */
-    static const uint32_t RxC_RTC_CALR_CALM_MSK         = 0x000001FFU;   /** @brief Calibration minus the frequency of the calendar is reduced by masking CALM out of 220 RTCCLK pulses (32 seconds if the input frequency is 32768 hz). This decreases the frequency of the calendar with a resolution of 0.9537 ppm. To increase the frequency of the calendar, this feature should be used in conjunction with CALP. See section24.3.12: RTC smooth digital calibration on page13. */
-    static const uint32_t RxC_RTC_CALR_CALP_MSK         = 0x00008000U;   /** @brief Increase frequency of RTC by 488.5 ppm this feature is intended to be used in conjunction with CALM, which lowers the frequency of the calendar with a fine resolution. If the input frequency is 32768 hz, the number of RTCCLK pulses added during a 32-second window is calculated as follows: (512 * CALP) - CALM. Refer to section24.3.12: RTC smooth digital calibration. */
-    static const uint32_t RxC_RTC_TAMPCR_TAMPIE_MSK     = 0x00000004U;   /** @brief Tamper interrupt enable */
-    static const uint32_t RxC_RTC_TAMPCR_TAMPTS_MSK     = 0x00000080U;   /** @brief Activate timestamp on tamper detection event TAMPTS is valid even if TSE=0 in the RTC_CR register. */
-    static const uint32_t RxC_RTC_TAMPCR_TAMPFREQ_MSK   = 0x00000700U;   /** @brief Tamper sampling frequency determines the frequency at which each of the rtc_tampx inputs are sampled. */
-    static const uint32_t RxC_RTC_TAMPCR_TAMPFLT_MSK    = 0x00001800U;   /** @brief RTC_TAMPx filter count these bits determines the number of consecutive samples at the specified level (TAMP*TRG) needed to activate a tamper event. TAMPFLT is valid for each of the rtc_tampx inputs. */
-    static const uint32_t RxC_RTC_TAMPCR_TAMPPRCH_MSK   = 0x00006000U;   /** @brief RTC_TAMPx precharge duration these bit determines the duration of time during which the pull-up/is activated before each sample. TAMPPRCH is valid for each of the rtc_tampx inputs. */
-    static const uint32_t RxC_RTC_TAMPCR_TAMPPUDIS_MSK  = 0x00008000U;   /** @brief RTC_TAMPx pull-up disable this bit determines if each of the rtc_tampx pins are pre-charged before each sample. */
-    static const uint32_t RxC_RTC_ALRMASSR_SS_MSK       = 0x00007FFFU;   /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm A is to be activated. Only bits 0 up MASKSS-1 are compared. */
-    static const uint32_t RxC_RTC_ALRMASSR_MASKSS_MSK   = 0x0F000000U;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
-    static const uint32_t RxC_RTC_ALRMBSSR_SS_MSK       = 0x00007FFFU;   /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm B is to be activated. Only bits 0 up to MASKSS-1 are compared. */
-    static const uint32_t RxC_RTC_ALRMBSSR_MASKSS_MSK   = 0x0F000000U;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
-    static const uint32_t RxC_RTC_OR_RTC_ALARM_TYPE_MSK = 0x00000001U;   /** @brief RTC_ALARM output type on PC13 */
-    static const uint32_t RxC_RTC_OR_RTC_OUT_RMP_MSK    = 0x00000002U;   /** @brief RTC_OUT remap */
-
-    static const uint32_t RxC_RTC_ISR_TAMPxF_MSK[4] = {
+    static const uint32_t RTC_RTC_ISR_TAMPxF_MSK[4] = {
       [1] = 0x00002000U,   /** @brief RTC_TAMP1 detection flag this flag is set by hardware when a tamper detection event is detected on the RTC_TAMP1 input. It is cleared by software writing 0 */
       [2] = 0x00004000U,   /** @brief RTC_TAMP2 detection flag this flag is set by hardware when a tamper detection event is detected on the RTC_TAMP2 input. It is cleared by software writing 0 */
       [3] = 0x00008000U,   /** @brief RTC_TAMP3 detection flag this flag is set by hardware when a tamper detection event is detected on the RTC_TAMP3 input. It is cleared by software writing 0 */
     };
 
-    static const uint32_t RxC_RTC_ALRMAR_MSKx_MSK[5] = {
+    static const uint32_t RTC_RTC_ALRMAR_MSKx_MSK[5] = {
       [1] = 0x00000080U,   /** @brief Alarm A seconds mask */
       [2] = 0x00008000U,   /** @brief Alarm A minutes mask */
       [3] = 0x00800000U,   /** @brief Alarm A hours mask */
       [4] = 0x80000000U,   /** @brief Alarm A date mask */
     };
 
-    static const uint32_t RxC_RTC_CALR_CALWx_MSK[17] = {
+    static const uint32_t RTC_RTC_CALR_CALWx_MSK[17] = {
       [8]  = 0x00004000U,   /** @brief Use an 8-second calibration cycle period when CALW8 is set to 1, the 8-second calibration cycle period is selected. Note: CALM[1:0] are stuck at 00; when CALW8= 1. Refer to section24.3.12: RTC smooth digital calibration. */
       [16] = 0x00002000U,   /** @brief Use a 16-second calibration cycle period when CALW16 is set to 1, the 16-second calibration cycle period is selected.this bit must not be set to 1 if CALW8=1. Note: CALM[0] is stuck at 0 when CALW16= 1. Refer to section24.3.12: RTC smooth digital calibration. */
     };
 
-    static const uint32_t RxC_RTC_TAMPCR_TAMPxE_MSK[4] = {
+    static const uint32_t RTC_RTC_TAMPCR_TAMPxE_MSK[4] = {
       [1] = 0x00000001U,   /** @brief RTC_TAMP1 input detection enable */
       [2] = 0x00000008U,   /** @brief RTC_TAMP2 input detection enable */
       [3] = 0x00000020U,   /** @brief RTC_TAMP3 detection enable */
     };
 
-    static const uint32_t RxC_RTC_TAMPCR_TAMPxTRG_MSK[4] = {
+    static const uint32_t RTC_RTC_TAMPCR_TAMPxTRG_MSK[4] = {
       [1] = 0x00000002U,   /** @brief Active level for RTC_TAMP1 input if TAMPFLT != 00 if TAMPFLT = 00: */
       [2] = 0x00000010U,   /** @brief Active level for RTC_TAMP2 input if TAMPFLT != 00: if TAMPFLT = 00: */
       [3] = 0x00000040U,   /** @brief Active level for RTC_TAMP3 input if TAMPFLT != 00: if TAMPFLT = 00: */
     };
 
-    static const uint32_t RxC_RTC_TAMPCR_TAMPxIE_MSK[4] = {
+    static const uint32_t RTC_RTC_TAMPCR_TAMPxIE_MSK[4] = {
       [1] = 0x00010000U,   /** @brief Tamper 1 interrupt enable */
       [2] = 0x00080000U,   /** @brief Tamper 2 interrupt enable */
       [3] = 0x00400000U,   /** @brief Tamper 3 interrupt enable */
     };
 
-    static const uint32_t RxC_RTC_TAMPCR_TAMPxNOERASE_MSK[4] = {
+    static const uint32_t RTC_RTC_TAMPCR_TAMPxNOERASE_MSK[4] = {
       [1] = 0x00020000U,   /** @brief Tamper 1 no erase */
       [2] = 0x00100000U,   /** @brief Tamper 2 no erase */
       [3] = 0x00800000U,   /** @brief Tamper 3 no erase */
     };
 
-    static const uint32_t RxC_RTC_TAMPCR_TAMPxMF_MSK[4] = {
+    static const uint32_t RTC_RTC_TAMPCR_TAMPxMF_MSK[4] = {
       [1] = 0x00040000U,   /** @brief Tamper 1 mask flag */
       [2] = 0x00200000U,   /** @brief Tamper 2 mask flag */
       [3] = 0x01000000U,   /** @brief Tamper 3 mask flag */
     };
 
-    /**** @subsection RxC Register Field Positions ****/
+    /**** @subsection RTC Register Field Positions ****/
 
-    static const int32_t RxC_RTC_TR_SU_POS             = 0;    /** @brief Second units in BCD format */
-    static const int32_t RxC_RTC_TR_ST_POS             = 4;    /** @brief Second tens in BCD format */
-    static const int32_t RxC_RTC_TR_MNU_POS            = 8;    /** @brief Minute units in BCD format */
-    static const int32_t RxC_RTC_TR_MNT_POS            = 12;   /** @brief Minute tens in BCD format */
-    static const int32_t RxC_RTC_TR_HU_POS             = 16;   /** @brief Hour units in BCD format */
-    static const int32_t RxC_RTC_TR_HT_POS             = 20;   /** @brief Hour tens in BCD format */
-    static const int32_t RxC_RTC_TR_PM_POS             = 22;   /** @brief AM/PM notation */
-    static const int32_t RxC_RTC_DR_DU_POS             = 0;    /** @brief Date units in BCD format */
-    static const int32_t RxC_RTC_DR_DT_POS             = 4;    /** @brief Date tens in BCD format */
-    static const int32_t RxC_RTC_DR_MU_POS             = 8;    /** @brief Month units in BCD format */
-    static const int32_t RxC_RTC_DR_MT_POS             = 12;   /** @brief Month tens in BCD format */
-    static const int32_t RxC_RTC_DR_WDU_POS            = 13;   /** @brief Week day units */
-    static const int32_t RxC_RTC_DR_YU_POS             = 16;   /** @brief Year units in BCD format */
-    static const int32_t RxC_RTC_DR_YT_POS             = 20;   /** @brief Year tens in BCD format */
-    static const int32_t RxC_RTC_CR_WUCKSEL_POS        = 0;    /** @brief Wakeup clock selection */
-    static const int32_t RxC_RTC_CR_TSEDGE_POS         = 3;    /** @brief Time-stamp event active edge TSE must be reset when TSEDGE is changed to avoid unwanted TSF setting. */
-    static const int32_t RxC_RTC_CR_REFCKON_POS        = 4;    /** @brief RTC_REFIN reference clock detection enable (50 or 60hz) note: PREDIV_S must be 0x00ff. */
-    static const int32_t RxC_RTC_CR_BYPSHAD_POS        = 5;    /** @brief Bypass the shadow registers note: if the frequency of the APB clock is less than seven times the frequency of RTCCLK, BYPSHAD must be set to 1. */
-    static const int32_t RxC_RTC_CR_FMT_POS            = 6;    /** @brief Hour format */
-    static const int32_t RxC_RTC_CR_ALRAE_POS          = 8;    /** @brief Alarm A enable */
-    static const int32_t RxC_RTC_CR_ALRBE_POS          = 9;    /** @brief Alarm B enable */
-    static const int32_t RxC_RTC_CR_WUTE_POS           = 10;   /** @brief Wakeup timer enable */
-    static const int32_t RxC_RTC_CR_TSE_POS            = 11;   /** @brief Timestamp enable */
-    static const int32_t RxC_RTC_CR_ALRAIE_POS         = 12;   /** @brief Alarm A interrupt enable */
-    static const int32_t RxC_RTC_CR_ALRBIE_POS         = 13;   /** @brief Alarm B interrupt enable */
-    static const int32_t RxC_RTC_CR_WUTIE_POS          = 14;   /** @brief Wakeup timer interrupt enable */
-    static const int32_t RxC_RTC_CR_TSIE_POS           = 15;   /** @brief Time-stamp interrupt enable */
-    static const int32_t RxC_RTC_CR_ADD1H_POS          = 16;   /** @brief Add 1 hour (summer time change) when this bit is set outside initialization mode, 1 hour is added to the calendar time. This bit is always read as 0. */
-    static const int32_t RxC_RTC_CR_SUB1H_POS          = 17;   /** @brief Subtract 1 hour (winter time change) when this bit is set outside initialization mode, 1 hour is subtracted to the calendar time if the current hour is not 0. This bit is always read as 0. Setting this bit has no effect when current hour is 0. */
-    static const int32_t RxC_RTC_CR_BKP_POS            = 18;   /** @brief Backup this bit can be written by the user to memorize whether the daylight saving time change has been performed or not. */
-    static const int32_t RxC_RTC_CR_COSEL_POS          = 19;   /** @brief Calibration output selection when COE=1, this bit selects which signal is output on RTC_CALIB. These frequencies are valid for RTCCLK at 32.768 khz and prescalers at their default values (PREDIV_A=127 and PREDIV_S=255). Refer to section24.3.15: calibration clock output */
-    static const int32_t RxC_RTC_CR_POL_POS            = 20;   /** @brief Output polarity this bit is used to configure the polarity of RTC_ALARM output */
-    static const int32_t RxC_RTC_CR_OSEL_POS           = 21;   /** @brief Output selection these bits are used to select the flag to be routed to RTC_ALARM output */
-    static const int32_t RxC_RTC_CR_COE_POS            = 23;   /** @brief Calibration output enable this bit enables the RTC_CALIB output */
-    static const int32_t RxC_RTC_CR_ITSE_POS           = 24;   /** @brief Timestamp on internal event enable */
-    static const int32_t RxC_RTC_ISR_ALRAWF_POS        = 0;    /** @brief Alarm A write flag this bit is set by hardware when alarm A values can be changed, after the ALRAE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
-    static const int32_t RxC_RTC_ISR_ALRBWF_POS        = 1;    /** @brief Alarm B write flag this bit is set by hardware when alarm B values can be changed, after the ALRBE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
-    static const int32_t RxC_RTC_ISR_WUTWF_POS         = 2;    /** @brief Wakeup timer write flag this bit is set by hardware up to 2 RTCCLK cycles after the WUTE bit has been set to 0 in RTC_CR, and is cleared up to 2 RTCCLK cycles after the WUTE bit has been set to 1. The wakeup timer values can be changed when WUTE bit is cleared and WUTWF is set. */
-    static const int32_t RxC_RTC_ISR_SHPF_POS          = 3;    /** @brief Shift operation pending this flag is set by hardware as soon as a shift operation is initiated by a write to the RTC_SHIFTR register. It is cleared by hardware when the corresponding shift operation has been executed. Writing to the SHPF bit has no effect. */
-    static const int32_t RxC_RTC_ISR_INITS_POS         = 4;    /** @brief Initialization status flag this bit is set by hardware when the calendar year field is different from 0 (backup domain reset state). */
-    static const int32_t RxC_RTC_ISR_RSF_POS           = 5;    /** @brief Registers synchronization flag this bit is set by hardware each time the calendar registers are copied into the shadow registers (rtc_ssrx, rtc_trx and rtc_drx). This bit is cleared by hardware in initialization mode, while a shift operation is pending (SHPF=1), or when in bypass shadow register mode (BYPSHAD=1). This bit can also be cleared by software. It is cleared either by software or by hardware in initialization mode. */
-    static const int32_t RxC_RTC_ISR_INITF_POS         = 6;    /** @brief Initialization flag when this bit is set to 1, the RTC is in initialization state, and the time, date and prescaler registers can be updated. */
-    static const int32_t RxC_RTC_ISR_INIT_POS          = 7;    /** @brief Initialization mode */
-    static const int32_t RxC_RTC_ISR_ALRAF_POS         = 8;    /** @brief Alarm A flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm A register (RTC_ALRMAR). This flag is cleared by software by writing 0. */
-    static const int32_t RxC_RTC_ISR_ALRBF_POS         = 9;    /** @brief Alarm B flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm B register (RTC_ALRMBR). This flag is cleared by software by writing 0. */
-    static const int32_t RxC_RTC_ISR_WUTF_POS          = 10;   /** @brief Wakeup timer flag this flag is set by hardware when the wakeup auto-reload counter reaches 0. This flag is cleared by software by writing 0. This flag must be cleared by software at least 1.5 RTCCLK periods before WUTF is set to 1 again. */
-    static const int32_t RxC_RTC_ISR_TSF_POS           = 11;   /** @brief Time-stamp flag this flag is set by hardware when a time-stamp event occurs. This flag is cleared by software by writing 0. */
-    static const int32_t RxC_RTC_ISR_TSOVF_POS         = 12;   /** @brief Time-stamp overflow flag this flag is set by hardware when a time-stamp event occurs while TSF is already set. This flag is cleared by software by writing 0. It is recommended to check and then clear TSOVF only after clearing the TSF bit. Otherwise, an overflow might not be noticed if a time-stamp event occurs immediately before the TSF bit is cleared. */
-    static const int32_t RxC_RTC_ISR_RECALPF_POS       = 16;   /** @brief Recalibration pending flag the RECALPF status flag is automatically set to 1 when software writes to the RTC_CALR register, indicating that the RTC_CALR register is blocked. When the new calibration settings are taken into account, this bit returns to 0. Refer to re-calibration on-the-fly. */
-    static const int32_t RxC_RTC_ISR_ITSF_POS          = 17;   /** @brief Internal ttime-stamp flag */
-    static const int32_t RxC_RTC_PRER_PREDIV_S_POS     = 0;    /** @brief Synchronous prescaler factor this is the synchronous division factor: ck_spre frequency = ck_apre frequency/(prediv_s+1) */
-    static const int32_t RxC_RTC_PRER_PREDIV_A_POS     = 16;   /** @brief Asynchronous prescaler factor this is the asynchronous division factor: ck_apre frequency = RTCCLK frequency/(prediv_a+1) */
-    static const int32_t RxC_RTC_WUTR_WUT_POS          = 0;    /** @brief Wakeup auto-reload value bits when the wakeup timer is enabled (WUTE set to 1), the WUTF flag is set every (WUT[15:0] + 1) ck_wut cycles. The ck_wut period is selected through WUCKSEL[2:0] bits of the RTC_CR register when WUCKSEL[2] = 1, the wakeup timer becomes 17-bits and WUCKSEL[1] effectively becomes WUT[16] the most-significant bit to be reloaded into the timer. The first assertion of WUTF occurs (WUT+1) ck_wut cycles after WUTE is set. Setting WUT[15:0] to 0x0000 with WUCKSEL[2:0] =011 (RTCCLK/2) is forbidden. */
-    static const int32_t RxC_RTC_ALRMAR_SU_POS         = 0;    /** @brief Second units in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_ST_POS         = 4;    /** @brief Second tens in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_MNU_POS        = 8;    /** @brief Minute units in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_MNT_POS        = 12;   /** @brief Minute tens in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_HU_POS         = 16;   /** @brief Hour units in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_HT_POS         = 20;   /** @brief Hour tens in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_PM_POS         = 22;   /** @brief AM/PM notation */
-    static const int32_t RxC_RTC_ALRMAR_DU_POS         = 24;   /** @brief Date units or day in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_DT_POS         = 28;   /** @brief Date tens in BCD format. */
-    static const int32_t RxC_RTC_ALRMAR_WDSEL_POS      = 30;   /** @brief Week day selection */
-    static const int32_t RxC_RTC_ALRMBR_SU_POS         = 0;    /** @brief Second units in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_ST_POS         = 4;    /** @brief Second tens in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_MNU_POS        = 8;    /** @brief Minute units in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_MNT_POS        = 12;   /** @brief Minute tens in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_HU_POS         = 16;   /** @brief Hour units in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_HT_POS         = 20;   /** @brief Hour tens in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_PM_POS         = 22;   /** @brief AM/PM notation */
-    static const int32_t RxC_RTC_ALRMBR_DU_POS         = 24;   /** @brief Date units or day in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_DT_POS         = 28;   /** @brief Date tens in BCD format */
-    static const int32_t RxC_RTC_ALRMBR_WDSEL_POS      = 30;   /** @brief Week day selection */
-    static const int32_t RxC_RTC_WPR_KEY_POS           = 0;    /** @brief Write protection key this byte is written by software. Reading this byte always returns 0x00. Refer to RTC register write protection for a description of how to unlock RTC register write protection. */
-    static const int32_t RxC_RTC_SSR_SS_POS            = 0;    /** @brief Sub second value SS[15:0] is the value in the synchronous prescaler counter. The fraction of a second is given by the formula below: second fraction = (PREDIV_S - SS) / (PREDIV_S + 1) note: SS can be larger than PREDIV_S only after a shift operation. In that case, the correct time/date is one second less than as indicated by RTC_TR/RTC_DR. */
-    static const int32_t RxC_RTC_SHIFTR_SUBFS_POS      = 0;    /** @brief Subtract a fraction of a second these bits are write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). The value which is written to SUBFS is added to the synchronous prescaler counter. Since this counter counts down, this operation effectively subtracts from (delays) the clock by: delay (seconds) = SUBFS / (PREDIV_S + 1) A fraction of a second can effectively be added to the clock (advancing the clock) when the ADD1S function is used in conjunction with SUBFS, effectively advancing the clock by: advance (seconds) = (1 - (SUBFS / (PREDIV_S + 1))). Note: writing to SUBFS causes RSF to be cleared. Software can then wait until RSF=1 to be sure that the shadow registers have been updated with the shifted time. */
-    static const int32_t RxC_RTC_SHIFTR_ADD1S_POS      = 31;   /** @brief Add one second this bit is write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). This function is intended to be used with SUBFS (see description below) in order to effectively add a fraction of a second to the clock in an atomic operation. */
-    static const int32_t RxC_RTC_TSTR_SU_POS           = 0;    /** @brief Second units in BCD format. */
-    static const int32_t RxC_RTC_TSTR_ST_POS           = 4;    /** @brief Second tens in BCD format. */
-    static const int32_t RxC_RTC_TSTR_MNU_POS          = 8;    /** @brief Minute units in BCD format. */
-    static const int32_t RxC_RTC_TSTR_MNT_POS          = 12;   /** @brief Minute tens in BCD format. */
-    static const int32_t RxC_RTC_TSTR_HU_POS           = 16;   /** @brief Hour units in BCD format. */
-    static const int32_t RxC_RTC_TSTR_HT_POS           = 20;   /** @brief Hour tens in BCD format. */
-    static const int32_t RxC_RTC_TSTR_PM_POS           = 22;   /** @brief AM/PM notation */
-    static const int32_t RxC_RTC_TSDR_DU_POS           = 0;    /** @brief Date units in BCD format */
-    static const int32_t RxC_RTC_TSDR_DT_POS           = 4;    /** @brief Date tens in BCD format */
-    static const int32_t RxC_RTC_TSDR_MU_POS           = 8;    /** @brief Month units in BCD format */
-    static const int32_t RxC_RTC_TSDR_MT_POS           = 12;   /** @brief Month tens in BCD format */
-    static const int32_t RxC_RTC_TSDR_WDU_POS          = 13;   /** @brief Week day units */
-    static const int32_t RxC_RTC_TSSSR_SS_POS          = 0;    /** @brief Sub second value SS[15:0] is the value of the synchronous prescaler counter when the timestamp event occurred. */
-    static const int32_t RxC_RTC_CALR_CALM_POS         = 0;    /** @brief Calibration minus the frequency of the calendar is reduced by masking CALM out of 220 RTCCLK pulses (32 seconds if the input frequency is 32768 hz). This decreases the frequency of the calendar with a resolution of 0.9537 ppm. To increase the frequency of the calendar, this feature should be used in conjunction with CALP. See section24.3.12: RTC smooth digital calibration on page13. */
-    static const int32_t RxC_RTC_CALR_CALP_POS         = 15;   /** @brief Increase frequency of RTC by 488.5 ppm this feature is intended to be used in conjunction with CALM, which lowers the frequency of the calendar with a fine resolution. If the input frequency is 32768 hz, the number of RTCCLK pulses added during a 32-second window is calculated as follows: (512 * CALP) - CALM. Refer to section24.3.12: RTC smooth digital calibration. */
-    static const int32_t RxC_RTC_TAMPCR_TAMPIE_POS     = 2;    /** @brief Tamper interrupt enable */
-    static const int32_t RxC_RTC_TAMPCR_TAMPTS_POS     = 7;    /** @brief Activate timestamp on tamper detection event TAMPTS is valid even if TSE=0 in the RTC_CR register. */
-    static const int32_t RxC_RTC_TAMPCR_TAMPFREQ_POS   = 8;    /** @brief Tamper sampling frequency determines the frequency at which each of the rtc_tampx inputs are sampled. */
-    static const int32_t RxC_RTC_TAMPCR_TAMPFLT_POS    = 11;   /** @brief RTC_TAMPx filter count these bits determines the number of consecutive samples at the specified level (TAMP*TRG) needed to activate a tamper event. TAMPFLT is valid for each of the rtc_tampx inputs. */
-    static const int32_t RxC_RTC_TAMPCR_TAMPPRCH_POS   = 13;   /** @brief RTC_TAMPx precharge duration these bit determines the duration of time during which the pull-up/is activated before each sample. TAMPPRCH is valid for each of the rtc_tampx inputs. */
-    static const int32_t RxC_RTC_TAMPCR_TAMPPUDIS_POS  = 15;   /** @brief RTC_TAMPx pull-up disable this bit determines if each of the rtc_tampx pins are pre-charged before each sample. */
-    static const int32_t RxC_RTC_ALRMASSR_SS_POS       = 0;    /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm A is to be activated. Only bits 0 up MASKSS-1 are compared. */
-    static const int32_t RxC_RTC_ALRMASSR_MASKSS_POS   = 24;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
-    static const int32_t RxC_RTC_ALRMBSSR_SS_POS       = 0;    /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm B is to be activated. Only bits 0 up to MASKSS-1 are compared. */
-    static const int32_t RxC_RTC_ALRMBSSR_MASKSS_POS   = 24;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
-    static const int32_t RxC_RTC_OR_RTC_ALARM_TYPE_POS = 0;    /** @brief RTC_ALARM output type on PC13 */
-    static const int32_t RxC_RTC_OR_RTC_OUT_RMP_POS    = 1;    /** @brief RTC_OUT remap */
+    static const int32_t RTC_RTC_TR_SU_POS             = 0;    /** @brief Second units in BCD format */
+    static const int32_t RTC_RTC_TR_ST_POS             = 4;    /** @brief Second tens in BCD format */
+    static const int32_t RTC_RTC_TR_MNU_POS            = 8;    /** @brief Minute units in BCD format */
+    static const int32_t RTC_RTC_TR_MNT_POS            = 12;   /** @brief Minute tens in BCD format */
+    static const int32_t RTC_RTC_TR_HU_POS             = 16;   /** @brief Hour units in BCD format */
+    static const int32_t RTC_RTC_TR_HT_POS             = 20;   /** @brief Hour tens in BCD format */
+    static const int32_t RTC_RTC_TR_PM_POS             = 22;   /** @brief AM/PM notation */
+    static const int32_t RTC_RTC_DR_DU_POS             = 0;    /** @brief Date units in BCD format */
+    static const int32_t RTC_RTC_DR_DT_POS             = 4;    /** @brief Date tens in BCD format */
+    static const int32_t RTC_RTC_DR_MU_POS             = 8;    /** @brief Month units in BCD format */
+    static const int32_t RTC_RTC_DR_MT_POS             = 12;   /** @brief Month tens in BCD format */
+    static const int32_t RTC_RTC_DR_WDU_POS            = 13;   /** @brief Week day units */
+    static const int32_t RTC_RTC_DR_YU_POS             = 16;   /** @brief Year units in BCD format */
+    static const int32_t RTC_RTC_DR_YT_POS             = 20;   /** @brief Year tens in BCD format */
+    static const int32_t RTC_RTC_CR_WUCKSEL_POS        = 0;    /** @brief Wakeup clock selection */
+    static const int32_t RTC_RTC_CR_TSEDGE_POS         = 3;    /** @brief Time-stamp event active edge TSE must be reset when TSEDGE is changed to avoid unwanted TSF setting. */
+    static const int32_t RTC_RTC_CR_REFCKON_POS        = 4;    /** @brief RTC_REFIN reference clock detection enable (50 or 60hz) note: PREDIV_S must be 0x00ff. */
+    static const int32_t RTC_RTC_CR_BYPSHAD_POS        = 5;    /** @brief Bypass the shadow registers note: if the frequency of the APB clock is less than seven times the frequency of RTCCLK, BYPSHAD must be set to 1. */
+    static const int32_t RTC_RTC_CR_FMT_POS            = 6;    /** @brief Hour format */
+    static const int32_t RTC_RTC_CR_ALRAE_POS          = 8;    /** @brief Alarm A enable */
+    static const int32_t RTC_RTC_CR_ALRBE_POS          = 9;    /** @brief Alarm B enable */
+    static const int32_t RTC_RTC_CR_WUTE_POS           = 10;   /** @brief Wakeup timer enable */
+    static const int32_t RTC_RTC_CR_TSE_POS            = 11;   /** @brief Timestamp enable */
+    static const int32_t RTC_RTC_CR_ALRAIE_POS         = 12;   /** @brief Alarm A interrupt enable */
+    static const int32_t RTC_RTC_CR_ALRBIE_POS         = 13;   /** @brief Alarm B interrupt enable */
+    static const int32_t RTC_RTC_CR_WUTIE_POS          = 14;   /** @brief Wakeup timer interrupt enable */
+    static const int32_t RTC_RTC_CR_TSIE_POS           = 15;   /** @brief Time-stamp interrupt enable */
+    static const int32_t RTC_RTC_CR_ADD1H_POS          = 16;   /** @brief Add 1 hour (summer time change) when this bit is set outside initialization mode, 1 hour is added to the calendar time. This bit is always read as 0. */
+    static const int32_t RTC_RTC_CR_SUB1H_POS          = 17;   /** @brief Subtract 1 hour (winter time change) when this bit is set outside initialization mode, 1 hour is subtracted to the calendar time if the current hour is not 0. This bit is always read as 0. Setting this bit has no effect when current hour is 0. */
+    static const int32_t RTC_RTC_CR_BKP_POS            = 18;   /** @brief Backup this bit can be written by the user to memorize whether the daylight saving time change has been performed or not. */
+    static const int32_t RTC_RTC_CR_COSEL_POS          = 19;   /** @brief Calibration output selection when COE=1, this bit selects which signal is output on RTC_CALIB. These frequencies are valid for RTCCLK at 32.768 khz and prescalers at their default values (PREDIV_A=127 and PREDIV_S=255). Refer to section24.3.15: calibration clock output */
+    static const int32_t RTC_RTC_CR_POL_POS            = 20;   /** @brief Output polarity this bit is used to configure the polarity of RTC_ALARM output */
+    static const int32_t RTC_RTC_CR_OSEL_POS           = 21;   /** @brief Output selection these bits are used to select the flag to be routed to RTC_ALARM output */
+    static const int32_t RTC_RTC_CR_COE_POS            = 23;   /** @brief Calibration output enable this bit enables the RTC_CALIB output */
+    static const int32_t RTC_RTC_CR_ITSE_POS           = 24;   /** @brief Timestamp on internal event enable */
+    static const int32_t RTC_RTC_ISR_ALRAWF_POS        = 0;    /** @brief Alarm A write flag this bit is set by hardware when alarm A values can be changed, after the ALRAE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
+    static const int32_t RTC_RTC_ISR_ALRBWF_POS        = 1;    /** @brief Alarm B write flag this bit is set by hardware when alarm B values can be changed, after the ALRBE bit has been set to 0 in RTC_CR. It is cleared by hardware in initialization mode. */
+    static const int32_t RTC_RTC_ISR_WUTWF_POS         = 2;    /** @brief Wakeup timer write flag this bit is set by hardware up to 2 RTCCLK cycles after the WUTE bit has been set to 0 in RTC_CR, and is cleared up to 2 RTCCLK cycles after the WUTE bit has been set to 1. The wakeup timer values can be changed when WUTE bit is cleared and WUTWF is set. */
+    static const int32_t RTC_RTC_ISR_SHPF_POS          = 3;    /** @brief Shift operation pending this flag is set by hardware as soon as a shift operation is initiated by a write to the RTC_SHIFTR register. It is cleared by hardware when the corresponding shift operation has been executed. Writing to the SHPF bit has no effect. */
+    static const int32_t RTC_RTC_ISR_INITS_POS         = 4;    /** @brief Initialization status flag this bit is set by hardware when the calendar year field is different from 0 (backup domain reset state). */
+    static const int32_t RTC_RTC_ISR_RSF_POS           = 5;    /** @brief Registers synchronization flag this bit is set by hardware each time the calendar registers are copied into the shadow registers (rtc_ssrx, rtc_trx and rtc_drx). This bit is cleared by hardware in initialization mode, while a shift operation is pending (SHPF=1), or when in bypass shadow register mode (BYPSHAD=1). This bit can also be cleared by software. It is cleared either by software or by hardware in initialization mode. */
+    static const int32_t RTC_RTC_ISR_INITF_POS         = 6;    /** @brief Initialization flag when this bit is set to 1, the RTC is in initialization state, and the time, date and prescaler registers can be updated. */
+    static const int32_t RTC_RTC_ISR_INIT_POS          = 7;    /** @brief Initialization mode */
+    static const int32_t RTC_RTC_ISR_ALRAF_POS         = 8;    /** @brief Alarm A flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm A register (RTC_ALRMAR). This flag is cleared by software by writing 0. */
+    static const int32_t RTC_RTC_ISR_ALRBF_POS         = 9;    /** @brief Alarm B flag this flag is set by hardware when the time/date registers (RTC_TR and RTC_DR) match the alarm B register (RTC_ALRMBR). This flag is cleared by software by writing 0. */
+    static const int32_t RTC_RTC_ISR_WUTF_POS          = 10;   /** @brief Wakeup timer flag this flag is set by hardware when the wakeup auto-reload counter reaches 0. This flag is cleared by software by writing 0. This flag must be cleared by software at least 1.5 RTCCLK periods before WUTF is set to 1 again. */
+    static const int32_t RTC_RTC_ISR_TSF_POS           = 11;   /** @brief Time-stamp flag this flag is set by hardware when a time-stamp event occurs. This flag is cleared by software by writing 0. */
+    static const int32_t RTC_RTC_ISR_TSOVF_POS         = 12;   /** @brief Time-stamp overflow flag this flag is set by hardware when a time-stamp event occurs while TSF is already set. This flag is cleared by software by writing 0. It is recommended to check and then clear TSOVF only after clearing the TSF bit. Otherwise, an overflow might not be noticed if a time-stamp event occurs immediately before the TSF bit is cleared. */
+    static const int32_t RTC_RTC_ISR_RECALPF_POS       = 16;   /** @brief Recalibration pending flag the RECALPF status flag is automatically set to 1 when software writes to the RTC_CALR register, indicating that the RTC_CALR register is blocked. When the new calibration settings are taken into account, this bit returns to 0. Refer to re-calibration on-the-fly. */
+    static const int32_t RTC_RTC_ISR_ITSF_POS          = 17;   /** @brief Internal ttime-stamp flag */
+    static const int32_t RTC_RTC_PRER_PREDIV_S_POS     = 0;    /** @brief Synchronous prescaler factor this is the synchronous division factor: ck_spre frequency = ck_apre frequency/(prediv_s+1) */
+    static const int32_t RTC_RTC_PRER_PREDIV_A_POS     = 16;   /** @brief Asynchronous prescaler factor this is the asynchronous division factor: ck_apre frequency = RTCCLK frequency/(prediv_a+1) */
+    static const int32_t RTC_RTC_WUTR_WUT_POS          = 0;    /** @brief Wakeup auto-reload value bits when the wakeup timer is enabled (WUTE set to 1), the WUTF flag is set every (WUT[15:0] + 1) ck_wut cycles. The ck_wut period is selected through WUCKSEL[2:0] bits of the RTC_CR register when WUCKSEL[2] = 1, the wakeup timer becomes 17-bits and WUCKSEL[1] effectively becomes WUT[16] the most-significant bit to be reloaded into the timer. The first assertion of WUTF occurs (WUT+1) ck_wut cycles after WUTE is set. Setting WUT[15:0] to 0x0000 with WUCKSEL[2:0] =011 (RTCCLK/2) is forbidden. */
+    static const int32_t RTC_RTC_ALRMAR_SU_POS         = 0;    /** @brief Second units in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_ST_POS         = 4;    /** @brief Second tens in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_MNU_POS        = 8;    /** @brief Minute units in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_MNT_POS        = 12;   /** @brief Minute tens in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_HU_POS         = 16;   /** @brief Hour units in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_HT_POS         = 20;   /** @brief Hour tens in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_PM_POS         = 22;   /** @brief AM/PM notation */
+    static const int32_t RTC_RTC_ALRMAR_DU_POS         = 24;   /** @brief Date units or day in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_DT_POS         = 28;   /** @brief Date tens in BCD format. */
+    static const int32_t RTC_RTC_ALRMAR_WDSEL_POS      = 30;   /** @brief Week day selection */
+    static const int32_t RTC_RTC_ALRMBR_SU_POS         = 0;    /** @brief Second units in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_ST_POS         = 4;    /** @brief Second tens in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_MNU_POS        = 8;    /** @brief Minute units in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_MNT_POS        = 12;   /** @brief Minute tens in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_HU_POS         = 16;   /** @brief Hour units in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_HT_POS         = 20;   /** @brief Hour tens in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_PM_POS         = 22;   /** @brief AM/PM notation */
+    static const int32_t RTC_RTC_ALRMBR_DU_POS         = 24;   /** @brief Date units or day in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_DT_POS         = 28;   /** @brief Date tens in BCD format */
+    static const int32_t RTC_RTC_ALRMBR_WDSEL_POS      = 30;   /** @brief Week day selection */
+    static const int32_t RTC_RTC_WPR_KEY_POS           = 0;    /** @brief Write protection key this byte is written by software. Reading this byte always returns 0x00. Refer to RTC register write protection for a description of how to unlock RTC register write protection. */
+    static const int32_t RTC_RTC_SSR_SS_POS            = 0;    /** @brief Sub second value SS[15:0] is the value in the synchronous prescaler counter. The fraction of a second is given by the formula below: second fraction = (PREDIV_S - SS) / (PREDIV_S + 1) note: SS can be larger than PREDIV_S only after a shift operation. In that case, the correct time/date is one second less than as indicated by RTC_TR/RTC_DR. */
+    static const int32_t RTC_RTC_SHIFTR_SUBFS_POS      = 0;    /** @brief Subtract a fraction of a second these bits are write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). The value which is written to SUBFS is added to the synchronous prescaler counter. Since this counter counts down, this operation effectively subtracts from (delays) the clock by: delay (seconds) = SUBFS / (PREDIV_S + 1) A fraction of a second can effectively be added to the clock (advancing the clock) when the ADD1S function is used in conjunction with SUBFS, effectively advancing the clock by: advance (seconds) = (1 - (SUBFS / (PREDIV_S + 1))). Note: writing to SUBFS causes RSF to be cleared. Software can then wait until RSF=1 to be sure that the shadow registers have been updated with the shifted time. */
+    static const int32_t RTC_RTC_SHIFTR_ADD1S_POS      = 31;   /** @brief Add one second this bit is write only and is always read as zero. Writing to this bit has no effect when a shift operation is pending (when SHPF=1, in RTC_ISR). This function is intended to be used with SUBFS (see description below) in order to effectively add a fraction of a second to the clock in an atomic operation. */
+    static const int32_t RTC_RTC_TSTR_SU_POS           = 0;    /** @brief Second units in BCD format. */
+    static const int32_t RTC_RTC_TSTR_ST_POS           = 4;    /** @brief Second tens in BCD format. */
+    static const int32_t RTC_RTC_TSTR_MNU_POS          = 8;    /** @brief Minute units in BCD format. */
+    static const int32_t RTC_RTC_TSTR_MNT_POS          = 12;   /** @brief Minute tens in BCD format. */
+    static const int32_t RTC_RTC_TSTR_HU_POS           = 16;   /** @brief Hour units in BCD format. */
+    static const int32_t RTC_RTC_TSTR_HT_POS           = 20;   /** @brief Hour tens in BCD format. */
+    static const int32_t RTC_RTC_TSTR_PM_POS           = 22;   /** @brief AM/PM notation */
+    static const int32_t RTC_RTC_TSDR_DU_POS           = 0;    /** @brief Date units in BCD format */
+    static const int32_t RTC_RTC_TSDR_DT_POS           = 4;    /** @brief Date tens in BCD format */
+    static const int32_t RTC_RTC_TSDR_MU_POS           = 8;    /** @brief Month units in BCD format */
+    static const int32_t RTC_RTC_TSDR_MT_POS           = 12;   /** @brief Month tens in BCD format */
+    static const int32_t RTC_RTC_TSDR_WDU_POS          = 13;   /** @brief Week day units */
+    static const int32_t RTC_RTC_TSSSR_SS_POS          = 0;    /** @brief Sub second value SS[15:0] is the value of the synchronous prescaler counter when the timestamp event occurred. */
+    static const int32_t RTC_RTC_CALR_CALM_POS         = 0;    /** @brief Calibration minus the frequency of the calendar is reduced by masking CALM out of 220 RTCCLK pulses (32 seconds if the input frequency is 32768 hz). This decreases the frequency of the calendar with a resolution of 0.9537 ppm. To increase the frequency of the calendar, this feature should be used in conjunction with CALP. See section24.3.12: RTC smooth digital calibration on page13. */
+    static const int32_t RTC_RTC_CALR_CALP_POS         = 15;   /** @brief Increase frequency of RTC by 488.5 ppm this feature is intended to be used in conjunction with CALM, which lowers the frequency of the calendar with a fine resolution. If the input frequency is 32768 hz, the number of RTCCLK pulses added during a 32-second window is calculated as follows: (512 * CALP) - CALM. Refer to section24.3.12: RTC smooth digital calibration. */
+    static const int32_t RTC_RTC_TAMPCR_TAMPIE_POS     = 2;    /** @brief Tamper interrupt enable */
+    static const int32_t RTC_RTC_TAMPCR_TAMPTS_POS     = 7;    /** @brief Activate timestamp on tamper detection event TAMPTS is valid even if TSE=0 in the RTC_CR register. */
+    static const int32_t RTC_RTC_TAMPCR_TAMPFREQ_POS   = 8;    /** @brief Tamper sampling frequency determines the frequency at which each of the rtc_tampx inputs are sampled. */
+    static const int32_t RTC_RTC_TAMPCR_TAMPFLT_POS    = 11;   /** @brief RTC_TAMPx filter count these bits determines the number of consecutive samples at the specified level (TAMP*TRG) needed to activate a tamper event. TAMPFLT is valid for each of the rtc_tampx inputs. */
+    static const int32_t RTC_RTC_TAMPCR_TAMPPRCH_POS   = 13;   /** @brief RTC_TAMPx precharge duration these bit determines the duration of time during which the pull-up/is activated before each sample. TAMPPRCH is valid for each of the rtc_tampx inputs. */
+    static const int32_t RTC_RTC_TAMPCR_TAMPPUDIS_POS  = 15;   /** @brief RTC_TAMPx pull-up disable this bit determines if each of the rtc_tampx pins are pre-charged before each sample. */
+    static const int32_t RTC_RTC_ALRMASSR_SS_POS       = 0;    /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm A is to be activated. Only bits 0 up MASKSS-1 are compared. */
+    static const int32_t RTC_RTC_ALRMASSR_MASKSS_POS   = 24;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
+    static const int32_t RTC_RTC_ALRMBSSR_SS_POS       = 0;    /** @brief Sub seconds value this value is compared with the contents of the synchronous prescaler counter to determine if alarm B is to be activated. Only bits 0 up to MASKSS-1 are compared. */
+    static const int32_t RTC_RTC_ALRMBSSR_MASKSS_POS   = 24;   /** @brief Mask the most-significant bits starting at this bit ... The overflow bits of the synchronous counter (bits 15) is never compared. This bit can be different from 0 only after a shift operation. */
+    static const int32_t RTC_RTC_OR_RTC_ALARM_TYPE_POS = 0;    /** @brief RTC_ALARM output type on PC13 */
+    static const int32_t RTC_RTC_OR_RTC_OUT_RMP_POS    = 1;    /** @brief RTC_OUT remap */
 
-    static const int32_t RxC_RTC_ISR_TAMPxF_POS[4] = {
+    static const int32_t RTC_RTC_ISR_TAMPxF_POS[4] = {
       [1] = 13,   /** @brief RTC_TAMP1 detection flag this flag is set by hardware when a tamper detection event is detected on the RTC_TAMP1 input. It is cleared by software writing 0 */
       [2] = 14,   /** @brief RTC_TAMP2 detection flag this flag is set by hardware when a tamper detection event is detected on the RTC_TAMP2 input. It is cleared by software writing 0 */
       [3] = 15,   /** @brief RTC_TAMP3 detection flag this flag is set by hardware when a tamper detection event is detected on the RTC_TAMP3 input. It is cleared by software writing 0 */
     };
 
-    static const int32_t RxC_RTC_ALRMAR_MSKx_POS[5] = {
+    static const int32_t RTC_RTC_ALRMAR_MSKx_POS[5] = {
       [1] = 7,    /** @brief Alarm A seconds mask */
       [2] = 15,   /** @brief Alarm A minutes mask */
       [3] = 23,   /** @brief Alarm A hours mask */
       [4] = 31,   /** @brief Alarm A date mask */
     };
 
-    static const int32_t RxC_RTC_CALR_CALWx_POS[17] = {
+    static const int32_t RTC_RTC_CALR_CALWx_POS[17] = {
       [8]  = 14,   /** @brief Use an 8-second calibration cycle period when CALW8 is set to 1, the 8-second calibration cycle period is selected. Note: CALM[1:0] are stuck at 00; when CALW8= 1. Refer to section24.3.12: RTC smooth digital calibration. */
       [16] = 13,   /** @brief Use a 16-second calibration cycle period when CALW16 is set to 1, the 16-second calibration cycle period is selected.this bit must not be set to 1 if CALW8=1. Note: CALM[0] is stuck at 0 when CALW16= 1. Refer to section24.3.12: RTC smooth digital calibration. */
     };
 
-    static const int32_t RxC_RTC_TAMPCR_TAMPxE_POS[4] = {
+    static const int32_t RTC_RTC_TAMPCR_TAMPxE_POS[4] = {
       [1] = 0,   /** @brief RTC_TAMP1 input detection enable */
       [2] = 3,   /** @brief RTC_TAMP2 input detection enable */
       [3] = 5,   /** @brief RTC_TAMP3 detection enable */
     };
 
-    static const int32_t RxC_RTC_TAMPCR_TAMPxTRG_POS[4] = {
+    static const int32_t RTC_RTC_TAMPCR_TAMPxTRG_POS[4] = {
       [1] = 1,   /** @brief Active level for RTC_TAMP1 input if TAMPFLT != 00 if TAMPFLT = 00: */
       [2] = 4,   /** @brief Active level for RTC_TAMP2 input if TAMPFLT != 00: if TAMPFLT = 00: */
       [3] = 6,   /** @brief Active level for RTC_TAMP3 input if TAMPFLT != 00: if TAMPFLT = 00: */
     };
 
-    static const int32_t RxC_RTC_TAMPCR_TAMPxIE_POS[4] = {
+    static const int32_t RTC_RTC_TAMPCR_TAMPxIE_POS[4] = {
       [1] = 16,   /** @brief Tamper 1 interrupt enable */
       [2] = 19,   /** @brief Tamper 2 interrupt enable */
       [3] = 22,   /** @brief Tamper 3 interrupt enable */
     };
 
-    static const int32_t RxC_RTC_TAMPCR_TAMPxNOERASE_POS[4] = {
+    static const int32_t RTC_RTC_TAMPCR_TAMPxNOERASE_POS[4] = {
       [1] = 17,   /** @brief Tamper 1 no erase */
       [2] = 20,   /** @brief Tamper 2 no erase */
       [3] = 23,   /** @brief Tamper 3 no erase */
     };
 
-    static const int32_t RxC_RTC_TAMPCR_TAMPxMF_POS[4] = {
+    static const int32_t RTC_RTC_TAMPCR_TAMPxMF_POS[4] = {
       [1] = 18,   /** @brief Tamper 1 mask flag */
       [2] = 21,   /** @brief Tamper 2 mask flag */
       [3] = 24,   /** @brief Tamper 3 mask flag */
-    };
-
-    /**********************************************************************************************
-     * @section SxI4 Register Information
-     **********************************************************************************************/
-
-    /**** @subsection SxI4 Register Pointers ****/
-
-    static RW_ uint32_t* const SxI4_SAI_GCR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005400U,   /** @brief Global configuration register */
-      [15] = (RW_ uint32_t* const)0x40013400U,   /** @brief Control register 1 */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_AFRCR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x5800540CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
-      [15] = (RW_ uint32_t* const)0x4001340CU,   /** @brief Configuration register 2 */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_ASLOTR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005410U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
-      [15] = (RW_ uint32_t* const)0x40013410U,   /** @brief Interrupt enable register */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_AIM_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005414U,   /** @brief Interrupt mask register 2 */
-      [15] = (RW_ uint32_t* const)0x40013414U,   /** @brief Status register */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_ASR_PTR[16] = {
-      [0]  = (RO_ uint32_t* const)0x58005418U,   /** @brief Status register */
-      [15] = (RO_ uint32_t* const)0x40013418U,   /** @brief Interrupt/Status flags clear register */
-    };
-
-    static RO_ uint32_t* const SxI4_SAI_ACLRFR_PTR[16] = {
-      [0]  = (WO_ uint32_t* const)0x5800541CU,   /** @brief Clear flag register */
-    };
-
-    static WO_ uint32_t* const SxI4_SAI_ADR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005420U,   /** @brief Data register */
-      [15] = (RW_ uint32_t* const)0x40013420U,   /** @brief Transmit data register */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_BFRCR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x5800542CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_BSLOTR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005430U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
-      [15] = (RW_ uint32_t* const)0x40013430U,   /** @brief Receive data register */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_BIM_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005434U,   /** @brief Interrupt mask register 2 */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_BSR_PTR[16] = {
-      [0]  = (RO_ uint32_t* const)0x58005438U,   /** @brief Status register */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_BCLRFR_PTR[16] = {
-      [0]  = (WO_ uint32_t* const)0x5800543CU,   /** @brief Clear flag register */
-    };
-
-    static RO_ uint32_t* const SxI4_SAI_BDR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005440U,   /** @brief Data register */
-      [15] = (RW_ uint32_t* const)0x40013440U,   /** @brief Polynomial register */
-    };
-
-    static WO_ uint32_t* const SxI4_SAI_PDMCR_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005444U,   /** @brief PDM control register */
-      [15] = (RW_ uint32_t* const)0x40013444U,   /** @brief Transmitter CRC register */
-    };
-
-    static RW_ uint32_t* const SxI4_SAI_PDMDLY_PTR[16] = {
-      [0]  = (RW_ uint32_t* const)0x58005448U,   /** @brief PDM delay register */
-      [15] = (RW_ uint32_t* const)0x40013448U,   /** @brief Receiver CRC register */
-    };
-
-    /**** @subsection SxI4 Register Field Masks ****/
-
-    static const uint32_t SxI4_SAI_GCR_SYNCOUT_MSK     = 0x00000030U;   /** @brief Synchronization outputs these bits are set and cleared by software. */
-    static const uint32_t SxI4_SAI_GCR_SYNCIN_MSK      = 0x00000003U;   /** @brief Synchronization inputs */
-    static const uint32_t SxI4_SAI_ACRx_MODE_MSK       = 0x00000003U;   /** @brief SAIx audio block mode immediately */
-    static const uint32_t SxI4_SAI_ACRx_PRTCFG_MSK     = 0x0000000CU;   /** @brief Protocol configuration. These bits are set and cleared by software. These bits have to be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_ACRx_DS_MSK         = 0x000000E0U;   /** @brief Data size. These bits are set and cleared by software. These bits are ignored when the SPDIF protocols are selected (bit PRTCFG[1:0]), because the frame and the data size are fixed in such case. When the companding mode is selected through COMP[1:0] bits, DS[1:0] are ignored since the data size is fixed to 8 bits by the algorithm. These bits must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_ACRx_LSBFIRST_MSK   = 0x00000100U;   /** @brief Least significant bit first. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in AC97 audio protocol since AC97 data are always transferred with the MSB first. This bit has no meaning in SPDIF audio protocol since in SPDIF data are always transferred with LSB first. */
-    static const uint32_t SxI4_SAI_ACRx_CKSTR_MSK      = 0x00000200U;   /** @brief Clock strobing edge. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in SPDIF audio protocol. */
-    static const uint32_t SxI4_SAI_ACRx_SYNCEN_MSK     = 0x00000C00U;   /** @brief Synchronization enable. These bits are set and cleared by software. They must be configured when the audio sub-block is disabled. Note: the audio sub-block should be configured as asynchronous when SPDIF mode is enabled. */
-    static const uint32_t SxI4_SAI_ACRx_MONO_MSK       = 0x00001000U;   /** @brief Mono mode. This bit is set and cleared by software. It is meaningful only when the number of slots is equal to 2. When the mono mode is selected, slot 0 data are duplicated on slot 1 when the audio block operates as a transmitter. In reception mode, the slot1 is discarded and only the data received from slot 0 are stored. Refer to section: mono/stereo mode for more details. */
-    static const uint32_t SxI4_SAI_ACRx_OUTDRIV_MSK    = 0x00002000U;   /** @brief Output drive. This bit is set and cleared by software. Note: this bit has to be set before enabling the audio block and after the audio block configuration. */
-    static const uint32_t SxI4_SAI_ACRx_SAIXEN_MSK     = 0x00010000U;   /** @brief Audio block enable where x is A or B. This bit is set by software. To switch off the audio block, the application software must program this bit to 0 and poll the bit till it reads back 0, meaning that the block is completely disabled. Before setting this bit to 1, check that it is set to 0, otherwise the enable command will not be taken into account. This bit allows to control the state of saix audio block. If it is disabled when an audio frame transfer is ongoing, the ongoing transfer completes and the cell is fully disabled at the end of this audio frame transfer. Note: when saix block is configured in master mode, the clock must be present on the input of saix before setting SAIXEN bit. */
-    static const uint32_t SxI4_SAI_ACRx_DMAEN_MSK      = 0x00020000U;   /** @brief DMA enable. This bit is set and cleared by software. Note: since the audio block defaults to operate as a transmitter after reset, the MODE[1:0] bits must be configured before setting DMAEN to avoid a DMA request in receiver mode. */
-    static const uint32_t SxI4_SAI_ACRx_NOMCK_MSK      = 0x00080000U;   /** @brief No divider */
-    static const uint32_t SxI4_SAI_ACRx_MCKDIV_MSK     = 0x00F00000U;   /** @brief Master clock divider. These bits are set and cleared by software. These bits are meaningless when the audio block operates in slave mode. They have to be configured when the audio block is disabled. Others: the master clock frequency is calculated accordingly to the following formula: */
-    static const uint32_t SxI4_SAI_ACRx_OSR_MSK        = 0x04000000U;   /** @brief Oversampling ratio for master clock */
-    static const uint32_t SxI4_SAI_AFRCR_FRL_MSK       = 0x000000FFU;   /** @brief Frame length. These bits are set and cleared by software. They define the audio frame length expressed in number of SCK clock cycles: the number of bits in the frame is equal to FRL[7:0] + 1. The minimum number of bits to transfer in an audio frame must be equal to 8, otherwise the audio block will behaves in an unexpected way. This is the case when the data size is 8 bits and only one slot 0 is defined in NBSLOT[4:0] of sai_xslotr register (NBSLOT[3:0] = 0000). In master mode, if the master clock (available on mclk_x pin) is used, the frame length should be aligned with a number equal to a power of 2, ranging from 8 to 256. When the master clock is not used (NODIV = 1), it is recommended to program the frame length to an value ranging from 8 to 256. These bits are meaningless and are not used in AC97 or SPDIF audio block configuration. */
-    static const uint32_t SxI4_SAI_AFRCR_FSALL_MSK     = 0x00007F00U;   /** @brief Frame synchronization active level length. These bits are set and cleared by software. They specify the length in number of bit clock (SCK) + 1 (FSALL[6:0] + 1) of the active level of the FS signal in the audio frame these bits are meaningless and are not used in AC97 or SPDIF audio block configuration. They must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_AFRCR_FSDEF_MSK     = 0x00010000U;   /** @brief Frame synchronization definition. This bit is set and cleared by software. When the bit is set, the number of slots defined in the sai_xslotr register has to be even. It means that half of this number of slots will be dedicated to the left channel and the other slots for the right channel (e.g: this bit has to be set for I2S or msb/lsb-justified protocols...). This bit is meaningless and is not used in AC97 or SPDIF audio block configuration. It must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_AFRCR_FSPOL_MSK     = 0x00020000U;   /** @brief Frame synchronization polarity. This bit is set and cleared by software. It is used to configure the level of the start of frame on the FS signal. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_AFRCR_FSOFF_MSK     = 0x00040000U;   /** @brief Frame synchronization offset. This bit is set and cleared by software. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_ASLOTR_FBOFF_MSK    = 0x0000001FU;   /** @brief First bit offset these bits are set and cleared by software. The value set in this bitfield defines the position of the first data transfer bit in the slot. It represents an offset value. In transmission mode, the bits outside the data field are forced to 0. In reception mode, the extra received bits are discarded. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_ASLOTR_SLOTSZ_MSK   = 0x000000C0U;   /** @brief Slot size this bits is set and cleared by software. The slot size must be higher or equal to the data size. If this condition is not respected, the behavior of the SAI will be undetermined. Refer to section: output data line management on an inactive slot for information on how to drive SD line. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_ASLOTR_NBSLOT_MSK   = 0x00000F00U;   /** @brief Number of slots in an audio frame. These bits are set and cleared by software. The value set in this bitfield represents the number of slots + 1 in the audio frame (including the number of inactive slots). The maximum number of slots is 16. The number of slots should be even if FSDEF bit in the sai_xfrcr register is set. The number of slots must be configured when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_ASLOTR_SLOTEN_MSK   = 0xFFFF0000U;   /** @brief Slot enable. These bits are set and cleared by software. Each SLOTEN bit corresponds to a slot position from 0 to 15 (maximum 16 slots). The slot must be enabled when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_AIM_OVRUDRIE_MSK    = 0x00000001U;   /** @brief Overrun/underrun interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the OVRUDR bit in the sai_xsr register is set. */
-    static const uint32_t SxI4_SAI_AIM_MUTEDETIE_MSK   = 0x00000002U;   /** @brief Mute detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the MUTEDET bit in the sai_xsr register is set. This bit has a meaning only if the audio block is configured in receiver mode. */
-    static const uint32_t SxI4_SAI_AIM_WCKCFGIE_MSK    = 0x00000004U;   /** @brief Wrong clock configuration interrupt enable. This bit is set and cleared by software. This bit is taken into account only if the audio block is configured as a master (MODE[1] = 0) and NODIV = 0. It generates an interrupt if the WCKCFG flag in the sai_xsr register is set. Note: this bit is used only in TDM mode and is meaningless in other modes. */
-    static const uint32_t SxI4_SAI_AIM_FREQIE_MSK      = 0x00000008U;   /** @brief FIFO request interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the FREQ bit in the sai_xsr register is set. Since the audio block defaults to operate as a transmitter after reset, the MODE bit must be configured before setting FREQIE to avoid a parasitic interruption in receiver mode, */
-    static const uint32_t SxI4_SAI_AIM_CNRDYIE_MSK     = 0x00000010U;   /** @brief Codec not ready interrupt enable (AC97). This bit is set and cleared by software. When the interrupt is enabled, the audio block detects in the slot 0 (tag0) of the AC97 frame if the codec connected to this line is ready or not. If it is not ready, the CNRDY flag in the sai_xsr register is set and an interruption i generated. This bit has a meaning only if the AC97 mode is selected through PRTCFG[1:0] bits and the audio block is operates as a receiver. */
-    static const uint32_t SxI4_SAI_AIM_AFSDETIE_MSK    = 0x00000020U;   /** @brief Anticipated frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the AFSDET bit in the sai_xsr register is set. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const uint32_t SxI4_SAI_AIM_LFSDETIE_MSK    = 0x00000040U;   /** @brief Late frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the LFSDET bit is set in the sai_xsr register. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const uint32_t SxI4_SAI_ASR_OVRUDR_MSK      = 0x00000001U;   /** @brief Overrun / underrun. This bit is read only. The overrun and underrun conditions can occur only when the audio block is configured as a receiver and a transmitter, respectively. It can generate an interrupt if OVRUDRIE bit is set in sai_xim register. This flag is cleared when the software sets COVRUDR bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_ASR_MUTEDET_MSK     = 0x00000002U;   /** @brief Mute detection. This bit is read only. This flag is set if consecutive 0 values are received in each slot of a given audio frame and for a consecutive number of audio frames (set in the MUTECNT bit in the sai_xcr2 register). It can generate an interrupt if MUTEDETIE bit is set in sai_xim register. This flag is cleared when the software sets bit CMUTEDET in the sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_ASR_WCKCFG_MSK      = 0x00000004U;   /** @brief Wrong clock configuration flag. This bit is read only. This bit is used only when the audio block operates in master mode (MODE[1] = 0) and NODIV = 0. It can generate an interrupt if WCKCFGIE bit is set in sai_xim register. This flag is cleared when the software sets CWCKCFG bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_ASR_FREQ_MSK        = 0x00000008U;   /** @brief FIFO request. This bit is read only. The request depends on the audio block configuration: if the block is configured in transmission mode, the FIFO request is related to a write request operation in the sai_xdr. If the block configured in reception, the FIFO request related to a read request operation from the sai_xdr. This flag can generate an interrupt if FREQIE bit is set in sai_xim register. */
-    static const uint32_t SxI4_SAI_ASR_CNRDY_MSK       = 0x00000010U;   /** @brief Codec not ready. This bit is read only. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register and configured in receiver mode. It can generate an interrupt if CNRDYIE bit is set in sai_xim register. This flag is cleared when the software sets CCNRDY bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_ASR_AFSDET_MSK      = 0x00000020U;   /** @brief Anticipated frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in ac97or SPDIF mode. It can generate an interrupt if AFSDETIE bit is set in sai_xim register. This flag is cleared when the software sets CAFSDET bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_ASR_LFSDET_MSK      = 0x00000040U;   /** @brief Late frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in AC97 or SPDIF mode. It can generate an interrupt if LFSDETIE bit is set in the sai_xim register. This flag is cleared when the software sets bit CLFSDET in sai_xclrfr register */
-    static const uint32_t SxI4_SAI_ASR_FLVL_MSK        = 0x00070000U;   /** @brief FIFO level threshold. This bit is read only. The FIFO level threshold flag is managed only by hardware and its setting depends on SAI block configuration (transmitter or receiver mode). If the SAI block is configured as transmitter: if SAI block is configured as receiver: */
-    static const uint32_t SxI4_SAI_ACLRFR_COVRUDR_MSK  = 0x00000001U;   /** @brief Clear overrun / underrun. This bit is write only. Programming this bit to 1 clears the OVRUDR flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_ACLRFR_CMUTEDET_MSK = 0x00000002U;   /** @brief Mute detection flag. This bit is write only. Programming this bit to 1 clears the MUTEDET flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_ACLRFR_CWCKCFG_MSK  = 0x00000004U;   /** @brief Clear wrong clock configuration flag. This bit is write only. Programming this bit to 1 clears the WCKCFG flag in the sai_xsr register. This bit is used only when the audio block is set as master (MODE[1] = 0) and NODIV = 0 in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_ACLRFR_CCNRDY_MSK   = 0x00000010U;   /** @brief Clear codec not ready flag. This bit is write only. Programming this bit to 1 clears the CNRDY flag in the sai_xsr register. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_ACLRFR_CAFSDET_MSK  = 0x00000020U;   /** @brief Clear anticipated frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the AFSDET flag in the sai_xsr register. It is not used in ac97or SPDIF mode. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_ACLRFR_CLFSDET_MSK  = 0x00000040U;   /** @brief Clear late frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the LFSDET flag in the sai_xsr register. This bit is not used in ac97or SPDIF mode reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_BCRx_MODE_MSK       = 0x00000003U;   /** @brief SAIx audio block mode immediately */
-    static const uint32_t SxI4_SAI_BCRx_PRTCFG_MSK     = 0x0000000CU;   /** @brief Protocol configuration. These bits are set and cleared by software. These bits have to be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_BCRx_DS_MSK         = 0x000000E0U;   /** @brief Data size. These bits are set and cleared by software. These bits are ignored when the SPDIF protocols are selected (bit PRTCFG[1:0]), because the frame and the data size are fixed in such case. When the companding mode is selected through COMP[1:0] bits, DS[1:0] are ignored since the data size is fixed to 8 bits by the algorithm. These bits must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_BCRx_LSBFIRST_MSK   = 0x00000100U;   /** @brief Least significant bit first. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in AC97 audio protocol since AC97 data are always transferred with the MSB first. This bit has no meaning in SPDIF audio protocol since in SPDIF data are always transferred with LSB first. */
-    static const uint32_t SxI4_SAI_BCRx_CKSTR_MSK      = 0x00000200U;   /** @brief Clock strobing edge. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in SPDIF audio protocol. */
-    static const uint32_t SxI4_SAI_BCRx_SYNCEN_MSK     = 0x00000C00U;   /** @brief Synchronization enable. These bits are set and cleared by software. They must be configured when the audio sub-block is disabled. Note: the audio sub-block should be configured as asynchronous when SPDIF mode is enabled. */
-    static const uint32_t SxI4_SAI_BCRx_MONO_MSK       = 0x00001000U;   /** @brief Mono mode. This bit is set and cleared by software. It is meaningful only when the number of slots is equal to 2. When the mono mode is selected, slot 0 data are duplicated on slot 1 when the audio block operates as a transmitter. In reception mode, the slot1 is discarded and only the data received from slot 0 are stored. Refer to section: mono/stereo mode for more details. */
-    static const uint32_t SxI4_SAI_BCRx_OUTDRIV_MSK    = 0x00002000U;   /** @brief Output drive. This bit is set and cleared by software. Note: this bit has to be set before enabling the audio block and after the audio block configuration. */
-    static const uint32_t SxI4_SAI_BCRx_SAIXEN_MSK     = 0x00010000U;   /** @brief Audio block enable where x is A or B. This bit is set by software. To switch off the audio block, the application software must program this bit to 0 and poll the bit till it reads back 0, meaning that the block is completely disabled. Before setting this bit to 1, check that it is set to 0, otherwise the enable command will not be taken into account. This bit allows to control the state of saix audio block. If it is disabled when an audio frame transfer is ongoing, the ongoing transfer completes and the cell is fully disabled at the end of this audio frame transfer. Note: when saix block is configured in master mode, the clock must be present on the input of saix before setting SAIXEN bit. */
-    static const uint32_t SxI4_SAI_BCRx_DMAEN_MSK      = 0x00020000U;   /** @brief DMA enable. This bit is set and cleared by software. Note: since the audio block defaults to operate as a transmitter after reset, the MODE[1:0] bits must be configured before setting DMAEN to avoid a DMA request in receiver mode. */
-    static const uint32_t SxI4_SAI_BCRx_NOMCK_MSK      = 0x00080000U;   /** @brief No divider */
-    static const uint32_t SxI4_SAI_BCRx_MCKDIV_MSK     = 0x00F00000U;   /** @brief Master clock divider. These bits are set and cleared by software. These bits are meaningless when the audio block operates in slave mode. They have to be configured when the audio block is disabled. Others: the master clock frequency is calculated accordingly to the following formula: */
-    static const uint32_t SxI4_SAI_BCRx_OSR_MSK        = 0x04000000U;   /** @brief Oversampling ratio for master clock */
-    static const uint32_t SxI4_SAI_BFRCR_FRL_MSK       = 0x000000FFU;   /** @brief Frame length. These bits are set and cleared by software. They define the audio frame length expressed in number of SCK clock cycles: the number of bits in the frame is equal to FRL[7:0] + 1. The minimum number of bits to transfer in an audio frame must be equal to 8, otherwise the audio block will behaves in an unexpected way. This is the case when the data size is 8 bits and only one slot 0 is defined in NBSLOT[4:0] of sai_xslotr register (NBSLOT[3:0] = 0000). In master mode, if the master clock (available on mclk_x pin) is used, the frame length should be aligned with a number equal to a power of 2, ranging from 8 to 256. When the master clock is not used (NODIV = 1), it is recommended to program the frame length to an value ranging from 8 to 256. These bits are meaningless and are not used in AC97 or SPDIF audio block configuration. */
-    static const uint32_t SxI4_SAI_BFRCR_FSALL_MSK     = 0x00007F00U;   /** @brief Frame synchronization active level length. These bits are set and cleared by software. They specify the length in number of bit clock (SCK) + 1 (FSALL[6:0] + 1) of the active level of the FS signal in the audio frame these bits are meaningless and are not used in AC97 or SPDIF audio block configuration. They must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_BFRCR_FSDEF_MSK     = 0x00010000U;   /** @brief Frame synchronization definition. This bit is set and cleared by software. When the bit is set, the number of slots defined in the sai_xslotr register has to be even. It means that half of this number of slots will be dedicated to the left channel and the other slots for the right channel (e.g: this bit has to be set for I2S or msb/lsb-justified protocols...). This bit is meaningless and is not used in AC97 or SPDIF audio block configuration. It must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_BFRCR_FSPOL_MSK     = 0x00020000U;   /** @brief Frame synchronization polarity. This bit is set and cleared by software. It is used to configure the level of the start of frame on the FS signal. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_BFRCR_FSOFF_MSK     = 0x00040000U;   /** @brief Frame synchronization offset. This bit is set and cleared by software. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const uint32_t SxI4_SAI_BSLOTR_FBOFF_MSK    = 0x0000001FU;   /** @brief First bit offset these bits are set and cleared by software. The value set in this bitfield defines the position of the first data transfer bit in the slot. It represents an offset value. In transmission mode, the bits outside the data field are forced to 0. In reception mode, the extra received bits are discarded. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_BSLOTR_SLOTSZ_MSK   = 0x000000C0U;   /** @brief Slot size this bits is set and cleared by software. The slot size must be higher or equal to the data size. If this condition is not respected, the behavior of the SAI will be undetermined. Refer to section: output data line management on an inactive slot for information on how to drive SD line. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_BSLOTR_NBSLOT_MSK   = 0x00000F00U;   /** @brief Number of slots in an audio frame. These bits are set and cleared by software. The value set in this bitfield represents the number of slots + 1 in the audio frame (including the number of inactive slots). The maximum number of slots is 16. The number of slots should be even if FSDEF bit in the sai_xfrcr register is set. The number of slots must be configured when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_BSLOTR_SLOTEN_MSK   = 0xFFFF0000U;   /** @brief Slot enable. These bits are set and cleared by software. Each SLOTEN bit corresponds to a slot position from 0 to 15 (maximum 16 slots). The slot must be enabled when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const uint32_t SxI4_SAI_BIM_OVRUDRIE_MSK    = 0x00000001U;   /** @brief Overrun/underrun interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the OVRUDR bit in the sai_xsr register is set. */
-    static const uint32_t SxI4_SAI_BIM_MUTEDETIE_MSK   = 0x00000002U;   /** @brief Mute detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the MUTEDET bit in the sai_xsr register is set. This bit has a meaning only if the audio block is configured in receiver mode. */
-    static const uint32_t SxI4_SAI_BIM_WCKCFGIE_MSK    = 0x00000004U;   /** @brief Wrong clock configuration interrupt enable. This bit is set and cleared by software. This bit is taken into account only if the audio block is configured as a master (MODE[1] = 0) and NODIV = 0. It generates an interrupt if the WCKCFG flag in the sai_xsr register is set. Note: this bit is used only in TDM mode and is meaningless in other modes. */
-    static const uint32_t SxI4_SAI_BIM_FREQIE_MSK      = 0x00000008U;   /** @brief FIFO request interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the FREQ bit in the sai_xsr register is set. Since the audio block defaults to operate as a transmitter after reset, the MODE bit must be configured before setting FREQIE to avoid a parasitic interruption in receiver mode, */
-    static const uint32_t SxI4_SAI_BIM_CNRDYIE_MSK     = 0x00000010U;   /** @brief Codec not ready interrupt enable (AC97). This bit is set and cleared by software. When the interrupt is enabled, the audio block detects in the slot 0 (tag0) of the AC97 frame if the codec connected to this line is ready or not. If it is not ready, the CNRDY flag in the sai_xsr register is set and an interruption i generated. This bit has a meaning only if the AC97 mode is selected through PRTCFG[1:0] bits and the audio block is operates as a receiver. */
-    static const uint32_t SxI4_SAI_BIM_AFSDETIE_MSK    = 0x00000020U;   /** @brief Anticipated frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the AFSDET bit in the sai_xsr register is set. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const uint32_t SxI4_SAI_BIM_LFSDETIE_MSK    = 0x00000040U;   /** @brief Late frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the LFSDET bit is set in the sai_xsr register. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const uint32_t SxI4_SAI_BSR_OVRUDR_MSK      = 0x00000001U;   /** @brief Overrun / underrun. This bit is read only. The overrun and underrun conditions can occur only when the audio block is configured as a receiver and a transmitter, respectively. It can generate an interrupt if OVRUDRIE bit is set in sai_xim register. This flag is cleared when the software sets COVRUDR bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_BSR_MUTEDET_MSK     = 0x00000002U;   /** @brief Mute detection. This bit is read only. This flag is set if consecutive 0 values are received in each slot of a given audio frame and for a consecutive number of audio frames (set in the MUTECNT bit in the sai_xcr2 register). It can generate an interrupt if MUTEDETIE bit is set in sai_xim register. This flag is cleared when the software sets bit CMUTEDET in the sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_BSR_WCKCFG_MSK      = 0x00000004U;   /** @brief Wrong clock configuration flag. This bit is read only. This bit is used only when the audio block operates in master mode (MODE[1] = 0) and NODIV = 0. It can generate an interrupt if WCKCFGIE bit is set in sai_xim register. This flag is cleared when the software sets CWCKCFG bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_BSR_FREQ_MSK        = 0x00000008U;   /** @brief FIFO request. This bit is read only. The request depends on the audio block configuration: if the block is configured in transmission mode, the FIFO request is related to a write request operation in the sai_xdr. If the block configured in reception, the FIFO request related to a read request operation from the sai_xdr. This flag can generate an interrupt if FREQIE bit is set in sai_xim register. */
-    static const uint32_t SxI4_SAI_BSR_CNRDY_MSK       = 0x00000010U;   /** @brief Codec not ready. This bit is read only. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register and configured in receiver mode. It can generate an interrupt if CNRDYIE bit is set in sai_xim register. This flag is cleared when the software sets CCNRDY bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_BSR_AFSDET_MSK      = 0x00000020U;   /** @brief Anticipated frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in ac97or SPDIF mode. It can generate an interrupt if AFSDETIE bit is set in sai_xim register. This flag is cleared when the software sets CAFSDET bit in sai_xclrfr register. */
-    static const uint32_t SxI4_SAI_BSR_LFSDET_MSK      = 0x00000040U;   /** @brief Late frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in AC97 or SPDIF mode. It can generate an interrupt if LFSDETIE bit is set in the sai_xim register. This flag is cleared when the software sets bit CLFSDET in sai_xclrfr register */
-    static const uint32_t SxI4_SAI_BSR_FLVL_MSK        = 0x00070000U;   /** @brief FIFO level threshold. This bit is read only. The FIFO level threshold flag is managed only by hardware and its setting depends on SAI block configuration (transmitter or receiver mode). If the SAI block is configured as transmitter: if SAI block is configured as receiver: */
-    static const uint32_t SxI4_SAI_BCLRFR_COVRUDR_MSK  = 0x00000001U;   /** @brief Clear overrun / underrun. This bit is write only. Programming this bit to 1 clears the OVRUDR flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_BCLRFR_CMUTEDET_MSK = 0x00000002U;   /** @brief Mute detection flag. This bit is write only. Programming this bit to 1 clears the MUTEDET flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_BCLRFR_CWCKCFG_MSK  = 0x00000004U;   /** @brief Clear wrong clock configuration flag. This bit is write only. Programming this bit to 1 clears the WCKCFG flag in the sai_xsr register. This bit is used only when the audio block is set as master (MODE[1] = 0) and NODIV = 0 in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_BCLRFR_CCNRDY_MSK   = 0x00000010U;   /** @brief Clear codec not ready flag. This bit is write only. Programming this bit to 1 clears the CNRDY flag in the sai_xsr register. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_BCLRFR_CAFSDET_MSK  = 0x00000020U;   /** @brief Clear anticipated frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the AFSDET flag in the sai_xsr register. It is not used in ac97or SPDIF mode. Reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_BCLRFR_CLFSDET_MSK  = 0x00000040U;   /** @brief Clear late frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the LFSDET flag in the sai_xsr register. This bit is not used in ac97or SPDIF mode reading this bit always returns the value 0. */
-    static const uint32_t SxI4_SAI_PDMCR_PDMEN_MSK     = 0x00000001U;   /** @brief PDM enable */
-    static const uint32_t SxI4_SAI_PDMCR_MICNBR_MSK    = 0x00000030U;   /** @brief Number of microphones */
-
-    static const uint32_t SxI4_SAI_PDMCR_CKENx_MSK[5] = {
-      [1] = 0x00000100U,   /** @brief Clock enable of bitstream clock number 1 */
-      [2] = 0x00000200U,   /** @brief Clock enable of bitstream clock number 2 */
-      [3] = 0x00000400U,   /** @brief Clock enable of bitstream clock number 3 */
-      [4] = 0x00000800U,   /** @brief Clock enable of bitstream clock number 4 */
-    };
-
-    static const uint32_t SxI4_SAI_PDMDLY_DLYMxL_MSK[5] = {
-      [1] = 0x00000007U,   /** @brief Delay line adjust for first microphone of pair 1 */
-      [2] = 0x00000700U,   /** @brief Delay line for first microphone of pair 2 */
-      [3] = 0x00070000U,   /** @brief Delay line for first microphone of pair 3 */
-      [4] = 0x07000000U,   /** @brief Delay line for first microphone of pair 4 */
-    };
-
-    static const uint32_t SxI4_SAI_PDMDLY_DLYMxR_MSK[5] = {
-      [1] = 0x00000070U,   /** @brief Delay line adjust for second microphone of pair 1 */
-      [2] = 0x00007000U,   /** @brief Delay line for second microphone of pair 2 */
-      [3] = 0x00700000U,   /** @brief Delay line for second microphone of pair 3 */
-      [4] = 0x70000000U,   /** @brief Delay line for second microphone of pair 4 */
-    };
-
-    /**** @subsection SxI4 Register Field Positions ****/
-
-    static const int32_t SxI4_SAI_GCR_SYNCOUT_POS     = 4;    /** @brief Synchronization outputs these bits are set and cleared by software. */
-    static const int32_t SxI4_SAI_GCR_SYNCIN_POS      = 0;    /** @brief Synchronization inputs */
-    static const int32_t SxI4_SAI_ACRx_MODE_POS       = 0;    /** @brief SAIx audio block mode immediately */
-    static const int32_t SxI4_SAI_ACRx_PRTCFG_POS     = 2;    /** @brief Protocol configuration. These bits are set and cleared by software. These bits have to be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_ACRx_DS_POS         = 5;    /** @brief Data size. These bits are set and cleared by software. These bits are ignored when the SPDIF protocols are selected (bit PRTCFG[1:0]), because the frame and the data size are fixed in such case. When the companding mode is selected through COMP[1:0] bits, DS[1:0] are ignored since the data size is fixed to 8 bits by the algorithm. These bits must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_ACRx_LSBFIRST_POS   = 8;    /** @brief Least significant bit first. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in AC97 audio protocol since AC97 data are always transferred with the MSB first. This bit has no meaning in SPDIF audio protocol since in SPDIF data are always transferred with LSB first. */
-    static const int32_t SxI4_SAI_ACRx_CKSTR_POS      = 9;    /** @brief Clock strobing edge. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in SPDIF audio protocol. */
-    static const int32_t SxI4_SAI_ACRx_SYNCEN_POS     = 10;   /** @brief Synchronization enable. These bits are set and cleared by software. They must be configured when the audio sub-block is disabled. Note: the audio sub-block should be configured as asynchronous when SPDIF mode is enabled. */
-    static const int32_t SxI4_SAI_ACRx_MONO_POS       = 12;   /** @brief Mono mode. This bit is set and cleared by software. It is meaningful only when the number of slots is equal to 2. When the mono mode is selected, slot 0 data are duplicated on slot 1 when the audio block operates as a transmitter. In reception mode, the slot1 is discarded and only the data received from slot 0 are stored. Refer to section: mono/stereo mode for more details. */
-    static const int32_t SxI4_SAI_ACRx_OUTDRIV_POS    = 13;   /** @brief Output drive. This bit is set and cleared by software. Note: this bit has to be set before enabling the audio block and after the audio block configuration. */
-    static const int32_t SxI4_SAI_ACRx_SAIXEN_POS     = 16;   /** @brief Audio block enable where x is A or B. This bit is set by software. To switch off the audio block, the application software must program this bit to 0 and poll the bit till it reads back 0, meaning that the block is completely disabled. Before setting this bit to 1, check that it is set to 0, otherwise the enable command will not be taken into account. This bit allows to control the state of saix audio block. If it is disabled when an audio frame transfer is ongoing, the ongoing transfer completes and the cell is fully disabled at the end of this audio frame transfer. Note: when saix block is configured in master mode, the clock must be present on the input of saix before setting SAIXEN bit. */
-    static const int32_t SxI4_SAI_ACRx_DMAEN_POS      = 17;   /** @brief DMA enable. This bit is set and cleared by software. Note: since the audio block defaults to operate as a transmitter after reset, the MODE[1:0] bits must be configured before setting DMAEN to avoid a DMA request in receiver mode. */
-    static const int32_t SxI4_SAI_ACRx_NOMCK_POS      = 19;   /** @brief No divider */
-    static const int32_t SxI4_SAI_ACRx_MCKDIV_POS     = 20;   /** @brief Master clock divider. These bits are set and cleared by software. These bits are meaningless when the audio block operates in slave mode. They have to be configured when the audio block is disabled. Others: the master clock frequency is calculated accordingly to the following formula: */
-    static const int32_t SxI4_SAI_ACRx_OSR_POS        = 26;   /** @brief Oversampling ratio for master clock */
-    static const int32_t SxI4_SAI_AFRCR_FRL_POS       = 0;    /** @brief Frame length. These bits are set and cleared by software. They define the audio frame length expressed in number of SCK clock cycles: the number of bits in the frame is equal to FRL[7:0] + 1. The minimum number of bits to transfer in an audio frame must be equal to 8, otherwise the audio block will behaves in an unexpected way. This is the case when the data size is 8 bits and only one slot 0 is defined in NBSLOT[4:0] of sai_xslotr register (NBSLOT[3:0] = 0000). In master mode, if the master clock (available on mclk_x pin) is used, the frame length should be aligned with a number equal to a power of 2, ranging from 8 to 256. When the master clock is not used (NODIV = 1), it is recommended to program the frame length to an value ranging from 8 to 256. These bits are meaningless and are not used in AC97 or SPDIF audio block configuration. */
-    static const int32_t SxI4_SAI_AFRCR_FSALL_POS     = 8;    /** @brief Frame synchronization active level length. These bits are set and cleared by software. They specify the length in number of bit clock (SCK) + 1 (FSALL[6:0] + 1) of the active level of the FS signal in the audio frame these bits are meaningless and are not used in AC97 or SPDIF audio block configuration. They must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_AFRCR_FSDEF_POS     = 16;   /** @brief Frame synchronization definition. This bit is set and cleared by software. When the bit is set, the number of slots defined in the sai_xslotr register has to be even. It means that half of this number of slots will be dedicated to the left channel and the other slots for the right channel (e.g: this bit has to be set for I2S or msb/lsb-justified protocols...). This bit is meaningless and is not used in AC97 or SPDIF audio block configuration. It must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_AFRCR_FSPOL_POS     = 17;   /** @brief Frame synchronization polarity. This bit is set and cleared by software. It is used to configure the level of the start of frame on the FS signal. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_AFRCR_FSOFF_POS     = 18;   /** @brief Frame synchronization offset. This bit is set and cleared by software. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_ASLOTR_FBOFF_POS    = 0;    /** @brief First bit offset these bits are set and cleared by software. The value set in this bitfield defines the position of the first data transfer bit in the slot. It represents an offset value. In transmission mode, the bits outside the data field are forced to 0. In reception mode, the extra received bits are discarded. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_ASLOTR_SLOTSZ_POS   = 6;    /** @brief Slot size this bits is set and cleared by software. The slot size must be higher or equal to the data size. If this condition is not respected, the behavior of the SAI will be undetermined. Refer to section: output data line management on an inactive slot for information on how to drive SD line. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_ASLOTR_NBSLOT_POS   = 8;    /** @brief Number of slots in an audio frame. These bits are set and cleared by software. The value set in this bitfield represents the number of slots + 1 in the audio frame (including the number of inactive slots). The maximum number of slots is 16. The number of slots should be even if FSDEF bit in the sai_xfrcr register is set. The number of slots must be configured when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_ASLOTR_SLOTEN_POS   = 16;   /** @brief Slot enable. These bits are set and cleared by software. Each SLOTEN bit corresponds to a slot position from 0 to 15 (maximum 16 slots). The slot must be enabled when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_AIM_OVRUDRIE_POS    = 0;    /** @brief Overrun/underrun interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the OVRUDR bit in the sai_xsr register is set. */
-    static const int32_t SxI4_SAI_AIM_MUTEDETIE_POS   = 1;    /** @brief Mute detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the MUTEDET bit in the sai_xsr register is set. This bit has a meaning only if the audio block is configured in receiver mode. */
-    static const int32_t SxI4_SAI_AIM_WCKCFGIE_POS    = 2;    /** @brief Wrong clock configuration interrupt enable. This bit is set and cleared by software. This bit is taken into account only if the audio block is configured as a master (MODE[1] = 0) and NODIV = 0. It generates an interrupt if the WCKCFG flag in the sai_xsr register is set. Note: this bit is used only in TDM mode and is meaningless in other modes. */
-    static const int32_t SxI4_SAI_AIM_FREQIE_POS      = 3;    /** @brief FIFO request interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the FREQ bit in the sai_xsr register is set. Since the audio block defaults to operate as a transmitter after reset, the MODE bit must be configured before setting FREQIE to avoid a parasitic interruption in receiver mode, */
-    static const int32_t SxI4_SAI_AIM_CNRDYIE_POS     = 4;    /** @brief Codec not ready interrupt enable (AC97). This bit is set and cleared by software. When the interrupt is enabled, the audio block detects in the slot 0 (tag0) of the AC97 frame if the codec connected to this line is ready or not. If it is not ready, the CNRDY flag in the sai_xsr register is set and an interruption i generated. This bit has a meaning only if the AC97 mode is selected through PRTCFG[1:0] bits and the audio block is operates as a receiver. */
-    static const int32_t SxI4_SAI_AIM_AFSDETIE_POS    = 5;    /** @brief Anticipated frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the AFSDET bit in the sai_xsr register is set. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const int32_t SxI4_SAI_AIM_LFSDETIE_POS    = 6;    /** @brief Late frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the LFSDET bit is set in the sai_xsr register. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const int32_t SxI4_SAI_ASR_OVRUDR_POS      = 0;    /** @brief Overrun / underrun. This bit is read only. The overrun and underrun conditions can occur only when the audio block is configured as a receiver and a transmitter, respectively. It can generate an interrupt if OVRUDRIE bit is set in sai_xim register. This flag is cleared when the software sets COVRUDR bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_ASR_MUTEDET_POS     = 1;    /** @brief Mute detection. This bit is read only. This flag is set if consecutive 0 values are received in each slot of a given audio frame and for a consecutive number of audio frames (set in the MUTECNT bit in the sai_xcr2 register). It can generate an interrupt if MUTEDETIE bit is set in sai_xim register. This flag is cleared when the software sets bit CMUTEDET in the sai_xclrfr register. */
-    static const int32_t SxI4_SAI_ASR_WCKCFG_POS      = 2;    /** @brief Wrong clock configuration flag. This bit is read only. This bit is used only when the audio block operates in master mode (MODE[1] = 0) and NODIV = 0. It can generate an interrupt if WCKCFGIE bit is set in sai_xim register. This flag is cleared when the software sets CWCKCFG bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_ASR_FREQ_POS        = 3;    /** @brief FIFO request. This bit is read only. The request depends on the audio block configuration: if the block is configured in transmission mode, the FIFO request is related to a write request operation in the sai_xdr. If the block configured in reception, the FIFO request related to a read request operation from the sai_xdr. This flag can generate an interrupt if FREQIE bit is set in sai_xim register. */
-    static const int32_t SxI4_SAI_ASR_CNRDY_POS       = 4;    /** @brief Codec not ready. This bit is read only. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register and configured in receiver mode. It can generate an interrupt if CNRDYIE bit is set in sai_xim register. This flag is cleared when the software sets CCNRDY bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_ASR_AFSDET_POS      = 5;    /** @brief Anticipated frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in ac97or SPDIF mode. It can generate an interrupt if AFSDETIE bit is set in sai_xim register. This flag is cleared when the software sets CAFSDET bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_ASR_LFSDET_POS      = 6;    /** @brief Late frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in AC97 or SPDIF mode. It can generate an interrupt if LFSDETIE bit is set in the sai_xim register. This flag is cleared when the software sets bit CLFSDET in sai_xclrfr register */
-    static const int32_t SxI4_SAI_ASR_FLVL_POS        = 16;   /** @brief FIFO level threshold. This bit is read only. The FIFO level threshold flag is managed only by hardware and its setting depends on SAI block configuration (transmitter or receiver mode). If the SAI block is configured as transmitter: if SAI block is configured as receiver: */
-    static const int32_t SxI4_SAI_ACLRFR_COVRUDR_POS  = 0;    /** @brief Clear overrun / underrun. This bit is write only. Programming this bit to 1 clears the OVRUDR flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_ACLRFR_CMUTEDET_POS = 1;    /** @brief Mute detection flag. This bit is write only. Programming this bit to 1 clears the MUTEDET flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_ACLRFR_CWCKCFG_POS  = 2;    /** @brief Clear wrong clock configuration flag. This bit is write only. Programming this bit to 1 clears the WCKCFG flag in the sai_xsr register. This bit is used only when the audio block is set as master (MODE[1] = 0) and NODIV = 0 in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_ACLRFR_CCNRDY_POS   = 4;    /** @brief Clear codec not ready flag. This bit is write only. Programming this bit to 1 clears the CNRDY flag in the sai_xsr register. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_ACLRFR_CAFSDET_POS  = 5;    /** @brief Clear anticipated frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the AFSDET flag in the sai_xsr register. It is not used in ac97or SPDIF mode. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_ACLRFR_CLFSDET_POS  = 6;    /** @brief Clear late frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the LFSDET flag in the sai_xsr register. This bit is not used in ac97or SPDIF mode reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_BCRx_MODE_POS       = 0;    /** @brief SAIx audio block mode immediately */
-    static const int32_t SxI4_SAI_BCRx_PRTCFG_POS     = 2;    /** @brief Protocol configuration. These bits are set and cleared by software. These bits have to be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_BCRx_DS_POS         = 5;    /** @brief Data size. These bits are set and cleared by software. These bits are ignored when the SPDIF protocols are selected (bit PRTCFG[1:0]), because the frame and the data size are fixed in such case. When the companding mode is selected through COMP[1:0] bits, DS[1:0] are ignored since the data size is fixed to 8 bits by the algorithm. These bits must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_BCRx_LSBFIRST_POS   = 8;    /** @brief Least significant bit first. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in AC97 audio protocol since AC97 data are always transferred with the MSB first. This bit has no meaning in SPDIF audio protocol since in SPDIF data are always transferred with LSB first. */
-    static const int32_t SxI4_SAI_BCRx_CKSTR_POS      = 9;    /** @brief Clock strobing edge. This bit is set and cleared by software. It must be configured when the audio block is disabled. This bit has no meaning in SPDIF audio protocol. */
-    static const int32_t SxI4_SAI_BCRx_SYNCEN_POS     = 10;   /** @brief Synchronization enable. These bits are set and cleared by software. They must be configured when the audio sub-block is disabled. Note: the audio sub-block should be configured as asynchronous when SPDIF mode is enabled. */
-    static const int32_t SxI4_SAI_BCRx_MONO_POS       = 12;   /** @brief Mono mode. This bit is set and cleared by software. It is meaningful only when the number of slots is equal to 2. When the mono mode is selected, slot 0 data are duplicated on slot 1 when the audio block operates as a transmitter. In reception mode, the slot1 is discarded and only the data received from slot 0 are stored. Refer to section: mono/stereo mode for more details. */
-    static const int32_t SxI4_SAI_BCRx_OUTDRIV_POS    = 13;   /** @brief Output drive. This bit is set and cleared by software. Note: this bit has to be set before enabling the audio block and after the audio block configuration. */
-    static const int32_t SxI4_SAI_BCRx_SAIXEN_POS     = 16;   /** @brief Audio block enable where x is A or B. This bit is set by software. To switch off the audio block, the application software must program this bit to 0 and poll the bit till it reads back 0, meaning that the block is completely disabled. Before setting this bit to 1, check that it is set to 0, otherwise the enable command will not be taken into account. This bit allows to control the state of saix audio block. If it is disabled when an audio frame transfer is ongoing, the ongoing transfer completes and the cell is fully disabled at the end of this audio frame transfer. Note: when saix block is configured in master mode, the clock must be present on the input of saix before setting SAIXEN bit. */
-    static const int32_t SxI4_SAI_BCRx_DMAEN_POS      = 17;   /** @brief DMA enable. This bit is set and cleared by software. Note: since the audio block defaults to operate as a transmitter after reset, the MODE[1:0] bits must be configured before setting DMAEN to avoid a DMA request in receiver mode. */
-    static const int32_t SxI4_SAI_BCRx_NOMCK_POS      = 19;   /** @brief No divider */
-    static const int32_t SxI4_SAI_BCRx_MCKDIV_POS     = 20;   /** @brief Master clock divider. These bits are set and cleared by software. These bits are meaningless when the audio block operates in slave mode. They have to be configured when the audio block is disabled. Others: the master clock frequency is calculated accordingly to the following formula: */
-    static const int32_t SxI4_SAI_BCRx_OSR_POS        = 26;   /** @brief Oversampling ratio for master clock */
-    static const int32_t SxI4_SAI_BFRCR_FRL_POS       = 0;    /** @brief Frame length. These bits are set and cleared by software. They define the audio frame length expressed in number of SCK clock cycles: the number of bits in the frame is equal to FRL[7:0] + 1. The minimum number of bits to transfer in an audio frame must be equal to 8, otherwise the audio block will behaves in an unexpected way. This is the case when the data size is 8 bits and only one slot 0 is defined in NBSLOT[4:0] of sai_xslotr register (NBSLOT[3:0] = 0000). In master mode, if the master clock (available on mclk_x pin) is used, the frame length should be aligned with a number equal to a power of 2, ranging from 8 to 256. When the master clock is not used (NODIV = 1), it is recommended to program the frame length to an value ranging from 8 to 256. These bits are meaningless and are not used in AC97 or SPDIF audio block configuration. */
-    static const int32_t SxI4_SAI_BFRCR_FSALL_POS     = 8;    /** @brief Frame synchronization active level length. These bits are set and cleared by software. They specify the length in number of bit clock (SCK) + 1 (FSALL[6:0] + 1) of the active level of the FS signal in the audio frame these bits are meaningless and are not used in AC97 or SPDIF audio block configuration. They must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_BFRCR_FSDEF_POS     = 16;   /** @brief Frame synchronization definition. This bit is set and cleared by software. When the bit is set, the number of slots defined in the sai_xslotr register has to be even. It means that half of this number of slots will be dedicated to the left channel and the other slots for the right channel (e.g: this bit has to be set for I2S or msb/lsb-justified protocols...). This bit is meaningless and is not used in AC97 or SPDIF audio block configuration. It must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_BFRCR_FSPOL_POS     = 17;   /** @brief Frame synchronization polarity. This bit is set and cleared by software. It is used to configure the level of the start of frame on the FS signal. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_BFRCR_FSOFF_POS     = 18;   /** @brief Frame synchronization offset. This bit is set and cleared by software. It is meaningless and is not used in AC97 or SPDIF audio block configuration. This bit must be configured when the audio block is disabled. */
-    static const int32_t SxI4_SAI_BSLOTR_FBOFF_POS    = 0;    /** @brief First bit offset these bits are set and cleared by software. The value set in this bitfield defines the position of the first data transfer bit in the slot. It represents an offset value. In transmission mode, the bits outside the data field are forced to 0. In reception mode, the extra received bits are discarded. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_BSLOTR_SLOTSZ_POS   = 6;    /** @brief Slot size this bits is set and cleared by software. The slot size must be higher or equal to the data size. If this condition is not respected, the behavior of the SAI will be undetermined. Refer to section: output data line management on an inactive slot for information on how to drive SD line. These bits must be set when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_BSLOTR_NBSLOT_POS   = 8;    /** @brief Number of slots in an audio frame. These bits are set and cleared by software. The value set in this bitfield represents the number of slots + 1 in the audio frame (including the number of inactive slots). The maximum number of slots is 16. The number of slots should be even if FSDEF bit in the sai_xfrcr register is set. The number of slots must be configured when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_BSLOTR_SLOTEN_POS   = 16;   /** @brief Slot enable. These bits are set and cleared by software. Each SLOTEN bit corresponds to a slot position from 0 to 15 (maximum 16 slots). The slot must be enabled when the audio block is disabled. They are ignored in AC97 or SPDIF mode. */
-    static const int32_t SxI4_SAI_BIM_OVRUDRIE_POS    = 0;    /** @brief Overrun/underrun interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the OVRUDR bit in the sai_xsr register is set. */
-    static const int32_t SxI4_SAI_BIM_MUTEDETIE_POS   = 1;    /** @brief Mute detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the MUTEDET bit in the sai_xsr register is set. This bit has a meaning only if the audio block is configured in receiver mode. */
-    static const int32_t SxI4_SAI_BIM_WCKCFGIE_POS    = 2;    /** @brief Wrong clock configuration interrupt enable. This bit is set and cleared by software. This bit is taken into account only if the audio block is configured as a master (MODE[1] = 0) and NODIV = 0. It generates an interrupt if the WCKCFG flag in the sai_xsr register is set. Note: this bit is used only in TDM mode and is meaningless in other modes. */
-    static const int32_t SxI4_SAI_BIM_FREQIE_POS      = 3;    /** @brief FIFO request interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt is generated if the FREQ bit in the sai_xsr register is set. Since the audio block defaults to operate as a transmitter after reset, the MODE bit must be configured before setting FREQIE to avoid a parasitic interruption in receiver mode, */
-    static const int32_t SxI4_SAI_BIM_CNRDYIE_POS     = 4;    /** @brief Codec not ready interrupt enable (AC97). This bit is set and cleared by software. When the interrupt is enabled, the audio block detects in the slot 0 (tag0) of the AC97 frame if the codec connected to this line is ready or not. If it is not ready, the CNRDY flag in the sai_xsr register is set and an interruption i generated. This bit has a meaning only if the AC97 mode is selected through PRTCFG[1:0] bits and the audio block is operates as a receiver. */
-    static const int32_t SxI4_SAI_BIM_AFSDETIE_POS    = 5;    /** @brief Anticipated frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the AFSDET bit in the sai_xsr register is set. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const int32_t SxI4_SAI_BIM_LFSDETIE_POS    = 6;    /** @brief Late frame synchronization detection interrupt enable. This bit is set and cleared by software. When this bit is set, an interrupt will be generated if the LFSDET bit is set in the sai_xsr register. This bit is meaningless in AC97, SPDIF mode or when the audio block operates as a master. */
-    static const int32_t SxI4_SAI_BSR_OVRUDR_POS      = 0;    /** @brief Overrun / underrun. This bit is read only. The overrun and underrun conditions can occur only when the audio block is configured as a receiver and a transmitter, respectively. It can generate an interrupt if OVRUDRIE bit is set in sai_xim register. This flag is cleared when the software sets COVRUDR bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_BSR_MUTEDET_POS     = 1;    /** @brief Mute detection. This bit is read only. This flag is set if consecutive 0 values are received in each slot of a given audio frame and for a consecutive number of audio frames (set in the MUTECNT bit in the sai_xcr2 register). It can generate an interrupt if MUTEDETIE bit is set in sai_xim register. This flag is cleared when the software sets bit CMUTEDET in the sai_xclrfr register. */
-    static const int32_t SxI4_SAI_BSR_WCKCFG_POS      = 2;    /** @brief Wrong clock configuration flag. This bit is read only. This bit is used only when the audio block operates in master mode (MODE[1] = 0) and NODIV = 0. It can generate an interrupt if WCKCFGIE bit is set in sai_xim register. This flag is cleared when the software sets CWCKCFG bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_BSR_FREQ_POS        = 3;    /** @brief FIFO request. This bit is read only. The request depends on the audio block configuration: if the block is configured in transmission mode, the FIFO request is related to a write request operation in the sai_xdr. If the block configured in reception, the FIFO request related to a read request operation from the sai_xdr. This flag can generate an interrupt if FREQIE bit is set in sai_xim register. */
-    static const int32_t SxI4_SAI_BSR_CNRDY_POS       = 4;    /** @brief Codec not ready. This bit is read only. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register and configured in receiver mode. It can generate an interrupt if CNRDYIE bit is set in sai_xim register. This flag is cleared when the software sets CCNRDY bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_BSR_AFSDET_POS      = 5;    /** @brief Anticipated frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in ac97or SPDIF mode. It can generate an interrupt if AFSDETIE bit is set in sai_xim register. This flag is cleared when the software sets CAFSDET bit in sai_xclrfr register. */
-    static const int32_t SxI4_SAI_BSR_LFSDET_POS      = 6;    /** @brief Late frame synchronization detection. This bit is read only. This flag can be set only if the audio block is configured in slave mode. It is not used in AC97 or SPDIF mode. It can generate an interrupt if LFSDETIE bit is set in the sai_xim register. This flag is cleared when the software sets bit CLFSDET in sai_xclrfr register */
-    static const int32_t SxI4_SAI_BSR_FLVL_POS        = 16;   /** @brief FIFO level threshold. This bit is read only. The FIFO level threshold flag is managed only by hardware and its setting depends on SAI block configuration (transmitter or receiver mode). If the SAI block is configured as transmitter: if SAI block is configured as receiver: */
-    static const int32_t SxI4_SAI_BCLRFR_COVRUDR_POS  = 0;    /** @brief Clear overrun / underrun. This bit is write only. Programming this bit to 1 clears the OVRUDR flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_BCLRFR_CMUTEDET_POS = 1;    /** @brief Mute detection flag. This bit is write only. Programming this bit to 1 clears the MUTEDET flag in the sai_xsr register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_BCLRFR_CWCKCFG_POS  = 2;    /** @brief Clear wrong clock configuration flag. This bit is write only. Programming this bit to 1 clears the WCKCFG flag in the sai_xsr register. This bit is used only when the audio block is set as master (MODE[1] = 0) and NODIV = 0 in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_BCLRFR_CCNRDY_POS   = 4;    /** @brief Clear codec not ready flag. This bit is write only. Programming this bit to 1 clears the CNRDY flag in the sai_xsr register. This bit is used only when the AC97 audio protocol is selected in the sai_xcr1 register. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_BCLRFR_CAFSDET_POS  = 5;    /** @brief Clear anticipated frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the AFSDET flag in the sai_xsr register. It is not used in ac97or SPDIF mode. Reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_BCLRFR_CLFSDET_POS  = 6;    /** @brief Clear late frame synchronization detection flag. This bit is write only. Programming this bit to 1 clears the LFSDET flag in the sai_xsr register. This bit is not used in ac97or SPDIF mode reading this bit always returns the value 0. */
-    static const int32_t SxI4_SAI_PDMCR_PDMEN_POS     = 0;    /** @brief PDM enable */
-    static const int32_t SxI4_SAI_PDMCR_MICNBR_POS    = 4;    /** @brief Number of microphones */
-
-    static const int32_t SxI4_SAI_PDMCR_CKENx_POS[5] = {
-      [1] = 8,    /** @brief Clock enable of bitstream clock number 1 */
-      [2] = 9,    /** @brief Clock enable of bitstream clock number 2 */
-      [3] = 10,   /** @brief Clock enable of bitstream clock number 3 */
-      [4] = 11,   /** @brief Clock enable of bitstream clock number 4 */
-    };
-
-    static const int32_t SxI4_SAI_PDMDLY_DLYMxL_POS[5] = {
-      [1] = 0,    /** @brief Delay line adjust for first microphone of pair 1 */
-      [2] = 8,    /** @brief Delay line for first microphone of pair 2 */
-      [3] = 16,   /** @brief Delay line for first microphone of pair 3 */
-      [4] = 24,   /** @brief Delay line for first microphone of pair 4 */
-    };
-
-    static const int32_t SxI4_SAI_PDMDLY_DLYMxR_POS[5] = {
-      [1] = 4,    /** @brief Delay line adjust for second microphone of pair 1 */
-      [2] = 12,   /** @brief Delay line for second microphone of pair 2 */
-      [3] = 20,   /** @brief Delay line for second microphone of pair 3 */
-      [4] = 28,   /** @brief Delay line for second microphone of pair 4 */
     };
 
     /**********************************************************************************************
@@ -3310,6 +3394,7 @@
       [1] = (RW_ uint32_t* const)0x40015800U,   /** @brief Global configuration register */
       [2] = (RW_ uint32_t* const)0x40015C00U,   /** @brief Global configuration register */
       [3] = (RW_ uint32_t* const)0x40016000U,   /** @brief Global configuration register */
+      [4] = (RW_ uint32_t* const)0x58005400U,   /** @brief Global configuration register */
     };
 
     static RW_ uint32_t* const SAIx_SAI_ACRx_PTR[5][3] = {
@@ -3325,42 +3410,52 @@
         [1] = (RW_ uint32_t* const)0x40016004U,   /** @brief Configuration register 1 */
         [2] = (RW_ uint32_t* const)0x40016008U,   /** @brief Configuration register 2 */
       },
+      [4] = {
+        [1] = (RW_ uint32_t* const)0x58005404U,   /** @brief Configuration register 1 */
+        [2] = (RW_ uint32_t* const)0x58005408U,   /** @brief Configuration register 2 */
+      },
     };
 
     static RW_ uint32_t* const SAIx_SAI_AFRCR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x4001580CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [2] = (RW_ uint32_t* const)0x40015C0CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [3] = (RW_ uint32_t* const)0x4001600CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
+      [4] = (RW_ uint32_t* const)0x5800540CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
     };
 
     static RW_ uint32_t* const SAIx_SAI_ASLOTR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015810U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [2] = (RW_ uint32_t* const)0x40015C10U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [3] = (RW_ uint32_t* const)0x40016010U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
+      [4] = (RW_ uint32_t* const)0x58005410U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
     };
 
     static RW_ uint32_t* const SAIx_SAI_AIM_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015814U,   /** @brief Interrupt mask register 2 */
       [2] = (RW_ uint32_t* const)0x40015C14U,   /** @brief Interrupt mask register 2 */
       [3] = (RW_ uint32_t* const)0x40016014U,   /** @brief Interrupt mask register 2 */
+      [4] = (RW_ uint32_t* const)0x58005414U,   /** @brief Interrupt mask register 2 */
     };
 
     static RO_ uint32_t* const SAIx_SAI_ASR_PTR[5] = {
       [1] = (RO_ uint32_t* const)0x40015818U,   /** @brief Status register */
       [2] = (RO_ uint32_t* const)0x40015C18U,   /** @brief Status register */
       [3] = (RO_ uint32_t* const)0x40016018U,   /** @brief Status register */
+      [4] = (RO_ uint32_t* const)0x58005418U,   /** @brief Status register */
     };
 
     static WO_ uint32_t* const SAIx_SAI_ACLRFR_PTR[5] = {
       [1] = (WO_ uint32_t* const)0x4001581CU,   /** @brief Clear flag register */
       [2] = (WO_ uint32_t* const)0x40015C1CU,   /** @brief Clear flag register */
       [3] = (WO_ uint32_t* const)0x4001601CU,   /** @brief Clear flag register */
+      [4] = (WO_ uint32_t* const)0x5800541CU,   /** @brief Clear flag register */
     };
 
     static RW_ uint32_t* const SAIx_SAI_ADR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015820U,   /** @brief Data register */
       [2] = (RW_ uint32_t* const)0x40015C20U,   /** @brief Data register */
       [3] = (RW_ uint32_t* const)0x40016020U,   /** @brief Data register */
+      [4] = (RW_ uint32_t* const)0x58005420U,   /** @brief Data register */
     };
 
     static RW_ uint32_t* const SAIx_SAI_BCRx_PTR[5][3] = {
@@ -3376,54 +3471,66 @@
         [1] = (RW_ uint32_t* const)0x40016024U,   /** @brief Configuration register 1 */
         [2] = (RW_ uint32_t* const)0x40016028U,   /** @brief Configuration register 2 */
       },
+      [4] = {
+        [1] = (RW_ uint32_t* const)0x58005424U,   /** @brief Configuration register 1 */
+        [2] = (RW_ uint32_t* const)0x58005428U,   /** @brief Configuration register 2 */
+      },
     };
 
     static RW_ uint32_t* const SAIx_SAI_BFRCR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x4001582CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [2] = (RW_ uint32_t* const)0x40015C2CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [3] = (RW_ uint32_t* const)0x4001602CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
+      [4] = (RW_ uint32_t* const)0x5800542CU,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
     };
 
     static RW_ uint32_t* const SAIx_SAI_BSLOTR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015830U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [2] = (RW_ uint32_t* const)0x40015C30U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
       [3] = (RW_ uint32_t* const)0x40016030U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
+      [4] = (RW_ uint32_t* const)0x58005430U,   /** @brief This register has no meaning in AC97 and SPDIF audio protocol */
     };
 
     static RW_ uint32_t* const SAIx_SAI_BIM_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015834U,   /** @brief Interrupt mask register 2 */
       [2] = (RW_ uint32_t* const)0x40015C34U,   /** @brief Interrupt mask register 2 */
       [3] = (RW_ uint32_t* const)0x40016034U,   /** @brief Interrupt mask register 2 */
+      [4] = (RW_ uint32_t* const)0x58005434U,   /** @brief Interrupt mask register 2 */
     };
 
     static RO_ uint32_t* const SAIx_SAI_BSR_PTR[5] = {
       [1] = (RO_ uint32_t* const)0x40015838U,   /** @brief Status register */
       [2] = (RO_ uint32_t* const)0x40015C38U,   /** @brief Status register */
       [3] = (RO_ uint32_t* const)0x40016038U,   /** @brief Status register */
+      [4] = (RO_ uint32_t* const)0x58005438U,   /** @brief Status register */
     };
 
     static WO_ uint32_t* const SAIx_SAI_BCLRFR_PTR[5] = {
       [1] = (WO_ uint32_t* const)0x4001583CU,   /** @brief Clear flag register */
       [2] = (WO_ uint32_t* const)0x40015C3CU,   /** @brief Clear flag register */
       [3] = (WO_ uint32_t* const)0x4001603CU,   /** @brief Clear flag register */
+      [4] = (WO_ uint32_t* const)0x5800543CU,   /** @brief Clear flag register */
     };
 
     static RW_ uint32_t* const SAIx_SAI_BDR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015840U,   /** @brief Data register */
       [2] = (RW_ uint32_t* const)0x40015C40U,   /** @brief Data register */
       [3] = (RW_ uint32_t* const)0x40016040U,   /** @brief Data register */
+      [4] = (RW_ uint32_t* const)0x58005440U,   /** @brief Data register */
     };
 
     static RW_ uint32_t* const SAIx_SAI_PDMCR_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015844U,   /** @brief PDM control register */
       [2] = (RW_ uint32_t* const)0x40015C44U,   /** @brief PDM control register */
       [3] = (RW_ uint32_t* const)0x40016044U,   /** @brief PDM control register */
+      [4] = (RW_ uint32_t* const)0x58005444U,   /** @brief PDM control register */
     };
 
     static RW_ uint32_t* const SAIx_SAI_PDMDLY_PTR[5] = {
       [1] = (RW_ uint32_t* const)0x40015848U,   /** @brief PDM delay register */
       [2] = (RW_ uint32_t* const)0x40015C48U,   /** @brief PDM delay register */
       [3] = (RW_ uint32_t* const)0x40016048U,   /** @brief PDM delay register */
+      [4] = (RW_ uint32_t* const)0x58005448U,   /** @brief PDM delay register */
     };
 
     /**** @subsection SAIx Register Field Masks ****/
@@ -4024,77 +4131,33 @@
     static const int32_t VREFBUF_CCR_TRIM_POS = 0;   /** @brief Trimming code these bits are automatically initialized after reset with the trimming value stored in the flash memory during the production test. Writing into these bits allows to tune the internal reference buffer voltage. */
 
     /**********************************************************************************************
-     * @section xWDG1 Register Information
-     **********************************************************************************************/
-
-    /**** @subsection xWDG1 Register Pointers ****/
-
-    static WO_ uint32_t* const xWDG1_KR_PTR[23] = {
-      [8]  = (WO_ uint32_t* const)0x58004800U,   /** @brief Key register */
-      [22] = (WO_ uint32_t* const)0x50003000U,   /** @brief Control register */
-    };
-
-    static RW_ uint32_t* const xWDG1_PR_PTR[23] = {
-      [8]  = (RW_ uint32_t* const)0x58004804U,   /** @brief Prescaler register */
-      [22] = (RW_ uint32_t* const)0x50003004U,   /** @brief Configuration register */
-    };
-
-    static RW_ uint32_t* const xWDG1_RLR_PTR[23] = {
-      [8]  = (RW_ uint32_t* const)0x58004808U,   /** @brief Reload register */
-      [22] = (RW_ uint32_t* const)0x50003008U,   /** @brief Status register */
-    };
-
-    static RO_ uint32_t* const xWDG1_SR_PTR[23] = {
-      [8]  = (RO_ uint32_t* const)0x5800480CU,   /** @brief Status register */
-    };
-
-    static RW_ uint32_t* const xWDG1_WINR_PTR[23] = {
-      [8]  = (RW_ uint32_t* const)0x58004810U,   /** @brief Window register */
-    };
-
-    /**** @subsection xWDG1 Register Field Masks ****/
-
-    static const uint32_t xWDG1_KR_KEY_MSK   = 0x0000FFFFU;   /** @brief Key value (write only, read 0x0000) these bits must be written by software at regular intervals with the key value 0xaaaa, otherwise the watchdog generates a reset when the counter reaches 0. Writing the key value 0x5555 to enable access to the IWDG_PR, IWDG_RLR and IWDG_WINR registers (see section23.3.6: register access protection) writing the key value cccch starts the watchdog (except if the hardware watchdog option is selected) */
-    static const uint32_t xWDG1_PR_PR_MSK    = 0x00000007U;   /** @brief Prescaler divider these bits are write access protected see section23.3.6: register access protection. They are written by software to select the prescaler divider feeding the counter clock. PVU bit of IWDG_SR must be reset in order to be able to change the prescaler divider. Note: reading this register returns the prescaler value from the VDD voltage domain. This value may not be up to date/valid if a write operation to this register is ongoing. For this reason the value read from this register is valid only when the PVU bit in the IWDG_SR register is reset. */
-    static const uint32_t xWDG1_RLR_RL_MSK   = 0x00000FFFU;   /** @brief Watchdog counter reload value these bits are write access protected see section23.3.6. They are written by software to define the value to be loaded in the watchdog counter each time the value 0xaaaa is written in the IWDG_KR register. The watchdog counter counts down from this value. The timeout period is a function of this value and the clock prescaler. Refer to the datasheet for the timeout information. The RVU bit in the IWDG_SR register must be reset in order to be able to change the reload value. Note: reading this register returns the reload value from the VDD voltage domain. This value may not be up to date/valid if a write operation to this register is ongoing on this register. For this reason the value read from this register is valid only when the RVU bit in the IWDG_SR register is reset. */
-    static const uint32_t xWDG1_SR_PVU_MSK   = 0x00000001U;   /** @brief Watchdog prescaler value update this bit is set by hardware to indicate that an update of the prescaler value is ongoing. It is reset by hardware when the prescaler update operation is completed in the VDD voltage domain (takes up to 5 RC 40 khz cycles). Prescaler value can be updated only when PVU bit is reset. */
-    static const uint32_t xWDG1_SR_RVU_MSK   = 0x00000002U;   /** @brief Watchdog counter reload value update this bit is set by hardware to indicate that an update of the reload value is ongoing. It is reset by hardware when the reload value update operation is completed in the VDD voltage domain (takes up to 5 RC 40 khz cycles). Reload value can be updated only when RVU bit is reset. */
-    static const uint32_t xWDG1_SR_WVU_MSK   = 0x00000004U;   /** @brief Watchdog counter window value update this bit is set by hardware to indicate that an update of the window value is ongoing. It is reset by hardware when the reload value update operation is completed in the VDD voltage domain (takes up to 5 RC 40 khz cycles). Window value can be updated only when WVU bit is reset. This bit is generated only if generic window = 1 */
-    static const uint32_t xWDG1_WINR_WIN_MSK = 0x00000FFFU;   /** @brief Watchdog counter window value these bits are write access protected see section23.3.6. These bits contain the high limit of the window value to be compared to the downcounter. To prevent a reset, the downcounter must be reloaded when its value is lower than the window register value and greater than 0x0 the WVU bit in the IWDG_SR register must be reset in order to be able to change the reload value. Note: reading this register returns the reload value from the VDD voltage domain. This value may not be valid if a write operation to this register is ongoing. For this reason the value read from this register is valid only when the WVU bit in the IWDG_SR register is reset. */
-
-    /**** @subsection xWDG1 Register Field Positions ****/
-
-    static const int32_t xWDG1_KR_KEY_POS   = 0;   /** @brief Key value (write only, read 0x0000) these bits must be written by software at regular intervals with the key value 0xaaaa, otherwise the watchdog generates a reset when the counter reaches 0. Writing the key value 0x5555 to enable access to the IWDG_PR, IWDG_RLR and IWDG_WINR registers (see section23.3.6: register access protection) writing the key value cccch starts the watchdog (except if the hardware watchdog option is selected) */
-    static const int32_t xWDG1_PR_PR_POS    = 0;   /** @brief Prescaler divider these bits are write access protected see section23.3.6: register access protection. They are written by software to select the prescaler divider feeding the counter clock. PVU bit of IWDG_SR must be reset in order to be able to change the prescaler divider. Note: reading this register returns the prescaler value from the VDD voltage domain. This value may not be up to date/valid if a write operation to this register is ongoing. For this reason the value read from this register is valid only when the PVU bit in the IWDG_SR register is reset. */
-    static const int32_t xWDG1_RLR_RL_POS   = 0;   /** @brief Watchdog counter reload value these bits are write access protected see section23.3.6. They are written by software to define the value to be loaded in the watchdog counter each time the value 0xaaaa is written in the IWDG_KR register. The watchdog counter counts down from this value. The timeout period is a function of this value and the clock prescaler. Refer to the datasheet for the timeout information. The RVU bit in the IWDG_SR register must be reset in order to be able to change the reload value. Note: reading this register returns the reload value from the VDD voltage domain. This value may not be up to date/valid if a write operation to this register is ongoing on this register. For this reason the value read from this register is valid only when the RVU bit in the IWDG_SR register is reset. */
-    static const int32_t xWDG1_SR_PVU_POS   = 0;   /** @brief Watchdog prescaler value update this bit is set by hardware to indicate that an update of the prescaler value is ongoing. It is reset by hardware when the prescaler update operation is completed in the VDD voltage domain (takes up to 5 RC 40 khz cycles). Prescaler value can be updated only when PVU bit is reset. */
-    static const int32_t xWDG1_SR_RVU_POS   = 1;   /** @brief Watchdog counter reload value update this bit is set by hardware to indicate that an update of the reload value is ongoing. It is reset by hardware when the reload value update operation is completed in the VDD voltage domain (takes up to 5 RC 40 khz cycles). Reload value can be updated only when RVU bit is reset. */
-    static const int32_t xWDG1_SR_WVU_POS   = 2;   /** @brief Watchdog counter window value update this bit is set by hardware to indicate that an update of the window value is ongoing. It is reset by hardware when the reload value update operation is completed in the VDD voltage domain (takes up to 5 RC 40 khz cycles). Window value can be updated only when WVU bit is reset. This bit is generated only if generic window = 1 */
-    static const int32_t xWDG1_WINR_WIN_POS = 0;   /** @brief Watchdog counter window value these bits are write access protected see section23.3.6. These bits contain the high limit of the window value to be compared to the downcounter. To prevent a reset, the downcounter must be reloaded when its value is lower than the window register value and greater than 0x0 the WVU bit in the IWDG_SR register must be reset in order to be able to change the reload value. Note: reading this register returns the reload value from the VDD voltage domain. This value may not be valid if a write operation to this register is ongoing. For this reason the value read from this register is valid only when the WVU bit in the IWDG_SR register is reset. */
-
-    /**********************************************************************************************
      * @section IWDGx Register Information
      **********************************************************************************************/
 
     /**** @subsection IWDGx Register Pointers ****/
 
     static WO_ uint32_t* const IWDGx_KR_PTR[3] = {
+      [1] = (WO_ uint32_t* const)0x58004800U,   /** @brief Key register */
       [2] = (WO_ uint32_t* const)0x58004C00U,   /** @brief Key register */
     };
 
     static RW_ uint32_t* const IWDGx_PR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x58004804U,   /** @brief Prescaler register */
       [2] = (RW_ uint32_t* const)0x58004C04U,   /** @brief Prescaler register */
     };
 
     static RW_ uint32_t* const IWDGx_RLR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x58004808U,   /** @brief Reload register */
       [2] = (RW_ uint32_t* const)0x58004C08U,   /** @brief Reload register */
     };
 
     static RO_ uint32_t* const IWDGx_SR_PTR[3] = {
+      [1] = (RO_ uint32_t* const)0x5800480CU,   /** @brief Status register */
       [2] = (RO_ uint32_t* const)0x58004C0CU,   /** @brief Status register */
     };
 
     static RW_ uint32_t* const IWDGx_WINR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x58004810U,   /** @brief Window register */
       [2] = (RW_ uint32_t* const)0x58004C10U,   /** @brief Window register */
     };
 
@@ -4119,32 +4182,43 @@
     static const int32_t IWDGx_WINR_WIN_POS = 0;   /** @brief Watchdog counter window value these bits are write access protected see section23.3.6. These bits contain the high limit of the window value to be compared to the downcounter. To prevent a reset, the downcounter must be reloaded when its value is lower than the window register value and greater than 0x0 the WVU bit in the IWDG_SR register must be reset in order to be able to change the reload value. Note: reading this register returns the reload value from the VDD voltage domain. This value may not be valid if a write operation to this register is ongoing. For this reason the value read from this register is valid only when the WVU bit in the IWDG_SR register is reset. */
 
     /**********************************************************************************************
-     * @section WWDG2 Register Information
+     * @section WWDGx Register Information
      **********************************************************************************************/
 
-    /**** @subsection WWDG2 Register Pointers ****/
+    /**** @subsection WWDGx Register Pointers ****/
 
-    static RW_ uint32_t* const WWDG2_CR_PTR  = (RW_ uint32_t* const)0x40002C00U;   /** @brief Control register */
-    static RW_ uint32_t* const WWDG2_CFR_PTR = (RW_ uint32_t* const)0x40002C04U;   /** @brief Configuration register */
-    static RW_ uint32_t* const WWDG2_SR_PTR  = (RW_ uint32_t* const)0x40002C08U;   /** @brief Status register */
+    static RW_ uint32_t* const WWDGx_CR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x50003000U,   /** @brief Control register */
+      [2] = (RW_ uint32_t* const)0x40002C00U,   /** @brief Control register */
+    };
 
-    /**** @subsection WWDG2 Register Field Masks ****/
+    static RW_ uint32_t* const WWDGx_CFR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x50003004U,   /** @brief Configuration register */
+      [2] = (RW_ uint32_t* const)0x40002C04U,   /** @brief Configuration register */
+    };
 
-    static const uint32_t WWDG2_CR_T_MSK      = 0x0000007FU;   /** @brief 7-bit counter (MSB to LSB) these bits contain the value of the watchdog counter. It is decremented every (4096 x 2WDGTB[1:0]) PCLK cycles. A reset is produced when it is decremented from 0x40 to 0x3f (T6 becomes cleared). */
-    static const uint32_t WWDG2_CR_WDGA_MSK   = 0x00000080U;   /** @brief Activation bit this bit is set by software and only cleared by hardware after a reset. When WDGA=1, the watchdog can generate a reset. */
-    static const uint32_t WWDG2_CFR_W_MSK     = 0x0000007FU;   /** @brief 7-bit window value these bits contain the window value to be compared to the downcounter. */
-    static const uint32_t WWDG2_CFR_WDGTB_MSK = 0x00001800U;   /** @brief Timer base the time base of the prescaler can be modified as follows: */
-    static const uint32_t WWDG2_CFR_EWI_MSK   = 0x00000200U;   /** @brief Early wakeup interrupt when set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by hardware after a reset. */
-    static const uint32_t WWDG2_SR_EWIF_MSK   = 0x00000001U;   /** @brief Early wakeup interrupt flag this bit is set by hardware when the counter has reached the value 0x40. It must be cleared by software by writing 0. A write of 1 has no effect. This bit is also set if the interrupt is not enabled. */
+    static RW_ uint32_t* const WWDGx_SR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x50003008U,   /** @brief Status register */
+      [2] = (RW_ uint32_t* const)0x40002C08U,   /** @brief Status register */
+    };
 
-    /**** @subsection WWDG2 Register Field Positions ****/
+    /**** @subsection WWDGx Register Field Masks ****/
 
-    static const int32_t WWDG2_CR_T_POS      = 0;    /** @brief 7-bit counter (MSB to LSB) these bits contain the value of the watchdog counter. It is decremented every (4096 x 2WDGTB[1:0]) PCLK cycles. A reset is produced when it is decremented from 0x40 to 0x3f (T6 becomes cleared). */
-    static const int32_t WWDG2_CR_WDGA_POS   = 7;    /** @brief Activation bit this bit is set by software and only cleared by hardware after a reset. When WDGA=1, the watchdog can generate a reset. */
-    static const int32_t WWDG2_CFR_W_POS     = 0;    /** @brief 7-bit window value these bits contain the window value to be compared to the downcounter. */
-    static const int32_t WWDG2_CFR_WDGTB_POS = 11;   /** @brief Timer base the time base of the prescaler can be modified as follows: */
-    static const int32_t WWDG2_CFR_EWI_POS   = 9;    /** @brief Early wakeup interrupt when set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by hardware after a reset. */
-    static const int32_t WWDG2_SR_EWIF_POS   = 0;    /** @brief Early wakeup interrupt flag this bit is set by hardware when the counter has reached the value 0x40. It must be cleared by software by writing 0. A write of 1 has no effect. This bit is also set if the interrupt is not enabled. */
+    static const uint32_t WWDGx_CR_T_MSK      = 0x0000007FU;   /** @brief 7-bit counter (MSB to LSB) these bits contain the value of the watchdog counter. It is decremented every (4096 x 2WDGTB[1:0]) PCLK cycles. A reset is produced when it is decremented from 0x40 to 0x3f (T6 becomes cleared). */
+    static const uint32_t WWDGx_CR_WDGA_MSK   = 0x00000080U;   /** @brief Activation bit this bit is set by software and only cleared by hardware after a reset. When WDGA=1, the watchdog can generate a reset. */
+    static const uint32_t WWDGx_CFR_W_MSK     = 0x0000007FU;   /** @brief 7-bit window value these bits contain the window value to be compared to the downcounter. */
+    static const uint32_t WWDGx_CFR_WDGTB_MSK = 0x00001800U;   /** @brief Timer base the time base of the prescaler can be modified as follows: */
+    static const uint32_t WWDGx_CFR_EWI_MSK   = 0x00000200U;   /** @brief Early wakeup interrupt when set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by hardware after a reset. */
+    static const uint32_t WWDGx_SR_EWIF_MSK   = 0x00000001U;   /** @brief Early wakeup interrupt flag this bit is set by hardware when the counter has reached the value 0x40. It must be cleared by software by writing 0. A write of 1 has no effect. This bit is also set if the interrupt is not enabled. */
+
+    /**** @subsection WWDGx Register Field Positions ****/
+
+    static const int32_t WWDGx_CR_T_POS      = 0;    /** @brief 7-bit counter (MSB to LSB) these bits contain the value of the watchdog counter. It is decremented every (4096 x 2WDGTB[1:0]) PCLK cycles. A reset is produced when it is decremented from 0x40 to 0x3f (T6 becomes cleared). */
+    static const int32_t WWDGx_CR_WDGA_POS   = 7;    /** @brief Activation bit this bit is set by software and only cleared by hardware after a reset. When WDGA=1, the watchdog can generate a reset. */
+    static const int32_t WWDGx_CFR_W_POS     = 0;    /** @brief 7-bit window value these bits contain the window value to be compared to the downcounter. */
+    static const int32_t WWDGx_CFR_WDGTB_POS = 11;   /** @brief Timer base the time base of the prescaler can be modified as follows: */
+    static const int32_t WWDGx_CFR_EWI_POS   = 9;    /** @brief Early wakeup interrupt when set, an interrupt occurs whenever the counter reaches the value 0x40. This interrupt is only cleared by hardware after a reset. */
+    static const int32_t WWDGx_SR_EWIF_POS   = 0;    /** @brief Early wakeup interrupt flag this bit is set by hardware when the counter has reached the value 0x40. It must be cleared by software by writing 0. A write of 1 has no effect. This bit is also set if the interrupt is not enabled. */
 
     /**********************************************************************************************
      * @section PWR Register Information
@@ -4322,6 +4396,10 @@
         [1] = (RW_ uint32_t* const)0x40003C00U,   /** @brief Control register 1 */
         [2] = (RW_ uint32_t* const)0x40003C04U,   /** @brief Control register 2 */
       },
+      [4] = {
+        [1] = (RW_ uint32_t* const)0x40013400U,   /** @brief Control register 1 */
+        [2] = (RW_ uint32_t* const)0x40013404U,   /** @brief Control register 2 */
+      },
       [5] = {
         [1] = (RW_ uint32_t* const)0x40015000U,   /** @brief Control register 1 */
         [2] = (RW_ uint32_t* const)0x40015004U,   /** @brief Control register 2 */
@@ -4345,6 +4423,10 @@
         [1] = (RW_ uint32_t* const)0x40003C08U,   /** @brief Configuration register 1 */
         [2] = (RW_ uint32_t* const)0x40003C0CU,   /** @brief Configuration register 2 */
       },
+      [4] = {
+        [1] = (RW_ uint32_t* const)0x40013408U,   /** @brief Configuration register 1 */
+        [2] = (RW_ uint32_t* const)0x4001340CU,   /** @brief Configuration register 2 */
+      },
       [5] = {
         [1] = (RW_ uint32_t* const)0x40015008U,   /** @brief Configuration register 1 */
         [2] = (RW_ uint32_t* const)0x4001500CU,   /** @brief Configuration register 2 */
@@ -4359,6 +4441,7 @@
       [1] = (RW_ uint32_t* const)0x40013010U,   /** @brief Interrupt enable register */
       [2] = (RW_ uint32_t* const)0x40003810U,   /** @brief Interrupt enable register */
       [3] = (RW_ uint32_t* const)0x40003C10U,   /** @brief Interrupt enable register */
+      [4] = (RW_ uint32_t* const)0x40013410U,   /** @brief Interrupt enable register */
       [5] = (RW_ uint32_t* const)0x40015010U,   /** @brief Interrupt enable register */
       [6] = (RW_ uint32_t* const)0x58001410U,   /** @brief Interrupt enable register */
     };
@@ -4367,6 +4450,7 @@
       [1] = (RO_ uint32_t* const)0x40013014U,   /** @brief Status register */
       [2] = (RO_ uint32_t* const)0x40003814U,   /** @brief Status register */
       [3] = (RO_ uint32_t* const)0x40003C14U,   /** @brief Status register */
+      [4] = (RO_ uint32_t* const)0x40013414U,   /** @brief Status register */
       [5] = (RO_ uint32_t* const)0x40015014U,   /** @brief Status register */
       [6] = (RO_ uint32_t* const)0x58001414U,   /** @brief Status register */
     };
@@ -4375,6 +4459,7 @@
       [1] = (WO_ uint32_t* const)0x40013018U,   /** @brief Interrupt/Status flags clear register */
       [2] = (WO_ uint32_t* const)0x40003818U,   /** @brief Interrupt/Status flags clear register */
       [3] = (WO_ uint32_t* const)0x40003C18U,   /** @brief Interrupt/Status flags clear register */
+      [4] = (WO_ uint32_t* const)0x40013418U,   /** @brief Interrupt/Status flags clear register */
       [5] = (WO_ uint32_t* const)0x40015018U,   /** @brief Interrupt/Status flags clear register */
       [6] = (WO_ uint32_t* const)0x58001418U,   /** @brief Interrupt/Status flags clear register */
     };
@@ -4383,6 +4468,7 @@
       [1] = (WO_ uint32_t* const)0x40013020U,   /** @brief Transmit data register */
       [2] = (WO_ uint32_t* const)0x40003820U,   /** @brief Transmit data register */
       [3] = (WO_ uint32_t* const)0x40003C20U,   /** @brief Transmit data register */
+      [4] = (WO_ uint32_t* const)0x40013420U,   /** @brief Transmit data register */
       [5] = (WO_ uint32_t* const)0x40015020U,   /** @brief Transmit data register */
       [6] = (WO_ uint32_t* const)0x58001420U,   /** @brief Transmit data register */
     };
@@ -4391,6 +4477,7 @@
       [1] = (RO_ uint32_t* const)0x40013030U,   /** @brief Receive data register */
       [2] = (RO_ uint32_t* const)0x40003830U,   /** @brief Receive data register */
       [3] = (RO_ uint32_t* const)0x40003C30U,   /** @brief Receive data register */
+      [4] = (RO_ uint32_t* const)0x40013430U,   /** @brief Receive data register */
       [5] = (RO_ uint32_t* const)0x40015030U,   /** @brief Receive data register */
       [6] = (RO_ uint32_t* const)0x58001430U,   /** @brief Receive data register */
     };
@@ -4399,6 +4486,7 @@
       [1] = (RW_ uint32_t* const)0x40013040U,   /** @brief Polynomial register */
       [2] = (RW_ uint32_t* const)0x40003840U,   /** @brief Polynomial register */
       [3] = (RW_ uint32_t* const)0x40003C40U,   /** @brief Polynomial register */
+      [4] = (RW_ uint32_t* const)0x40013440U,   /** @brief Polynomial register */
       [5] = (RW_ uint32_t* const)0x40015040U,   /** @brief Polynomial register */
       [6] = (RW_ uint32_t* const)0x58001440U,   /** @brief Polynomial register */
     };
@@ -4407,6 +4495,7 @@
       [1] = (RW_ uint32_t* const)0x40013044U,   /** @brief Transmitter CRC register */
       [2] = (RW_ uint32_t* const)0x40003844U,   /** @brief Transmitter CRC register */
       [3] = (RW_ uint32_t* const)0x40003C44U,   /** @brief Transmitter CRC register */
+      [4] = (RW_ uint32_t* const)0x40013444U,   /** @brief Transmitter CRC register */
       [5] = (RW_ uint32_t* const)0x40015044U,   /** @brief Transmitter CRC register */
       [6] = (RW_ uint32_t* const)0x58001444U,   /** @brief Transmitter CRC register */
     };
@@ -4415,6 +4504,7 @@
       [1] = (RW_ uint32_t* const)0x40013048U,   /** @brief Receiver CRC register */
       [2] = (RW_ uint32_t* const)0x40003848U,   /** @brief Receiver CRC register */
       [3] = (RW_ uint32_t* const)0x40003C48U,   /** @brief Receiver CRC register */
+      [4] = (RW_ uint32_t* const)0x40013448U,   /** @brief Receiver CRC register */
       [5] = (RW_ uint32_t* const)0x40015048U,   /** @brief Receiver CRC register */
       [6] = (RW_ uint32_t* const)0x58001448U,   /** @brief Receiver CRC register */
     };
@@ -4423,6 +4513,7 @@
       [1] = (RW_ uint32_t* const)0x4001304CU,   /** @brief Underrun data register */
       [2] = (RW_ uint32_t* const)0x4000384CU,   /** @brief Underrun data register */
       [3] = (RW_ uint32_t* const)0x40003C4CU,   /** @brief Underrun data register */
+      [4] = (RW_ uint32_t* const)0x4001344CU,   /** @brief Underrun data register */
       [5] = (RW_ uint32_t* const)0x4001504CU,   /** @brief Underrun data register */
       [6] = (RW_ uint32_t* const)0x5800144CU,   /** @brief Underrun data register */
     };
@@ -4431,6 +4522,7 @@
       [1] = (RW_ uint32_t* const)0x40013050U,   /** @brief Configuration register */
       [2] = (RW_ uint32_t* const)0x40003850U,   /** @brief Configuration register */
       [3] = (RW_ uint32_t* const)0x40003C50U,   /** @brief Configuration register */
+      [4] = (RW_ uint32_t* const)0x40013450U,   /** @brief Configuration register */
       [5] = (RW_ uint32_t* const)0x40015050U,   /** @brief Configuration register */
       [6] = (RW_ uint32_t* const)0x58001450U,   /** @brief Configuration register */
     };
@@ -5504,6 +5596,985 @@
       [1] = 23,   /** @brief Analog watchdog 1 flag of the slave ADC */
       [2] = 24,   /** @brief Analog watchdog 2 flag of the slave ADC */
       [3] = 25,   /** @brief Analog watchdog 3 flag of the slave ADC */
+    };
+
+    /**********************************************************************************************
+     * @section CRC Register Information
+     **********************************************************************************************/
+
+    /**** @subsection CRC Register Pointers ****/
+
+    static RW_ uint32_t* const CRC_DR_PTR   = (RW_ uint32_t* const)0x58024C00U;   /** @brief Data register */
+    static RW_ uint32_t* const CRC_IDR_PTR  = (RW_ uint32_t* const)0x58024C04U;   /** @brief Independent data register */
+    static RW_ uint32_t* const CRC_CR_PTR   = (RW_ uint32_t* const)0x58024C08U;   /** @brief Control register */
+    static RW_ uint32_t* const CRC_INIT_PTR = (RW_ uint32_t* const)0x58024C0CU;   /** @brief Initial CRC value */
+    static RW_ uint32_t* const CRC_POL_PTR  = (RW_ uint32_t* const)0x58024C10U;   /** @brief CRC polynomial */
+
+    /**** @subsection CRC Register Field Masks ****/
+
+    static const uint32_t CRC_CR_RESET_MSK    = 0x00000001U;   /** @brief RESET bit */
+    static const uint32_t CRC_CR_POLYSIZE_MSK = 0x00000018U;   /** @brief Polynomial size */
+    static const uint32_t CRC_CR_REV_IN_MSK   = 0x00000060U;   /** @brief Reverse input data */
+    static const uint32_t CRC_CR_REV_OUT_MSK  = 0x00000080U;   /** @brief Reverse output data */
+
+    /**** @subsection CRC Register Field Positions ****/
+
+    static const int32_t CRC_CR_RESET_POS    = 0;   /** @brief RESET bit */
+    static const int32_t CRC_CR_POLYSIZE_POS = 3;   /** @brief Polynomial size */
+    static const int32_t CRC_CR_REV_IN_POS   = 5;   /** @brief Reverse input data */
+    static const int32_t CRC_CR_REV_OUT_POS  = 7;   /** @brief Reverse output data */
+
+    /**********************************************************************************************
+     * @section RCC Register Information
+     **********************************************************************************************/
+
+    /**** @subsection RCC Register Pointers ****/
+
+    static RW_ uint32_t* const RCC_CR_PTR            = (RW_ uint32_t* const)0x58024400U;   /** @brief Clock control register */
+    static RW_ uint32_t* const RCC_ICSCR_PTR         = (RW_ uint32_t* const)0x58024404U;   /** @brief RCC internal clock source calibration register */
+    static RO_ uint32_t* const RCC_CRRCR_PTR         = (RO_ uint32_t* const)0x58024408U;   /** @brief RCC clock recovery RC register */
+    static RW_ uint32_t* const RCC_CFGR_PTR          = (RW_ uint32_t* const)0x58024410U;   /** @brief RCC clock configuration register */
+    static RW_ uint32_t* const RCC_PLLCKSELR_PTR     = (RW_ uint32_t* const)0x58024428U;   /** @brief RCC plls clock source selection register */
+    static RW_ uint32_t* const RCC_PLLCFGR_PTR       = (RW_ uint32_t* const)0x5802442CU;   /** @brief RCC plls configuration register */
+    static RW_ uint32_t* const RCC_CIER_PTR          = (RW_ uint32_t* const)0x58024460U;   /** @brief RCC clock source interrupt enable register */
+    static RW_ uint32_t* const RCC_CIFR_PTR          = (RW_ uint32_t* const)0x58024464U;   /** @brief RCC clock source interrupt flag register */
+    static RW_ uint32_t* const RCC_CICR_PTR          = (RW_ uint32_t* const)0x58024468U;   /** @brief RCC clock source interrupt clear register */
+    static RW_ uint32_t* const RCC_BDCR_PTR          = (RW_ uint32_t* const)0x58024470U;   /** @brief RCC backup domain control register */
+    static RW_ uint32_t* const RCC_CSR_PTR           = (RW_ uint32_t* const)0x58024474U;   /** @brief RCC clock control and status register */
+    static RW_ uint32_t* const RCC_APB1LRSTR_PTR     = (RW_ uint32_t* const)0x58024490U;   /** @brief RCC APB1 peripheral reset register */
+    static RW_ uint32_t* const RCC_APB1HRSTR_PTR     = (RW_ uint32_t* const)0x58024494U;   /** @brief RCC APB1 peripheral reset register */
+    static RW_ uint32_t* const RCC_GCR_PTR           = (RW_ uint32_t* const)0x580244A0U;   /** @brief RCC global control register */
+    static RW_ uint32_t* const RCC_D3AMR_PTR         = (RW_ uint32_t* const)0x580244A8U;   /** @brief RCC D3 autonomous mode register */
+    static RW_ uint32_t* const RCC_RSR_PTR           = (RW_ uint32_t* const)0x580244D0U;   /** @brief RCC reset status register */
+    static RW_ uint32_t* const RCC_C1_RSR_PTR        = (RW_ uint32_t* const)0x58024530U;   /** @brief RCC reset status register */
+    static RW_ uint32_t* const RCC_APB1LENR_PTR      = (RW_ uint32_t* const)0x580244E8U;   /** @brief RCC APB1 clock register */
+    static RW_ uint32_t* const RCC_C1_APB1LENR_PTR   = (RW_ uint32_t* const)0x58024548U;   /** @brief RCC APB1 clock register */
+    static RW_ uint32_t* const RCC_APB1HENR_PTR      = (RW_ uint32_t* const)0x580244ECU;   /** @brief RCC APB1 clock register */
+    static RW_ uint32_t* const RCC_C1_APB1HENR_PTR   = (RW_ uint32_t* const)0x5802454CU;   /** @brief RCC APB1 clock register */
+    static RW_ uint32_t* const RCC_APB1LLPENR_PTR    = (RW_ uint32_t* const)0x58024510U;   /** @brief RCC APB1 low sleep clock register */
+    static RW_ uint32_t* const RCC_C1_APB1LLPENR_PTR = (RW_ uint32_t* const)0x58024570U;   /** @brief RCC APB1 low sleep clock register */
+    static RW_ uint32_t* const RCC_C1_APB1HLPENR_PTR = (RW_ uint32_t* const)0x58024574U;   /** @brief RCC APB1 high sleep clock register */
+    static RW_ uint32_t* const RCC_APB1HLPENR_PTR    = (RW_ uint32_t* const)0x58024514U;   /** @brief RCC APB1 high sleep clock register */
+
+    static RW_ uint32_t* const RCC_DxCFGR_PTR[4] = {
+      [1] = (RW_ uint32_t* const)0x58024418U,   /** @brief RCC domain 1 clock configuration register */
+      [2] = (RW_ uint32_t* const)0x5802441CU,   /** @brief RCC domain 2 clock configuration register */
+      [3] = (RW_ uint32_t* const)0x58024420U,   /** @brief RCC domain 3 clock configuration register */
+    };
+
+    static RW_ uint32_t* const RCC_PLLxDIVR_PTR[4] = {
+      [1] = (RW_ uint32_t* const)0x58024430U,   /** @brief RCC PLL1 dividers configuration register */
+      [2] = (RW_ uint32_t* const)0x58024438U,   /** @brief RCC PLL2 dividers configuration register */
+      [3] = (RW_ uint32_t* const)0x58024440U,   /** @brief RCC PLL3 dividers configuration register */
+    };
+
+    static RW_ uint32_t* const RCC_PLLxFRACR_PTR[4] = {
+      [1] = (RW_ uint32_t* const)0x58024434U,   /** @brief RCC PLL1 fractional divider register */
+      [2] = (RW_ uint32_t* const)0x5802443CU,   /** @brief RCC PLL2 fractional divider register */
+      [3] = (RW_ uint32_t* const)0x58024444U,   /** @brief RCC PLL3 fractional divider register */
+    };
+
+    static RW_ uint32_t* const RCC_DxCCIPR_PTR[4] = {
+      [1] = (RW_ uint32_t* const)0x5802444CU,   /** @brief RCC domain 1 kernel clock configuration register */
+      [3] = (RW_ uint32_t* const)0x58024458U,   /** @brief RCC domain 3 kernel clock configuration register */
+    };
+
+    static RW_ uint32_t* const RCC_D2CCIPxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x58024450U,   /** @brief RCC domain 2 kernel clock configuration register */
+      [2] = (RW_ uint32_t* const)0x58024454U,   /** @brief RCC domain 2 kernel clock configuration register */
+    };
+
+    static RW_ uint32_t* const RCC_AHBxRSTR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x58024480U,   /** @brief RCC AHB1 peripheral reset register */
+      [2] = (RW_ uint32_t* const)0x58024484U,   /** @brief RCC AHB2 peripheral reset register */
+      [3] = (RW_ uint32_t* const)0x5802447CU,   /** @brief RCC AHB3 reset register */
+      [4] = (RW_ uint32_t* const)0x58024488U,   /** @brief RCC AHB4 peripheral reset register */
+    };
+
+    static RW_ uint32_t* const RCC_APBxRSTR_PTR[5] = {
+      [2] = (RW_ uint32_t* const)0x58024498U,   /** @brief RCC APB2 peripheral reset register */
+      [3] = (RW_ uint32_t* const)0x5802448CU,   /** @brief RCC APB3 peripheral reset register */
+      [4] = (RW_ uint32_t* const)0x5802449CU,   /** @brief RCC APB4 peripheral reset register */
+    };
+
+    static RW_ uint32_t* const RCC_C1_AHBxENR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x58024538U,   /** @brief RCC AHB1 clock register */
+      [2] = (RW_ uint32_t* const)0x5802453CU,   /** @brief RCC AHB2 clock register */
+      [3] = (RW_ uint32_t* const)0x58024534U,   /** @brief RCC AHB3 clock register */
+      [4] = (RW_ uint32_t* const)0x58024540U,   /** @brief RCC AHB4 clock register */
+    };
+
+    static RW_ uint32_t* const RCC_AHBxENR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x580244D8U,   /** @brief RCC AHB1 clock register */
+      [2] = (RW_ uint32_t* const)0x580244DCU,   /** @brief RCC AHB2 clock register */
+      [3] = (RW_ uint32_t* const)0x580244D4U,   /** @brief RCC AHB3 clock register */
+      [4] = (RW_ uint32_t* const)0x580244E0U,   /** @brief RCC AHB4 clock register */
+    };
+
+    static RW_ uint32_t* const RCC_C1_APBxENR_PTR[5] = {
+      [2] = (RW_ uint32_t* const)0x58024550U,   /** @brief RCC APB2 clock register */
+      [3] = (RW_ uint32_t* const)0x58024544U,   /** @brief RCC APB3 clock register */
+      [4] = (RW_ uint32_t* const)0x58024554U,   /** @brief RCC APB4 clock register */
+    };
+
+    static RW_ uint32_t* const RCC_APBxENR_PTR[5] = {
+      [2] = (RW_ uint32_t* const)0x580244F0U,   /** @brief RCC APB2 clock register */
+      [3] = (RW_ uint32_t* const)0x580244E4U,   /** @brief RCC APB3 clock register */
+      [4] = (RW_ uint32_t* const)0x580244F4U,   /** @brief RCC APB4 clock register */
+    };
+
+    static RW_ uint32_t* const RCC_C1_AHBxLPENR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x58024560U,   /** @brief RCC AHB1 sleep clock register */
+      [2] = (RW_ uint32_t* const)0x58024564U,   /** @brief RCC AHB2 sleep clock register */
+      [3] = (RW_ uint32_t* const)0x5802455CU,   /** @brief RCC AHB3 sleep clock register */
+      [4] = (RW_ uint32_t* const)0x58024568U,   /** @brief RCC AHB4 sleep clock register */
+    };
+
+    static RW_ uint32_t* const RCC_AHBxLPENR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x58024500U,   /** @brief RCC AHB1 sleep clock register */
+      [2] = (RW_ uint32_t* const)0x58024504U,   /** @brief RCC AHB2 sleep clock register */
+      [3] = (RW_ uint32_t* const)0x580244FCU,   /** @brief RCC AHB3 sleep clock register */
+      [4] = (RW_ uint32_t* const)0x58024508U,   /** @brief RCC AHB4 sleep clock register */
+    };
+
+    static RW_ uint32_t* const RCC_C1_APBxLPENR_PTR[5] = {
+      [2] = (RW_ uint32_t* const)0x58024578U,   /** @brief RCC APB2 sleep clock register */
+      [3] = (RW_ uint32_t* const)0x5802456CU,   /** @brief RCC APB3 sleep clock register */
+      [4] = (RW_ uint32_t* const)0x5802457CU,   /** @brief RCC APB4 sleep clock register */
+    };
+
+    static RW_ uint32_t* const RCC_APBxLPENR_PTR[5] = {
+      [2] = (RW_ uint32_t* const)0x58024518U,   /** @brief RCC APB2 sleep clock register */
+      [3] = (RW_ uint32_t* const)0x5802450CU,   /** @brief RCC APB3 sleep clock register */
+      [4] = (RW_ uint32_t* const)0x5802451CU,   /** @brief RCC APB4 sleep clock register */
+    };
+
+    /**** @subsection RCC Register Field Masks ****/
+
+    static const uint32_t RCC_CR_HSION_MSK                       = 0x00000001U;   /** @brief Internal high-speed clock enable */
+    static const uint32_t RCC_CR_HSIKERON_MSK                    = 0x00000002U;   /** @brief High speed internal clock enable in stop mode */
+    static const uint32_t RCC_CR_HSIRDY_MSK                      = 0x00000004U;   /** @brief HSI clock ready flag */
+    static const uint32_t RCC_CR_HSIDIV_MSK                      = 0x00000018U;   /** @brief HSI clock divider */
+    static const uint32_t RCC_CR_HSIDIVF_MSK                     = 0x00000020U;   /** @brief HSI divider flag */
+    static const uint32_t RCC_CR_CSION_MSK                       = 0x00000080U;   /** @brief CSI clock enable */
+    static const uint32_t RCC_CR_CSIRDY_MSK                      = 0x00000100U;   /** @brief CSI clock ready flag */
+    static const uint32_t RCC_CR_CSIKERON_MSK                    = 0x00000200U;   /** @brief CSI clock enable in stop mode */
+    static const uint32_t RCC_CR_RC48ON_MSK                      = 0x00001000U;   /** @brief RC48 clock enable */
+    static const uint32_t RCC_CR_RC48RDY_MSK                     = 0x00002000U;   /** @brief RC48 clock ready flag */
+    static const uint32_t RCC_CR_HSEON_MSK                       = 0x00010000U;   /** @brief HSE clock enable */
+    static const uint32_t RCC_CR_HSERDY_MSK                      = 0x00020000U;   /** @brief HSE clock ready flag */
+    static const uint32_t RCC_CR_HSEBYP_MSK                      = 0x00040000U;   /** @brief HSE clock bypass */
+    static const uint32_t RCC_CR_HSECSSON_MSK                    = 0x00080000U;   /** @brief HSE clock security system enable */
+    static const uint32_t RCC_ICSCR_HSICAL_MSK                   = 0x00000FFFU;   /** @brief HSI clock calibration */
+    static const uint32_t RCC_ICSCR_HSITRIM_MSK                  = 0x0003F000U;   /** @brief HSI clock trimming */
+    static const uint32_t RCC_ICSCR_CSICAL_MSK                   = 0x03FC0000U;   /** @brief CSI clock calibration */
+    static const uint32_t RCC_ICSCR_CSITRIM_MSK                  = 0x7C000000U;   /** @brief CSI clock trimming */
+    static const uint32_t RCC_CRRCR_RC48CAL_MSK                  = 0x000003FFU;   /** @brief Internal RC 48 mhz clock calibration */
+    static const uint32_t RCC_CFGR_SW_MSK                        = 0x00000007U;   /** @brief System clock switch */
+    static const uint32_t RCC_CFGR_SWS_MSK                       = 0x00000038U;   /** @brief System clock switch status */
+    static const uint32_t RCC_CFGR_STOPWUCK_MSK                  = 0x00000040U;   /** @brief System clock selection after a wake up from system stop */
+    static const uint32_t RCC_CFGR_STOPKERWUCK_MSK               = 0x00000080U;   /** @brief Kernel clock selection after a wake up from system stop */
+    static const uint32_t RCC_CFGR_RTCPRE_MSK                    = 0x00003F00U;   /** @brief HSE division factor for RTC clock */
+    static const uint32_t RCC_CFGR_HRTIMSEL_MSK                  = 0x00004000U;   /** @brief High resolution timer clock prescaler selection */
+    static const uint32_t RCC_CFGR_TIMPRE_MSK                    = 0x00008000U;   /** @brief Timers clocks prescaler selection */
+    static const uint32_t RCC_DxCFGR_HPRE_MSK                    = 0x0000000FU;   /** @brief D1 domain AHB prescaler */
+    static const uint32_t RCC_DxCFGR_D1PPRE_MSK                  = 0x00000070U;   /** @brief D1 domain APB3 prescaler */
+    static const uint32_t RCC_DxCFGR_D1CPRE_MSK                  = 0x00000F00U;   /** @brief D1 domain core prescaler */
+    static const uint32_t RCC_PLLCKSELR_PLLSRC_MSK               = 0x00000003U;   /** @brief DIVMx and plls clock source selection */
+    static const uint32_t RCC_PLLxDIVR_DIVN1_MSK                 = 0x000001FFU;   /** @brief Multiplication factor for PLL1 VCO */
+    static const uint32_t RCC_PLLxDIVR_DIVP1_MSK                 = 0x0000FE00U;   /** @brief PLL1 DIVP division factor */
+    static const uint32_t RCC_PLLxDIVR_DIVQ1_MSK                 = 0x007F0000U;   /** @brief PLL1 DIVQ division factor */
+    static const uint32_t RCC_PLLxDIVR_DIVR1_MSK                 = 0x7F000000U;   /** @brief PLL1 DIVR division factor */
+    static const uint32_t RCC_PLLxFRACR_FRACN1_MSK               = 0x0000FFF8U;   /** @brief Fractional part of the multiplication factor for PLL1 VCO */
+    static const uint32_t RCC_DxCCIPR_FMCSRC_MSK                 = 0x00000003U;   /** @brief FMC kernel clock source selection */
+    static const uint32_t RCC_DxCCIPR_QSPISRC_MSK                = 0x00000030U;   /** @brief QUADSPI kernel clock source selection */
+    static const uint32_t RCC_DxCCIPR_SDMMCSRC_MSK               = 0x00010000U;   /** @brief SDMMC kernel clock source selection */
+    static const uint32_t RCC_DxCCIPR_CKPERSRC_MSK               = 0x30000000U;   /** @brief Per_ck clock source selection */
+    static const uint32_t RCC_D2CCIPxR_SAI1SRC_MSK               = 0x00000007U;   /** @brief SAI1 and DFSDM1 kernel aclk clock source selection */
+    static const uint32_t RCC_D2CCIPxR_SAI23SRC_MSK              = 0x000001C0U;   /** @brief SAI2 and SAI3 kernel clock source selection */
+    static const uint32_t RCC_D2CCIPxR_SPI123SRC_MSK             = 0x00007000U;   /** @brief SPI/I2S1,2 and 3 kernel clock source selection */
+    static const uint32_t RCC_D2CCIPxR_SPI45SRC_MSK              = 0x00070000U;   /** @brief SPI4 and 5 kernel clock source selection */
+    static const uint32_t RCC_D2CCIPxR_SPDIFSRC_MSK              = 0x00300000U;   /** @brief SPDIFRX kernel clock source selection */
+    static const uint32_t RCC_D2CCIPxR_DFSDM1SRC_MSK             = 0x01000000U;   /** @brief DFSDM1 kernel clk clock source selection */
+    static const uint32_t RCC_D2CCIPxR_FDCANSRC_MSK              = 0x30000000U;   /** @brief FDCAN kernel clock source selection */
+    static const uint32_t RCC_D2CCIPxR_SWPSRC_MSK                = 0x80000000U;   /** @brief SWPMI kernel clock source selection */
+    static const uint32_t RCC_CIER_LSIRDYIE_MSK                  = 0x00000001U;   /** @brief LSI ready interrupt enable */
+    static const uint32_t RCC_CIER_LSERDYIE_MSK                  = 0x00000002U;   /** @brief LSE ready interrupt enable */
+    static const uint32_t RCC_CIER_HSIRDYIE_MSK                  = 0x00000004U;   /** @brief HSI ready interrupt enable */
+    static const uint32_t RCC_CIER_HSERDYIE_MSK                  = 0x00000008U;   /** @brief HSE ready interrupt enable */
+    static const uint32_t RCC_CIER_CSIRDYIE_MSK                  = 0x00000010U;   /** @brief CSI ready interrupt enable */
+    static const uint32_t RCC_CIER_RC48RDYIE_MSK                 = 0x00000020U;   /** @brief RC48 ready interrupt enable */
+    static const uint32_t RCC_CIER_LSECSSIE_MSK                  = 0x00000200U;   /** @brief LSE clock security system interrupt enable */
+    static const uint32_t RCC_CIFR_LSIRDYF_MSK                   = 0x00000001U;   /** @brief LSI ready interrupt flag */
+    static const uint32_t RCC_CIFR_LSERDYF_MSK                   = 0x00000002U;   /** @brief LSE ready interrupt flag */
+    static const uint32_t RCC_CIFR_HSIRDYF_MSK                   = 0x00000004U;   /** @brief HSI ready interrupt flag */
+    static const uint32_t RCC_CIFR_HSERDYF_MSK                   = 0x00000008U;   /** @brief HSE ready interrupt flag */
+    static const uint32_t RCC_CIFR_CSIRDY_MSK                    = 0x00000010U;   /** @brief CSI ready interrupt flag */
+    static const uint32_t RCC_CIFR_RC48RDYF_MSK                  = 0x00000020U;   /** @brief RC48 ready interrupt flag */
+    static const uint32_t RCC_CIFR_LSECSSF_MSK                   = 0x00000200U;   /** @brief LSE clock security system interrupt flag */
+    static const uint32_t RCC_CIFR_HSECSSF_MSK                   = 0x00000400U;   /** @brief HSE clock security system interrupt flag */
+    static const uint32_t RCC_CICR_LSIRDYC_MSK                   = 0x00000001U;   /** @brief LSI ready interrupt clear */
+    static const uint32_t RCC_CICR_LSERDYC_MSK                   = 0x00000002U;   /** @brief LSE ready interrupt clear */
+    static const uint32_t RCC_CICR_HSIRDYC_MSK                   = 0x00000004U;   /** @brief HSI ready interrupt clear */
+    static const uint32_t RCC_CICR_HSERDYC_MSK                   = 0x00000008U;   /** @brief HSE ready interrupt clear */
+    static const uint32_t RCC_CICR_HSE_READY_INTERRUPT_CLEAR_MSK = 0x00000010U;   /** @brief CSI ready interrupt clear */
+    static const uint32_t RCC_CICR_RC48RDYC_MSK                  = 0x00000020U;   /** @brief RC48 ready interrupt clear */
+    static const uint32_t RCC_CICR_LSECSSC_MSK                   = 0x00000200U;   /** @brief LSE clock security system interrupt clear */
+    static const uint32_t RCC_CICR_HSECSSC_MSK                   = 0x00000400U;   /** @brief HSE clock security system interrupt clear */
+    static const uint32_t RCC_BDCR_LSEON_MSK                     = 0x00000001U;   /** @brief LSE oscillator enabled */
+    static const uint32_t RCC_BDCR_LSERDY_MSK                    = 0x00000002U;   /** @brief LSE oscillator ready */
+    static const uint32_t RCC_BDCR_LSEBYP_MSK                    = 0x00000004U;   /** @brief LSE oscillator bypass */
+    static const uint32_t RCC_BDCR_LSEDRV_MSK                    = 0x00000018U;   /** @brief LSE oscillator driving capability */
+    static const uint32_t RCC_BDCR_LSECSSON_MSK                  = 0x00000020U;   /** @brief LSE clock security system enable */
+    static const uint32_t RCC_BDCR_LSECSSD_MSK                   = 0x00000040U;   /** @brief LSE clock security system failure detection */
+    static const uint32_t RCC_BDCR_RTCSRC_MSK                    = 0x00000300U;   /** @brief RTC clock source selection */
+    static const uint32_t RCC_BDCR_RTCEN_MSK                     = 0x00008000U;   /** @brief RTC clock enable */
+    static const uint32_t RCC_BDCR_VSWRST_MSK                    = 0x00010000U;   /** @brief VSwitch domain software reset */
+    static const uint32_t RCC_CSR_LSION_MSK                      = 0x00000001U;   /** @brief LSI oscillator enable */
+    static const uint32_t RCC_CSR_LSIRDY_MSK                     = 0x00000002U;   /** @brief LSI oscillator ready */
+    static const uint32_t RCC_AHBxRSTR_MDMARST_MSK               = 0x00000001U;   /** @brief MDMA block reset */
+    static const uint32_t RCC_AHBxRSTR_DMA2DRST_MSK              = 0x00000010U;   /** @brief DMA2D block reset */
+    static const uint32_t RCC_AHBxRSTR_JPGDECRST_MSK             = 0x00000020U;   /** @brief JPGDEC block reset */
+    static const uint32_t RCC_AHBxRSTR_FMCRST_MSK                = 0x00001000U;   /** @brief FMC block reset */
+    static const uint32_t RCC_AHBxRSTR_QSPIRST_MSK               = 0x00004000U;   /** @brief QUADSPI and QUADSPI delay block reset */
+    static const uint32_t RCC_AHBxRSTR_SDMMC1RST_MSK             = 0x00010000U;   /** @brief SDMMC1 and SDMMC1 delay block reset */
+    static const uint32_t RCC_AHBxRSTR_CPURST_MSK                = 0x80000000U;   /** @brief CPU reset */
+    static const uint32_t RCC_APBxRSTR_LTDCRST_MSK               = 0x00000008U;   /** @brief LTDC block reset */
+    static const uint32_t RCC_APB1LRSTR_LPTIM1RST_MSK            = 0x00000200U;   /** @brief TIM block reset */
+    static const uint32_t RCC_APB1LRSTR_SPDIFRXRST_MSK           = 0x00010000U;   /** @brief SPDIFRX block reset */
+    static const uint32_t RCC_APB1LRSTR_HDMICECRST_MSK           = 0x08000000U;   /** @brief HDMI-CEC block reset */
+    static const uint32_t RCC_APB1LRSTR_DAC12RST_MSK             = 0x20000000U;   /** @brief DAC1 and 2 blocks reset */
+    static const uint32_t RCC_APB1HRSTR_CRSRST_MSK               = 0x00000002U;   /** @brief Clock recovery system reset */
+    static const uint32_t RCC_APB1HRSTR_SWPRST_MSK               = 0x00000004U;   /** @brief SWPMI block reset */
+    static const uint32_t RCC_APB1HRSTR_OPAMPRST_MSK             = 0x00000010U;   /** @brief OPAMP block reset */
+    static const uint32_t RCC_APB1HRSTR_MDIOSRST_MSK             = 0x00000020U;   /** @brief MDIOS block reset */
+    static const uint32_t RCC_APB1HRSTR_FDCANRST_MSK             = 0x00000100U;   /** @brief FDCAN block reset */
+    static const uint32_t RCC_GCR_WW1RSC_MSK                     = 0x00000001U;   /** @brief WWDG1 reset scope control */
+    static const uint32_t RCC_D3AMR_BDMAAMEN_MSK                 = 0x00000001U;   /** @brief BDMA and DMAMUX autonomous mode enable */
+    static const uint32_t RCC_D3AMR_LPUART1AMEN_MSK              = 0x00000008U;   /** @brief LPUART1 autonomous mode enable */
+    static const uint32_t RCC_D3AMR_SPI6AMEN_MSK                 = 0x00000020U;   /** @brief SPI6 autonomous mode enable */
+    static const uint32_t RCC_D3AMR_I2C4AMEN_MSK                 = 0x00000080U;   /** @brief I2C4 autonomous mode enable */
+    static const uint32_t RCC_D3AMR_COMP12AMEN_MSK               = 0x00004000U;   /** @brief COMP12 autonomous mode enable */
+    static const uint32_t RCC_D3AMR_VREFAMEN_MSK                 = 0x00008000U;   /** @brief VREF autonomous mode enable */
+    static const uint32_t RCC_D3AMR_RTCAMEN_MSK                  = 0x00010000U;   /** @brief RTC autonomous mode enable */
+    static const uint32_t RCC_D3AMR_CRCAMEN_MSK                  = 0x00080000U;   /** @brief CRC autonomous mode enable */
+    static const uint32_t RCC_D3AMR_SAI4AMEN_MSK                 = 0x00200000U;   /** @brief SAI4 autonomous mode enable */
+    static const uint32_t RCC_D3AMR_ADC3AMEN_MSK                 = 0x01000000U;   /** @brief ADC3 autonomous mode enable */
+    static const uint32_t RCC_D3AMR_BKPSRAMAMEN_MSK              = 0x10000000U;   /** @brief Backup RAM autonomous mode enable */
+    static const uint32_t RCC_D3AMR_SRAM4AMEN_MSK                = 0x20000000U;   /** @brief SRAM4 autonomous mode enable */
+    static const uint32_t RCC_RSR_RMVF_MSK                       = 0x00010000U;   /** @brief Remove reset flag */
+    static const uint32_t RCC_RSR_CPURSTF_MSK                    = 0x00020000U;   /** @brief CPU reset flag */
+    static const uint32_t RCC_RSR_BORRSTF_MSK                    = 0x00200000U;   /** @brief BOR reset flag */
+    static const uint32_t RCC_RSR_PINRSTF_MSK                    = 0x00400000U;   /** @brief Pin reset flag (NRST) */
+    static const uint32_t RCC_RSR_PORRSTF_MSK                    = 0x00800000U;   /** @brief POR/PDR reset flag */
+    static const uint32_t RCC_RSR_SFTRSTF_MSK                    = 0x01000000U;   /** @brief System reset from CPU reset flag */
+    static const uint32_t RCC_RSR_IWDG1RSTF_MSK                  = 0x04000000U;   /** @brief Independent watchdog reset flag */
+    static const uint32_t RCC_RSR_WWDG1RSTF_MSK                  = 0x10000000U;   /** @brief Window watchdog reset flag */
+    static const uint32_t RCC_RSR_LPWRRSTF_MSK                   = 0x40000000U;   /** @brief Reset due to illegal D1 dstandby or CPU cstop flag */
+    static const uint32_t RCC_C1_RSR_RMVF_MSK                    = 0x00010000U;   /** @brief Remove reset flag */
+    static const uint32_t RCC_C1_RSR_CPURSTF_MSK                 = 0x00020000U;   /** @brief CPU reset flag */
+    static const uint32_t RCC_C1_RSR_BORRSTF_MSK                 = 0x00200000U;   /** @brief BOR reset flag */
+    static const uint32_t RCC_C1_RSR_PINRSTF_MSK                 = 0x00400000U;   /** @brief Pin reset flag (NRST) */
+    static const uint32_t RCC_C1_RSR_PORRSTF_MSK                 = 0x00800000U;   /** @brief POR/PDR reset flag */
+    static const uint32_t RCC_C1_RSR_SFTRSTF_MSK                 = 0x01000000U;   /** @brief System reset from CPU reset flag */
+    static const uint32_t RCC_C1_RSR_IWDG1RSTF_MSK               = 0x04000000U;   /** @brief Independent watchdog reset flag */
+    static const uint32_t RCC_C1_RSR_WWDG1RSTF_MSK               = 0x10000000U;   /** @brief Window watchdog reset flag */
+    static const uint32_t RCC_C1_RSR_LPWRRSTF_MSK                = 0x40000000U;   /** @brief Reset due to illegal D1 dstandby or CPU cstop flag */
+    static const uint32_t RCC_C1_AHBxENR_MDMAEN_MSK              = 0x00000001U;   /** @brief MDMA peripheral clock enable */
+    static const uint32_t RCC_C1_AHBxENR_DMA2DEN_MSK             = 0x00000010U;   /** @brief DMA2D peripheral clock enable */
+    static const uint32_t RCC_C1_AHBxENR_JPGDECEN_MSK            = 0x00000020U;   /** @brief JPGDEC peripheral clock enable */
+    static const uint32_t RCC_C1_AHBxENR_FMCEN_MSK               = 0x00001000U;   /** @brief FMC peripheral clocks enable */
+    static const uint32_t RCC_C1_AHBxENR_QSPIEN_MSK              = 0x00004000U;   /** @brief QUADSPI and QUADSPI delay clock enable */
+    static const uint32_t RCC_C1_AHBxENR_SDMMC1EN_MSK            = 0x00010000U;   /** @brief SDMMC1 and SDMMC1 delay clock enable */
+    static const uint32_t RCC_AHBxENR_MDMAEN_MSK                 = 0x00000001U;   /** @brief MDMA peripheral clock enable */
+    static const uint32_t RCC_AHBxENR_DMA2DEN_MSK                = 0x00000010U;   /** @brief DMA2D peripheral clock enable */
+    static const uint32_t RCC_AHBxENR_JPGDECEN_MSK               = 0x00000020U;   /** @brief JPGDEC peripheral clock enable */
+    static const uint32_t RCC_AHBxENR_FMCEN_MSK                  = 0x00001000U;   /** @brief FMC peripheral clocks enable */
+    static const uint32_t RCC_AHBxENR_QSPIEN_MSK                 = 0x00004000U;   /** @brief QUADSPI and QUADSPI delay clock enable */
+    static const uint32_t RCC_AHBxENR_SDMMC1EN_MSK               = 0x00010000U;   /** @brief SDMMC1 and SDMMC1 delay clock enable */
+    static const uint32_t RCC_C1_APBxENR_LTDCEN_MSK              = 0x00000008U;   /** @brief LTDC peripheral clock enable */
+    static const uint32_t RCC_C1_APBxENR_WWDG1EN_MSK             = 0x00000040U;   /** @brief WWDG1 clock enable */
+    static const uint32_t RCC_APBxENR_LTDCEN_MSK                 = 0x00000008U;   /** @brief LTDC peripheral clock enable */
+    static const uint32_t RCC_APBxENR_WWDG1EN_MSK                = 0x00000040U;   /** @brief WWDG1 clock enable */
+    static const uint32_t RCC_APB1LENR_LPTIM1EN_MSK              = 0x00000200U;   /** @brief LPTIM1 peripheral clocks enable */
+    static const uint32_t RCC_APB1LENR_SPDIFRXEN_MSK             = 0x00010000U;   /** @brief SPDIFRX peripheral clocks enable */
+    static const uint32_t RCC_APB1LENR_HDMICECEN_MSK             = 0x08000000U;   /** @brief HDMI-CEC peripheral clock enable */
+    static const uint32_t RCC_APB1LENR_DAC12EN_MSK               = 0x20000000U;   /** @brief DAC1&2 peripheral clock enable */
+    static const uint32_t RCC_C1_APB1LENR_LPTIM1EN_MSK           = 0x00000200U;   /** @brief LPTIM1 peripheral clocks enable */
+    static const uint32_t RCC_C1_APB1LENR_SPDIFRXEN_MSK          = 0x00010000U;   /** @brief SPDIFRX peripheral clocks enable */
+    static const uint32_t RCC_C1_APB1LENR_HDMICECEN_MSK          = 0x08000000U;   /** @brief HDMI-CEC peripheral clock enable */
+    static const uint32_t RCC_C1_APB1LENR_DAC12EN_MSK            = 0x20000000U;   /** @brief DAC1&2 peripheral clock enable */
+    static const uint32_t RCC_APB1HENR_CRSEN_MSK                 = 0x00000002U;   /** @brief Clock recovery system peripheral clock enable */
+    static const uint32_t RCC_APB1HENR_SWPEN_MSK                 = 0x00000004U;   /** @brief SWPMI peripheral clocks enable */
+    static const uint32_t RCC_APB1HENR_OPAMPEN_MSK               = 0x00000010U;   /** @brief OPAMP peripheral clock enable */
+    static const uint32_t RCC_APB1HENR_MDIOSEN_MSK               = 0x00000020U;   /** @brief MDIOS peripheral clock enable */
+    static const uint32_t RCC_APB1HENR_FDCANEN_MSK               = 0x00000100U;   /** @brief FDCAN peripheral clocks enable */
+    static const uint32_t RCC_C1_APB1HENR_CRSEN_MSK              = 0x00000002U;   /** @brief Clock recovery system peripheral clock enable */
+    static const uint32_t RCC_C1_APB1HENR_SWPEN_MSK              = 0x00000004U;   /** @brief SWPMI peripheral clocks enable */
+    static const uint32_t RCC_C1_APB1HENR_OPAMPEN_MSK            = 0x00000010U;   /** @brief OPAMP peripheral clock enable */
+    static const uint32_t RCC_C1_APB1HENR_MDIOSEN_MSK            = 0x00000020U;   /** @brief MDIOS peripheral clock enable */
+    static const uint32_t RCC_C1_APB1HENR_FDCANEN_MSK            = 0x00000100U;   /** @brief FDCAN peripheral clocks enable */
+    static const uint32_t RCC_C1_AHBxLPENR_MDMALPEN_MSK          = 0x00000001U;   /** @brief MDMA clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_DMA2DLPEN_MSK         = 0x00000010U;   /** @brief DMA2D clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_JPGDECLPEN_MSK        = 0x00000020U;   /** @brief JPGDEC clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_FLITFLPEN_MSK         = 0x00000100U;   /** @brief FLITF clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_FMCLPEN_MSK           = 0x00001000U;   /** @brief FMC peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_QSPILPEN_MSK          = 0x00004000U;   /** @brief QUADSPI and QUADSPI delay clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_SDMMC1LPEN_MSK        = 0x00010000U;   /** @brief SDMMC1 and SDMMC1 delay clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_D1DTCM1LPEN_MSK       = 0x10000000U;   /** @brief D1DTCM1 block clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_DTCM2LPEN_MSK         = 0x20000000U;   /** @brief D1 DTCM2 block clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_ITCMLPEN_MSK          = 0x40000000U;   /** @brief D1ITCM block clock enable during csleep mode */
+    static const uint32_t RCC_C1_AHBxLPENR_AXISRAMLPEN_MSK       = 0x80000000U;   /** @brief AXISRAM block clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_MDMALPEN_MSK             = 0x00000001U;   /** @brief MDMA clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_DMA2DLPEN_MSK            = 0x00000010U;   /** @brief DMA2D clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_JPGDECLPEN_MSK           = 0x00000020U;   /** @brief JPGDEC clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_FLITFLPEN_MSK            = 0x00000100U;   /** @brief FLITF clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_FMCLPEN_MSK              = 0x00001000U;   /** @brief FMC peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_QSPILPEN_MSK             = 0x00004000U;   /** @brief QUADSPI and QUADSPI delay clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_SDMMC1LPEN_MSK           = 0x00010000U;   /** @brief SDMMC1 and SDMMC1 delay clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_D1DTCM1LPEN_MSK          = 0x10000000U;   /** @brief D1DTCM1 block clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_DTCM2LPEN_MSK            = 0x20000000U;   /** @brief D1 DTCM2 block clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_ITCMLPEN_MSK             = 0x40000000U;   /** @brief D1ITCM block clock enable during csleep mode */
+    static const uint32_t RCC_AHBxLPENR_AXISRAMLPEN_MSK          = 0x80000000U;   /** @brief AXISRAM block clock enable during csleep mode */
+    static const uint32_t RCC_C1_APBxLPENR_LTDCLPEN_MSK          = 0x00000008U;   /** @brief LTDC peripheral clock enable during csleep mode */
+    static const uint32_t RCC_C1_APBxLPENR_WWDG1LPEN_MSK         = 0x00000040U;   /** @brief WWDG1 clock enable during csleep mode */
+    static const uint32_t RCC_APBxLPENR_LTDCLPEN_MSK             = 0x00000008U;   /** @brief LTDC peripheral clock enable during csleep mode */
+    static const uint32_t RCC_APBxLPENR_WWDG1LPEN_MSK            = 0x00000040U;   /** @brief WWDG1 clock enable during csleep mode */
+    static const uint32_t RCC_APB1LLPENR_LPTIM1LPEN_MSK          = 0x00000200U;   /** @brief LPTIM1 peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_APB1LLPENR_SPDIFRXLPEN_MSK         = 0x00010000U;   /** @brief SPDIFRX peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_APB1LLPENR_HDMICECLPEN_MSK         = 0x08000000U;   /** @brief HDMI-CEC peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_APB1LLPENR_DAC12LPEN_MSK           = 0x20000000U;   /** @brief DAC1/2 peripheral clock enable during csleep mode */
+    static const uint32_t RCC_C1_APB1LLPENR_LPTIM1LPEN_MSK       = 0x00000200U;   /** @brief LPTIM1 peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_C1_APB1LLPENR_SPDIFRXLPEN_MSK      = 0x00010000U;   /** @brief SPDIFRX peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_C1_APB1LLPENR_HDMICECLPEN_MSK      = 0x08000000U;   /** @brief HDMI-CEC peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_C1_APB1LLPENR_DAC12LPEN_MSK        = 0x20000000U;   /** @brief DAC1/2 peripheral clock enable during csleep mode */
+    static const uint32_t RCC_C1_APB1HLPENR_CRSLPEN_MSK          = 0x00000002U;   /** @brief Clock recovery system peripheral clock enable during csleep mode */
+    static const uint32_t RCC_C1_APB1HLPENR_SWPLPEN_MSK          = 0x00000004U;   /** @brief SWPMI peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_C1_APB1HLPENR_OPAMPLPEN_MSK        = 0x00000010U;   /** @brief OPAMP peripheral clock enable during csleep mode */
+    static const uint32_t RCC_C1_APB1HLPENR_MDIOSLPEN_MSK        = 0x00000020U;   /** @brief MDIOS peripheral clock enable during csleep mode */
+    static const uint32_t RCC_C1_APB1HLPENR_FDCANLPEN_MSK        = 0x00000100U;   /** @brief FDCAN peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_APB1HLPENR_CRSLPEN_MSK             = 0x00000002U;   /** @brief Clock recovery system peripheral clock enable during csleep mode */
+    static const uint32_t RCC_APB1HLPENR_SWPLPEN_MSK             = 0x00000004U;   /** @brief SWPMI peripheral clocks enable during csleep mode */
+    static const uint32_t RCC_APB1HLPENR_OPAMPLPEN_MSK           = 0x00000010U;   /** @brief OPAMP peripheral clock enable during csleep mode */
+    static const uint32_t RCC_APB1HLPENR_MDIOSLPEN_MSK           = 0x00000020U;   /** @brief MDIOS peripheral clock enable during csleep mode */
+    static const uint32_t RCC_APB1HLPENR_FDCANLPEN_MSK           = 0x00000100U;   /** @brief FDCAN peripheral clocks enable during csleep mode */
+
+    static const uint32_t RCC_CR_DxCKRDY_MSK[3] = {
+      [1] = 0x00004000U,   /** @brief D1 domain clocks ready flag */
+      [2] = 0x00008000U,   /** @brief D2 domain clocks ready flag */
+    };
+
+    static const uint32_t RCC_CR_PLLxON_MSK[4] = {
+      [1] = 0x01000000U,   /** @brief PLL1 enable */
+      [2] = 0x04000000U,   /** @brief PLL2 enable */
+      [3] = 0x10000000U,   /** @brief PLL3 enable */
+    };
+
+    static const uint32_t RCC_CR_PLLxRDY_MSK[4] = {
+      [1] = 0x02000000U,   /** @brief PLL1 clock ready flag */
+      [2] = 0x08000000U,   /** @brief PLL2 clock ready flag */
+      [3] = 0x20000000U,   /** @brief PLL3 clock ready flag */
+    };
+
+    static const uint32_t RCC_CFGR_MCOxPRE_MSK[3] = {
+      [1] = 0x003C0000U,   /** @brief MCO1 prescaler */
+      [2] = 0x1E000000U,   /** @brief MCO2 prescaler */
+    };
+
+    static const uint32_t RCC_CFGR_MCOxSEL_MSK[3] = {
+      [1] = 0x01C00000U,   /** @brief Micro-controller clock output 1 */
+      [2] = 0xE0000000U,   /** @brief Micro-controller clock output 2 */
+    };
+
+    static const uint32_t RCC_PLLCKSELR_DIVMx_MSK[4] = {
+      [1] = 0x000003F0U,   /** @brief Prescaler for PLL1 */
+      [2] = 0x0003F000U,   /** @brief Prescaler for PLL2 */
+      [3] = 0x03F00000U,   /** @brief Prescaler for PLL3 */
+    };
+
+    static const uint32_t RCC_PLLCFGR_PLLxFRACEN_MSK[4] = {
+      [1] = 0x00000001U,   /** @brief PLL1 fractional latch enable */
+      [2] = 0x00000010U,   /** @brief PLL2 fractional latch enable */
+      [3] = 0x00000100U,   /** @brief PLL3 fractional latch enable */
+    };
+
+    static const uint32_t RCC_PLLCFGR_PLLxVCOSEL_MSK[4] = {
+      [1] = 0x00000002U,   /** @brief PLL1 VCO selection */
+      [2] = 0x00000020U,   /** @brief PLL2 VCO selection */
+      [3] = 0x00000200U,   /** @brief PLL3 VCO selection */
+    };
+
+    static const uint32_t RCC_PLLCFGR_PLLxRGE_MSK[4] = {
+      [1] = 0x0000000CU,   /** @brief PLL1 input frequency range */
+      [2] = 0x000000C0U,   /** @brief PLL2 input frequency range */
+      [3] = 0x00000C00U,   /** @brief PLL3 input frequency range */
+    };
+
+    static const uint32_t RCC_PLLCFGR_DIVPxEN_MSK[4] = {
+      [1] = 0x00010000U,   /** @brief PLL1 DIVP divider output enable */
+      [2] = 0x00080000U,   /** @brief PLL2 DIVP divider output enable */
+      [3] = 0x00400000U,   /** @brief PLL3 DIVP divider output enable */
+    };
+
+    static const uint32_t RCC_PLLCFGR_DIVQxEN_MSK[4] = {
+      [1] = 0x00020000U,   /** @brief PLL1 DIVQ divider output enable */
+      [2] = 0x00100000U,   /** @brief PLL2 DIVQ divider output enable */
+      [3] = 0x00800000U,   /** @brief PLL3 DIVQ divider output enable */
+    };
+
+    static const uint32_t RCC_PLLCFGR_DIVRxEN_MSK[4] = {
+      [1] = 0x00040000U,   /** @brief PLL1 DIVR divider output enable */
+      [2] = 0x00200000U,   /** @brief PLL2 DIVR divider output enable */
+      [3] = 0x01000000U,   /** @brief PLL3 DIVR divider output enable */
+    };
+
+    static const uint32_t RCC_CIER_PLLxRDYIE_MSK[4] = {
+      [1] = 0x00000040U,   /** @brief PLL1 ready interrupt enable */
+      [2] = 0x00000080U,   /** @brief PLL2 ready interrupt enable */
+      [3] = 0x00000100U,   /** @brief PLL3 ready interrupt enable */
+    };
+
+    static const uint32_t RCC_CIFR_PLLxRDYF_MSK[4] = {
+      [1] = 0x00000040U,   /** @brief PLL1 ready interrupt flag */
+      [2] = 0x00000080U,   /** @brief PLL2 ready interrupt flag */
+      [3] = 0x00000100U,   /** @brief PLL3 ready interrupt flag */
+    };
+
+    static const uint32_t RCC_CICR_PLLxRDYC_MSK[4] = {
+      [1] = 0x00000040U,   /** @brief PLL1 ready interrupt clear */
+      [2] = 0x00000080U,   /** @brief PLL2 ready interrupt clear */
+      [3] = 0x00000100U,   /** @brief PLL3 ready interrupt clear */
+    };
+
+    static const uint32_t RCC_APB1LRSTR_TIMxRST_MSK[15] = {
+      [2]  = 0x00000001U,   /** @brief TIM block reset */
+      [3]  = 0x00000002U,   /** @brief TIM block reset */
+      [4]  = 0x00000004U,   /** @brief TIM block reset */
+      [5]  = 0x00000008U,   /** @brief TIM block reset */
+      [6]  = 0x00000010U,   /** @brief TIM block reset */
+      [7]  = 0x00000020U,   /** @brief TIM block reset */
+      [12] = 0x00000040U,   /** @brief TIM block reset */
+      [13] = 0x00000080U,   /** @brief TIM block reset */
+      [14] = 0x00000100U,   /** @brief TIM block reset */
+    };
+
+    static const uint32_t RCC_APB1LRSTR_SPIxRST_MSK[4] = {
+      [2] = 0x00004000U,   /** @brief SPI2 block reset */
+      [3] = 0x00008000U,   /** @brief SPI3 block reset */
+    };
+
+    static const uint32_t RCC_APB1LRSTR_USARTxRST_MSK[9] = {
+      [2] = 0x00020000U,   /** @brief USART2 block reset */
+      [3] = 0x00040000U,   /** @brief USART3 block reset */
+      [7] = 0x40000000U,   /** @brief USART7 block reset */
+      [8] = 0x80000000U,   /** @brief USART8 block reset */
+    };
+
+    static const uint32_t RCC_APB1LRSTR_UARTxRST_MSK[6] = {
+      [4] = 0x00080000U,   /** @brief UART4 block reset */
+      [5] = 0x00100000U,   /** @brief UART5 block reset */
+    };
+
+    static const uint32_t RCC_APB1LRSTR_I2CxRST_MSK[4] = {
+      [1] = 0x00200000U,   /** @brief I2C1 block reset */
+      [2] = 0x00400000U,   /** @brief I2C2 block reset */
+      [3] = 0x00800000U,   /** @brief I2C3 block reset */
+    };
+
+    static const uint32_t RCC_D3AMR_LPTIMxAMEN_MSK[6] = {
+      [2] = 0x00000200U,   /** @brief LPTIM2 autonomous mode enable */
+      [3] = 0x00000400U,   /** @brief LPTIM3 autonomous mode enable */
+      [4] = 0x00000800U,   /** @brief LPTIM4 autonomous mode enable */
+      [5] = 0x00001000U,   /** @brief LPTIM5 autonomous mode enable */
+    };
+
+    static const uint32_t RCC_RSR_DxRSTF_MSK[3] = {
+      [1] = 0x00080000U,   /** @brief D1 domain power switch reset flag */
+      [2] = 0x00100000U,   /** @brief D2 domain power switch reset flag */
+    };
+
+    static const uint32_t RCC_APB1LENR_TIMxEN_MSK[15] = {
+      [2]  = 0x00000001U,   /** @brief TIM peripheral clock enable */
+      [3]  = 0x00000002U,   /** @brief TIM peripheral clock enable */
+      [4]  = 0x00000004U,   /** @brief TIM peripheral clock enable */
+      [5]  = 0x00000008U,   /** @brief TIM peripheral clock enable */
+      [6]  = 0x00000010U,   /** @brief TIM peripheral clock enable */
+      [7]  = 0x00000020U,   /** @brief TIM peripheral clock enable */
+      [12] = 0x00000040U,   /** @brief TIM peripheral clock enable */
+      [13] = 0x00000080U,   /** @brief TIM peripheral clock enable */
+      [14] = 0x00000100U,   /** @brief TIM peripheral clock enable */
+    };
+
+    static const uint32_t RCC_APB1LENR_SPIxEN_MSK[4] = {
+      [2] = 0x00004000U,   /** @brief SPI2 peripheral clocks enable */
+      [3] = 0x00008000U,   /** @brief SPI3 peripheral clocks enable */
+    };
+
+    static const uint32_t RCC_APB1LENR_USARTxEN_MSK[9] = {
+      [2] = 0x00020000U,   /** @brief USART2 peripheral clocks enable */
+      [3] = 0x00040000U,   /** @brief USART3 peripheral clocks enable */
+      [7] = 0x40000000U,   /** @brief USART7 peripheral clocks enable */
+      [8] = 0x80000000U,   /** @brief USART8 peripheral clocks enable */
+    };
+
+    static const uint32_t RCC_APB1LENR_UARTxEN_MSK[6] = {
+      [4] = 0x00080000U,   /** @brief UART4 peripheral clocks enable */
+      [5] = 0x00100000U,   /** @brief UART5 peripheral clocks enable */
+    };
+
+    static const uint32_t RCC_APB1LENR_I2CxEN_MSK[4] = {
+      [1] = 0x00200000U,   /** @brief I2C1 peripheral clocks enable */
+      [2] = 0x00400000U,   /** @brief I2C2 peripheral clocks enable */
+      [3] = 0x00800000U,   /** @brief I2C3 peripheral clocks enable */
+    };
+
+    static const uint32_t RCC_APB1LLPENR_TIMxLPEN_MSK[15] = {
+      [2]  = 0x00000001U,   /** @brief TIM2 peripheral clock enable during csleep mode */
+      [3]  = 0x00000002U,   /** @brief TIM3 peripheral clock enable during csleep mode */
+      [4]  = 0x00000004U,   /** @brief TIM4 peripheral clock enable during csleep mode */
+      [5]  = 0x00000008U,   /** @brief TIM5 peripheral clock enable during csleep mode */
+      [6]  = 0x00000010U,   /** @brief TIM6 peripheral clock enable during csleep mode */
+      [7]  = 0x00000020U,   /** @brief TIM7 peripheral clock enable during csleep mode */
+      [12] = 0x00000040U,   /** @brief TIM12 peripheral clock enable during csleep mode */
+      [13] = 0x00000080U,   /** @brief TIM13 peripheral clock enable during csleep mode */
+      [14] = 0x00000100U,   /** @brief TIM14 peripheral clock enable during csleep mode */
+    };
+
+    static const uint32_t RCC_APB1LLPENR_SPIxLPEN_MSK[4] = {
+      [2] = 0x00004000U,   /** @brief SPI2 peripheral clocks enable during csleep mode */
+      [3] = 0x00008000U,   /** @brief SPI3 peripheral clocks enable during csleep mode */
+    };
+
+    static const uint32_t RCC_APB1LLPENR_USARTxLPEN_MSK[9] = {
+      [2] = 0x00020000U,   /** @brief USART2 peripheral clocks enable during csleep mode */
+      [3] = 0x00040000U,   /** @brief USART3 peripheral clocks enable during csleep mode */
+      [7] = 0x40000000U,   /** @brief USART7 peripheral clocks enable during csleep mode */
+      [8] = 0x80000000U,   /** @brief USART8 peripheral clocks enable during csleep mode */
+    };
+
+    static const uint32_t RCC_APB1LLPENR_UARTxLPEN_MSK[6] = {
+      [4] = 0x00080000U,   /** @brief UART4 peripheral clocks enable during csleep mode */
+      [5] = 0x00100000U,   /** @brief UART5 peripheral clocks enable during csleep mode */
+    };
+
+    static const uint32_t RCC_APB1LLPENR_I2CxLPEN_MSK[4] = {
+      [1] = 0x00200000U,   /** @brief I2C1 peripheral clocks enable during csleep mode */
+      [2] = 0x00400000U,   /** @brief I2C2 peripheral clocks enable during csleep mode */
+      [3] = 0x00800000U,   /** @brief I2C3 peripheral clocks enable during csleep mode */
+    };
+
+    /**** @subsection RCC Register Field Positions ****/
+
+    static const int32_t RCC_CR_HSION_POS                       = 0;    /** @brief Internal high-speed clock enable */
+    static const int32_t RCC_CR_HSIKERON_POS                    = 1;    /** @brief High speed internal clock enable in stop mode */
+    static const int32_t RCC_CR_HSIRDY_POS                      = 2;    /** @brief HSI clock ready flag */
+    static const int32_t RCC_CR_HSIDIV_POS                      = 3;    /** @brief HSI clock divider */
+    static const int32_t RCC_CR_HSIDIVF_POS                     = 5;    /** @brief HSI divider flag */
+    static const int32_t RCC_CR_CSION_POS                       = 7;    /** @brief CSI clock enable */
+    static const int32_t RCC_CR_CSIRDY_POS                      = 8;    /** @brief CSI clock ready flag */
+    static const int32_t RCC_CR_CSIKERON_POS                    = 9;    /** @brief CSI clock enable in stop mode */
+    static const int32_t RCC_CR_RC48ON_POS                      = 12;   /** @brief RC48 clock enable */
+    static const int32_t RCC_CR_RC48RDY_POS                     = 13;   /** @brief RC48 clock ready flag */
+    static const int32_t RCC_CR_HSEON_POS                       = 16;   /** @brief HSE clock enable */
+    static const int32_t RCC_CR_HSERDY_POS                      = 17;   /** @brief HSE clock ready flag */
+    static const int32_t RCC_CR_HSEBYP_POS                      = 18;   /** @brief HSE clock bypass */
+    static const int32_t RCC_CR_HSECSSON_POS                    = 19;   /** @brief HSE clock security system enable */
+    static const int32_t RCC_ICSCR_HSICAL_POS                   = 0;    /** @brief HSI clock calibration */
+    static const int32_t RCC_ICSCR_HSITRIM_POS                  = 12;   /** @brief HSI clock trimming */
+    static const int32_t RCC_ICSCR_CSICAL_POS                   = 18;   /** @brief CSI clock calibration */
+    static const int32_t RCC_ICSCR_CSITRIM_POS                  = 26;   /** @brief CSI clock trimming */
+    static const int32_t RCC_CRRCR_RC48CAL_POS                  = 0;    /** @brief Internal RC 48 mhz clock calibration */
+    static const int32_t RCC_CFGR_SW_POS                        = 0;    /** @brief System clock switch */
+    static const int32_t RCC_CFGR_SWS_POS                       = 3;    /** @brief System clock switch status */
+    static const int32_t RCC_CFGR_STOPWUCK_POS                  = 6;    /** @brief System clock selection after a wake up from system stop */
+    static const int32_t RCC_CFGR_STOPKERWUCK_POS               = 7;    /** @brief Kernel clock selection after a wake up from system stop */
+    static const int32_t RCC_CFGR_RTCPRE_POS                    = 8;    /** @brief HSE division factor for RTC clock */
+    static const int32_t RCC_CFGR_HRTIMSEL_POS                  = 14;   /** @brief High resolution timer clock prescaler selection */
+    static const int32_t RCC_CFGR_TIMPRE_POS                    = 15;   /** @brief Timers clocks prescaler selection */
+    static const int32_t RCC_DxCFGR_HPRE_POS                    = 0;    /** @brief D1 domain AHB prescaler */
+    static const int32_t RCC_DxCFGR_D1PPRE_POS                  = 4;    /** @brief D1 domain APB3 prescaler */
+    static const int32_t RCC_DxCFGR_D1CPRE_POS                  = 8;    /** @brief D1 domain core prescaler */
+    static const int32_t RCC_PLLCKSELR_PLLSRC_POS               = 0;    /** @brief DIVMx and plls clock source selection */
+    static const int32_t RCC_PLLxDIVR_DIVN1_POS                 = 0;    /** @brief Multiplication factor for PLL1 VCO */
+    static const int32_t RCC_PLLxDIVR_DIVP1_POS                 = 9;    /** @brief PLL1 DIVP division factor */
+    static const int32_t RCC_PLLxDIVR_DIVQ1_POS                 = 16;   /** @brief PLL1 DIVQ division factor */
+    static const int32_t RCC_PLLxDIVR_DIVR1_POS                 = 24;   /** @brief PLL1 DIVR division factor */
+    static const int32_t RCC_PLLxFRACR_FRACN1_POS               = 3;    /** @brief Fractional part of the multiplication factor for PLL1 VCO */
+    static const int32_t RCC_DxCCIPR_FMCSRC_POS                 = 0;    /** @brief FMC kernel clock source selection */
+    static const int32_t RCC_DxCCIPR_QSPISRC_POS                = 4;    /** @brief QUADSPI kernel clock source selection */
+    static const int32_t RCC_DxCCIPR_SDMMCSRC_POS               = 16;   /** @brief SDMMC kernel clock source selection */
+    static const int32_t RCC_DxCCIPR_CKPERSRC_POS               = 28;   /** @brief Per_ck clock source selection */
+    static const int32_t RCC_D2CCIPxR_SAI1SRC_POS               = 0;    /** @brief SAI1 and DFSDM1 kernel aclk clock source selection */
+    static const int32_t RCC_D2CCIPxR_SAI23SRC_POS              = 6;    /** @brief SAI2 and SAI3 kernel clock source selection */
+    static const int32_t RCC_D2CCIPxR_SPI123SRC_POS             = 12;   /** @brief SPI/I2S1,2 and 3 kernel clock source selection */
+    static const int32_t RCC_D2CCIPxR_SPI45SRC_POS              = 16;   /** @brief SPI4 and 5 kernel clock source selection */
+    static const int32_t RCC_D2CCIPxR_SPDIFSRC_POS              = 20;   /** @brief SPDIFRX kernel clock source selection */
+    static const int32_t RCC_D2CCIPxR_DFSDM1SRC_POS             = 24;   /** @brief DFSDM1 kernel clk clock source selection */
+    static const int32_t RCC_D2CCIPxR_FDCANSRC_POS              = 28;   /** @brief FDCAN kernel clock source selection */
+    static const int32_t RCC_D2CCIPxR_SWPSRC_POS                = 31;   /** @brief SWPMI kernel clock source selection */
+    static const int32_t RCC_CIER_LSIRDYIE_POS                  = 0;    /** @brief LSI ready interrupt enable */
+    static const int32_t RCC_CIER_LSERDYIE_POS                  = 1;    /** @brief LSE ready interrupt enable */
+    static const int32_t RCC_CIER_HSIRDYIE_POS                  = 2;    /** @brief HSI ready interrupt enable */
+    static const int32_t RCC_CIER_HSERDYIE_POS                  = 3;    /** @brief HSE ready interrupt enable */
+    static const int32_t RCC_CIER_CSIRDYIE_POS                  = 4;    /** @brief CSI ready interrupt enable */
+    static const int32_t RCC_CIER_RC48RDYIE_POS                 = 5;    /** @brief RC48 ready interrupt enable */
+    static const int32_t RCC_CIER_LSECSSIE_POS                  = 9;    /** @brief LSE clock security system interrupt enable */
+    static const int32_t RCC_CIFR_LSIRDYF_POS                   = 0;    /** @brief LSI ready interrupt flag */
+    static const int32_t RCC_CIFR_LSERDYF_POS                   = 1;    /** @brief LSE ready interrupt flag */
+    static const int32_t RCC_CIFR_HSIRDYF_POS                   = 2;    /** @brief HSI ready interrupt flag */
+    static const int32_t RCC_CIFR_HSERDYF_POS                   = 3;    /** @brief HSE ready interrupt flag */
+    static const int32_t RCC_CIFR_CSIRDY_POS                    = 4;    /** @brief CSI ready interrupt flag */
+    static const int32_t RCC_CIFR_RC48RDYF_POS                  = 5;    /** @brief RC48 ready interrupt flag */
+    static const int32_t RCC_CIFR_LSECSSF_POS                   = 9;    /** @brief LSE clock security system interrupt flag */
+    static const int32_t RCC_CIFR_HSECSSF_POS                   = 10;   /** @brief HSE clock security system interrupt flag */
+    static const int32_t RCC_CICR_LSIRDYC_POS                   = 0;    /** @brief LSI ready interrupt clear */
+    static const int32_t RCC_CICR_LSERDYC_POS                   = 1;    /** @brief LSE ready interrupt clear */
+    static const int32_t RCC_CICR_HSIRDYC_POS                   = 2;    /** @brief HSI ready interrupt clear */
+    static const int32_t RCC_CICR_HSERDYC_POS                   = 3;    /** @brief HSE ready interrupt clear */
+    static const int32_t RCC_CICR_HSE_READY_INTERRUPT_CLEAR_POS = 4;    /** @brief CSI ready interrupt clear */
+    static const int32_t RCC_CICR_RC48RDYC_POS                  = 5;    /** @brief RC48 ready interrupt clear */
+    static const int32_t RCC_CICR_LSECSSC_POS                   = 9;    /** @brief LSE clock security system interrupt clear */
+    static const int32_t RCC_CICR_HSECSSC_POS                   = 10;   /** @brief HSE clock security system interrupt clear */
+    static const int32_t RCC_BDCR_LSEON_POS                     = 0;    /** @brief LSE oscillator enabled */
+    static const int32_t RCC_BDCR_LSERDY_POS                    = 1;    /** @brief LSE oscillator ready */
+    static const int32_t RCC_BDCR_LSEBYP_POS                    = 2;    /** @brief LSE oscillator bypass */
+    static const int32_t RCC_BDCR_LSEDRV_POS                    = 3;    /** @brief LSE oscillator driving capability */
+    static const int32_t RCC_BDCR_LSECSSON_POS                  = 5;    /** @brief LSE clock security system enable */
+    static const int32_t RCC_BDCR_LSECSSD_POS                   = 6;    /** @brief LSE clock security system failure detection */
+    static const int32_t RCC_BDCR_RTCSRC_POS                    = 8;    /** @brief RTC clock source selection */
+    static const int32_t RCC_BDCR_RTCEN_POS                     = 15;   /** @brief RTC clock enable */
+    static const int32_t RCC_BDCR_VSWRST_POS                    = 16;   /** @brief VSwitch domain software reset */
+    static const int32_t RCC_CSR_LSION_POS                      = 0;    /** @brief LSI oscillator enable */
+    static const int32_t RCC_CSR_LSIRDY_POS                     = 1;    /** @brief LSI oscillator ready */
+    static const int32_t RCC_AHBxRSTR_MDMARST_POS               = 0;    /** @brief MDMA block reset */
+    static const int32_t RCC_AHBxRSTR_DMA2DRST_POS              = 4;    /** @brief DMA2D block reset */
+    static const int32_t RCC_AHBxRSTR_JPGDECRST_POS             = 5;    /** @brief JPGDEC block reset */
+    static const int32_t RCC_AHBxRSTR_FMCRST_POS                = 12;   /** @brief FMC block reset */
+    static const int32_t RCC_AHBxRSTR_QSPIRST_POS               = 14;   /** @brief QUADSPI and QUADSPI delay block reset */
+    static const int32_t RCC_AHBxRSTR_SDMMC1RST_POS             = 16;   /** @brief SDMMC1 and SDMMC1 delay block reset */
+    static const int32_t RCC_AHBxRSTR_CPURST_POS                = 31;   /** @brief CPU reset */
+    static const int32_t RCC_APBxRSTR_LTDCRST_POS               = 3;    /** @brief LTDC block reset */
+    static const int32_t RCC_APB1LRSTR_LPTIM1RST_POS            = 9;    /** @brief TIM block reset */
+    static const int32_t RCC_APB1LRSTR_SPDIFRXRST_POS           = 16;   /** @brief SPDIFRX block reset */
+    static const int32_t RCC_APB1LRSTR_HDMICECRST_POS           = 27;   /** @brief HDMI-CEC block reset */
+    static const int32_t RCC_APB1LRSTR_DAC12RST_POS             = 29;   /** @brief DAC1 and 2 blocks reset */
+    static const int32_t RCC_APB1HRSTR_CRSRST_POS               = 1;    /** @brief Clock recovery system reset */
+    static const int32_t RCC_APB1HRSTR_SWPRST_POS               = 2;    /** @brief SWPMI block reset */
+    static const int32_t RCC_APB1HRSTR_OPAMPRST_POS             = 4;    /** @brief OPAMP block reset */
+    static const int32_t RCC_APB1HRSTR_MDIOSRST_POS             = 5;    /** @brief MDIOS block reset */
+    static const int32_t RCC_APB1HRSTR_FDCANRST_POS             = 8;    /** @brief FDCAN block reset */
+    static const int32_t RCC_GCR_WW1RSC_POS                     = 0;    /** @brief WWDG1 reset scope control */
+    static const int32_t RCC_D3AMR_BDMAAMEN_POS                 = 0;    /** @brief BDMA and DMAMUX autonomous mode enable */
+    static const int32_t RCC_D3AMR_LPUART1AMEN_POS              = 3;    /** @brief LPUART1 autonomous mode enable */
+    static const int32_t RCC_D3AMR_SPI6AMEN_POS                 = 5;    /** @brief SPI6 autonomous mode enable */
+    static const int32_t RCC_D3AMR_I2C4AMEN_POS                 = 7;    /** @brief I2C4 autonomous mode enable */
+    static const int32_t RCC_D3AMR_COMP12AMEN_POS               = 14;   /** @brief COMP12 autonomous mode enable */
+    static const int32_t RCC_D3AMR_VREFAMEN_POS                 = 15;   /** @brief VREF autonomous mode enable */
+    static const int32_t RCC_D3AMR_RTCAMEN_POS                  = 16;   /** @brief RTC autonomous mode enable */
+    static const int32_t RCC_D3AMR_CRCAMEN_POS                  = 19;   /** @brief CRC autonomous mode enable */
+    static const int32_t RCC_D3AMR_SAI4AMEN_POS                 = 21;   /** @brief SAI4 autonomous mode enable */
+    static const int32_t RCC_D3AMR_ADC3AMEN_POS                 = 24;   /** @brief ADC3 autonomous mode enable */
+    static const int32_t RCC_D3AMR_BKPSRAMAMEN_POS              = 28;   /** @brief Backup RAM autonomous mode enable */
+    static const int32_t RCC_D3AMR_SRAM4AMEN_POS                = 29;   /** @brief SRAM4 autonomous mode enable */
+    static const int32_t RCC_RSR_RMVF_POS                       = 16;   /** @brief Remove reset flag */
+    static const int32_t RCC_RSR_CPURSTF_POS                    = 17;   /** @brief CPU reset flag */
+    static const int32_t RCC_RSR_BORRSTF_POS                    = 21;   /** @brief BOR reset flag */
+    static const int32_t RCC_RSR_PINRSTF_POS                    = 22;   /** @brief Pin reset flag (NRST) */
+    static const int32_t RCC_RSR_PORRSTF_POS                    = 23;   /** @brief POR/PDR reset flag */
+    static const int32_t RCC_RSR_SFTRSTF_POS                    = 24;   /** @brief System reset from CPU reset flag */
+    static const int32_t RCC_RSR_IWDG1RSTF_POS                  = 26;   /** @brief Independent watchdog reset flag */
+    static const int32_t RCC_RSR_WWDG1RSTF_POS                  = 28;   /** @brief Window watchdog reset flag */
+    static const int32_t RCC_RSR_LPWRRSTF_POS                   = 30;   /** @brief Reset due to illegal D1 dstandby or CPU cstop flag */
+    static const int32_t RCC_C1_RSR_RMVF_POS                    = 16;   /** @brief Remove reset flag */
+    static const int32_t RCC_C1_RSR_CPURSTF_POS                 = 17;   /** @brief CPU reset flag */
+    static const int32_t RCC_C1_RSR_BORRSTF_POS                 = 21;   /** @brief BOR reset flag */
+    static const int32_t RCC_C1_RSR_PINRSTF_POS                 = 22;   /** @brief Pin reset flag (NRST) */
+    static const int32_t RCC_C1_RSR_PORRSTF_POS                 = 23;   /** @brief POR/PDR reset flag */
+    static const int32_t RCC_C1_RSR_SFTRSTF_POS                 = 24;   /** @brief System reset from CPU reset flag */
+    static const int32_t RCC_C1_RSR_IWDG1RSTF_POS               = 26;   /** @brief Independent watchdog reset flag */
+    static const int32_t RCC_C1_RSR_WWDG1RSTF_POS               = 28;   /** @brief Window watchdog reset flag */
+    static const int32_t RCC_C1_RSR_LPWRRSTF_POS                = 30;   /** @brief Reset due to illegal D1 dstandby or CPU cstop flag */
+    static const int32_t RCC_C1_AHBxENR_MDMAEN_POS              = 0;    /** @brief MDMA peripheral clock enable */
+    static const int32_t RCC_C1_AHBxENR_DMA2DEN_POS             = 4;    /** @brief DMA2D peripheral clock enable */
+    static const int32_t RCC_C1_AHBxENR_JPGDECEN_POS            = 5;    /** @brief JPGDEC peripheral clock enable */
+    static const int32_t RCC_C1_AHBxENR_FMCEN_POS               = 12;   /** @brief FMC peripheral clocks enable */
+    static const int32_t RCC_C1_AHBxENR_QSPIEN_POS              = 14;   /** @brief QUADSPI and QUADSPI delay clock enable */
+    static const int32_t RCC_C1_AHBxENR_SDMMC1EN_POS            = 16;   /** @brief SDMMC1 and SDMMC1 delay clock enable */
+    static const int32_t RCC_AHBxENR_MDMAEN_POS                 = 0;    /** @brief MDMA peripheral clock enable */
+    static const int32_t RCC_AHBxENR_DMA2DEN_POS                = 4;    /** @brief DMA2D peripheral clock enable */
+    static const int32_t RCC_AHBxENR_JPGDECEN_POS               = 5;    /** @brief JPGDEC peripheral clock enable */
+    static const int32_t RCC_AHBxENR_FMCEN_POS                  = 12;   /** @brief FMC peripheral clocks enable */
+    static const int32_t RCC_AHBxENR_QSPIEN_POS                 = 14;   /** @brief QUADSPI and QUADSPI delay clock enable */
+    static const int32_t RCC_AHBxENR_SDMMC1EN_POS               = 16;   /** @brief SDMMC1 and SDMMC1 delay clock enable */
+    static const int32_t RCC_C1_APBxENR_LTDCEN_POS              = 3;    /** @brief LTDC peripheral clock enable */
+    static const int32_t RCC_C1_APBxENR_WWDG1EN_POS             = 6;    /** @brief WWDG1 clock enable */
+    static const int32_t RCC_APBxENR_LTDCEN_POS                 = 3;    /** @brief LTDC peripheral clock enable */
+    static const int32_t RCC_APBxENR_WWDG1EN_POS                = 6;    /** @brief WWDG1 clock enable */
+    static const int32_t RCC_APB1LENR_LPTIM1EN_POS              = 9;    /** @brief LPTIM1 peripheral clocks enable */
+    static const int32_t RCC_APB1LENR_SPDIFRXEN_POS             = 16;   /** @brief SPDIFRX peripheral clocks enable */
+    static const int32_t RCC_APB1LENR_HDMICECEN_POS             = 27;   /** @brief HDMI-CEC peripheral clock enable */
+    static const int32_t RCC_APB1LENR_DAC12EN_POS               = 29;   /** @brief DAC1&2 peripheral clock enable */
+    static const int32_t RCC_C1_APB1LENR_LPTIM1EN_POS           = 9;    /** @brief LPTIM1 peripheral clocks enable */
+    static const int32_t RCC_C1_APB1LENR_SPDIFRXEN_POS          = 16;   /** @brief SPDIFRX peripheral clocks enable */
+    static const int32_t RCC_C1_APB1LENR_HDMICECEN_POS          = 27;   /** @brief HDMI-CEC peripheral clock enable */
+    static const int32_t RCC_C1_APB1LENR_DAC12EN_POS            = 29;   /** @brief DAC1&2 peripheral clock enable */
+    static const int32_t RCC_APB1HENR_CRSEN_POS                 = 1;    /** @brief Clock recovery system peripheral clock enable */
+    static const int32_t RCC_APB1HENR_SWPEN_POS                 = 2;    /** @brief SWPMI peripheral clocks enable */
+    static const int32_t RCC_APB1HENR_OPAMPEN_POS               = 4;    /** @brief OPAMP peripheral clock enable */
+    static const int32_t RCC_APB1HENR_MDIOSEN_POS               = 5;    /** @brief MDIOS peripheral clock enable */
+    static const int32_t RCC_APB1HENR_FDCANEN_POS               = 8;    /** @brief FDCAN peripheral clocks enable */
+    static const int32_t RCC_C1_APB1HENR_CRSEN_POS              = 1;    /** @brief Clock recovery system peripheral clock enable */
+    static const int32_t RCC_C1_APB1HENR_SWPEN_POS              = 2;    /** @brief SWPMI peripheral clocks enable */
+    static const int32_t RCC_C1_APB1HENR_OPAMPEN_POS            = 4;    /** @brief OPAMP peripheral clock enable */
+    static const int32_t RCC_C1_APB1HENR_MDIOSEN_POS            = 5;    /** @brief MDIOS peripheral clock enable */
+    static const int32_t RCC_C1_APB1HENR_FDCANEN_POS            = 8;    /** @brief FDCAN peripheral clocks enable */
+    static const int32_t RCC_C1_AHBxLPENR_MDMALPEN_POS          = 0;    /** @brief MDMA clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_DMA2DLPEN_POS         = 4;    /** @brief DMA2D clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_JPGDECLPEN_POS        = 5;    /** @brief JPGDEC clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_FLITFLPEN_POS         = 8;    /** @brief FLITF clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_FMCLPEN_POS           = 12;   /** @brief FMC peripheral clocks enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_QSPILPEN_POS          = 14;   /** @brief QUADSPI and QUADSPI delay clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_SDMMC1LPEN_POS        = 16;   /** @brief SDMMC1 and SDMMC1 delay clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_D1DTCM1LPEN_POS       = 28;   /** @brief D1DTCM1 block clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_DTCM2LPEN_POS         = 29;   /** @brief D1 DTCM2 block clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_ITCMLPEN_POS          = 30;   /** @brief D1ITCM block clock enable during csleep mode */
+    static const int32_t RCC_C1_AHBxLPENR_AXISRAMLPEN_POS       = 31;   /** @brief AXISRAM block clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_MDMALPEN_POS             = 0;    /** @brief MDMA clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_DMA2DLPEN_POS            = 4;    /** @brief DMA2D clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_JPGDECLPEN_POS           = 5;    /** @brief JPGDEC clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_FLITFLPEN_POS            = 8;    /** @brief FLITF clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_FMCLPEN_POS              = 12;   /** @brief FMC peripheral clocks enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_QSPILPEN_POS             = 14;   /** @brief QUADSPI and QUADSPI delay clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_SDMMC1LPEN_POS           = 16;   /** @brief SDMMC1 and SDMMC1 delay clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_D1DTCM1LPEN_POS          = 28;   /** @brief D1DTCM1 block clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_DTCM2LPEN_POS            = 29;   /** @brief D1 DTCM2 block clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_ITCMLPEN_POS             = 30;   /** @brief D1ITCM block clock enable during csleep mode */
+    static const int32_t RCC_AHBxLPENR_AXISRAMLPEN_POS          = 31;   /** @brief AXISRAM block clock enable during csleep mode */
+    static const int32_t RCC_C1_APBxLPENR_LTDCLPEN_POS          = 3;    /** @brief LTDC peripheral clock enable during csleep mode */
+    static const int32_t RCC_C1_APBxLPENR_WWDG1LPEN_POS         = 6;    /** @brief WWDG1 clock enable during csleep mode */
+    static const int32_t RCC_APBxLPENR_LTDCLPEN_POS             = 3;    /** @brief LTDC peripheral clock enable during csleep mode */
+    static const int32_t RCC_APBxLPENR_WWDG1LPEN_POS            = 6;    /** @brief WWDG1 clock enable during csleep mode */
+    static const int32_t RCC_APB1LLPENR_LPTIM1LPEN_POS          = 9;    /** @brief LPTIM1 peripheral clocks enable during csleep mode */
+    static const int32_t RCC_APB1LLPENR_SPDIFRXLPEN_POS         = 16;   /** @brief SPDIFRX peripheral clocks enable during csleep mode */
+    static const int32_t RCC_APB1LLPENR_HDMICECLPEN_POS         = 27;   /** @brief HDMI-CEC peripheral clocks enable during csleep mode */
+    static const int32_t RCC_APB1LLPENR_DAC12LPEN_POS           = 29;   /** @brief DAC1/2 peripheral clock enable during csleep mode */
+    static const int32_t RCC_C1_APB1LLPENR_LPTIM1LPEN_POS       = 9;    /** @brief LPTIM1 peripheral clocks enable during csleep mode */
+    static const int32_t RCC_C1_APB1LLPENR_SPDIFRXLPEN_POS      = 16;   /** @brief SPDIFRX peripheral clocks enable during csleep mode */
+    static const int32_t RCC_C1_APB1LLPENR_HDMICECLPEN_POS      = 27;   /** @brief HDMI-CEC peripheral clocks enable during csleep mode */
+    static const int32_t RCC_C1_APB1LLPENR_DAC12LPEN_POS        = 29;   /** @brief DAC1/2 peripheral clock enable during csleep mode */
+    static const int32_t RCC_C1_APB1HLPENR_CRSLPEN_POS          = 1;    /** @brief Clock recovery system peripheral clock enable during csleep mode */
+    static const int32_t RCC_C1_APB1HLPENR_SWPLPEN_POS          = 2;    /** @brief SWPMI peripheral clocks enable during csleep mode */
+    static const int32_t RCC_C1_APB1HLPENR_OPAMPLPEN_POS        = 4;    /** @brief OPAMP peripheral clock enable during csleep mode */
+    static const int32_t RCC_C1_APB1HLPENR_MDIOSLPEN_POS        = 5;    /** @brief MDIOS peripheral clock enable during csleep mode */
+    static const int32_t RCC_C1_APB1HLPENR_FDCANLPEN_POS        = 8;    /** @brief FDCAN peripheral clocks enable during csleep mode */
+    static const int32_t RCC_APB1HLPENR_CRSLPEN_POS             = 1;    /** @brief Clock recovery system peripheral clock enable during csleep mode */
+    static const int32_t RCC_APB1HLPENR_SWPLPEN_POS             = 2;    /** @brief SWPMI peripheral clocks enable during csleep mode */
+    static const int32_t RCC_APB1HLPENR_OPAMPLPEN_POS           = 4;    /** @brief OPAMP peripheral clock enable during csleep mode */
+    static const int32_t RCC_APB1HLPENR_MDIOSLPEN_POS           = 5;    /** @brief MDIOS peripheral clock enable during csleep mode */
+    static const int32_t RCC_APB1HLPENR_FDCANLPEN_POS           = 8;    /** @brief FDCAN peripheral clocks enable during csleep mode */
+
+    static const int32_t RCC_CR_DxCKRDY_POS[3] = {
+      [1] = 14,   /** @brief D1 domain clocks ready flag */
+      [2] = 15,   /** @brief D2 domain clocks ready flag */
+    };
+
+    static const int32_t RCC_CR_PLLxON_POS[4] = {
+      [1] = 24,   /** @brief PLL1 enable */
+      [2] = 26,   /** @brief PLL2 enable */
+      [3] = 28,   /** @brief PLL3 enable */
+    };
+
+    static const int32_t RCC_CR_PLLxRDY_POS[4] = {
+      [1] = 25,   /** @brief PLL1 clock ready flag */
+      [2] = 27,   /** @brief PLL2 clock ready flag */
+      [3] = 29,   /** @brief PLL3 clock ready flag */
+    };
+
+    static const int32_t RCC_CFGR_MCOxPRE_POS[3] = {
+      [1] = 18,   /** @brief MCO1 prescaler */
+      [2] = 25,   /** @brief MCO2 prescaler */
+    };
+
+    static const int32_t RCC_CFGR_MCOxSEL_POS[3] = {
+      [1] = 22,   /** @brief Micro-controller clock output 1 */
+      [2] = 29,   /** @brief Micro-controller clock output 2 */
+    };
+
+    static const int32_t RCC_PLLCKSELR_DIVMx_POS[4] = {
+      [1] = 4,    /** @brief Prescaler for PLL1 */
+      [2] = 12,   /** @brief Prescaler for PLL2 */
+      [3] = 20,   /** @brief Prescaler for PLL3 */
+    };
+
+    static const int32_t RCC_PLLCFGR_PLLxFRACEN_POS[4] = {
+      [1] = 0,   /** @brief PLL1 fractional latch enable */
+      [2] = 4,   /** @brief PLL2 fractional latch enable */
+      [3] = 8,   /** @brief PLL3 fractional latch enable */
+    };
+
+    static const int32_t RCC_PLLCFGR_PLLxVCOSEL_POS[4] = {
+      [1] = 1,   /** @brief PLL1 VCO selection */
+      [2] = 5,   /** @brief PLL2 VCO selection */
+      [3] = 9,   /** @brief PLL3 VCO selection */
+    };
+
+    static const int32_t RCC_PLLCFGR_PLLxRGE_POS[4] = {
+      [1] = 2,    /** @brief PLL1 input frequency range */
+      [2] = 6,    /** @brief PLL2 input frequency range */
+      [3] = 10,   /** @brief PLL3 input frequency range */
+    };
+
+    static const int32_t RCC_PLLCFGR_DIVPxEN_POS[4] = {
+      [1] = 16,   /** @brief PLL1 DIVP divider output enable */
+      [2] = 19,   /** @brief PLL2 DIVP divider output enable */
+      [3] = 22,   /** @brief PLL3 DIVP divider output enable */
+    };
+
+    static const int32_t RCC_PLLCFGR_DIVQxEN_POS[4] = {
+      [1] = 17,   /** @brief PLL1 DIVQ divider output enable */
+      [2] = 20,   /** @brief PLL2 DIVQ divider output enable */
+      [3] = 23,   /** @brief PLL3 DIVQ divider output enable */
+    };
+
+    static const int32_t RCC_PLLCFGR_DIVRxEN_POS[4] = {
+      [1] = 18,   /** @brief PLL1 DIVR divider output enable */
+      [2] = 21,   /** @brief PLL2 DIVR divider output enable */
+      [3] = 24,   /** @brief PLL3 DIVR divider output enable */
+    };
+
+    static const int32_t RCC_CIER_PLLxRDYIE_POS[4] = {
+      [1] = 6,   /** @brief PLL1 ready interrupt enable */
+      [2] = 7,   /** @brief PLL2 ready interrupt enable */
+      [3] = 8,   /** @brief PLL3 ready interrupt enable */
+    };
+
+    static const int32_t RCC_CIFR_PLLxRDYF_POS[4] = {
+      [1] = 6,   /** @brief PLL1 ready interrupt flag */
+      [2] = 7,   /** @brief PLL2 ready interrupt flag */
+      [3] = 8,   /** @brief PLL3 ready interrupt flag */
+    };
+
+    static const int32_t RCC_CICR_PLLxRDYC_POS[4] = {
+      [1] = 6,   /** @brief PLL1 ready interrupt clear */
+      [2] = 7,   /** @brief PLL2 ready interrupt clear */
+      [3] = 8,   /** @brief PLL3 ready interrupt clear */
+    };
+
+    static const int32_t RCC_APB1LRSTR_TIMxRST_POS[15] = {
+      [2]  = 0,   /** @brief TIM block reset */
+      [3]  = 1,   /** @brief TIM block reset */
+      [4]  = 2,   /** @brief TIM block reset */
+      [5]  = 3,   /** @brief TIM block reset */
+      [6]  = 4,   /** @brief TIM block reset */
+      [7]  = 5,   /** @brief TIM block reset */
+      [12] = 6,   /** @brief TIM block reset */
+      [13] = 7,   /** @brief TIM block reset */
+      [14] = 8,   /** @brief TIM block reset */
+    };
+
+    static const int32_t RCC_APB1LRSTR_SPIxRST_POS[4] = {
+      [2] = 14,   /** @brief SPI2 block reset */
+      [3] = 15,   /** @brief SPI3 block reset */
+    };
+
+    static const int32_t RCC_APB1LRSTR_USARTxRST_POS[9] = {
+      [2] = 17,   /** @brief USART2 block reset */
+      [3] = 18,   /** @brief USART3 block reset */
+      [7] = 30,   /** @brief USART7 block reset */
+      [8] = 31,   /** @brief USART8 block reset */
+    };
+
+    static const int32_t RCC_APB1LRSTR_UARTxRST_POS[6] = {
+      [4] = 19,   /** @brief UART4 block reset */
+      [5] = 20,   /** @brief UART5 block reset */
+    };
+
+    static const int32_t RCC_APB1LRSTR_I2CxRST_POS[4] = {
+      [1] = 21,   /** @brief I2C1 block reset */
+      [2] = 22,   /** @brief I2C2 block reset */
+      [3] = 23,   /** @brief I2C3 block reset */
+    };
+
+    static const int32_t RCC_D3AMR_LPTIMxAMEN_POS[6] = {
+      [2] = 9,    /** @brief LPTIM2 autonomous mode enable */
+      [3] = 10,   /** @brief LPTIM3 autonomous mode enable */
+      [4] = 11,   /** @brief LPTIM4 autonomous mode enable */
+      [5] = 12,   /** @brief LPTIM5 autonomous mode enable */
+    };
+
+    static const int32_t RCC_RSR_DxRSTF_POS[3] = {
+      [1] = 19,   /** @brief D1 domain power switch reset flag */
+      [2] = 20,   /** @brief D2 domain power switch reset flag */
+    };
+
+    static const int32_t RCC_APB1LENR_TIMxEN_POS[15] = {
+      [2]  = 0,   /** @brief TIM peripheral clock enable */
+      [3]  = 1,   /** @brief TIM peripheral clock enable */
+      [4]  = 2,   /** @brief TIM peripheral clock enable */
+      [5]  = 3,   /** @brief TIM peripheral clock enable */
+      [6]  = 4,   /** @brief TIM peripheral clock enable */
+      [7]  = 5,   /** @brief TIM peripheral clock enable */
+      [12] = 6,   /** @brief TIM peripheral clock enable */
+      [13] = 7,   /** @brief TIM peripheral clock enable */
+      [14] = 8,   /** @brief TIM peripheral clock enable */
+    };
+
+    static const int32_t RCC_APB1LENR_SPIxEN_POS[4] = {
+      [2] = 14,   /** @brief SPI2 peripheral clocks enable */
+      [3] = 15,   /** @brief SPI3 peripheral clocks enable */
+    };
+
+    static const int32_t RCC_APB1LENR_USARTxEN_POS[9] = {
+      [2] = 17,   /** @brief USART2 peripheral clocks enable */
+      [3] = 18,   /** @brief USART3 peripheral clocks enable */
+      [7] = 30,   /** @brief USART7 peripheral clocks enable */
+      [8] = 31,   /** @brief USART8 peripheral clocks enable */
+    };
+
+    static const int32_t RCC_APB1LENR_UARTxEN_POS[6] = {
+      [4] = 19,   /** @brief UART4 peripheral clocks enable */
+      [5] = 20,   /** @brief UART5 peripheral clocks enable */
+    };
+
+    static const int32_t RCC_APB1LENR_I2CxEN_POS[4] = {
+      [1] = 21,   /** @brief I2C1 peripheral clocks enable */
+      [2] = 22,   /** @brief I2C2 peripheral clocks enable */
+      [3] = 23,   /** @brief I2C3 peripheral clocks enable */
+    };
+
+    static const int32_t RCC_APB1LLPENR_TIMxLPEN_POS[15] = {
+      [2]  = 0,   /** @brief TIM2 peripheral clock enable during csleep mode */
+      [3]  = 1,   /** @brief TIM3 peripheral clock enable during csleep mode */
+      [4]  = 2,   /** @brief TIM4 peripheral clock enable during csleep mode */
+      [5]  = 3,   /** @brief TIM5 peripheral clock enable during csleep mode */
+      [6]  = 4,   /** @brief TIM6 peripheral clock enable during csleep mode */
+      [7]  = 5,   /** @brief TIM7 peripheral clock enable during csleep mode */
+      [12] = 6,   /** @brief TIM12 peripheral clock enable during csleep mode */
+      [13] = 7,   /** @brief TIM13 peripheral clock enable during csleep mode */
+      [14] = 8,   /** @brief TIM14 peripheral clock enable during csleep mode */
+    };
+
+    static const int32_t RCC_APB1LLPENR_SPIxLPEN_POS[4] = {
+      [2] = 14,   /** @brief SPI2 peripheral clocks enable during csleep mode */
+      [3] = 15,   /** @brief SPI3 peripheral clocks enable during csleep mode */
+    };
+
+    static const int32_t RCC_APB1LLPENR_USARTxLPEN_POS[9] = {
+      [2] = 17,   /** @brief USART2 peripheral clocks enable during csleep mode */
+      [3] = 18,   /** @brief USART3 peripheral clocks enable during csleep mode */
+      [7] = 30,   /** @brief USART7 peripheral clocks enable during csleep mode */
+      [8] = 31,   /** @brief USART8 peripheral clocks enable during csleep mode */
+    };
+
+    static const int32_t RCC_APB1LLPENR_UARTxLPEN_POS[6] = {
+      [4] = 19,   /** @brief UART4 peripheral clocks enable during csleep mode */
+      [5] = 20,   /** @brief UART5 peripheral clocks enable during csleep mode */
+    };
+
+    static const int32_t RCC_APB1LLPENR_I2CxLPEN_POS[4] = {
+      [1] = 21,   /** @brief I2C1 peripheral clocks enable during csleep mode */
+      [2] = 22,   /** @brief I2C2 peripheral clocks enable during csleep mode */
+      [3] = 23,   /** @brief I2C3 peripheral clocks enable during csleep mode */
     };
 
     /**********************************************************************************************
@@ -10163,361 +11234,233 @@
     };
 
     /**********************************************************************************************
-     * @section HRTIM_TIMx Register Information
+     * @section HRTIM_TIMA Register Information
      **********************************************************************************************/
 
-    /**** @subsection HRTIM_TIMx Register Pointers ****/
+    /**** @subsection HRTIM_TIMA Register Pointers ****/
 
-    static RW_ uint32_t* const HRTIM_TIMx_TIMxCR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x40017480U,   /** @brief Timerx control register */
-      [1] = (RW_ uint32_t* const)0x40017500U,   /** @brief Timerx control register */
-      [2] = (RW_ uint32_t* const)0x40017580U,   /** @brief Timerx control register */
-      [3] = (RW_ uint32_t* const)0x40017600U,   /** @brief Timerx control register */
-      [4] = (RW_ uint32_t* const)0x40017680U,   /** @brief Timerx control register */
+    static RW_ uint32_t* const HRTIM_TIMA_TIMACR_PTR    = (RW_ uint32_t* const)0x40017480U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMA_TIMAISR_PTR   = (RO_ uint32_t* const)0x40017484U;   /** @brief Timerx interrupt status register */
+    static WO_ uint32_t* const HRTIM_TIMA_TIMAICR_PTR   = (WO_ uint32_t* const)0x40017488U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMA_TIMADIER5_PTR = (RW_ uint32_t* const)0x4001748CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMA_CNTAR_PTR     = (RW_ uint32_t* const)0x40017490U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMA_PERAR_PTR     = (RW_ uint32_t* const)0x40017494U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMA_REPAR_PTR     = (RW_ uint32_t* const)0x40017498U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIMA_CMP1CAR_PTR   = (RW_ uint32_t* const)0x400174A0U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIMA_DTAR_PTR      = (RW_ uint32_t* const)0x400174B8U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIMA_RSTAR_PTR     = (RW_ uint32_t* const)0x400174D4U;   /** @brief TimerA reset register */
+    static RW_ uint32_t* const HRTIM_TIMA_CHPAR_PTR     = (RW_ uint32_t* const)0x400174D8U;   /** @brief Timerx chopper register */
+    static RW_ uint32_t* const HRTIM_TIMA_OUTAR_PTR     = (RW_ uint32_t* const)0x400174E4U;   /** @brief Timerx output register */
+    static RW_ uint32_t* const HRTIM_TIMA_FLTAR_PTR     = (RW_ uint32_t* const)0x400174E8U;   /** @brief Timerx fault register */
+
+    static RW_ uint32_t* const HRTIM_TIMA_CMPxAR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001749CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x400174A4U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x400174A8U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x400174ACU,   /** @brief Timerx compare 4 register */
     };
 
-    static RO_ uint32_t* const HRTIM_TIMx_TIMxISR_PTR[5] = {
-      [0] = (RO_ uint32_t* const)0x40017484U,   /** @brief Timerx interrupt status register */
-      [1] = (RO_ uint32_t* const)0x40017504U,   /** @brief Timerx interrupt status register */
-      [2] = (RO_ uint32_t* const)0x40017584U,   /** @brief Timerx interrupt status register */
-      [3] = (RO_ uint32_t* const)0x40017604U,   /** @brief Timerx interrupt status register */
-      [4] = (RO_ uint32_t* const)0x40017684U,   /** @brief Timerx interrupt status register */
+    static RO_ uint32_t* const HRTIM_TIMA_CPTxAR_PTR[3] = {
+      [1] = (RO_ uint32_t* const)0x400174B0U,   /** @brief Timerx capture 1 register */
+      [2] = (RO_ uint32_t* const)0x400174B4U,   /** @brief Timerx capture 2 register */
     };
 
-    static WO_ uint32_t* const HRTIM_TIMx_TIMxICR_PTR[5] = {
-      [0] = (WO_ uint32_t* const)0x40017488U,   /** @brief Timerx interrupt clear register */
-      [1] = (WO_ uint32_t* const)0x40017508U,   /** @brief Timerx interrupt clear register */
-      [2] = (WO_ uint32_t* const)0x40017588U,   /** @brief Timerx interrupt clear register */
-      [3] = (WO_ uint32_t* const)0x40017608U,   /** @brief Timerx interrupt clear register */
-      [4] = (WO_ uint32_t* const)0x40017688U,   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMA_SETAxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400174BCU,   /** @brief Timerx output1 set register */
+      [2] = (RW_ uint32_t* const)0x400174C4U,   /** @brief Timerx output2 set register */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMx_TIMxDIER5_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x4001748CU,   /** @brief TIMxDIER5 */
-      [1] = (RW_ uint32_t* const)0x4001750CU,   /** @brief TIMxDIER5 */
-      [2] = (RW_ uint32_t* const)0x4001758CU,   /** @brief TIMxDIER5 */
-      [3] = (RW_ uint32_t* const)0x4001760CU,   /** @brief TIMxDIER5 */
-      [4] = (RW_ uint32_t* const)0x4001768CU,   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMA_RSTAxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400174C0U,   /** @brief Timerx output1 reset register */
+      [2] = (RW_ uint32_t* const)0x400174C8U,   /** @brief Timerx output2 reset register */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMx_CNTxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x40017490U,   /** @brief Timerx counter register */
-      [1] = (RW_ uint32_t* const)0x40017510U,   /** @brief Timerx counter register */
-      [2] = (RW_ uint32_t* const)0x40017590U,   /** @brief Timerx counter register */
-      [3] = (RW_ uint32_t* const)0x40017610U,   /** @brief Timerx counter register */
-      [4] = (RW_ uint32_t* const)0x40017690U,   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMA_EEFARx_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400174CCU,   /** @brief Timerx external event filtering register 1 */
+      [2] = (RW_ uint32_t* const)0x400174D0U,   /** @brief Timerx external event filtering register 2 */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMx_PERxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x40017494U,   /** @brief Timerx period register */
-      [1] = (RW_ uint32_t* const)0x40017514U,   /** @brief Timerx period register */
-      [2] = (RW_ uint32_t* const)0x40017594U,   /** @brief Timerx period register */
-      [3] = (RW_ uint32_t* const)0x40017614U,   /** @brief Timerx period register */
-      [4] = (RW_ uint32_t* const)0x40017694U,   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMA_CPTxACR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400174DCU,   /** @brief Timerx capture 2 control register */
+      [2] = (RW_ uint32_t* const)0x400174E0U,   /** @brief CPT2xCR */
     };
 
-    static RW_ uint32_t* const HRTIM_TIMx_REPxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x40017498U,   /** @brief Timerx repetition register */
-      [1] = (RW_ uint32_t* const)0x40017518U,   /** @brief Timerx repetition register */
-      [2] = (RW_ uint32_t* const)0x40017598U,   /** @brief Timerx repetition register */
-      [3] = (RW_ uint32_t* const)0x40017618U,   /** @brief Timerx repetition register */
-      [4] = (RW_ uint32_t* const)0x40017698U,   /** @brief Timerx repetition register */
-    };
+    /**** @subsection HRTIM_TIMA Register Field Masks ****/
 
-    static RW_ uint32_t* const HRTIM_TIMx_CMPxxR_PTR[5][5] = {
-      [0] = {
-        [1] = (RW_ uint32_t* const)0x4001749CU,   /** @brief Timerx compare 1 register */
-        [2] = (RW_ uint32_t* const)0x400174A4U,   /** @brief Timerx compare 2 register */
-        [3] = (RW_ uint32_t* const)0x400174A8U,   /** @brief Timerx compare 3 register */
-        [4] = (RW_ uint32_t* const)0x400174ACU,   /** @brief Timerx compare 4 register */
-      },
-      [1] = {
-        [1] = (RW_ uint32_t* const)0x4001751CU,   /** @brief Timerx compare 1 register */
-        [2] = (RW_ uint32_t* const)0x40017524U,   /** @brief Timerx compare 2 register */
-        [3] = (RW_ uint32_t* const)0x40017528U,   /** @brief Timerx compare 3 register */
-        [4] = (RW_ uint32_t* const)0x4001752CU,   /** @brief Timerx compare 4 register */
-      },
-    };
+    static const uint32_t HRTIM_TIMA_TIMACR_UPDGAT_MSK      = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMA_TIMACR_PREEN_MSK       = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMA_TIMACR_DACSYNC_MSK     = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMA_TIMACR_MSTU_MSK        = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMA_TIMACR_TEU_MSK         = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TDU_MSK         = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TCU_MSK         = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TBU_MSK         = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMA_TIMACR_TXRSTU_MSK      = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMA_TIMACR_TXREPU_MSK      = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMA_TIMACR_SYNCSTRTX_MSK   = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMA_TIMACR_SYNCRSTX_MSK    = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMA_TIMACR_PSHPLL_MSK      = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMA_TIMACR_HALF_MSK        = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMA_TIMACR_RETRIG_MSK      = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMA_TIMACR_CONT_MSK        = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMA_TIMACR_CK_PSCX_MSK     = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMA_TIMAISR_IPPSTAT_MSK    = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMA_TIMAISR_CPPSTAT_MSK    = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMA_TIMAISR_DLYPRT_MSK     = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMA_TIMAISR_RST_MSK        = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMA_TIMAISR_UPD_MSK        = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMA_TIMAISR_REP_MSK        = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMA_TIMAICR_DLYPRTC_MSK    = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMA_TIMAICR_RSTC_MSK       = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMA_TIMAICR_UPDC_MSK       = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMA_TIMAICR_REPC_MSK       = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_DLYPRTDE_MSK = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTDE_MSK    = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SETX2DE_MSK  = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SET1XDE_MSK  = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_UPDDE_MSK    = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_REPDE_MSK    = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_DLYPRTIE_MSK = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTIE_MSK    = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SETX2IE_MSK  = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_SET1XIE_MSK  = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_UPDIE_MSK    = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMA_TIMADIER5_REPIE_MSK    = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMA_CNTAR_CNTX_MSK         = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIMA_PERAR_PERX_MSK         = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIMA_REPAR_REPX_MSK         = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIMA_CMPxAR_CMP1X_MSK       = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMA_CMP1CAR_REPX_MSK       = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIMA_CMP1CAR_CMP1X_MSK      = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMA_CPTxAR_CPT1X_MSK       = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMA_DTAR_DTFLKX_MSK        = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIMA_DTAR_DTFSLKX_MSK       = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIMA_DTAR_SDTFX_MSK         = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIMA_DTAR_DTFX_MSK          = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIMA_DTAR_DTRLKX_MSK        = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIMA_DTAR_DTRSLKX_MSK       = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIMA_DTAR_DTPRSC_MSK        = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIMA_DTAR_SDTRX_MSK         = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIMA_DTAR_DTRX_MSK          = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIMA_SETAxR_UPDATE_MSK      = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIMA_SETAxR_MSTPER_MSK      = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIMA_SETAxR_PER_MSK         = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIMA_SETAxR_RESYNC_MSK      = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIMA_SETAxR_SST_MSK         = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIMA_RSTAxR_UPDATE_MSK      = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIMA_RSTAxR_MSTPER_MSK      = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIMA_RSTAxR_PER_MSK         = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIMA_RSTAxR_RESYNC_MSK      = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIMA_RSTAxR_SRT_MSK         = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIMA_RSTAR_MSTPER_MSK       = 0x00000010U;   /** @brief Master timer period */
+    static const uint32_t HRTIM_TIMA_RSTAR_UPDT_MSK         = 0x00000002U;   /** @brief Timer A update reset */
+    static const uint32_t HRTIM_TIMA_CHPAR_STRTPW_MSK       = 0x00000780U;   /** @brief STRTPW */
+    static const uint32_t HRTIM_TIMA_CHPAR_CHPDTY_MSK       = 0x00000070U;   /** @brief Timerx chopper duty cycle value */
+    static const uint32_t HRTIM_TIMA_CHPAR_CHPFRQ_MSK       = 0x0000000FU;   /** @brief Timerx carrier frequency value */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TE1RST_MSK     = 0x20000000U;   /** @brief Timer E output 1 reset */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TE1SET_MSK     = 0x10000000U;   /** @brief Timer E output 1 set */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TD1RST_MSK     = 0x02000000U;   /** @brief Timer D output 1 reset */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TD1SET_MSK     = 0x01000000U;   /** @brief Timer D output 1 set */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TC1RST_MSK     = 0x00200000U;   /** @brief Timer C output 1 reset */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TC1SET_MSK     = 0x00100000U;   /** @brief Timer C output 1 set */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TB1RST_MSK     = 0x00020000U;   /** @brief Timer B output 1 reset */
+    static const uint32_t HRTIM_TIMA_CPTxACR_TB1SET_MSK     = 0x00010000U;   /** @brief Timer B output 1 set */
+    static const uint32_t HRTIM_TIMA_CPTxACR_UDPCPT_MSK     = 0x00000002U;   /** @brief Update capture */
+    static const uint32_t HRTIM_TIMA_CPTxACR_SWCPT_MSK      = 0x00000001U;   /** @brief Software capture */
+    static const uint32_t HRTIM_TIMA_OUTAR_DLYPRT_MSK       = 0x00001C00U;   /** @brief Delayed protection */
+    static const uint32_t HRTIM_TIMA_OUTAR_DLYPRTEN_MSK     = 0x00000200U;   /** @brief Delayed protection enable */
+    static const uint32_t HRTIM_TIMA_OUTAR_DTEN_MSK         = 0x00000100U;   /** @brief Deadtime enable */
+    static const uint32_t HRTIM_TIMA_FLTAR_FLTLCK_MSK       = 0x80000000U;   /** @brief Fault sources lock */
 
-    static RW_ uint32_t* const HRTIM_TIMx_CMP1CxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x400174A0U,   /** @brief Timerx compare 1 compound register */
-      [1] = (RW_ uint32_t* const)0x40017520U,   /** @brief Timerx compare 1 compound register */
-      [2] = (RW_ uint32_t* const)0x400175A0U,   /** @brief Timerx compare 1 compound register */
-      [3] = (RW_ uint32_t* const)0x40017620U,   /** @brief Timerx compare 1 compound register */
-      [4] = (RW_ uint32_t* const)0x400176A0U,   /** @brief Timerx compare 1 compound register */
-    };
-
-    static RO_ uint32_t* const HRTIM_TIMx_CPTxxR_PTR[5][3] = {
-      [0] = {
-        [1] = (RO_ uint32_t* const)0x400174B0U,   /** @brief Timerx capture 1 register */
-        [2] = (RO_ uint32_t* const)0x400174B4U,   /** @brief Timerx capture 2 register */
-      },
-      [1] = {
-        [1] = (RO_ uint32_t* const)0x40017530U,   /** @brief Timerx capture 1 register */
-        [2] = (RO_ uint32_t* const)0x40017534U,   /** @brief Timerx capture 2 register */
-      },
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_DTxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x400174B8U,   /** @brief Timerx deadtime register */
-      [1] = (RW_ uint32_t* const)0x40017538U,   /** @brief Timerx deadtime register */
-      [2] = (RW_ uint32_t* const)0x400175B8U,   /** @brief Timerx deadtime register */
-      [3] = (RW_ uint32_t* const)0x40017638U,   /** @brief Timerx deadtime register */
-      [4] = (RW_ uint32_t* const)0x400176B8U,   /** @brief Timerx deadtime register */
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_SETxxR_PTR[5][3] = {
-      [0] = {
-        [1] = (RW_ uint32_t* const)0x400174BCU,   /** @brief Timerx output1 set register */
-        [2] = (RW_ uint32_t* const)0x400174C4U,   /** @brief Timerx output2 set register */
-      },
-      [1] = {
-        [1] = (RW_ uint32_t* const)0x4001753CU,   /** @brief Timerx output1 set register */
-        [2] = (RW_ uint32_t* const)0x40017544U,   /** @brief Timerx output2 set register */
-      },
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_RSTxxR_PTR[5][3] = {
-      [0] = {
-        [1] = (RW_ uint32_t* const)0x400174C0U,   /** @brief Timerx output1 reset register */
-        [2] = (RW_ uint32_t* const)0x400174C8U,   /** @brief Timerx output2 reset register */
-      },
-      [1] = {
-        [1] = (RW_ uint32_t* const)0x40017540U,   /** @brief Timerx output1 reset register */
-        [2] = (RW_ uint32_t* const)0x40017548U,   /** @brief Timerx output2 reset register */
-      },
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_EEFxRx_PTR[5][3] = {
-      [0] = {
-        [1] = (RW_ uint32_t* const)0x400174CCU,   /** @brief Timerx external event filtering register 1 */
-        [2] = (RW_ uint32_t* const)0x400174D0U,   /** @brief Timerx external event filtering register 2 */
-      },
-      [1] = {
-        [1] = (RW_ uint32_t* const)0x4001754CU,   /** @brief Timerx external event filtering register 1 */
-        [2] = (RW_ uint32_t* const)0x40017550U,   /** @brief Timerx external event filtering register 2 */
-      },
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_RSTxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x400174D4U,   /** @brief TimerA reset register */
-      [1] = (RW_ uint32_t* const)0x40017554U,   /** @brief TimerA reset register */
-      [2] = (RW_ uint32_t* const)0x400175D4U,   /** @brief TimerA reset register */
-      [3] = (RW_ uint32_t* const)0x40017654U,   /** @brief TimerA reset register */
-      [4] = (RW_ uint32_t* const)0x400176D4U,   /** @brief TimerA reset register */
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_CHPxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x400174D8U,   /** @brief Timerx chopper register */
-      [1] = (RW_ uint32_t* const)0x40017558U,   /** @brief Timerx chopper register */
-      [2] = (RW_ uint32_t* const)0x400175D8U,   /** @brief Timerx chopper register */
-      [3] = (RW_ uint32_t* const)0x40017658U,   /** @brief Timerx chopper register */
-      [4] = (RW_ uint32_t* const)0x400176D8U,   /** @brief Timerx chopper register */
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_CPTxxCR_PTR[5][3] = {
-      [0] = {
-        [1] = (RW_ uint32_t* const)0x400174DCU,   /** @brief Timerx capture 2 control register */
-        [2] = (RW_ uint32_t* const)0x400174E0U,   /** @brief CPT2xCR */
-      },
-      [1] = {
-        [1] = (RW_ uint32_t* const)0x4001755CU,   /** @brief Timerx capture 2 control register */
-        [2] = (RW_ uint32_t* const)0x40017560U,   /** @brief CPT2xCR */
-      },
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_OUTxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x400174E4U,   /** @brief Timerx output register */
-      [1] = (RW_ uint32_t* const)0x40017564U,   /** @brief Timerx output register */
-      [2] = (RW_ uint32_t* const)0x400175E4U,   /** @brief Timerx output register */
-      [3] = (RW_ uint32_t* const)0x40017664U,   /** @brief Timerx output register */
-      [4] = (RW_ uint32_t* const)0x400176E4U,   /** @brief Timerx output register */
-    };
-
-    static RW_ uint32_t* const HRTIM_TIMx_FLTxR_PTR[5] = {
-      [0] = (RW_ uint32_t* const)0x400174E8U,   /** @brief Timerx fault register */
-      [1] = (RW_ uint32_t* const)0x40017568U,   /** @brief Timerx fault register */
-      [2] = (RW_ uint32_t* const)0x400175E8U,   /** @brief Timerx fault register */
-      [3] = (RW_ uint32_t* const)0x40017668U,   /** @brief Timerx fault register */
-      [4] = (RW_ uint32_t* const)0x400176E8U,   /** @brief Timerx fault register */
-    };
-
-    /**** @subsection HRTIM_TIMx Register Field Masks ****/
-
-    static const uint32_t HRTIM_TIMx_TIMxCR_UPDGAT_MSK      = 0xF0000000U;   /** @brief Update gating */
-    static const uint32_t HRTIM_TIMx_TIMxCR_PREEN_MSK       = 0x08000000U;   /** @brief Preload enable */
-    static const uint32_t HRTIM_TIMx_TIMxCR_DACSYNC_MSK     = 0x06000000U;   /** @brief AC synchronization */
-    static const uint32_t HRTIM_TIMx_TIMxCR_MSTU_MSK        = 0x01000000U;   /** @brief Master timer update */
-    static const uint32_t HRTIM_TIMx_TIMxCR_TEU_MSK         = 0x00800000U;   /** @brief TEU */
-    static const uint32_t HRTIM_TIMx_TIMxCR_TDU_MSK         = 0x00400000U;   /** @brief TDU */
-    static const uint32_t HRTIM_TIMx_TIMxCR_TCU_MSK         = 0x00200000U;   /** @brief TCU */
-    static const uint32_t HRTIM_TIMx_TIMxCR_TBU_MSK         = 0x00100000U;   /** @brief TBU */
-    static const uint32_t HRTIM_TIMx_TIMxCR_TXRSTU_MSK      = 0x00040000U;   /** @brief Timerx reset update */
-    static const uint32_t HRTIM_TIMx_TIMxCR_TXREPU_MSK      = 0x00020000U;   /** @brief Timer x repetition update */
-    static const uint32_t HRTIM_TIMx_TIMxCR_SYNCSTRTX_MSK   = 0x00000800U;   /** @brief Synchronization starts timer x */
-    static const uint32_t HRTIM_TIMx_TIMxCR_SYNCRSTX_MSK    = 0x00000400U;   /** @brief Synchronization resets timer x */
-    static const uint32_t HRTIM_TIMx_TIMxCR_PSHPLL_MSK      = 0x00000040U;   /** @brief Push-Pull mode enable */
-    static const uint32_t HRTIM_TIMx_TIMxCR_HALF_MSK        = 0x00000020U;   /** @brief Half mode enable */
-    static const uint32_t HRTIM_TIMx_TIMxCR_RETRIG_MSK      = 0x00000010U;   /** @brief Re-triggerable mode */
-    static const uint32_t HRTIM_TIMx_TIMxCR_CONT_MSK        = 0x00000008U;   /** @brief Continuous mode */
-    static const uint32_t HRTIM_TIMx_TIMxCR_CK_PSCX_MSK     = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
-    static const uint32_t HRTIM_TIMx_TIMxISR_IPPSTAT_MSK    = 0x00020000U;   /** @brief Idle push pull status */
-    static const uint32_t HRTIM_TIMx_TIMxISR_CPPSTAT_MSK    = 0x00010000U;   /** @brief Current push pull status */
-    static const uint32_t HRTIM_TIMx_TIMxISR_DLYPRT_MSK     = 0x00004000U;   /** @brief Delayed protection flag */
-    static const uint32_t HRTIM_TIMx_TIMxISR_RST_MSK        = 0x00002000U;   /** @brief Reset interrupt flag */
-    static const uint32_t HRTIM_TIMx_TIMxISR_UPD_MSK        = 0x00000040U;   /** @brief Update interrupt flag */
-    static const uint32_t HRTIM_TIMx_TIMxISR_REP_MSK        = 0x00000010U;   /** @brief Repetition interrupt flag */
-    static const uint32_t HRTIM_TIMx_TIMxICR_DLYPRTC_MSK    = 0x00004000U;   /** @brief Delayed protection flag clear */
-    static const uint32_t HRTIM_TIMx_TIMxICR_RSTC_MSK       = 0x00002000U;   /** @brief Reset interrupt flag clear */
-    static const uint32_t HRTIM_TIMx_TIMxICR_UPDC_MSK       = 0x00000040U;   /** @brief Update interrupt flag clear */
-    static const uint32_t HRTIM_TIMx_TIMxICR_REPC_MSK       = 0x00000010U;   /** @brief Repetition interrupt flag clear */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_DLYPRTDE_MSK = 0x40000000U;   /** @brief DLYPRTDE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_RSTDE_MSK    = 0x20000000U;   /** @brief RSTDE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_SETX2DE_MSK  = 0x08000000U;   /** @brief SETx2DE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_SET1XDE_MSK  = 0x02000000U;   /** @brief SET1xDE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_UPDDE_MSK    = 0x00400000U;   /** @brief UPDDE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_REPDE_MSK    = 0x00100000U;   /** @brief REPDE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_DLYPRTIE_MSK = 0x00004000U;   /** @brief DLYPRTIE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_RSTIE_MSK    = 0x00002000U;   /** @brief RSTIE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_SETX2IE_MSK  = 0x00000800U;   /** @brief SETx2IE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_SET1XIE_MSK  = 0x00000200U;   /** @brief SET1xIE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_UPDIE_MSK    = 0x00000040U;   /** @brief UPDIE */
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_REPIE_MSK    = 0x00000010U;   /** @brief REPIE */
-    static const uint32_t HRTIM_TIMx_CNTxR_CNTX_MSK         = 0x0000FFFFU;   /** @brief Timerx counter value */
-    static const uint32_t HRTIM_TIMx_PERxR_PERX_MSK         = 0x0000FFFFU;   /** @brief Timerx period value */
-    static const uint32_t HRTIM_TIMx_REPxR_REPX_MSK         = 0x000000FFU;   /** @brief Timerx repetition counter value */
-    static const uint32_t HRTIM_TIMx_CMPxxR_CMP1X_MSK       = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMx_CMP1CxR_REPX_MSK       = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
-    static const uint32_t HRTIM_TIMx_CMP1CxR_CMP1X_MSK      = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
-    static const uint32_t HRTIM_TIMx_CPTxxR_CPT1X_MSK       = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
-    static const uint32_t HRTIM_TIMx_DTxR_DTFLKX_MSK        = 0x80000000U;   /** @brief Deadtime falling lock */
-    static const uint32_t HRTIM_TIMx_DTxR_DTFSLKX_MSK       = 0x40000000U;   /** @brief Deadtime falling sign lock */
-    static const uint32_t HRTIM_TIMx_DTxR_SDTFX_MSK         = 0x02000000U;   /** @brief Sign deadtime falling value */
-    static const uint32_t HRTIM_TIMx_DTxR_DTFX_MSK          = 0x01FF0000U;   /** @brief Deadtime falling value */
-    static const uint32_t HRTIM_TIMx_DTxR_DTRLKX_MSK        = 0x00008000U;   /** @brief Deadtime rising lock */
-    static const uint32_t HRTIM_TIMx_DTxR_DTRSLKX_MSK       = 0x00004000U;   /** @brief Deadtime rising sign lock */
-    static const uint32_t HRTIM_TIMx_DTxR_DTPRSC_MSK        = 0x00001C00U;   /** @brief Deadtime prescaler */
-    static const uint32_t HRTIM_TIMx_DTxR_SDTRX_MSK         = 0x00000200U;   /** @brief Sign deadtime rising value */
-    static const uint32_t HRTIM_TIMx_DTxR_DTRX_MSK          = 0x000001FFU;   /** @brief Deadtime rising value */
-    static const uint32_t HRTIM_TIMx_SETxxR_UPDATE_MSK      = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
-    static const uint32_t HRTIM_TIMx_SETxxR_MSTPER_MSK      = 0x00000080U;   /** @brief Master period */
-    static const uint32_t HRTIM_TIMx_SETxxR_PER_MSK         = 0x00000004U;   /** @brief Timer A period */
-    static const uint32_t HRTIM_TIMx_SETxxR_RESYNC_MSK      = 0x00000002U;   /** @brief Timer A resynchronizaton */
-    static const uint32_t HRTIM_TIMx_SETxxR_SST_MSK         = 0x00000001U;   /** @brief Software set trigger */
-    static const uint32_t HRTIM_TIMx_RSTxxR_UPDATE_MSK      = 0x80000000U;   /** @brief UPDATE */
-    static const uint32_t HRTIM_TIMx_RSTxxR_MSTPER_MSK      = 0x00000080U;   /** @brief MSTPER */
-    static const uint32_t HRTIM_TIMx_RSTxxR_PER_MSK         = 0x00000004U;   /** @brief PER */
-    static const uint32_t HRTIM_TIMx_RSTxxR_RESYNC_MSK      = 0x00000002U;   /** @brief RESYNC */
-    static const uint32_t HRTIM_TIMx_RSTxxR_SRT_MSK         = 0x00000001U;   /** @brief SRT */
-    static const uint32_t HRTIM_TIMx_RSTxR_MSTPER_MSK       = 0x00000010U;   /** @brief Master timer period */
-    static const uint32_t HRTIM_TIMx_RSTxR_UPDT_MSK         = 0x00000002U;   /** @brief Timer A update reset */
-    static const uint32_t HRTIM_TIMx_CHPxR_STRTPW_MSK       = 0x00000780U;   /** @brief STRTPW */
-    static const uint32_t HRTIM_TIMx_CHPxR_CHPDTY_MSK       = 0x00000070U;   /** @brief Timerx chopper duty cycle value */
-    static const uint32_t HRTIM_TIMx_CHPxR_CHPFRQ_MSK       = 0x0000000FU;   /** @brief Timerx carrier frequency value */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TE1RST_MSK     = 0x20000000U;   /** @brief Timer E output 1 reset */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TE1SET_MSK     = 0x10000000U;   /** @brief Timer E output 1 set */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TD1RST_MSK     = 0x02000000U;   /** @brief Timer D output 1 reset */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TD1SET_MSK     = 0x01000000U;   /** @brief Timer D output 1 set */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TC1RST_MSK     = 0x00200000U;   /** @brief Timer C output 1 reset */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TC1SET_MSK     = 0x00100000U;   /** @brief Timer C output 1 set */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TB1RST_MSK     = 0x00020000U;   /** @brief Timer B output 1 reset */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TB1SET_MSK     = 0x00010000U;   /** @brief Timer B output 1 set */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_UDPCPT_MSK     = 0x00000002U;   /** @brief Update capture */
-    static const uint32_t HRTIM_TIMx_CPTxxCR_SWCPT_MSK      = 0x00000001U;   /** @brief Software capture */
-    static const uint32_t HRTIM_TIMx_OUTxR_DLYPRT_MSK       = 0x00001C00U;   /** @brief Delayed protection */
-    static const uint32_t HRTIM_TIMx_OUTxR_DLYPRTEN_MSK     = 0x00000200U;   /** @brief Delayed protection enable */
-    static const uint32_t HRTIM_TIMx_OUTxR_DTEN_MSK         = 0x00000100U;   /** @brief Deadtime enable */
-    static const uint32_t HRTIM_TIMx_FLTxR_FLTLCK_MSK       = 0x80000000U;   /** @brief Fault sources lock */
-
-    static const uint32_t HRTIM_TIMx_TIMxCR_DELCMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMACR_DELCMPx_MSK[5] = {
       [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
       [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxISR_OxSTAT_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_OxSTAT_MSK[3] = {
       [1] = 0x00040000U,   /** @brief Output 1 state */
       [2] = 0x00080000U,   /** @brief Output 2 state */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxISR_RSTXx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_RSTXx_MSK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
       [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxISR_SETXx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_SETXx_MSK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
       [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxISR_CPTx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_CPTx_MSK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxISR_CMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMAISR_CMPx_MSK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxICR_RSTXxC_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_RSTXxC_MSK[3] = {
       [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
       [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxICR_SETxXC_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_SETxXC_MSK[3] = {
       [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
       [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxICR_CPTxC_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_CPTxC_MSK[3] = {
       [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
       [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxICR_CMPxC_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMAICR_CMPxC_MSK[5] = {
       [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
       [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
       [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
       [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_RSTXxDE_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTXxDE_MSK[3] = {
       [1] = 0x04000000U,   /** @brief RSTx1DE */
       [2] = 0x10000000U,   /** @brief RSTx2DE */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_CPTxDE_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CPTxDE_MSK[3] = {
       [1] = 0x00800000U,   /** @brief CPT1DE */
       [2] = 0x01000000U,   /** @brief CPT2DE */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_CMPxDE_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CMPxDE_MSK[5] = {
       [1] = 0x00010000U,   /** @brief CMP1DE */
       [2] = 0x00020000U,   /** @brief CMP2DE */
       [3] = 0x00040000U,   /** @brief CMP3DE */
       [4] = 0x00080000U,   /** @brief CMP4DE */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_RSTXxIE_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_RSTXxIE_MSK[3] = {
       [1] = 0x00000400U,   /** @brief RSTx1IE */
       [2] = 0x00001000U,   /** @brief RSTx2IE */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_CPTxIE_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CPTxIE_MSK[3] = {
       [1] = 0x00000080U,   /** @brief CPT1IE */
       [2] = 0x00000100U,   /** @brief CPT2IE */
     };
 
-    static const uint32_t HRTIM_TIMx_TIMxDIER5_CMPxIE_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_TIMADIER5_CMPxIE_MSK[5] = {
       [1] = 0x00000001U,   /** @brief CMP1IE */
       [2] = 0x00000002U,   /** @brief CMP2IE */
       [3] = 0x00000004U,   /** @brief CMP3IE */
       [4] = 0x00000008U,   /** @brief CMP4IE */
     };
 
-    static const uint32_t HRTIM_TIMx_SETxxR_EXTEVNTx_MSK[11] = {
+    static const uint32_t HRTIM_TIMA_SETAxR_EXTEVNTx_MSK[11] = {
       [1]  = 0x00200000U,   /** @brief External event 1 */
       [2]  = 0x00400000U,   /** @brief External event 2 */
       [3]  = 0x00800000U,   /** @brief External event 3 */
@@ -10530,7 +11473,7 @@
       [10] = 0x40000000U,   /** @brief External event 10 */
     };
 
-    static const uint32_t HRTIM_TIMx_SETxxR_TIMEVNTx_MSK[10] = {
+    static const uint32_t HRTIM_TIMA_SETAxR_TIMEVNTx_MSK[10] = {
       [1]  = 0x00001000U,   /** @brief Timer event 1 */
       [2]  = 0x00002000U,   /** @brief Timer event 2 */
       [3]  = 0x00004000U,   /** @brief Timer event 3 */
@@ -10542,14 +11485,14 @@
       [9]  = 0x00100000U,   /** @brief Timer event 9 */
     };
 
-    static const uint32_t HRTIM_TIMx_SETxxR_MSTCMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_SETAxR_MSTCMPx_MSK[5] = {
       [1] = 0x00000100U,   /** @brief Master compare 1 */
       [2] = 0x00000200U,   /** @brief Master compare 2 */
       [3] = 0x00000400U,   /** @brief Master compare 3 */
       [4] = 0x00000800U,   /** @brief Master compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMx_EEFxRx_EExFLTR_MSK[6] = {
+    static const uint32_t HRTIM_TIMA_EEFARx_EExFLTR_MSK[6] = {
       [1] = 0x0000001EU,   /** @brief External event 1 filter */
       [2] = 0x00000780U,   /** @brief External event 2 filter */
       [3] = 0x0001E000U,   /** @brief External event 3 filter */
@@ -10557,7 +11500,7 @@
       [5] = 0x1E000000U,   /** @brief External event 5 filter */
     };
 
-    static const uint32_t HRTIM_TIMx_EEFxRx_EExLTCH_MSK[6] = {
+    static const uint32_t HRTIM_TIMA_EEFARx_EExLTCH_MSK[6] = {
       [1] = 0x00000001U,   /** @brief External event 1 latch */
       [2] = 0x00000040U,   /** @brief External event 2 latch */
       [3] = 0x00001000U,   /** @brief External event 3 latch */
@@ -10565,51 +11508,51 @@
       [5] = 0x01000000U,   /** @brief External event 5 latch */
     };
 
-    static const uint32_t HRTIM_TIMx_RSTxR_TIMECMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_RSTAR_TIMECMPx_MSK[5] = {
       [1] = 0x10000000U,   /** @brief Timer E compare 1 */
       [2] = 0x20000000U,   /** @brief Timer E compare 2 */
       [4] = 0x40000000U,   /** @brief Timer E compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMx_RSTxR_TIMDCMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_RSTAR_TIMDCMPx_MSK[5] = {
       [1] = 0x02000000U,   /** @brief Timer D compare 1 */
       [2] = 0x04000000U,   /** @brief Timer D compare 2 */
       [4] = 0x08000000U,   /** @brief Timer D compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMx_RSTxR_TIMCCMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_RSTAR_TIMCCMPx_MSK[5] = {
       [1] = 0x00400000U,   /** @brief Timer C compare 1 */
       [2] = 0x00800000U,   /** @brief Timer C compare 2 */
       [4] = 0x01000000U,   /** @brief Timer C compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMx_RSTxR_TIMBCMPx_MSK[5] = {
+    static const uint32_t HRTIM_TIMA_RSTAR_TIMBCMPx_MSK[5] = {
       [1] = 0x00080000U,   /** @brief Timer B compare 1 */
       [2] = 0x00100000U,   /** @brief Timer B compare 2 */
       [4] = 0x00200000U,   /** @brief Timer B compare 4 */
     };
 
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TECMPx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_CPTxACR_TECMPx_MSK[3] = {
       [1] = 0x40000000U,   /** @brief Timer E compare 1 */
       [2] = 0x80000000U,   /** @brief Timer E compare 2 */
     };
 
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TDCMPx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_CPTxACR_TDCMPx_MSK[3] = {
       [1] = 0x04000000U,   /** @brief Timer D compare 1 */
       [2] = 0x08000000U,   /** @brief Timer D compare 2 */
     };
 
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TCCMPx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_CPTxACR_TCCMPx_MSK[3] = {
       [1] = 0x00400000U,   /** @brief Timer C compare 1 */
       [2] = 0x00800000U,   /** @brief Timer C compare 2 */
     };
 
-    static const uint32_t HRTIM_TIMx_CPTxxCR_TBCMPx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_CPTxACR_TBCMPx_MSK[3] = {
       [1] = 0x00040000U,   /** @brief Timer B compare 1 */
       [2] = 0x00080000U,   /** @brief Timer B compare 2 */
     };
 
-    static const uint32_t HRTIM_TIMx_CPTxxCR_EXEVxCPT_MSK[11] = {
+    static const uint32_t HRTIM_TIMA_CPTxACR_EXEVxCPT_MSK[11] = {
       [1]  = 0x00000004U,   /** @brief External event 1 capture */
       [2]  = 0x00000008U,   /** @brief External event 2 capture */
       [3]  = 0x00000010U,   /** @brief External event 3 capture */
@@ -10622,37 +11565,37 @@
       [10] = 0x00000800U,   /** @brief External event 10 capture */
     };
 
-    static const uint32_t HRTIM_TIMx_OUTxR_DIDLx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_OUTAR_DIDLx_MSK[3] = {
       [1] = 0x00000080U,   /** @brief Output 1 deadtime upon burst mode idle entry */
       [2] = 0x00800000U,   /** @brief Output 2 deadtime upon burst mode idle entry */
     };
 
-    static const uint32_t HRTIM_TIMx_OUTxR_CHPx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_OUTAR_CHPx_MSK[3] = {
       [1] = 0x00000040U,   /** @brief Output 1 chopper enable */
       [2] = 0x00400000U,   /** @brief Output 2 chopper enable */
     };
 
-    static const uint32_t HRTIM_TIMx_OUTxR_FAULTx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_OUTAR_FAULTx_MSK[3] = {
       [1] = 0x00000030U,   /** @brief Output 1 fault state */
       [2] = 0x00300000U,   /** @brief Output 2 fault state */
     };
 
-    static const uint32_t HRTIM_TIMx_OUTxR_IDLESx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_OUTAR_IDLESx_MSK[3] = {
       [1] = 0x00000008U,   /** @brief Output 1 idle state */
       [2] = 0x00080000U,   /** @brief Output 2 idle state */
     };
 
-    static const uint32_t HRTIM_TIMx_OUTxR_IDLEMx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_OUTAR_IDLEMx_MSK[3] = {
       [1] = 0x00000004U,   /** @brief Output 1 idle mode */
       [2] = 0x00040000U,   /** @brief Output 2 idle mode */
     };
 
-    static const uint32_t HRTIM_TIMx_OUTxR_POLx_MSK[3] = {
+    static const uint32_t HRTIM_TIMA_OUTAR_POLx_MSK[3] = {
       [1] = 0x00000002U,   /** @brief Output 1 polarity */
       [2] = 0x00020000U,   /** @brief Output 2 polarity */
     };
 
-    static const uint32_t HRTIM_TIMx_FLTxR_FLTxEN_MSK[6] = {
+    static const uint32_t HRTIM_TIMA_FLTAR_FLTxEN_MSK[6] = {
       [1] = 0x00000001U,   /** @brief Fault 1 enable */
       [2] = 0x00000002U,   /** @brief Fault 2 enable */
       [3] = 0x00000004U,   /** @brief Fault 3 enable */
@@ -10660,182 +11603,182 @@
       [5] = 0x00000010U,   /** @brief Fault 5 enable */
     };
 
-    /**** @subsection HRTIM_TIMx Register Field Positions ****/
+    /**** @subsection HRTIM_TIMA Register Field Positions ****/
 
-    static const int32_t HRTIM_TIMx_TIMxCR_UPDGAT_POS      = 28;   /** @brief Update gating */
-    static const int32_t HRTIM_TIMx_TIMxCR_PREEN_POS       = 27;   /** @brief Preload enable */
-    static const int32_t HRTIM_TIMx_TIMxCR_DACSYNC_POS     = 25;   /** @brief AC synchronization */
-    static const int32_t HRTIM_TIMx_TIMxCR_MSTU_POS        = 24;   /** @brief Master timer update */
-    static const int32_t HRTIM_TIMx_TIMxCR_TEU_POS         = 23;   /** @brief TEU */
-    static const int32_t HRTIM_TIMx_TIMxCR_TDU_POS         = 22;   /** @brief TDU */
-    static const int32_t HRTIM_TIMx_TIMxCR_TCU_POS         = 21;   /** @brief TCU */
-    static const int32_t HRTIM_TIMx_TIMxCR_TBU_POS         = 20;   /** @brief TBU */
-    static const int32_t HRTIM_TIMx_TIMxCR_TXRSTU_POS      = 18;   /** @brief Timerx reset update */
-    static const int32_t HRTIM_TIMx_TIMxCR_TXREPU_POS      = 17;   /** @brief Timer x repetition update */
-    static const int32_t HRTIM_TIMx_TIMxCR_SYNCSTRTX_POS   = 11;   /** @brief Synchronization starts timer x */
-    static const int32_t HRTIM_TIMx_TIMxCR_SYNCRSTX_POS    = 10;   /** @brief Synchronization resets timer x */
-    static const int32_t HRTIM_TIMx_TIMxCR_PSHPLL_POS      = 6;    /** @brief Push-Pull mode enable */
-    static const int32_t HRTIM_TIMx_TIMxCR_HALF_POS        = 5;    /** @brief Half mode enable */
-    static const int32_t HRTIM_TIMx_TIMxCR_RETRIG_POS      = 4;    /** @brief Re-triggerable mode */
-    static const int32_t HRTIM_TIMx_TIMxCR_CONT_POS        = 3;    /** @brief Continuous mode */
-    static const int32_t HRTIM_TIMx_TIMxCR_CK_PSCX_POS     = 0;    /** @brief HRTIM timer x clock prescaler */
-    static const int32_t HRTIM_TIMx_TIMxISR_IPPSTAT_POS    = 17;   /** @brief Idle push pull status */
-    static const int32_t HRTIM_TIMx_TIMxISR_CPPSTAT_POS    = 16;   /** @brief Current push pull status */
-    static const int32_t HRTIM_TIMx_TIMxISR_DLYPRT_POS     = 14;   /** @brief Delayed protection flag */
-    static const int32_t HRTIM_TIMx_TIMxISR_RST_POS        = 13;   /** @brief Reset interrupt flag */
-    static const int32_t HRTIM_TIMx_TIMxISR_UPD_POS        = 6;    /** @brief Update interrupt flag */
-    static const int32_t HRTIM_TIMx_TIMxISR_REP_POS        = 4;    /** @brief Repetition interrupt flag */
-    static const int32_t HRTIM_TIMx_TIMxICR_DLYPRTC_POS    = 14;   /** @brief Delayed protection flag clear */
-    static const int32_t HRTIM_TIMx_TIMxICR_RSTC_POS       = 13;   /** @brief Reset interrupt flag clear */
-    static const int32_t HRTIM_TIMx_TIMxICR_UPDC_POS       = 6;    /** @brief Update interrupt flag clear */
-    static const int32_t HRTIM_TIMx_TIMxICR_REPC_POS       = 4;    /** @brief Repetition interrupt flag clear */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_DLYPRTDE_POS = 30;   /** @brief DLYPRTDE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_RSTDE_POS    = 29;   /** @brief RSTDE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_SETX2DE_POS  = 27;   /** @brief SETx2DE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_SET1XDE_POS  = 25;   /** @brief SET1xDE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_UPDDE_POS    = 22;   /** @brief UPDDE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_REPDE_POS    = 20;   /** @brief REPDE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_DLYPRTIE_POS = 14;   /** @brief DLYPRTIE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_RSTIE_POS    = 13;   /** @brief RSTIE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_SETX2IE_POS  = 11;   /** @brief SETx2IE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_SET1XIE_POS  = 9;    /** @brief SET1xIE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_UPDIE_POS    = 6;    /** @brief UPDIE */
-    static const int32_t HRTIM_TIMx_TIMxDIER5_REPIE_POS    = 4;    /** @brief REPIE */
-    static const int32_t HRTIM_TIMx_CNTxR_CNTX_POS         = 0;    /** @brief Timerx counter value */
-    static const int32_t HRTIM_TIMx_PERxR_PERX_POS         = 0;    /** @brief Timerx period value */
-    static const int32_t HRTIM_TIMx_REPxR_REPX_POS         = 0;    /** @brief Timerx repetition counter value */
-    static const int32_t HRTIM_TIMx_CMPxxR_CMP1X_POS       = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMx_CMP1CxR_REPX_POS       = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
-    static const int32_t HRTIM_TIMx_CMP1CxR_CMP1X_POS      = 0;    /** @brief Timerx compare 1 value */
-    static const int32_t HRTIM_TIMx_CPTxxR_CPT1X_POS       = 0;    /** @brief Timerx capture 1 value */
-    static const int32_t HRTIM_TIMx_DTxR_DTFLKX_POS        = 31;   /** @brief Deadtime falling lock */
-    static const int32_t HRTIM_TIMx_DTxR_DTFSLKX_POS       = 30;   /** @brief Deadtime falling sign lock */
-    static const int32_t HRTIM_TIMx_DTxR_SDTFX_POS         = 25;   /** @brief Sign deadtime falling value */
-    static const int32_t HRTIM_TIMx_DTxR_DTFX_POS          = 16;   /** @brief Deadtime falling value */
-    static const int32_t HRTIM_TIMx_DTxR_DTRLKX_POS        = 15;   /** @brief Deadtime rising lock */
-    static const int32_t HRTIM_TIMx_DTxR_DTRSLKX_POS       = 14;   /** @brief Deadtime rising sign lock */
-    static const int32_t HRTIM_TIMx_DTxR_DTPRSC_POS        = 10;   /** @brief Deadtime prescaler */
-    static const int32_t HRTIM_TIMx_DTxR_SDTRX_POS         = 9;    /** @brief Sign deadtime rising value */
-    static const int32_t HRTIM_TIMx_DTxR_DTRX_POS          = 0;    /** @brief Deadtime rising value */
-    static const int32_t HRTIM_TIMx_SETxxR_UPDATE_POS      = 31;   /** @brief Registers update (transfer preload to active) */
-    static const int32_t HRTIM_TIMx_SETxxR_MSTPER_POS      = 7;    /** @brief Master period */
-    static const int32_t HRTIM_TIMx_SETxxR_PER_POS         = 2;    /** @brief Timer A period */
-    static const int32_t HRTIM_TIMx_SETxxR_RESYNC_POS      = 1;    /** @brief Timer A resynchronizaton */
-    static const int32_t HRTIM_TIMx_SETxxR_SST_POS         = 0;    /** @brief Software set trigger */
-    static const int32_t HRTIM_TIMx_RSTxxR_UPDATE_POS      = 31;   /** @brief UPDATE */
-    static const int32_t HRTIM_TIMx_RSTxxR_MSTPER_POS      = 7;    /** @brief MSTPER */
-    static const int32_t HRTIM_TIMx_RSTxxR_PER_POS         = 2;    /** @brief PER */
-    static const int32_t HRTIM_TIMx_RSTxxR_RESYNC_POS      = 1;    /** @brief RESYNC */
-    static const int32_t HRTIM_TIMx_RSTxxR_SRT_POS         = 0;    /** @brief SRT */
-    static const int32_t HRTIM_TIMx_RSTxR_MSTPER_POS       = 4;    /** @brief Master timer period */
-    static const int32_t HRTIM_TIMx_RSTxR_UPDT_POS         = 1;    /** @brief Timer A update reset */
-    static const int32_t HRTIM_TIMx_CHPxR_STRTPW_POS       = 7;    /** @brief STRTPW */
-    static const int32_t HRTIM_TIMx_CHPxR_CHPDTY_POS       = 4;    /** @brief Timerx chopper duty cycle value */
-    static const int32_t HRTIM_TIMx_CHPxR_CHPFRQ_POS       = 0;    /** @brief Timerx carrier frequency value */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TE1RST_POS     = 29;   /** @brief Timer E output 1 reset */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TE1SET_POS     = 28;   /** @brief Timer E output 1 set */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TD1RST_POS     = 25;   /** @brief Timer D output 1 reset */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TD1SET_POS     = 24;   /** @brief Timer D output 1 set */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TC1RST_POS     = 21;   /** @brief Timer C output 1 reset */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TC1SET_POS     = 20;   /** @brief Timer C output 1 set */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TB1RST_POS     = 17;   /** @brief Timer B output 1 reset */
-    static const int32_t HRTIM_TIMx_CPTxxCR_TB1SET_POS     = 16;   /** @brief Timer B output 1 set */
-    static const int32_t HRTIM_TIMx_CPTxxCR_UDPCPT_POS     = 1;    /** @brief Update capture */
-    static const int32_t HRTIM_TIMx_CPTxxCR_SWCPT_POS      = 0;    /** @brief Software capture */
-    static const int32_t HRTIM_TIMx_OUTxR_DLYPRT_POS       = 10;   /** @brief Delayed protection */
-    static const int32_t HRTIM_TIMx_OUTxR_DLYPRTEN_POS     = 9;    /** @brief Delayed protection enable */
-    static const int32_t HRTIM_TIMx_OUTxR_DTEN_POS         = 8;    /** @brief Deadtime enable */
-    static const int32_t HRTIM_TIMx_FLTxR_FLTLCK_POS       = 31;   /** @brief Fault sources lock */
+    static const int32_t HRTIM_TIMA_TIMACR_UPDGAT_POS      = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMA_TIMACR_PREEN_POS       = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMA_TIMACR_DACSYNC_POS     = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMA_TIMACR_MSTU_POS        = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMA_TIMACR_TEU_POS         = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMA_TIMACR_TDU_POS         = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMA_TIMACR_TCU_POS         = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMA_TIMACR_TBU_POS         = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMA_TIMACR_TXRSTU_POS      = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMA_TIMACR_TXREPU_POS      = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMA_TIMACR_SYNCSTRTX_POS   = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMA_TIMACR_SYNCRSTX_POS    = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMA_TIMACR_PSHPLL_POS      = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMA_TIMACR_HALF_POS        = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMA_TIMACR_RETRIG_POS      = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMA_TIMACR_CONT_POS        = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMA_TIMACR_CK_PSCX_POS     = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMA_TIMAISR_IPPSTAT_POS    = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMA_TIMAISR_CPPSTAT_POS    = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMA_TIMAISR_DLYPRT_POS     = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMA_TIMAISR_RST_POS        = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMA_TIMAISR_UPD_POS        = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMA_TIMAISR_REP_POS        = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMA_TIMAICR_DLYPRTC_POS    = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMA_TIMAICR_RSTC_POS       = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMA_TIMAICR_UPDC_POS       = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMA_TIMAICR_REPC_POS       = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMA_TIMADIER5_DLYPRTDE_POS = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTDE_POS    = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SETX2DE_POS  = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SET1XDE_POS  = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_UPDDE_POS    = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_REPDE_POS    = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_DLYPRTIE_POS = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTIE_POS    = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SETX2IE_POS  = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_SET1XIE_POS  = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_UPDIE_POS    = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMA_TIMADIER5_REPIE_POS    = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMA_CNTAR_CNTX_POS         = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIMA_PERAR_PERX_POS         = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIMA_REPAR_REPX_POS         = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIMA_CMPxAR_CMP1X_POS       = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMA_CMP1CAR_REPX_POS       = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIMA_CMP1CAR_CMP1X_POS      = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMA_CPTxAR_CPT1X_POS       = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMA_DTAR_DTFLKX_POS        = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIMA_DTAR_DTFSLKX_POS       = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIMA_DTAR_SDTFX_POS         = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIMA_DTAR_DTFX_POS          = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIMA_DTAR_DTRLKX_POS        = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIMA_DTAR_DTRSLKX_POS       = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIMA_DTAR_DTPRSC_POS        = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIMA_DTAR_SDTRX_POS         = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIMA_DTAR_DTRX_POS          = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIMA_SETAxR_UPDATE_POS      = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIMA_SETAxR_MSTPER_POS      = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIMA_SETAxR_PER_POS         = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIMA_SETAxR_RESYNC_POS      = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIMA_SETAxR_SST_POS         = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIMA_RSTAxR_UPDATE_POS      = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIMA_RSTAxR_MSTPER_POS      = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIMA_RSTAxR_PER_POS         = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIMA_RSTAxR_RESYNC_POS      = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIMA_RSTAxR_SRT_POS         = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIMA_RSTAR_MSTPER_POS       = 4;    /** @brief Master timer period */
+    static const int32_t HRTIM_TIMA_RSTAR_UPDT_POS         = 1;    /** @brief Timer A update reset */
+    static const int32_t HRTIM_TIMA_CHPAR_STRTPW_POS       = 7;    /** @brief STRTPW */
+    static const int32_t HRTIM_TIMA_CHPAR_CHPDTY_POS       = 4;    /** @brief Timerx chopper duty cycle value */
+    static const int32_t HRTIM_TIMA_CHPAR_CHPFRQ_POS       = 0;    /** @brief Timerx carrier frequency value */
+    static const int32_t HRTIM_TIMA_CPTxACR_TE1RST_POS     = 29;   /** @brief Timer E output 1 reset */
+    static const int32_t HRTIM_TIMA_CPTxACR_TE1SET_POS     = 28;   /** @brief Timer E output 1 set */
+    static const int32_t HRTIM_TIMA_CPTxACR_TD1RST_POS     = 25;   /** @brief Timer D output 1 reset */
+    static const int32_t HRTIM_TIMA_CPTxACR_TD1SET_POS     = 24;   /** @brief Timer D output 1 set */
+    static const int32_t HRTIM_TIMA_CPTxACR_TC1RST_POS     = 21;   /** @brief Timer C output 1 reset */
+    static const int32_t HRTIM_TIMA_CPTxACR_TC1SET_POS     = 20;   /** @brief Timer C output 1 set */
+    static const int32_t HRTIM_TIMA_CPTxACR_TB1RST_POS     = 17;   /** @brief Timer B output 1 reset */
+    static const int32_t HRTIM_TIMA_CPTxACR_TB1SET_POS     = 16;   /** @brief Timer B output 1 set */
+    static const int32_t HRTIM_TIMA_CPTxACR_UDPCPT_POS     = 1;    /** @brief Update capture */
+    static const int32_t HRTIM_TIMA_CPTxACR_SWCPT_POS      = 0;    /** @brief Software capture */
+    static const int32_t HRTIM_TIMA_OUTAR_DLYPRT_POS       = 10;   /** @brief Delayed protection */
+    static const int32_t HRTIM_TIMA_OUTAR_DLYPRTEN_POS     = 9;    /** @brief Delayed protection enable */
+    static const int32_t HRTIM_TIMA_OUTAR_DTEN_POS         = 8;    /** @brief Deadtime enable */
+    static const int32_t HRTIM_TIMA_FLTAR_FLTLCK_POS       = 31;   /** @brief Fault sources lock */
 
-    static const int32_t HRTIM_TIMx_TIMxCR_DELCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMACR_DELCMPx_POS[5] = {
       [2] = 12,   /** @brief Delayed CMP2 mode */
       [4] = 14,   /** @brief Delayed CMP4 mode */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxISR_OxSTAT_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_OxSTAT_POS[3] = {
       [1] = 18,   /** @brief Output 1 state */
       [2] = 19,   /** @brief Output 2 state */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxISR_RSTXx_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_RSTXx_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset interrupt flag */
       [2] = 12,   /** @brief Output 2 reset interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxISR_SETXx_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_SETXx_POS[3] = {
       [1] = 9,    /** @brief Output 1 set interrupt flag */
       [2] = 11,   /** @brief Output 2 set interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxISR_CPTx_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_CPTx_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag */
       [2] = 8,   /** @brief Capture2 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxISR_CMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMAISR_CMPx_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag */
       [2] = 1,   /** @brief Compare 2 interrupt flag */
       [3] = 2,   /** @brief Compare 3 interrupt flag */
       [4] = 3,   /** @brief Compare 4 interrupt flag */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxICR_RSTXxC_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_RSTXxC_POS[3] = {
       [1] = 10,   /** @brief Output 1 reset flag clear */
       [2] = 12,   /** @brief Output 2 reset flag clear */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxICR_SETxXC_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_SETxXC_POS[3] = {
       [1] = 9,    /** @brief Output 1 set flag clear */
       [2] = 11,   /** @brief Output 2 set flag clear */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxICR_CPTxC_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_CPTxC_POS[3] = {
       [1] = 7,   /** @brief Capture1 interrupt flag clear */
       [2] = 8,   /** @brief Capture2 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxICR_CMPxC_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMAICR_CMPxC_POS[5] = {
       [1] = 0,   /** @brief Compare 1 interrupt flag clear */
       [2] = 1,   /** @brief Compare 2 interrupt flag clear */
       [3] = 2,   /** @brief Compare 3 interrupt flag clear */
       [4] = 3,   /** @brief Compare 4 interrupt flag clear */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxDIER5_RSTXxDE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTXxDE_POS[3] = {
       [1] = 26,   /** @brief RSTx1DE */
       [2] = 28,   /** @brief RSTx2DE */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxDIER5_CPTxDE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CPTxDE_POS[3] = {
       [1] = 23,   /** @brief CPT1DE */
       [2] = 24,   /** @brief CPT2DE */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxDIER5_CMPxDE_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CMPxDE_POS[5] = {
       [1] = 16,   /** @brief CMP1DE */
       [2] = 17,   /** @brief CMP2DE */
       [3] = 18,   /** @brief CMP3DE */
       [4] = 19,   /** @brief CMP4DE */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxDIER5_RSTXxIE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_RSTXxIE_POS[3] = {
       [1] = 10,   /** @brief RSTx1IE */
       [2] = 12,   /** @brief RSTx2IE */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxDIER5_CPTxIE_POS[3] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CPTxIE_POS[3] = {
       [1] = 7,   /** @brief CPT1IE */
       [2] = 8,   /** @brief CPT2IE */
     };
 
-    static const int32_t HRTIM_TIMx_TIMxDIER5_CMPxIE_POS[5] = {
+    static const int32_t HRTIM_TIMA_TIMADIER5_CMPxIE_POS[5] = {
       [1] = 0,   /** @brief CMP1IE */
       [2] = 1,   /** @brief CMP2IE */
       [3] = 2,   /** @brief CMP3IE */
       [4] = 3,   /** @brief CMP4IE */
     };
 
-    static const int32_t HRTIM_TIMx_SETxxR_EXTEVNTx_POS[11] = {
+    static const int32_t HRTIM_TIMA_SETAxR_EXTEVNTx_POS[11] = {
       [1]  = 21,   /** @brief External event 1 */
       [2]  = 22,   /** @brief External event 2 */
       [3]  = 23,   /** @brief External event 3 */
@@ -10848,7 +11791,7 @@
       [10] = 30,   /** @brief External event 10 */
     };
 
-    static const int32_t HRTIM_TIMx_SETxxR_TIMEVNTx_POS[10] = {
+    static const int32_t HRTIM_TIMA_SETAxR_TIMEVNTx_POS[10] = {
       [1]  = 12,   /** @brief Timer event 1 */
       [2]  = 13,   /** @brief Timer event 2 */
       [3]  = 14,   /** @brief Timer event 3 */
@@ -10860,14 +11803,14 @@
       [9]  = 20,   /** @brief Timer event 9 */
     };
 
-    static const int32_t HRTIM_TIMx_SETxxR_MSTCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_SETAxR_MSTCMPx_POS[5] = {
       [1] = 8,    /** @brief Master compare 1 */
       [2] = 9,    /** @brief Master compare 2 */
       [3] = 10,   /** @brief Master compare 3 */
       [4] = 11,   /** @brief Master compare 4 */
     };
 
-    static const int32_t HRTIM_TIMx_EEFxRx_EExFLTR_POS[6] = {
+    static const int32_t HRTIM_TIMA_EEFARx_EExFLTR_POS[6] = {
       [1] = 1,    /** @brief External event 1 filter */
       [2] = 7,    /** @brief External event 2 filter */
       [3] = 13,   /** @brief External event 3 filter */
@@ -10875,7 +11818,7 @@
       [5] = 25,   /** @brief External event 5 filter */
     };
 
-    static const int32_t HRTIM_TIMx_EEFxRx_EExLTCH_POS[6] = {
+    static const int32_t HRTIM_TIMA_EEFARx_EExLTCH_POS[6] = {
       [1] = 0,    /** @brief External event 1 latch */
       [2] = 6,    /** @brief External event 2 latch */
       [3] = 12,   /** @brief External event 3 latch */
@@ -10883,51 +11826,51 @@
       [5] = 24,   /** @brief External event 5 latch */
     };
 
-    static const int32_t HRTIM_TIMx_RSTxR_TIMECMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_RSTAR_TIMECMPx_POS[5] = {
       [1] = 28,   /** @brief Timer E compare 1 */
       [2] = 29,   /** @brief Timer E compare 2 */
       [4] = 30,   /** @brief Timer E compare 4 */
     };
 
-    static const int32_t HRTIM_TIMx_RSTxR_TIMDCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_RSTAR_TIMDCMPx_POS[5] = {
       [1] = 25,   /** @brief Timer D compare 1 */
       [2] = 26,   /** @brief Timer D compare 2 */
       [4] = 27,   /** @brief Timer D compare 4 */
     };
 
-    static const int32_t HRTIM_TIMx_RSTxR_TIMCCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_RSTAR_TIMCCMPx_POS[5] = {
       [1] = 22,   /** @brief Timer C compare 1 */
       [2] = 23,   /** @brief Timer C compare 2 */
       [4] = 24,   /** @brief Timer C compare 4 */
     };
 
-    static const int32_t HRTIM_TIMx_RSTxR_TIMBCMPx_POS[5] = {
+    static const int32_t HRTIM_TIMA_RSTAR_TIMBCMPx_POS[5] = {
       [1] = 19,   /** @brief Timer B compare 1 */
       [2] = 20,   /** @brief Timer B compare 2 */
       [4] = 21,   /** @brief Timer B compare 4 */
     };
 
-    static const int32_t HRTIM_TIMx_CPTxxCR_TECMPx_POS[3] = {
+    static const int32_t HRTIM_TIMA_CPTxACR_TECMPx_POS[3] = {
       [1] = 30,   /** @brief Timer E compare 1 */
       [2] = 31,   /** @brief Timer E compare 2 */
     };
 
-    static const int32_t HRTIM_TIMx_CPTxxCR_TDCMPx_POS[3] = {
+    static const int32_t HRTIM_TIMA_CPTxACR_TDCMPx_POS[3] = {
       [1] = 26,   /** @brief Timer D compare 1 */
       [2] = 27,   /** @brief Timer D compare 2 */
     };
 
-    static const int32_t HRTIM_TIMx_CPTxxCR_TCCMPx_POS[3] = {
+    static const int32_t HRTIM_TIMA_CPTxACR_TCCMPx_POS[3] = {
       [1] = 22,   /** @brief Timer C compare 1 */
       [2] = 23,   /** @brief Timer C compare 2 */
     };
 
-    static const int32_t HRTIM_TIMx_CPTxxCR_TBCMPx_POS[3] = {
+    static const int32_t HRTIM_TIMA_CPTxACR_TBCMPx_POS[3] = {
       [1] = 18,   /** @brief Timer B compare 1 */
       [2] = 19,   /** @brief Timer B compare 2 */
     };
 
-    static const int32_t HRTIM_TIMx_CPTxxCR_EXEVxCPT_POS[11] = {
+    static const int32_t HRTIM_TIMA_CPTxACR_EXEVxCPT_POS[11] = {
       [1]  = 2,    /** @brief External event 1 capture */
       [2]  = 3,    /** @brief External event 2 capture */
       [3]  = 4,    /** @brief External event 3 capture */
@@ -10940,37 +11883,2789 @@
       [10] = 11,   /** @brief External event 10 capture */
     };
 
-    static const int32_t HRTIM_TIMx_OUTxR_DIDLx_POS[3] = {
+    static const int32_t HRTIM_TIMA_OUTAR_DIDLx_POS[3] = {
       [1] = 7,    /** @brief Output 1 deadtime upon burst mode idle entry */
       [2] = 23,   /** @brief Output 2 deadtime upon burst mode idle entry */
     };
 
-    static const int32_t HRTIM_TIMx_OUTxR_CHPx_POS[3] = {
+    static const int32_t HRTIM_TIMA_OUTAR_CHPx_POS[3] = {
       [1] = 6,    /** @brief Output 1 chopper enable */
       [2] = 22,   /** @brief Output 2 chopper enable */
     };
 
-    static const int32_t HRTIM_TIMx_OUTxR_FAULTx_POS[3] = {
+    static const int32_t HRTIM_TIMA_OUTAR_FAULTx_POS[3] = {
       [1] = 4,    /** @brief Output 1 fault state */
       [2] = 20,   /** @brief Output 2 fault state */
     };
 
-    static const int32_t HRTIM_TIMx_OUTxR_IDLESx_POS[3] = {
+    static const int32_t HRTIM_TIMA_OUTAR_IDLESx_POS[3] = {
       [1] = 3,    /** @brief Output 1 idle state */
       [2] = 19,   /** @brief Output 2 idle state */
     };
 
-    static const int32_t HRTIM_TIMx_OUTxR_IDLEMx_POS[3] = {
+    static const int32_t HRTIM_TIMA_OUTAR_IDLEMx_POS[3] = {
       [1] = 2,    /** @brief Output 1 idle mode */
       [2] = 18,   /** @brief Output 2 idle mode */
     };
 
-    static const int32_t HRTIM_TIMx_OUTxR_POLx_POS[3] = {
+    static const int32_t HRTIM_TIMA_OUTAR_POLx_POS[3] = {
       [1] = 1,    /** @brief Output 1 polarity */
       [2] = 17,   /** @brief Output 2 polarity */
     };
 
-    static const int32_t HRTIM_TIMx_FLTxR_FLTxEN_POS[6] = {
+    static const int32_t HRTIM_TIMA_FLTAR_FLTxEN_POS[6] = {
+      [1] = 0,   /** @brief Fault 1 enable */
+      [2] = 1,   /** @brief Fault 2 enable */
+      [3] = 2,   /** @brief Fault 3 enable */
+      [4] = 3,   /** @brief Fault 4 enable */
+      [5] = 4,   /** @brief Fault 5 enable */
+    };
+
+    /**********************************************************************************************
+     * @section HRTIM_TIMB Register Information
+     **********************************************************************************************/
+
+    /**** @subsection HRTIM_TIMB Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIMB_TIMBCR_PTR    = (RW_ uint32_t* const)0x40017500U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMB_TIMBISR_PTR   = (RO_ uint32_t* const)0x40017504U;   /** @brief Timerx interrupt status register */
+    static WO_ uint32_t* const HRTIM_TIMB_TIMBICR_PTR   = (WO_ uint32_t* const)0x40017508U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMB_TIMBDIER5_PTR = (RW_ uint32_t* const)0x4001750CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMB_CNTR_PTR      = (RW_ uint32_t* const)0x40017510U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMB_PERBR_PTR     = (RW_ uint32_t* const)0x40017514U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMB_REPBR_PTR     = (RW_ uint32_t* const)0x40017518U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIMB_CMP1CBR_PTR   = (RW_ uint32_t* const)0x40017520U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIMB_DTBR_PTR      = (RW_ uint32_t* const)0x40017538U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIMB_RSTBR_PTR     = (RW_ uint32_t* const)0x40017554U;   /** @brief TimerA reset register */
+    static RW_ uint32_t* const HRTIM_TIMB_CHPBR_PTR     = (RW_ uint32_t* const)0x40017558U;   /** @brief Timerx chopper register */
+    static RW_ uint32_t* const HRTIM_TIMB_OUTBR_PTR     = (RW_ uint32_t* const)0x40017564U;   /** @brief Timerx output register */
+    static RW_ uint32_t* const HRTIM_TIMB_FLTBR_PTR     = (RW_ uint32_t* const)0x40017568U;   /** @brief Timerx fault register */
+
+    static RW_ uint32_t* const HRTIM_TIMB_CMPxBR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001751CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x40017524U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x40017528U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x4001752CU,   /** @brief Timerx compare 4 register */
+    };
+
+    static RO_ uint32_t* const HRTIM_TIMB_CPTxBR_PTR[3] = {
+      [1] = (RO_ uint32_t* const)0x40017530U,   /** @brief Timerx capture 1 register */
+      [2] = (RO_ uint32_t* const)0x40017534U,   /** @brief Timerx capture 2 register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMB_SETBxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x4001753CU,   /** @brief Timerx output1 set register */
+      [2] = (RW_ uint32_t* const)0x40017544U,   /** @brief Timerx output2 set register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMB_RSTBxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x40017540U,   /** @brief Timerx output1 reset register */
+      [2] = (RW_ uint32_t* const)0x40017548U,   /** @brief Timerx output2 reset register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMB_EEFBRx_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x4001754CU,   /** @brief Timerx external event filtering register 1 */
+      [2] = (RW_ uint32_t* const)0x40017550U,   /** @brief Timerx external event filtering register 2 */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMB_CPTxBCR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x4001755CU,   /** @brief Timerx capture 2 control register */
+      [2] = (RW_ uint32_t* const)0x40017560U,   /** @brief CPT2xCR */
+    };
+
+    /**** @subsection HRTIM_TIMB Register Field Masks ****/
+
+    static const uint32_t HRTIM_TIMB_TIMBCR_UPDGAT_MSK      = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMB_TIMBCR_PREEN_MSK       = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMB_TIMBCR_DACSYNC_MSK     = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMB_TIMBCR_MSTU_MSK        = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TEU_MSK         = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TDU_MSK         = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TCU_MSK         = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TBU_MSK         = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TXRSTU_MSK      = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMB_TIMBCR_TXREPU_MSK      = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMB_TIMBCR_SYNCSTRTX_MSK   = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMB_TIMBCR_SYNCRSTX_MSK    = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMB_TIMBCR_PSHPLL_MSK      = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMB_TIMBCR_HALF_MSK        = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMB_TIMBCR_RETRIG_MSK      = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMB_TIMBCR_CONT_MSK        = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMB_TIMBCR_CK_PSCX_MSK     = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMB_TIMBISR_IPPSTAT_MSK    = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMB_TIMBISR_CPPSTAT_MSK    = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMB_TIMBISR_DLYPRT_MSK     = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMB_TIMBISR_RST_MSK        = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMB_TIMBISR_UPD_MSK        = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMB_TIMBISR_REP_MSK        = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMB_TIMBICR_DLYPRTC_MSK    = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBICR_RSTC_MSK       = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBICR_UPDC_MSK       = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBICR_REPC_MSK       = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_DLYPRTDE_MSK = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTDE_MSK    = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SETX2DE_MSK  = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SET1XDE_MSK  = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_UPDDE_MSK    = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_REPDE_MSK    = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_DLYPRTIE_MSK = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTIE_MSK    = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SETX2IE_MSK  = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_SET1XIE_MSK  = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_UPDIE_MSK    = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_REPIE_MSK    = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMB_CNTR_CNTX_MSK          = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIMB_PERBR_PERX_MSK         = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIMB_REPBR_REPX_MSK         = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIMB_CMPxBR_CMP1X_MSK       = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMB_CMP1CBR_REPX_MSK       = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIMB_CMP1CBR_CMP1X_MSK      = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMB_CPTxBR_CPT1X_MSK       = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMB_DTBR_DTFLKX_MSK        = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIMB_DTBR_DTFSLKX_MSK       = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIMB_DTBR_SDTFX_MSK         = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIMB_DTBR_DTFX_MSK          = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIMB_DTBR_DTRLKX_MSK        = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIMB_DTBR_DTRSLKX_MSK       = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIMB_DTBR_DTPRSC_MSK        = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIMB_DTBR_SDTRX_MSK         = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIMB_DTBR_DTRX_MSK          = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIMB_SETBxR_UPDATE_MSK      = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIMB_SETBxR_MSTPER_MSK      = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIMB_SETBxR_PER_MSK         = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIMB_SETBxR_RESYNC_MSK      = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIMB_SETBxR_SST_MSK         = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIMB_RSTBxR_UPDATE_MSK      = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIMB_RSTBxR_MSTPER_MSK      = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIMB_RSTBxR_PER_MSK         = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIMB_RSTBxR_RESYNC_MSK      = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIMB_RSTBxR_SRT_MSK         = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIMB_RSTBR_MSTPER_MSK       = 0x00000010U;   /** @brief Master timer period */
+    static const uint32_t HRTIM_TIMB_RSTBR_UPDT_MSK         = 0x00000002U;   /** @brief Timer A update reset */
+    static const uint32_t HRTIM_TIMB_CHPBR_STRTPW_MSK       = 0x00000780U;   /** @brief STRTPW */
+    static const uint32_t HRTIM_TIMB_CHPBR_CHPDTY_MSK       = 0x00000070U;   /** @brief Timerx chopper duty cycle value */
+    static const uint32_t HRTIM_TIMB_CHPBR_CHPFRQ_MSK       = 0x0000000FU;   /** @brief Timerx carrier frequency value */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TE1RST_MSK     = 0x20000000U;   /** @brief Timer E output 1 reset */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TE1SET_MSK     = 0x10000000U;   /** @brief Timer E output 1 set */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TD1RST_MSK     = 0x02000000U;   /** @brief Timer D output 1 reset */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TD1SET_MSK     = 0x01000000U;   /** @brief Timer D output 1 set */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TC1RST_MSK     = 0x00200000U;   /** @brief Timer C output 1 reset */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TC1SET_MSK     = 0x00100000U;   /** @brief Timer C output 1 set */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TA1RST_MSK     = 0x00002000U;   /** @brief Timer A output 1 reset */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TA1SET_MSK     = 0x00001000U;   /** @brief Timer A output 1 set */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_UDPCPT_MSK     = 0x00000002U;   /** @brief Update capture */
+    static const uint32_t HRTIM_TIMB_CPTxBCR_SWCPT_MSK      = 0x00000001U;   /** @brief Software capture */
+    static const uint32_t HRTIM_TIMB_OUTBR_DLYPRT_MSK       = 0x00001C00U;   /** @brief Delayed protection */
+    static const uint32_t HRTIM_TIMB_OUTBR_DLYPRTEN_MSK     = 0x00000200U;   /** @brief Delayed protection enable */
+    static const uint32_t HRTIM_TIMB_OUTBR_DTEN_MSK         = 0x00000100U;   /** @brief Deadtime enable */
+    static const uint32_t HRTIM_TIMB_FLTBR_FLTLCK_MSK       = 0x80000000U;   /** @brief Fault sources lock */
+
+    static const uint32_t HRTIM_TIMB_TIMBCR_DELCMPx_MSK[5] = {
+      [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
+      [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBISR_OxSTAT_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Output 1 state */
+      [2] = 0x00080000U,   /** @brief Output 2 state */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBISR_RSTXx_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
+      [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBISR_SETXx_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
+      [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBISR_CPTx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBISR_CMPx_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBICR_RSTXxC_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
+      [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBICR_SETxXC_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
+      [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBICR_CPTxC_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBICR_CMPxC_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTXxDE_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief RSTx1DE */
+      [2] = 0x10000000U,   /** @brief RSTx2DE */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CPTxDE_MSK[3] = {
+      [1] = 0x00800000U,   /** @brief CPT1DE */
+      [2] = 0x01000000U,   /** @brief CPT2DE */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CMPxDE_MSK[5] = {
+      [1] = 0x00010000U,   /** @brief CMP1DE */
+      [2] = 0x00020000U,   /** @brief CMP2DE */
+      [3] = 0x00040000U,   /** @brief CMP3DE */
+      [4] = 0x00080000U,   /** @brief CMP4DE */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_RSTXxIE_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief RSTx1IE */
+      [2] = 0x00001000U,   /** @brief RSTx2IE */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CPTxIE_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief CPT1IE */
+      [2] = 0x00000100U,   /** @brief CPT2IE */
+    };
+
+    static const uint32_t HRTIM_TIMB_TIMBDIER5_CMPxIE_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief CMP1IE */
+      [2] = 0x00000002U,   /** @brief CMP2IE */
+      [3] = 0x00000004U,   /** @brief CMP3IE */
+      [4] = 0x00000008U,   /** @brief CMP4IE */
+    };
+
+    static const uint32_t HRTIM_TIMB_SETBxR_EXTEVNTx_MSK[11] = {
+      [1]  = 0x00200000U,   /** @brief External event 1 */
+      [2]  = 0x00400000U,   /** @brief External event 2 */
+      [3]  = 0x00800000U,   /** @brief External event 3 */
+      [4]  = 0x01000000U,   /** @brief External event 4 */
+      [5]  = 0x02000000U,   /** @brief External event 5 */
+      [6]  = 0x04000000U,   /** @brief External event 6 */
+      [7]  = 0x08000000U,   /** @brief External event 7 */
+      [8]  = 0x10000000U,   /** @brief External event 8 */
+      [9]  = 0x20000000U,   /** @brief External event 9 */
+      [10] = 0x40000000U,   /** @brief External event 10 */
+    };
+
+    static const uint32_t HRTIM_TIMB_SETBxR_TIMEVNTx_MSK[10] = {
+      [1]  = 0x00001000U,   /** @brief Timer event 1 */
+      [2]  = 0x00002000U,   /** @brief Timer event 2 */
+      [3]  = 0x00004000U,   /** @brief Timer event 3 */
+      [4]  = 0x00008000U,   /** @brief Timer event 4 */
+      [5]  = 0x00010000U,   /** @brief Timer event 5 */
+      [6]  = 0x00020000U,   /** @brief Timer event 6 */
+      [7]  = 0x00040000U,   /** @brief Timer event 7 */
+      [8]  = 0x00080000U,   /** @brief Timer event 8 */
+      [9]  = 0x00100000U,   /** @brief Timer event 9 */
+    };
+
+    static const uint32_t HRTIM_TIMB_SETBxR_MSTCMPx_MSK[5] = {
+      [1] = 0x00000100U,   /** @brief Master compare 1 */
+      [2] = 0x00000200U,   /** @brief Master compare 2 */
+      [3] = 0x00000400U,   /** @brief Master compare 3 */
+      [4] = 0x00000800U,   /** @brief Master compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMB_EEFBRx_EExFLTR_MSK[6] = {
+      [1] = 0x0000001EU,   /** @brief External event 1 filter */
+      [2] = 0x00000780U,   /** @brief External event 2 filter */
+      [3] = 0x0001E000U,   /** @brief External event 3 filter */
+      [4] = 0x00780000U,   /** @brief External event 4 filter */
+      [5] = 0x1E000000U,   /** @brief External event 5 filter */
+    };
+
+    static const uint32_t HRTIM_TIMB_EEFBRx_EExLTCH_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief External event 1 latch */
+      [2] = 0x00000040U,   /** @brief External event 2 latch */
+      [3] = 0x00001000U,   /** @brief External event 3 latch */
+      [4] = 0x00040000U,   /** @brief External event 4 latch */
+      [5] = 0x01000000U,   /** @brief External event 5 latch */
+    };
+
+    static const uint32_t HRTIM_TIMB_RSTBR_TIMECMPx_MSK[5] = {
+      [1] = 0x10000000U,   /** @brief Timer E compare 1 */
+      [2] = 0x20000000U,   /** @brief Timer E compare 2 */
+      [4] = 0x40000000U,   /** @brief Timer E compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMB_RSTBR_TIMDCMPx_MSK[5] = {
+      [1] = 0x02000000U,   /** @brief Timer D compare 1 */
+      [2] = 0x04000000U,   /** @brief Timer D compare 2 */
+      [4] = 0x08000000U,   /** @brief Timer D compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMB_RSTBR_TIMCCMPx_MSK[5] = {
+      [1] = 0x00400000U,   /** @brief Timer C compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer C compare 2 */
+      [4] = 0x01000000U,   /** @brief Timer C compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMB_RSTBR_TIMACMPx_MSK[5] = {
+      [1] = 0x00080000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00100000U,   /** @brief Timer A compare 2 */
+      [4] = 0x00200000U,   /** @brief Timer A compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TECMPx_MSK[3] = {
+      [1] = 0x40000000U,   /** @brief Timer E compare 1 */
+      [2] = 0x80000000U,   /** @brief Timer E compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TDCMPx_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief Timer D compare 1 */
+      [2] = 0x08000000U,   /** @brief Timer D compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TCCMPx_MSK[3] = {
+      [1] = 0x00400000U,   /** @brief Timer C compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer C compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMB_CPTxBCR_TACMPx_MSK[3] = {
+      [1] = 0x00004000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00008000U,   /** @brief Timer A compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMB_CPTxBCR_EXEVxCPT_MSK[11] = {
+      [1]  = 0x00000004U,   /** @brief External event 1 capture */
+      [2]  = 0x00000008U,   /** @brief External event 2 capture */
+      [3]  = 0x00000010U,   /** @brief External event 3 capture */
+      [4]  = 0x00000020U,   /** @brief External event 4 capture */
+      [5]  = 0x00000040U,   /** @brief External event 5 capture */
+      [6]  = 0x00000080U,   /** @brief External event 6 capture */
+      [7]  = 0x00000100U,   /** @brief External event 7 capture */
+      [8]  = 0x00000200U,   /** @brief External event 8 capture */
+      [9]  = 0x00000400U,   /** @brief External event 9 capture */
+      [10] = 0x00000800U,   /** @brief External event 10 capture */
+    };
+
+    static const uint32_t HRTIM_TIMB_OUTBR_DIDLx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 0x00800000U,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const uint32_t HRTIM_TIMB_OUTBR_CHPx_MSK[3] = {
+      [1] = 0x00000040U,   /** @brief Output 1 chopper enable */
+      [2] = 0x00400000U,   /** @brief Output 2 chopper enable */
+    };
+
+    static const uint32_t HRTIM_TIMB_OUTBR_FAULTx_MSK[3] = {
+      [1] = 0x00000030U,   /** @brief Output 1 fault state */
+      [2] = 0x00300000U,   /** @brief Output 2 fault state */
+    };
+
+    static const uint32_t HRTIM_TIMB_OUTBR_IDLESx_MSK[3] = {
+      [1] = 0x00000008U,   /** @brief Output 1 idle state */
+      [2] = 0x00080000U,   /** @brief Output 2 idle state */
+    };
+
+    static const uint32_t HRTIM_TIMB_OUTBR_IDLEMx_MSK[3] = {
+      [1] = 0x00000004U,   /** @brief Output 1 idle mode */
+      [2] = 0x00040000U,   /** @brief Output 2 idle mode */
+    };
+
+    static const uint32_t HRTIM_TIMB_OUTBR_POLx_MSK[3] = {
+      [1] = 0x00000002U,   /** @brief Output 1 polarity */
+      [2] = 0x00020000U,   /** @brief Output 2 polarity */
+    };
+
+    static const uint32_t HRTIM_TIMB_FLTBR_FLTxEN_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief Fault 1 enable */
+      [2] = 0x00000002U,   /** @brief Fault 2 enable */
+      [3] = 0x00000004U,   /** @brief Fault 3 enable */
+      [4] = 0x00000008U,   /** @brief Fault 4 enable */
+      [5] = 0x00000010U,   /** @brief Fault 5 enable */
+    };
+
+    /**** @subsection HRTIM_TIMB Register Field Positions ****/
+
+    static const int32_t HRTIM_TIMB_TIMBCR_UPDGAT_POS      = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMB_TIMBCR_PREEN_POS       = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMB_TIMBCR_DACSYNC_POS     = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMB_TIMBCR_MSTU_POS        = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMB_TIMBCR_TEU_POS         = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TDU_POS         = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TCU_POS         = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TBU_POS         = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMB_TIMBCR_TXRSTU_POS      = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMB_TIMBCR_TXREPU_POS      = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMB_TIMBCR_SYNCSTRTX_POS   = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMB_TIMBCR_SYNCRSTX_POS    = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMB_TIMBCR_PSHPLL_POS      = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMB_TIMBCR_HALF_POS        = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMB_TIMBCR_RETRIG_POS      = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMB_TIMBCR_CONT_POS        = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMB_TIMBCR_CK_PSCX_POS     = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMB_TIMBISR_IPPSTAT_POS    = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMB_TIMBISR_CPPSTAT_POS    = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMB_TIMBISR_DLYPRT_POS     = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMB_TIMBISR_RST_POS        = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMB_TIMBISR_UPD_POS        = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMB_TIMBISR_REP_POS        = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMB_TIMBICR_DLYPRTC_POS    = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMB_TIMBICR_RSTC_POS       = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMB_TIMBICR_UPDC_POS       = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMB_TIMBICR_REPC_POS       = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_DLYPRTDE_POS = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTDE_POS    = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SETX2DE_POS  = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SET1XDE_POS  = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_UPDDE_POS    = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_REPDE_POS    = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_DLYPRTIE_POS = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTIE_POS    = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SETX2IE_POS  = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_SET1XIE_POS  = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_UPDIE_POS    = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMB_TIMBDIER5_REPIE_POS    = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMB_CNTR_CNTX_POS          = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIMB_PERBR_PERX_POS         = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIMB_REPBR_REPX_POS         = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIMB_CMPxBR_CMP1X_POS       = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMB_CMP1CBR_REPX_POS       = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIMB_CMP1CBR_CMP1X_POS      = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMB_CPTxBR_CPT1X_POS       = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMB_DTBR_DTFLKX_POS        = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIMB_DTBR_DTFSLKX_POS       = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIMB_DTBR_SDTFX_POS         = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIMB_DTBR_DTFX_POS          = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIMB_DTBR_DTRLKX_POS        = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIMB_DTBR_DTRSLKX_POS       = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIMB_DTBR_DTPRSC_POS        = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIMB_DTBR_SDTRX_POS         = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIMB_DTBR_DTRX_POS          = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIMB_SETBxR_UPDATE_POS      = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIMB_SETBxR_MSTPER_POS      = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIMB_SETBxR_PER_POS         = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIMB_SETBxR_RESYNC_POS      = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIMB_SETBxR_SST_POS         = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIMB_RSTBxR_UPDATE_POS      = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIMB_RSTBxR_MSTPER_POS      = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIMB_RSTBxR_PER_POS         = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIMB_RSTBxR_RESYNC_POS      = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIMB_RSTBxR_SRT_POS         = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIMB_RSTBR_MSTPER_POS       = 4;    /** @brief Master timer period */
+    static const int32_t HRTIM_TIMB_RSTBR_UPDT_POS         = 1;    /** @brief Timer A update reset */
+    static const int32_t HRTIM_TIMB_CHPBR_STRTPW_POS       = 7;    /** @brief STRTPW */
+    static const int32_t HRTIM_TIMB_CHPBR_CHPDTY_POS       = 4;    /** @brief Timerx chopper duty cycle value */
+    static const int32_t HRTIM_TIMB_CHPBR_CHPFRQ_POS       = 0;    /** @brief Timerx carrier frequency value */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TE1RST_POS     = 29;   /** @brief Timer E output 1 reset */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TE1SET_POS     = 28;   /** @brief Timer E output 1 set */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TD1RST_POS     = 25;   /** @brief Timer D output 1 reset */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TD1SET_POS     = 24;   /** @brief Timer D output 1 set */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TC1RST_POS     = 21;   /** @brief Timer C output 1 reset */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TC1SET_POS     = 20;   /** @brief Timer C output 1 set */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TA1RST_POS     = 13;   /** @brief Timer A output 1 reset */
+    static const int32_t HRTIM_TIMB_CPTxBCR_TA1SET_POS     = 12;   /** @brief Timer A output 1 set */
+    static const int32_t HRTIM_TIMB_CPTxBCR_UDPCPT_POS     = 1;    /** @brief Update capture */
+    static const int32_t HRTIM_TIMB_CPTxBCR_SWCPT_POS      = 0;    /** @brief Software capture */
+    static const int32_t HRTIM_TIMB_OUTBR_DLYPRT_POS       = 10;   /** @brief Delayed protection */
+    static const int32_t HRTIM_TIMB_OUTBR_DLYPRTEN_POS     = 9;    /** @brief Delayed protection enable */
+    static const int32_t HRTIM_TIMB_OUTBR_DTEN_POS         = 8;    /** @brief Deadtime enable */
+    static const int32_t HRTIM_TIMB_FLTBR_FLTLCK_POS       = 31;   /** @brief Fault sources lock */
+
+    static const int32_t HRTIM_TIMB_TIMBCR_DELCMPx_POS[5] = {
+      [2] = 12,   /** @brief Delayed CMP2 mode */
+      [4] = 14,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBISR_OxSTAT_POS[3] = {
+      [1] = 18,   /** @brief Output 1 state */
+      [2] = 19,   /** @brief Output 2 state */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBISR_RSTXx_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset interrupt flag */
+      [2] = 12,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBISR_SETXx_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set interrupt flag */
+      [2] = 11,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBISR_CPTx_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag */
+      [2] = 8,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBISR_CMPx_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag */
+      [2] = 1,   /** @brief Compare 2 interrupt flag */
+      [3] = 2,   /** @brief Compare 3 interrupt flag */
+      [4] = 3,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBICR_RSTXxC_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset flag clear */
+      [2] = 12,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBICR_SETxXC_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set flag clear */
+      [2] = 11,   /** @brief Output 2 set flag clear */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBICR_CPTxC_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag clear */
+      [2] = 8,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBICR_CMPxC_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 1,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 2,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 3,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTXxDE_POS[3] = {
+      [1] = 26,   /** @brief RSTx1DE */
+      [2] = 28,   /** @brief RSTx2DE */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CPTxDE_POS[3] = {
+      [1] = 23,   /** @brief CPT1DE */
+      [2] = 24,   /** @brief CPT2DE */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CMPxDE_POS[5] = {
+      [1] = 16,   /** @brief CMP1DE */
+      [2] = 17,   /** @brief CMP2DE */
+      [3] = 18,   /** @brief CMP3DE */
+      [4] = 19,   /** @brief CMP4DE */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBDIER5_RSTXxIE_POS[3] = {
+      [1] = 10,   /** @brief RSTx1IE */
+      [2] = 12,   /** @brief RSTx2IE */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CPTxIE_POS[3] = {
+      [1] = 7,   /** @brief CPT1IE */
+      [2] = 8,   /** @brief CPT2IE */
+    };
+
+    static const int32_t HRTIM_TIMB_TIMBDIER5_CMPxIE_POS[5] = {
+      [1] = 0,   /** @brief CMP1IE */
+      [2] = 1,   /** @brief CMP2IE */
+      [3] = 2,   /** @brief CMP3IE */
+      [4] = 3,   /** @brief CMP4IE */
+    };
+
+    static const int32_t HRTIM_TIMB_SETBxR_EXTEVNTx_POS[11] = {
+      [1]  = 21,   /** @brief External event 1 */
+      [2]  = 22,   /** @brief External event 2 */
+      [3]  = 23,   /** @brief External event 3 */
+      [4]  = 24,   /** @brief External event 4 */
+      [5]  = 25,   /** @brief External event 5 */
+      [6]  = 26,   /** @brief External event 6 */
+      [7]  = 27,   /** @brief External event 7 */
+      [8]  = 28,   /** @brief External event 8 */
+      [9]  = 29,   /** @brief External event 9 */
+      [10] = 30,   /** @brief External event 10 */
+    };
+
+    static const int32_t HRTIM_TIMB_SETBxR_TIMEVNTx_POS[10] = {
+      [1]  = 12,   /** @brief Timer event 1 */
+      [2]  = 13,   /** @brief Timer event 2 */
+      [3]  = 14,   /** @brief Timer event 3 */
+      [4]  = 15,   /** @brief Timer event 4 */
+      [5]  = 16,   /** @brief Timer event 5 */
+      [6]  = 17,   /** @brief Timer event 6 */
+      [7]  = 18,   /** @brief Timer event 7 */
+      [8]  = 19,   /** @brief Timer event 8 */
+      [9]  = 20,   /** @brief Timer event 9 */
+    };
+
+    static const int32_t HRTIM_TIMB_SETBxR_MSTCMPx_POS[5] = {
+      [1] = 8,    /** @brief Master compare 1 */
+      [2] = 9,    /** @brief Master compare 2 */
+      [3] = 10,   /** @brief Master compare 3 */
+      [4] = 11,   /** @brief Master compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMB_EEFBRx_EExFLTR_POS[6] = {
+      [1] = 1,    /** @brief External event 1 filter */
+      [2] = 7,    /** @brief External event 2 filter */
+      [3] = 13,   /** @brief External event 3 filter */
+      [4] = 19,   /** @brief External event 4 filter */
+      [5] = 25,   /** @brief External event 5 filter */
+    };
+
+    static const int32_t HRTIM_TIMB_EEFBRx_EExLTCH_POS[6] = {
+      [1] = 0,    /** @brief External event 1 latch */
+      [2] = 6,    /** @brief External event 2 latch */
+      [3] = 12,   /** @brief External event 3 latch */
+      [4] = 18,   /** @brief External event 4 latch */
+      [5] = 24,   /** @brief External event 5 latch */
+    };
+
+    static const int32_t HRTIM_TIMB_RSTBR_TIMECMPx_POS[5] = {
+      [1] = 28,   /** @brief Timer E compare 1 */
+      [2] = 29,   /** @brief Timer E compare 2 */
+      [4] = 30,   /** @brief Timer E compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMB_RSTBR_TIMDCMPx_POS[5] = {
+      [1] = 25,   /** @brief Timer D compare 1 */
+      [2] = 26,   /** @brief Timer D compare 2 */
+      [4] = 27,   /** @brief Timer D compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMB_RSTBR_TIMCCMPx_POS[5] = {
+      [1] = 22,   /** @brief Timer C compare 1 */
+      [2] = 23,   /** @brief Timer C compare 2 */
+      [4] = 24,   /** @brief Timer C compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMB_RSTBR_TIMACMPx_POS[5] = {
+      [1] = 19,   /** @brief Timer A compare 1 */
+      [2] = 20,   /** @brief Timer A compare 2 */
+      [4] = 21,   /** @brief Timer A compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMB_CPTxBCR_TECMPx_POS[3] = {
+      [1] = 30,   /** @brief Timer E compare 1 */
+      [2] = 31,   /** @brief Timer E compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMB_CPTxBCR_TDCMPx_POS[3] = {
+      [1] = 26,   /** @brief Timer D compare 1 */
+      [2] = 27,   /** @brief Timer D compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMB_CPTxBCR_TCCMPx_POS[3] = {
+      [1] = 22,   /** @brief Timer C compare 1 */
+      [2] = 23,   /** @brief Timer C compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMB_CPTxBCR_TACMPx_POS[3] = {
+      [1] = 14,   /** @brief Timer A compare 1 */
+      [2] = 15,   /** @brief Timer A compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMB_CPTxBCR_EXEVxCPT_POS[11] = {
+      [1]  = 2,    /** @brief External event 1 capture */
+      [2]  = 3,    /** @brief External event 2 capture */
+      [3]  = 4,    /** @brief External event 3 capture */
+      [4]  = 5,    /** @brief External event 4 capture */
+      [5]  = 6,    /** @brief External event 5 capture */
+      [6]  = 7,    /** @brief External event 6 capture */
+      [7]  = 8,    /** @brief External event 7 capture */
+      [8]  = 9,    /** @brief External event 8 capture */
+      [9]  = 10,   /** @brief External event 9 capture */
+      [10] = 11,   /** @brief External event 10 capture */
+    };
+
+    static const int32_t HRTIM_TIMB_OUTBR_DIDLx_POS[3] = {
+      [1] = 7,    /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 23,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const int32_t HRTIM_TIMB_OUTBR_CHPx_POS[3] = {
+      [1] = 6,    /** @brief Output 1 chopper enable */
+      [2] = 22,   /** @brief Output 2 chopper enable */
+    };
+
+    static const int32_t HRTIM_TIMB_OUTBR_FAULTx_POS[3] = {
+      [1] = 4,    /** @brief Output 1 fault state */
+      [2] = 20,   /** @brief Output 2 fault state */
+    };
+
+    static const int32_t HRTIM_TIMB_OUTBR_IDLESx_POS[3] = {
+      [1] = 3,    /** @brief Output 1 idle state */
+      [2] = 19,   /** @brief Output 2 idle state */
+    };
+
+    static const int32_t HRTIM_TIMB_OUTBR_IDLEMx_POS[3] = {
+      [1] = 2,    /** @brief Output 1 idle mode */
+      [2] = 18,   /** @brief Output 2 idle mode */
+    };
+
+    static const int32_t HRTIM_TIMB_OUTBR_POLx_POS[3] = {
+      [1] = 1,    /** @brief Output 1 polarity */
+      [2] = 17,   /** @brief Output 2 polarity */
+    };
+
+    static const int32_t HRTIM_TIMB_FLTBR_FLTxEN_POS[6] = {
+      [1] = 0,   /** @brief Fault 1 enable */
+      [2] = 1,   /** @brief Fault 2 enable */
+      [3] = 2,   /** @brief Fault 3 enable */
+      [4] = 3,   /** @brief Fault 4 enable */
+      [5] = 4,   /** @brief Fault 5 enable */
+    };
+
+    /**********************************************************************************************
+     * @section HRTIM_TIMC Register Information
+     **********************************************************************************************/
+
+    /**** @subsection HRTIM_TIMC Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIMC_TIMCCR_PTR    = (RW_ uint32_t* const)0x40017580U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMC_TIMCISR_PTR   = (RO_ uint32_t* const)0x40017584U;   /** @brief Timerx interrupt status register */
+    static WO_ uint32_t* const HRTIM_TIMC_TIMCICR_PTR   = (WO_ uint32_t* const)0x40017588U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMC_TIMCDIER5_PTR = (RW_ uint32_t* const)0x4001758CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMC_CNTCR_PTR     = (RW_ uint32_t* const)0x40017590U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMC_PERCR_PTR     = (RW_ uint32_t* const)0x40017594U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMC_REPCR_PTR     = (RW_ uint32_t* const)0x40017598U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIMC_CMP1CCR_PTR   = (RW_ uint32_t* const)0x400175A0U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIMC_DTCR_PTR      = (RW_ uint32_t* const)0x400175B8U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIMC_RSTCR_PTR     = (RW_ uint32_t* const)0x400175D4U;   /** @brief TimerA reset register */
+    static RW_ uint32_t* const HRTIM_TIMC_CHPCR_PTR     = (RW_ uint32_t* const)0x400175D8U;   /** @brief Timerx chopper register */
+    static RW_ uint32_t* const HRTIM_TIMC_OUTCR_PTR     = (RW_ uint32_t* const)0x400175E4U;   /** @brief Timerx output register */
+    static RW_ uint32_t* const HRTIM_TIMC_FLTCR_PTR     = (RW_ uint32_t* const)0x400175E8U;   /** @brief Timerx fault register */
+
+    static RW_ uint32_t* const HRTIM_TIMC_CMPxCR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001759CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x400175A4U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x400175A8U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x400175ACU,   /** @brief Timerx compare 4 register */
+    };
+
+    static RO_ uint32_t* const HRTIM_TIMC_CPTxCR_PTR[3] = {
+      [1] = (RO_ uint32_t* const)0x400175B0U,   /** @brief Timerx capture 1 register */
+      [2] = (RO_ uint32_t* const)0x400175B4U,   /** @brief Timerx capture 2 register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMC_SETCxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400175BCU,   /** @brief Timerx output1 set register */
+      [2] = (RW_ uint32_t* const)0x400175C4U,   /** @brief Timerx output2 set register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMC_RSTCxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400175C0U,   /** @brief Timerx output1 reset register */
+      [2] = (RW_ uint32_t* const)0x400175C8U,   /** @brief Timerx output2 reset register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMC_EEFCRx_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400175CCU,   /** @brief Timerx external event filtering register 1 */
+      [2] = (RW_ uint32_t* const)0x400175D0U,   /** @brief Timerx external event filtering register 2 */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMC_CPTxCCR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400175DCU,   /** @brief Timerx capture 2 control register */
+      [2] = (RW_ uint32_t* const)0x400175E0U,   /** @brief CPT2xCR */
+    };
+
+    /**** @subsection HRTIM_TIMC Register Field Masks ****/
+
+    static const uint32_t HRTIM_TIMC_TIMCCR_UPDGAT_MSK      = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMC_TIMCCR_PREEN_MSK       = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMC_TIMCCR_DACSYNC_MSK     = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMC_TIMCCR_MSTU_MSK        = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TEU_MSK         = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TDU_MSK         = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TCU_MSK         = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TBU_MSK         = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TXRSTU_MSK      = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMC_TIMCCR_TXREPU_MSK      = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMC_TIMCCR_SYNCSTRTX_MSK   = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMC_TIMCCR_SYNCRSTX_MSK    = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMC_TIMCCR_PSHPLL_MSK      = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMC_TIMCCR_HALF_MSK        = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMC_TIMCCR_RETRIG_MSK      = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMC_TIMCCR_CONT_MSK        = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMC_TIMCCR_CK_PSCX_MSK     = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMC_TIMCISR_IPPSTAT_MSK    = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMC_TIMCISR_CPPSTAT_MSK    = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMC_TIMCISR_DLYPRT_MSK     = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMC_TIMCISR_RST_MSK        = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMC_TIMCISR_UPD_MSK        = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMC_TIMCISR_REP_MSK        = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMC_TIMCICR_DLYPRTC_MSK    = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCICR_RSTC_MSK       = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCICR_UPDC_MSK       = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCICR_REPC_MSK       = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_DLYPRTDE_MSK = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTDE_MSK    = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SETX2DE_MSK  = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SET1XDE_MSK  = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_UPDDE_MSK    = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_REPDE_MSK    = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_DLYPRTIE_MSK = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTIE_MSK    = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SETX2IE_MSK  = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_SET1XIE_MSK  = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_UPDIE_MSK    = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_REPIE_MSK    = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMC_CNTCR_CNTX_MSK         = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIMC_PERCR_PERX_MSK         = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIMC_REPCR_REPX_MSK         = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIMC_CMPxCR_CMP1X_MSK       = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMC_CMP1CCR_REPX_MSK       = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIMC_CMP1CCR_CMP1X_MSK      = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMC_CPTxCR_CPT1X_MSK       = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTFLKX_MSK        = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIMC_DTCR_DTFSLKX_MSK       = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIMC_DTCR_SDTFX_MSK         = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTFX_MSK          = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTRLKX_MSK        = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIMC_DTCR_DTRSLKX_MSK       = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIMC_DTCR_DTPRSC_MSK        = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIMC_DTCR_SDTRX_MSK         = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIMC_DTCR_DTRX_MSK          = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIMC_SETCxR_UPDATE_MSK      = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIMC_SETCxR_MSTPER_MSK      = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIMC_SETCxR_PER_MSK         = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIMC_SETCxR_RESYNC_MSK      = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIMC_SETCxR_SST_MSK         = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIMC_RSTCxR_UPDATE_MSK      = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIMC_RSTCxR_MSTPER_MSK      = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIMC_RSTCxR_PER_MSK         = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIMC_RSTCxR_RESYNC_MSK      = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIMC_RSTCxR_SRT_MSK         = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIMC_RSTCR_MSTPER_MSK       = 0x00000010U;   /** @brief Master timer period */
+    static const uint32_t HRTIM_TIMC_RSTCR_UPDT_MSK         = 0x00000002U;   /** @brief Timer A update reset */
+    static const uint32_t HRTIM_TIMC_CHPCR_STRTPW_MSK       = 0x00000780U;   /** @brief STRTPW */
+    static const uint32_t HRTIM_TIMC_CHPCR_CHPDTY_MSK       = 0x00000070U;   /** @brief Timerx chopper duty cycle value */
+    static const uint32_t HRTIM_TIMC_CHPCR_CHPFRQ_MSK       = 0x0000000FU;   /** @brief Timerx carrier frequency value */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TE1RST_MSK     = 0x20000000U;   /** @brief Timer E output 1 reset */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TE1SET_MSK     = 0x10000000U;   /** @brief Timer E output 1 set */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TD1RST_MSK     = 0x02000000U;   /** @brief Timer D output 1 reset */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TD1SET_MSK     = 0x01000000U;   /** @brief Timer D output 1 set */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TB1RST_MSK     = 0x00020000U;   /** @brief Timer B output 1 reset */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TB1SET_MSK     = 0x00010000U;   /** @brief Timer B output 1 set */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TA1RST_MSK     = 0x00002000U;   /** @brief Timer A output 1 reset */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TA1SET_MSK     = 0x00001000U;   /** @brief Timer A output 1 set */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_UDPCPT_MSK     = 0x00000002U;   /** @brief Update capture */
+    static const uint32_t HRTIM_TIMC_CPTxCCR_SWCPT_MSK      = 0x00000001U;   /** @brief Software capture */
+    static const uint32_t HRTIM_TIMC_OUTCR_DLYPRT_MSK       = 0x00001C00U;   /** @brief Delayed protection */
+    static const uint32_t HRTIM_TIMC_OUTCR_DLYPRTEN_MSK     = 0x00000200U;   /** @brief Delayed protection enable */
+    static const uint32_t HRTIM_TIMC_OUTCR_DTEN_MSK         = 0x00000100U;   /** @brief Deadtime enable */
+    static const uint32_t HRTIM_TIMC_FLTCR_FLTLCK_MSK       = 0x80000000U;   /** @brief Fault sources lock */
+
+    static const uint32_t HRTIM_TIMC_TIMCCR_DELCMPx_MSK[5] = {
+      [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
+      [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCISR_OxSTAT_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Output 1 state */
+      [2] = 0x00080000U,   /** @brief Output 2 state */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCISR_RSTXx_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
+      [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCISR_SETXx_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
+      [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCISR_CPTx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCISR_CMPx_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCICR_RSTXxC_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
+      [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCICR_SETxXC_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
+      [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCICR_CPTxC_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCICR_CMPxC_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTXxDE_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief RSTx1DE */
+      [2] = 0x10000000U,   /** @brief RSTx2DE */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CPTxDE_MSK[3] = {
+      [1] = 0x00800000U,   /** @brief CPT1DE */
+      [2] = 0x01000000U,   /** @brief CPT2DE */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CMPxDE_MSK[5] = {
+      [1] = 0x00010000U,   /** @brief CMP1DE */
+      [2] = 0x00020000U,   /** @brief CMP2DE */
+      [3] = 0x00040000U,   /** @brief CMP3DE */
+      [4] = 0x00080000U,   /** @brief CMP4DE */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_RSTXxIE_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief RSTx1IE */
+      [2] = 0x00001000U,   /** @brief RSTx2IE */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CPTxIE_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief CPT1IE */
+      [2] = 0x00000100U,   /** @brief CPT2IE */
+    };
+
+    static const uint32_t HRTIM_TIMC_TIMCDIER5_CMPxIE_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief CMP1IE */
+      [2] = 0x00000002U,   /** @brief CMP2IE */
+      [3] = 0x00000004U,   /** @brief CMP3IE */
+      [4] = 0x00000008U,   /** @brief CMP4IE */
+    };
+
+    static const uint32_t HRTIM_TIMC_SETCxR_EXTEVNTx_MSK[11] = {
+      [1]  = 0x00200000U,   /** @brief External event 1 */
+      [2]  = 0x00400000U,   /** @brief External event 2 */
+      [3]  = 0x00800000U,   /** @brief External event 3 */
+      [4]  = 0x01000000U,   /** @brief External event 4 */
+      [5]  = 0x02000000U,   /** @brief External event 5 */
+      [6]  = 0x04000000U,   /** @brief External event 6 */
+      [7]  = 0x08000000U,   /** @brief External event 7 */
+      [8]  = 0x10000000U,   /** @brief External event 8 */
+      [9]  = 0x20000000U,   /** @brief External event 9 */
+      [10] = 0x40000000U,   /** @brief External event 10 */
+    };
+
+    static const uint32_t HRTIM_TIMC_SETCxR_TIMEVNTx_MSK[10] = {
+      [1]  = 0x00001000U,   /** @brief Timer event 1 */
+      [2]  = 0x00002000U,   /** @brief Timer event 2 */
+      [3]  = 0x00004000U,   /** @brief Timer event 3 */
+      [4]  = 0x00008000U,   /** @brief Timer event 4 */
+      [5]  = 0x00010000U,   /** @brief Timer event 5 */
+      [6]  = 0x00020000U,   /** @brief Timer event 6 */
+      [7]  = 0x00040000U,   /** @brief Timer event 7 */
+      [8]  = 0x00080000U,   /** @brief Timer event 8 */
+      [9]  = 0x00100000U,   /** @brief Timer event 9 */
+    };
+
+    static const uint32_t HRTIM_TIMC_SETCxR_MSTCMPx_MSK[5] = {
+      [1] = 0x00000100U,   /** @brief Master compare 1 */
+      [2] = 0x00000200U,   /** @brief Master compare 2 */
+      [3] = 0x00000400U,   /** @brief Master compare 3 */
+      [4] = 0x00000800U,   /** @brief Master compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMC_EEFCRx_EExFLTR_MSK[6] = {
+      [1] = 0x0000001EU,   /** @brief External event 1 filter */
+      [2] = 0x00000780U,   /** @brief External event 2 filter */
+      [3] = 0x0001E000U,   /** @brief External event 3 filter */
+      [4] = 0x00780000U,   /** @brief External event 4 filter */
+      [5] = 0x1E000000U,   /** @brief External event 5 filter */
+    };
+
+    static const uint32_t HRTIM_TIMC_EEFCRx_EExLTCH_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief External event 1 latch */
+      [2] = 0x00000040U,   /** @brief External event 2 latch */
+      [3] = 0x00001000U,   /** @brief External event 3 latch */
+      [4] = 0x00040000U,   /** @brief External event 4 latch */
+      [5] = 0x01000000U,   /** @brief External event 5 latch */
+    };
+
+    static const uint32_t HRTIM_TIMC_RSTCR_TIMECMPx_MSK[5] = {
+      [1] = 0x10000000U,   /** @brief Timer E compare 1 */
+      [2] = 0x20000000U,   /** @brief Timer E compare 2 */
+      [4] = 0x40000000U,   /** @brief Timer E compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMC_RSTCR_TIMDCMPx_MSK[5] = {
+      [1] = 0x02000000U,   /** @brief Timer D compare 1 */
+      [2] = 0x04000000U,   /** @brief Timer D compare 2 */
+      [4] = 0x08000000U,   /** @brief Timer D compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMC_RSTCR_TIMBCMPx_MSK[5] = {
+      [1] = 0x00400000U,   /** @brief Timer B compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer B compare 2 */
+      [4] = 0x01000000U,   /** @brief Timer B compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMC_RSTCR_TIMACMPx_MSK[5] = {
+      [1] = 0x00080000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00100000U,   /** @brief Timer A compare 2 */
+      [4] = 0x00200000U,   /** @brief Timer A compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TECMPx_MSK[3] = {
+      [1] = 0x40000000U,   /** @brief Timer E compare 1 */
+      [2] = 0x80000000U,   /** @brief Timer E compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TDCMPx_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief Timer D compare 1 */
+      [2] = 0x08000000U,   /** @brief Timer D compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TBCMPx_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Timer B compare 1 */
+      [2] = 0x00080000U,   /** @brief Timer B compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMC_CPTxCCR_TACMPx_MSK[3] = {
+      [1] = 0x00004000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00008000U,   /** @brief Timer A compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMC_CPTxCCR_EXEVxCPT_MSK[11] = {
+      [1]  = 0x00000004U,   /** @brief External event 1 capture */
+      [2]  = 0x00000008U,   /** @brief External event 2 capture */
+      [3]  = 0x00000010U,   /** @brief External event 3 capture */
+      [4]  = 0x00000020U,   /** @brief External event 4 capture */
+      [5]  = 0x00000040U,   /** @brief External event 5 capture */
+      [6]  = 0x00000080U,   /** @brief External event 6 capture */
+      [7]  = 0x00000100U,   /** @brief External event 7 capture */
+      [8]  = 0x00000200U,   /** @brief External event 8 capture */
+      [9]  = 0x00000400U,   /** @brief External event 9 capture */
+      [10] = 0x00000800U,   /** @brief External event 10 capture */
+    };
+
+    static const uint32_t HRTIM_TIMC_OUTCR_DIDLx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 0x00800000U,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const uint32_t HRTIM_TIMC_OUTCR_CHPx_MSK[3] = {
+      [1] = 0x00000040U,   /** @brief Output 1 chopper enable */
+      [2] = 0x00400000U,   /** @brief Output 2 chopper enable */
+    };
+
+    static const uint32_t HRTIM_TIMC_OUTCR_FAULTx_MSK[3] = {
+      [1] = 0x00000030U,   /** @brief Output 1 fault state */
+      [2] = 0x00300000U,   /** @brief Output 2 fault state */
+    };
+
+    static const uint32_t HRTIM_TIMC_OUTCR_IDLESx_MSK[3] = {
+      [1] = 0x00000008U,   /** @brief Output 1 idle state */
+      [2] = 0x00080000U,   /** @brief Output 2 idle state */
+    };
+
+    static const uint32_t HRTIM_TIMC_OUTCR_IDLEMx_MSK[3] = {
+      [1] = 0x00000004U,   /** @brief Output 1 idle mode */
+      [2] = 0x00040000U,   /** @brief Output 2 idle mode */
+    };
+
+    static const uint32_t HRTIM_TIMC_OUTCR_POLx_MSK[3] = {
+      [1] = 0x00000002U,   /** @brief Output 1 polarity */
+      [2] = 0x00020000U,   /** @brief Output 2 polarity */
+    };
+
+    static const uint32_t HRTIM_TIMC_FLTCR_FLTxEN_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief Fault 1 enable */
+      [2] = 0x00000002U,   /** @brief Fault 2 enable */
+      [3] = 0x00000004U,   /** @brief Fault 3 enable */
+      [4] = 0x00000008U,   /** @brief Fault 4 enable */
+      [5] = 0x00000010U,   /** @brief Fault 5 enable */
+    };
+
+    /**** @subsection HRTIM_TIMC Register Field Positions ****/
+
+    static const int32_t HRTIM_TIMC_TIMCCR_UPDGAT_POS      = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMC_TIMCCR_PREEN_POS       = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMC_TIMCCR_DACSYNC_POS     = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMC_TIMCCR_MSTU_POS        = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMC_TIMCCR_TEU_POS         = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TDU_POS         = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TCU_POS         = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TBU_POS         = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMC_TIMCCR_TXRSTU_POS      = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMC_TIMCCR_TXREPU_POS      = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMC_TIMCCR_SYNCSTRTX_POS   = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMC_TIMCCR_SYNCRSTX_POS    = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMC_TIMCCR_PSHPLL_POS      = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMC_TIMCCR_HALF_POS        = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMC_TIMCCR_RETRIG_POS      = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMC_TIMCCR_CONT_POS        = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMC_TIMCCR_CK_PSCX_POS     = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMC_TIMCISR_IPPSTAT_POS    = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMC_TIMCISR_CPPSTAT_POS    = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMC_TIMCISR_DLYPRT_POS     = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMC_TIMCISR_RST_POS        = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMC_TIMCISR_UPD_POS        = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMC_TIMCISR_REP_POS        = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMC_TIMCICR_DLYPRTC_POS    = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMC_TIMCICR_RSTC_POS       = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMC_TIMCICR_UPDC_POS       = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMC_TIMCICR_REPC_POS       = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_DLYPRTDE_POS = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTDE_POS    = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SETX2DE_POS  = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SET1XDE_POS  = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_UPDDE_POS    = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_REPDE_POS    = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_DLYPRTIE_POS = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTIE_POS    = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SETX2IE_POS  = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_SET1XIE_POS  = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_UPDIE_POS    = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMC_TIMCDIER5_REPIE_POS    = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMC_CNTCR_CNTX_POS         = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIMC_PERCR_PERX_POS         = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIMC_REPCR_REPX_POS         = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIMC_CMPxCR_CMP1X_POS       = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMC_CMP1CCR_REPX_POS       = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIMC_CMP1CCR_CMP1X_POS      = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMC_CPTxCR_CPT1X_POS       = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMC_DTCR_DTFLKX_POS        = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIMC_DTCR_DTFSLKX_POS       = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIMC_DTCR_SDTFX_POS         = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIMC_DTCR_DTFX_POS          = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIMC_DTCR_DTRLKX_POS        = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIMC_DTCR_DTRSLKX_POS       = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIMC_DTCR_DTPRSC_POS        = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIMC_DTCR_SDTRX_POS         = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIMC_DTCR_DTRX_POS          = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIMC_SETCxR_UPDATE_POS      = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIMC_SETCxR_MSTPER_POS      = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIMC_SETCxR_PER_POS         = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIMC_SETCxR_RESYNC_POS      = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIMC_SETCxR_SST_POS         = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIMC_RSTCxR_UPDATE_POS      = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIMC_RSTCxR_MSTPER_POS      = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIMC_RSTCxR_PER_POS         = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIMC_RSTCxR_RESYNC_POS      = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIMC_RSTCxR_SRT_POS         = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIMC_RSTCR_MSTPER_POS       = 4;    /** @brief Master timer period */
+    static const int32_t HRTIM_TIMC_RSTCR_UPDT_POS         = 1;    /** @brief Timer A update reset */
+    static const int32_t HRTIM_TIMC_CHPCR_STRTPW_POS       = 7;    /** @brief STRTPW */
+    static const int32_t HRTIM_TIMC_CHPCR_CHPDTY_POS       = 4;    /** @brief Timerx chopper duty cycle value */
+    static const int32_t HRTIM_TIMC_CHPCR_CHPFRQ_POS       = 0;    /** @brief Timerx carrier frequency value */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TE1RST_POS     = 29;   /** @brief Timer E output 1 reset */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TE1SET_POS     = 28;   /** @brief Timer E output 1 set */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TD1RST_POS     = 25;   /** @brief Timer D output 1 reset */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TD1SET_POS     = 24;   /** @brief Timer D output 1 set */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TB1RST_POS     = 17;   /** @brief Timer B output 1 reset */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TB1SET_POS     = 16;   /** @brief Timer B output 1 set */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TA1RST_POS     = 13;   /** @brief Timer A output 1 reset */
+    static const int32_t HRTIM_TIMC_CPTxCCR_TA1SET_POS     = 12;   /** @brief Timer A output 1 set */
+    static const int32_t HRTIM_TIMC_CPTxCCR_UDPCPT_POS     = 1;    /** @brief Update capture */
+    static const int32_t HRTIM_TIMC_CPTxCCR_SWCPT_POS      = 0;    /** @brief Software capture */
+    static const int32_t HRTIM_TIMC_OUTCR_DLYPRT_POS       = 10;   /** @brief Delayed protection */
+    static const int32_t HRTIM_TIMC_OUTCR_DLYPRTEN_POS     = 9;    /** @brief Delayed protection enable */
+    static const int32_t HRTIM_TIMC_OUTCR_DTEN_POS         = 8;    /** @brief Deadtime enable */
+    static const int32_t HRTIM_TIMC_FLTCR_FLTLCK_POS       = 31;   /** @brief Fault sources lock */
+
+    static const int32_t HRTIM_TIMC_TIMCCR_DELCMPx_POS[5] = {
+      [2] = 12,   /** @brief Delayed CMP2 mode */
+      [4] = 14,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCISR_OxSTAT_POS[3] = {
+      [1] = 18,   /** @brief Output 1 state */
+      [2] = 19,   /** @brief Output 2 state */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCISR_RSTXx_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset interrupt flag */
+      [2] = 12,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCISR_SETXx_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set interrupt flag */
+      [2] = 11,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCISR_CPTx_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag */
+      [2] = 8,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCISR_CMPx_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag */
+      [2] = 1,   /** @brief Compare 2 interrupt flag */
+      [3] = 2,   /** @brief Compare 3 interrupt flag */
+      [4] = 3,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCICR_RSTXxC_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset flag clear */
+      [2] = 12,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCICR_SETxXC_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set flag clear */
+      [2] = 11,   /** @brief Output 2 set flag clear */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCICR_CPTxC_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag clear */
+      [2] = 8,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCICR_CMPxC_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 1,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 2,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 3,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTXxDE_POS[3] = {
+      [1] = 26,   /** @brief RSTx1DE */
+      [2] = 28,   /** @brief RSTx2DE */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CPTxDE_POS[3] = {
+      [1] = 23,   /** @brief CPT1DE */
+      [2] = 24,   /** @brief CPT2DE */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CMPxDE_POS[5] = {
+      [1] = 16,   /** @brief CMP1DE */
+      [2] = 17,   /** @brief CMP2DE */
+      [3] = 18,   /** @brief CMP3DE */
+      [4] = 19,   /** @brief CMP4DE */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCDIER5_RSTXxIE_POS[3] = {
+      [1] = 10,   /** @brief RSTx1IE */
+      [2] = 12,   /** @brief RSTx2IE */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CPTxIE_POS[3] = {
+      [1] = 7,   /** @brief CPT1IE */
+      [2] = 8,   /** @brief CPT2IE */
+    };
+
+    static const int32_t HRTIM_TIMC_TIMCDIER5_CMPxIE_POS[5] = {
+      [1] = 0,   /** @brief CMP1IE */
+      [2] = 1,   /** @brief CMP2IE */
+      [3] = 2,   /** @brief CMP3IE */
+      [4] = 3,   /** @brief CMP4IE */
+    };
+
+    static const int32_t HRTIM_TIMC_SETCxR_EXTEVNTx_POS[11] = {
+      [1]  = 21,   /** @brief External event 1 */
+      [2]  = 22,   /** @brief External event 2 */
+      [3]  = 23,   /** @brief External event 3 */
+      [4]  = 24,   /** @brief External event 4 */
+      [5]  = 25,   /** @brief External event 5 */
+      [6]  = 26,   /** @brief External event 6 */
+      [7]  = 27,   /** @brief External event 7 */
+      [8]  = 28,   /** @brief External event 8 */
+      [9]  = 29,   /** @brief External event 9 */
+      [10] = 30,   /** @brief External event 10 */
+    };
+
+    static const int32_t HRTIM_TIMC_SETCxR_TIMEVNTx_POS[10] = {
+      [1]  = 12,   /** @brief Timer event 1 */
+      [2]  = 13,   /** @brief Timer event 2 */
+      [3]  = 14,   /** @brief Timer event 3 */
+      [4]  = 15,   /** @brief Timer event 4 */
+      [5]  = 16,   /** @brief Timer event 5 */
+      [6]  = 17,   /** @brief Timer event 6 */
+      [7]  = 18,   /** @brief Timer event 7 */
+      [8]  = 19,   /** @brief Timer event 8 */
+      [9]  = 20,   /** @brief Timer event 9 */
+    };
+
+    static const int32_t HRTIM_TIMC_SETCxR_MSTCMPx_POS[5] = {
+      [1] = 8,    /** @brief Master compare 1 */
+      [2] = 9,    /** @brief Master compare 2 */
+      [3] = 10,   /** @brief Master compare 3 */
+      [4] = 11,   /** @brief Master compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMC_EEFCRx_EExFLTR_POS[6] = {
+      [1] = 1,    /** @brief External event 1 filter */
+      [2] = 7,    /** @brief External event 2 filter */
+      [3] = 13,   /** @brief External event 3 filter */
+      [4] = 19,   /** @brief External event 4 filter */
+      [5] = 25,   /** @brief External event 5 filter */
+    };
+
+    static const int32_t HRTIM_TIMC_EEFCRx_EExLTCH_POS[6] = {
+      [1] = 0,    /** @brief External event 1 latch */
+      [2] = 6,    /** @brief External event 2 latch */
+      [3] = 12,   /** @brief External event 3 latch */
+      [4] = 18,   /** @brief External event 4 latch */
+      [5] = 24,   /** @brief External event 5 latch */
+    };
+
+    static const int32_t HRTIM_TIMC_RSTCR_TIMECMPx_POS[5] = {
+      [1] = 28,   /** @brief Timer E compare 1 */
+      [2] = 29,   /** @brief Timer E compare 2 */
+      [4] = 30,   /** @brief Timer E compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMC_RSTCR_TIMDCMPx_POS[5] = {
+      [1] = 25,   /** @brief Timer D compare 1 */
+      [2] = 26,   /** @brief Timer D compare 2 */
+      [4] = 27,   /** @brief Timer D compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMC_RSTCR_TIMBCMPx_POS[5] = {
+      [1] = 22,   /** @brief Timer B compare 1 */
+      [2] = 23,   /** @brief Timer B compare 2 */
+      [4] = 24,   /** @brief Timer B compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMC_RSTCR_TIMACMPx_POS[5] = {
+      [1] = 19,   /** @brief Timer A compare 1 */
+      [2] = 20,   /** @brief Timer A compare 2 */
+      [4] = 21,   /** @brief Timer A compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMC_CPTxCCR_TECMPx_POS[3] = {
+      [1] = 30,   /** @brief Timer E compare 1 */
+      [2] = 31,   /** @brief Timer E compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMC_CPTxCCR_TDCMPx_POS[3] = {
+      [1] = 26,   /** @brief Timer D compare 1 */
+      [2] = 27,   /** @brief Timer D compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMC_CPTxCCR_TBCMPx_POS[3] = {
+      [1] = 18,   /** @brief Timer B compare 1 */
+      [2] = 19,   /** @brief Timer B compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMC_CPTxCCR_TACMPx_POS[3] = {
+      [1] = 14,   /** @brief Timer A compare 1 */
+      [2] = 15,   /** @brief Timer A compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMC_CPTxCCR_EXEVxCPT_POS[11] = {
+      [1]  = 2,    /** @brief External event 1 capture */
+      [2]  = 3,    /** @brief External event 2 capture */
+      [3]  = 4,    /** @brief External event 3 capture */
+      [4]  = 5,    /** @brief External event 4 capture */
+      [5]  = 6,    /** @brief External event 5 capture */
+      [6]  = 7,    /** @brief External event 6 capture */
+      [7]  = 8,    /** @brief External event 7 capture */
+      [8]  = 9,    /** @brief External event 8 capture */
+      [9]  = 10,   /** @brief External event 9 capture */
+      [10] = 11,   /** @brief External event 10 capture */
+    };
+
+    static const int32_t HRTIM_TIMC_OUTCR_DIDLx_POS[3] = {
+      [1] = 7,    /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 23,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const int32_t HRTIM_TIMC_OUTCR_CHPx_POS[3] = {
+      [1] = 6,    /** @brief Output 1 chopper enable */
+      [2] = 22,   /** @brief Output 2 chopper enable */
+    };
+
+    static const int32_t HRTIM_TIMC_OUTCR_FAULTx_POS[3] = {
+      [1] = 4,    /** @brief Output 1 fault state */
+      [2] = 20,   /** @brief Output 2 fault state */
+    };
+
+    static const int32_t HRTIM_TIMC_OUTCR_IDLESx_POS[3] = {
+      [1] = 3,    /** @brief Output 1 idle state */
+      [2] = 19,   /** @brief Output 2 idle state */
+    };
+
+    static const int32_t HRTIM_TIMC_OUTCR_IDLEMx_POS[3] = {
+      [1] = 2,    /** @brief Output 1 idle mode */
+      [2] = 18,   /** @brief Output 2 idle mode */
+    };
+
+    static const int32_t HRTIM_TIMC_OUTCR_POLx_POS[3] = {
+      [1] = 1,    /** @brief Output 1 polarity */
+      [2] = 17,   /** @brief Output 2 polarity */
+    };
+
+    static const int32_t HRTIM_TIMC_FLTCR_FLTxEN_POS[6] = {
+      [1] = 0,   /** @brief Fault 1 enable */
+      [2] = 1,   /** @brief Fault 2 enable */
+      [3] = 2,   /** @brief Fault 3 enable */
+      [4] = 3,   /** @brief Fault 4 enable */
+      [5] = 4,   /** @brief Fault 5 enable */
+    };
+
+    /**********************************************************************************************
+     * @section HRTIM_TIMD Register Information
+     **********************************************************************************************/
+
+    /**** @subsection HRTIM_TIMD Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIMD_TIMDCR_PTR    = (RW_ uint32_t* const)0x40017600U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIMD_TIMDISR_PTR   = (RO_ uint32_t* const)0x40017604U;   /** @brief Timerx interrupt status register */
+    static WO_ uint32_t* const HRTIM_TIMD_TIMDICR_PTR   = (WO_ uint32_t* const)0x40017608U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIMD_TIMDDIER5_PTR = (RW_ uint32_t* const)0x4001760CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIMD_CNTDR_PTR     = (RW_ uint32_t* const)0x40017610U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIMD_PERDR_PTR     = (RW_ uint32_t* const)0x40017614U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIMD_REPDR_PTR     = (RW_ uint32_t* const)0x40017618U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIMD_CMP1CDR_PTR   = (RW_ uint32_t* const)0x40017620U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIMD_DTDR_PTR      = (RW_ uint32_t* const)0x40017638U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIMD_RSTDR_PTR     = (RW_ uint32_t* const)0x40017654U;   /** @brief TimerA reset register */
+    static RW_ uint32_t* const HRTIM_TIMD_CHPDR_PTR     = (RW_ uint32_t* const)0x40017658U;   /** @brief Timerx chopper register */
+    static RW_ uint32_t* const HRTIM_TIMD_OUTDR_PTR     = (RW_ uint32_t* const)0x40017664U;   /** @brief Timerx output register */
+    static RW_ uint32_t* const HRTIM_TIMD_FLTDR_PTR     = (RW_ uint32_t* const)0x40017668U;   /** @brief Timerx fault register */
+
+    static RW_ uint32_t* const HRTIM_TIMD_CMPxDR_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001761CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x40017624U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x40017628U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x4001762CU,   /** @brief Timerx compare 4 register */
+    };
+
+    static RO_ uint32_t* const HRTIM_TIMD_CPTxDR_PTR[3] = {
+      [1] = (RO_ uint32_t* const)0x40017630U,   /** @brief Timerx capture 1 register */
+      [2] = (RO_ uint32_t* const)0x40017634U,   /** @brief Timerx capture 2 register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMD_SETDxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x4001763CU,   /** @brief Timerx output1 set register */
+      [2] = (RW_ uint32_t* const)0x40017644U,   /** @brief Timerx output2 set register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMD_RSTDxR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x40017640U,   /** @brief Timerx output1 reset register */
+      [2] = (RW_ uint32_t* const)0x40017648U,   /** @brief Timerx output2 reset register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMD_EEFDRx_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x4001764CU,   /** @brief Timerx external event filtering register 1 */
+      [2] = (RW_ uint32_t* const)0x40017650U,   /** @brief Timerx external event filtering register 2 */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIMD_CPTxDCR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x4001765CU,   /** @brief Timerx capture 2 control register */
+      [2] = (RW_ uint32_t* const)0x40017660U,   /** @brief CPT2xCR */
+    };
+
+    /**** @subsection HRTIM_TIMD Register Field Masks ****/
+
+    static const uint32_t HRTIM_TIMD_TIMDCR_UPDGAT_MSK      = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIMD_TIMDCR_PREEN_MSK       = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIMD_TIMDCR_DACSYNC_MSK     = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIMD_TIMDCR_MSTU_MSK        = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TEU_MSK         = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TDU_MSK         = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TCU_MSK         = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TBU_MSK         = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TXRSTU_MSK      = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIMD_TIMDCR_TXREPU_MSK      = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIMD_TIMDCR_SYNCSTRTX_MSK   = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIMD_TIMDCR_SYNCRSTX_MSK    = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIMD_TIMDCR_PSHPLL_MSK      = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIMD_TIMDCR_HALF_MSK        = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIMD_TIMDCR_RETRIG_MSK      = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIMD_TIMDCR_CONT_MSK        = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIMD_TIMDCR_CK_PSCX_MSK     = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIMD_TIMDISR_IPPSTAT_MSK    = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIMD_TIMDISR_CPPSTAT_MSK    = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIMD_TIMDISR_DLYPRT_MSK     = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIMD_TIMDISR_RST_MSK        = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIMD_TIMDISR_UPD_MSK        = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIMD_TIMDISR_REP_MSK        = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIMD_TIMDICR_DLYPRTC_MSK    = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDICR_RSTC_MSK       = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDICR_UPDC_MSK       = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDICR_REPC_MSK       = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_DLYPRTDE_MSK = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTDE_MSK    = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SETX2DE_MSK  = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SET1XDE_MSK  = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_UPDDE_MSK    = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_REPDE_MSK    = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_DLYPRTIE_MSK = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTIE_MSK    = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SETX2IE_MSK  = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_SET1XIE_MSK  = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_UPDIE_MSK    = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_REPIE_MSK    = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIMD_CNTDR_CNTX_MSK         = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIMD_PERDR_PERX_MSK         = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIMD_REPDR_REPX_MSK         = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIMD_CMPxDR_CMP1X_MSK       = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMD_CMP1CDR_REPX_MSK       = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIMD_CMP1CDR_CMP1X_MSK      = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIMD_CPTxDR_CPT1X_MSK       = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTFLKX_MSK        = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIMD_DTDR_DTFSLKX_MSK       = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIMD_DTDR_SDTFX_MSK         = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTFX_MSK          = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTRLKX_MSK        = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIMD_DTDR_DTRSLKX_MSK       = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIMD_DTDR_DTPRSC_MSK        = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIMD_DTDR_SDTRX_MSK         = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIMD_DTDR_DTRX_MSK          = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIMD_SETDxR_UPDATE_MSK      = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIMD_SETDxR_MSTPER_MSK      = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIMD_SETDxR_PER_MSK         = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIMD_SETDxR_RESYNC_MSK      = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIMD_SETDxR_SST_MSK         = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIMD_RSTDxR_UPDATE_MSK      = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIMD_RSTDxR_MSTPER_MSK      = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIMD_RSTDxR_PER_MSK         = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIMD_RSTDxR_RESYNC_MSK      = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIMD_RSTDxR_SRT_MSK         = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIMD_RSTDR_MSTPER_MSK       = 0x00000010U;   /** @brief Master timer period */
+    static const uint32_t HRTIM_TIMD_RSTDR_UPDT_MSK         = 0x00000002U;   /** @brief Timer A update reset */
+    static const uint32_t HRTIM_TIMD_CHPDR_STRTPW_MSK       = 0x00000780U;   /** @brief STRTPW */
+    static const uint32_t HRTIM_TIMD_CHPDR_CHPDTY_MSK       = 0x00000070U;   /** @brief Timerx chopper duty cycle value */
+    static const uint32_t HRTIM_TIMD_CHPDR_CHPFRQ_MSK       = 0x0000000FU;   /** @brief Timerx carrier frequency value */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TE1RST_MSK     = 0x20000000U;   /** @brief Timer E output 1 reset */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TE1SET_MSK     = 0x10000000U;   /** @brief Timer E output 1 set */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TC1RST_MSK     = 0x00200000U;   /** @brief Timer C output 1 reset */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TC1SET_MSK     = 0x00100000U;   /** @brief Timer C output 1 set */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TB1RST_MSK     = 0x00020000U;   /** @brief Timer B output 1 reset */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TB1SET_MSK     = 0x00010000U;   /** @brief Timer B output 1 set */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TA1RST_MSK     = 0x00002000U;   /** @brief Timer A output 1 reset */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TA1SET_MSK     = 0x00001000U;   /** @brief Timer A output 1 set */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_UDPCPT_MSK     = 0x00000002U;   /** @brief Update capture */
+    static const uint32_t HRTIM_TIMD_CPTxDCR_SWCPT_MSK      = 0x00000001U;   /** @brief Software capture */
+    static const uint32_t HRTIM_TIMD_OUTDR_DLYPRT_MSK       = 0x00001C00U;   /** @brief Delayed protection */
+    static const uint32_t HRTIM_TIMD_OUTDR_DLYPRTEN_MSK     = 0x00000200U;   /** @brief Delayed protection enable */
+    static const uint32_t HRTIM_TIMD_OUTDR_DTEN_MSK         = 0x00000100U;   /** @brief Deadtime enable */
+    static const uint32_t HRTIM_TIMD_FLTDR_FLTLCK_MSK       = 0x80000000U;   /** @brief Fault sources lock */
+
+    static const uint32_t HRTIM_TIMD_TIMDCR_DELCMPx_MSK[5] = {
+      [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
+      [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDISR_OxSTAT_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Output 1 state */
+      [2] = 0x00080000U,   /** @brief Output 2 state */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDISR_RSTXx_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
+      [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDISR_SETXx_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
+      [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDISR_CPTx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDISR_CMPx_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDICR_RSTXxC_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
+      [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDICR_SETxXC_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
+      [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDICR_CPTxC_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDICR_CMPxC_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTXxDE_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief RSTx1DE */
+      [2] = 0x10000000U,   /** @brief RSTx2DE */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CPTxDE_MSK[3] = {
+      [1] = 0x00800000U,   /** @brief CPT1DE */
+      [2] = 0x01000000U,   /** @brief CPT2DE */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CMPxDE_MSK[5] = {
+      [1] = 0x00010000U,   /** @brief CMP1DE */
+      [2] = 0x00020000U,   /** @brief CMP2DE */
+      [3] = 0x00040000U,   /** @brief CMP3DE */
+      [4] = 0x00080000U,   /** @brief CMP4DE */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_RSTXxIE_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief RSTx1IE */
+      [2] = 0x00001000U,   /** @brief RSTx2IE */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CPTxIE_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief CPT1IE */
+      [2] = 0x00000100U,   /** @brief CPT2IE */
+    };
+
+    static const uint32_t HRTIM_TIMD_TIMDDIER5_CMPxIE_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief CMP1IE */
+      [2] = 0x00000002U,   /** @brief CMP2IE */
+      [3] = 0x00000004U,   /** @brief CMP3IE */
+      [4] = 0x00000008U,   /** @brief CMP4IE */
+    };
+
+    static const uint32_t HRTIM_TIMD_SETDxR_EXTEVNTx_MSK[11] = {
+      [1]  = 0x00200000U,   /** @brief External event 1 */
+      [2]  = 0x00400000U,   /** @brief External event 2 */
+      [3]  = 0x00800000U,   /** @brief External event 3 */
+      [4]  = 0x01000000U,   /** @brief External event 4 */
+      [5]  = 0x02000000U,   /** @brief External event 5 */
+      [6]  = 0x04000000U,   /** @brief External event 6 */
+      [7]  = 0x08000000U,   /** @brief External event 7 */
+      [8]  = 0x10000000U,   /** @brief External event 8 */
+      [9]  = 0x20000000U,   /** @brief External event 9 */
+      [10] = 0x40000000U,   /** @brief External event 10 */
+    };
+
+    static const uint32_t HRTIM_TIMD_SETDxR_TIMEVNTx_MSK[10] = {
+      [1]  = 0x00001000U,   /** @brief Timer event 1 */
+      [2]  = 0x00002000U,   /** @brief Timer event 2 */
+      [3]  = 0x00004000U,   /** @brief Timer event 3 */
+      [4]  = 0x00008000U,   /** @brief Timer event 4 */
+      [5]  = 0x00010000U,   /** @brief Timer event 5 */
+      [6]  = 0x00020000U,   /** @brief Timer event 6 */
+      [7]  = 0x00040000U,   /** @brief Timer event 7 */
+      [8]  = 0x00080000U,   /** @brief Timer event 8 */
+      [9]  = 0x00100000U,   /** @brief Timer event 9 */
+    };
+
+    static const uint32_t HRTIM_TIMD_SETDxR_MSTCMPx_MSK[5] = {
+      [1] = 0x00000100U,   /** @brief Master compare 1 */
+      [2] = 0x00000200U,   /** @brief Master compare 2 */
+      [3] = 0x00000400U,   /** @brief Master compare 3 */
+      [4] = 0x00000800U,   /** @brief Master compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMD_EEFDRx_EExFLTR_MSK[6] = {
+      [1] = 0x0000001EU,   /** @brief External event 1 filter */
+      [2] = 0x00000780U,   /** @brief External event 2 filter */
+      [3] = 0x0001E000U,   /** @brief External event 3 filter */
+      [4] = 0x00780000U,   /** @brief External event 4 filter */
+      [5] = 0x1E000000U,   /** @brief External event 5 filter */
+    };
+
+    static const uint32_t HRTIM_TIMD_EEFDRx_EExLTCH_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief External event 1 latch */
+      [2] = 0x00000040U,   /** @brief External event 2 latch */
+      [3] = 0x00001000U,   /** @brief External event 3 latch */
+      [4] = 0x00040000U,   /** @brief External event 4 latch */
+      [5] = 0x01000000U,   /** @brief External event 5 latch */
+    };
+
+    static const uint32_t HRTIM_TIMD_RSTDR_TIMECMPx_MSK[5] = {
+      [1] = 0x10000000U,   /** @brief Timer E compare 1 */
+      [2] = 0x20000000U,   /** @brief Timer E compare 2 */
+      [4] = 0x40000000U,   /** @brief Timer E compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMD_RSTDR_TIMCCMPx_MSK[5] = {
+      [1] = 0x02000000U,   /** @brief Timer C compare 1 */
+      [2] = 0x04000000U,   /** @brief Timer C compare 2 */
+      [4] = 0x08000000U,   /** @brief Timer C compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMD_RSTDR_TIMBCMPx_MSK[5] = {
+      [1] = 0x00400000U,   /** @brief Timer B compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer B compare 2 */
+      [4] = 0x01000000U,   /** @brief Timer B compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMD_RSTDR_TIMACMPx_MSK[5] = {
+      [1] = 0x00080000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00100000U,   /** @brief Timer A compare 2 */
+      [4] = 0x00200000U,   /** @brief Timer A compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TECMPx_MSK[3] = {
+      [1] = 0x40000000U,   /** @brief Timer E compare 1 */
+      [2] = 0x80000000U,   /** @brief Timer E compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TCCMPx_MSK[3] = {
+      [1] = 0x00400000U,   /** @brief Timer C compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer C compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TBCMPx_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Timer B compare 1 */
+      [2] = 0x00080000U,   /** @brief Timer B compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMD_CPTxDCR_TACMPx_MSK[3] = {
+      [1] = 0x00004000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00008000U,   /** @brief Timer A compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIMD_CPTxDCR_EXEVxCPT_MSK[11] = {
+      [1]  = 0x00000004U,   /** @brief External event 1 capture */
+      [2]  = 0x00000008U,   /** @brief External event 2 capture */
+      [3]  = 0x00000010U,   /** @brief External event 3 capture */
+      [4]  = 0x00000020U,   /** @brief External event 4 capture */
+      [5]  = 0x00000040U,   /** @brief External event 5 capture */
+      [6]  = 0x00000080U,   /** @brief External event 6 capture */
+      [7]  = 0x00000100U,   /** @brief External event 7 capture */
+      [8]  = 0x00000200U,   /** @brief External event 8 capture */
+      [9]  = 0x00000400U,   /** @brief External event 9 capture */
+      [10] = 0x00000800U,   /** @brief External event 10 capture */
+    };
+
+    static const uint32_t HRTIM_TIMD_OUTDR_DIDLx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 0x00800000U,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const uint32_t HRTIM_TIMD_OUTDR_CHPx_MSK[3] = {
+      [1] = 0x00000040U,   /** @brief Output 1 chopper enable */
+      [2] = 0x00400000U,   /** @brief Output 2 chopper enable */
+    };
+
+    static const uint32_t HRTIM_TIMD_OUTDR_FAULTx_MSK[3] = {
+      [1] = 0x00000030U,   /** @brief Output 1 fault state */
+      [2] = 0x00300000U,   /** @brief Output 2 fault state */
+    };
+
+    static const uint32_t HRTIM_TIMD_OUTDR_IDLESx_MSK[3] = {
+      [1] = 0x00000008U,   /** @brief Output 1 idle state */
+      [2] = 0x00080000U,   /** @brief Output 2 idle state */
+    };
+
+    static const uint32_t HRTIM_TIMD_OUTDR_IDLEMx_MSK[3] = {
+      [1] = 0x00000004U,   /** @brief Output 1 idle mode */
+      [2] = 0x00040000U,   /** @brief Output 2 idle mode */
+    };
+
+    static const uint32_t HRTIM_TIMD_OUTDR_POLx_MSK[3] = {
+      [1] = 0x00000002U,   /** @brief Output 1 polarity */
+      [2] = 0x00020000U,   /** @brief Output 2 polarity */
+    };
+
+    static const uint32_t HRTIM_TIMD_FLTDR_FLTxEN_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief Fault 1 enable */
+      [2] = 0x00000002U,   /** @brief Fault 2 enable */
+      [3] = 0x00000004U,   /** @brief Fault 3 enable */
+      [4] = 0x00000008U,   /** @brief Fault 4 enable */
+      [5] = 0x00000010U,   /** @brief Fault 5 enable */
+    };
+
+    /**** @subsection HRTIM_TIMD Register Field Positions ****/
+
+    static const int32_t HRTIM_TIMD_TIMDCR_UPDGAT_POS      = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIMD_TIMDCR_PREEN_POS       = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIMD_TIMDCR_DACSYNC_POS     = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIMD_TIMDCR_MSTU_POS        = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIMD_TIMDCR_TEU_POS         = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TDU_POS         = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TCU_POS         = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TBU_POS         = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIMD_TIMDCR_TXRSTU_POS      = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIMD_TIMDCR_TXREPU_POS      = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIMD_TIMDCR_SYNCSTRTX_POS   = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIMD_TIMDCR_SYNCRSTX_POS    = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIMD_TIMDCR_PSHPLL_POS      = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIMD_TIMDCR_HALF_POS        = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIMD_TIMDCR_RETRIG_POS      = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIMD_TIMDCR_CONT_POS        = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIMD_TIMDCR_CK_PSCX_POS     = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIMD_TIMDISR_IPPSTAT_POS    = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIMD_TIMDISR_CPPSTAT_POS    = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIMD_TIMDISR_DLYPRT_POS     = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIMD_TIMDISR_RST_POS        = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIMD_TIMDISR_UPD_POS        = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIMD_TIMDISR_REP_POS        = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIMD_TIMDICR_DLYPRTC_POS    = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIMD_TIMDICR_RSTC_POS       = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIMD_TIMDICR_UPDC_POS       = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIMD_TIMDICR_REPC_POS       = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_DLYPRTDE_POS = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTDE_POS    = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SETX2DE_POS  = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SET1XDE_POS  = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_UPDDE_POS    = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_REPDE_POS    = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_DLYPRTIE_POS = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTIE_POS    = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SETX2IE_POS  = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_SET1XIE_POS  = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_UPDIE_POS    = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIMD_TIMDDIER5_REPIE_POS    = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIMD_CNTDR_CNTX_POS         = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIMD_PERDR_PERX_POS         = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIMD_REPDR_REPX_POS         = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIMD_CMPxDR_CMP1X_POS       = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMD_CMP1CDR_REPX_POS       = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIMD_CMP1CDR_CMP1X_POS      = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIMD_CPTxDR_CPT1X_POS       = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIMD_DTDR_DTFLKX_POS        = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIMD_DTDR_DTFSLKX_POS       = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIMD_DTDR_SDTFX_POS         = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIMD_DTDR_DTFX_POS          = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIMD_DTDR_DTRLKX_POS        = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIMD_DTDR_DTRSLKX_POS       = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIMD_DTDR_DTPRSC_POS        = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIMD_DTDR_SDTRX_POS         = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIMD_DTDR_DTRX_POS          = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIMD_SETDxR_UPDATE_POS      = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIMD_SETDxR_MSTPER_POS      = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIMD_SETDxR_PER_POS         = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIMD_SETDxR_RESYNC_POS      = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIMD_SETDxR_SST_POS         = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIMD_RSTDxR_UPDATE_POS      = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIMD_RSTDxR_MSTPER_POS      = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIMD_RSTDxR_PER_POS         = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIMD_RSTDxR_RESYNC_POS      = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIMD_RSTDxR_SRT_POS         = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIMD_RSTDR_MSTPER_POS       = 4;    /** @brief Master timer period */
+    static const int32_t HRTIM_TIMD_RSTDR_UPDT_POS         = 1;    /** @brief Timer A update reset */
+    static const int32_t HRTIM_TIMD_CHPDR_STRTPW_POS       = 7;    /** @brief STRTPW */
+    static const int32_t HRTIM_TIMD_CHPDR_CHPDTY_POS       = 4;    /** @brief Timerx chopper duty cycle value */
+    static const int32_t HRTIM_TIMD_CHPDR_CHPFRQ_POS       = 0;    /** @brief Timerx carrier frequency value */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TE1RST_POS     = 29;   /** @brief Timer E output 1 reset */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TE1SET_POS     = 28;   /** @brief Timer E output 1 set */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TC1RST_POS     = 21;   /** @brief Timer C output 1 reset */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TC1SET_POS     = 20;   /** @brief Timer C output 1 set */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TB1RST_POS     = 17;   /** @brief Timer B output 1 reset */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TB1SET_POS     = 16;   /** @brief Timer B output 1 set */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TA1RST_POS     = 13;   /** @brief Timer A output 1 reset */
+    static const int32_t HRTIM_TIMD_CPTxDCR_TA1SET_POS     = 12;   /** @brief Timer A output 1 set */
+    static const int32_t HRTIM_TIMD_CPTxDCR_UDPCPT_POS     = 1;    /** @brief Update capture */
+    static const int32_t HRTIM_TIMD_CPTxDCR_SWCPT_POS      = 0;    /** @brief Software capture */
+    static const int32_t HRTIM_TIMD_OUTDR_DLYPRT_POS       = 10;   /** @brief Delayed protection */
+    static const int32_t HRTIM_TIMD_OUTDR_DLYPRTEN_POS     = 9;    /** @brief Delayed protection enable */
+    static const int32_t HRTIM_TIMD_OUTDR_DTEN_POS         = 8;    /** @brief Deadtime enable */
+    static const int32_t HRTIM_TIMD_FLTDR_FLTLCK_POS       = 31;   /** @brief Fault sources lock */
+
+    static const int32_t HRTIM_TIMD_TIMDCR_DELCMPx_POS[5] = {
+      [2] = 12,   /** @brief Delayed CMP2 mode */
+      [4] = 14,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDISR_OxSTAT_POS[3] = {
+      [1] = 18,   /** @brief Output 1 state */
+      [2] = 19,   /** @brief Output 2 state */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDISR_RSTXx_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset interrupt flag */
+      [2] = 12,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDISR_SETXx_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set interrupt flag */
+      [2] = 11,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDISR_CPTx_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag */
+      [2] = 8,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDISR_CMPx_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag */
+      [2] = 1,   /** @brief Compare 2 interrupt flag */
+      [3] = 2,   /** @brief Compare 3 interrupt flag */
+      [4] = 3,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDICR_RSTXxC_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset flag clear */
+      [2] = 12,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDICR_SETxXC_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set flag clear */
+      [2] = 11,   /** @brief Output 2 set flag clear */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDICR_CPTxC_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag clear */
+      [2] = 8,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDICR_CMPxC_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 1,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 2,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 3,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTXxDE_POS[3] = {
+      [1] = 26,   /** @brief RSTx1DE */
+      [2] = 28,   /** @brief RSTx2DE */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CPTxDE_POS[3] = {
+      [1] = 23,   /** @brief CPT1DE */
+      [2] = 24,   /** @brief CPT2DE */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CMPxDE_POS[5] = {
+      [1] = 16,   /** @brief CMP1DE */
+      [2] = 17,   /** @brief CMP2DE */
+      [3] = 18,   /** @brief CMP3DE */
+      [4] = 19,   /** @brief CMP4DE */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDDIER5_RSTXxIE_POS[3] = {
+      [1] = 10,   /** @brief RSTx1IE */
+      [2] = 12,   /** @brief RSTx2IE */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CPTxIE_POS[3] = {
+      [1] = 7,   /** @brief CPT1IE */
+      [2] = 8,   /** @brief CPT2IE */
+    };
+
+    static const int32_t HRTIM_TIMD_TIMDDIER5_CMPxIE_POS[5] = {
+      [1] = 0,   /** @brief CMP1IE */
+      [2] = 1,   /** @brief CMP2IE */
+      [3] = 2,   /** @brief CMP3IE */
+      [4] = 3,   /** @brief CMP4IE */
+    };
+
+    static const int32_t HRTIM_TIMD_SETDxR_EXTEVNTx_POS[11] = {
+      [1]  = 21,   /** @brief External event 1 */
+      [2]  = 22,   /** @brief External event 2 */
+      [3]  = 23,   /** @brief External event 3 */
+      [4]  = 24,   /** @brief External event 4 */
+      [5]  = 25,   /** @brief External event 5 */
+      [6]  = 26,   /** @brief External event 6 */
+      [7]  = 27,   /** @brief External event 7 */
+      [8]  = 28,   /** @brief External event 8 */
+      [9]  = 29,   /** @brief External event 9 */
+      [10] = 30,   /** @brief External event 10 */
+    };
+
+    static const int32_t HRTIM_TIMD_SETDxR_TIMEVNTx_POS[10] = {
+      [1]  = 12,   /** @brief Timer event 1 */
+      [2]  = 13,   /** @brief Timer event 2 */
+      [3]  = 14,   /** @brief Timer event 3 */
+      [4]  = 15,   /** @brief Timer event 4 */
+      [5]  = 16,   /** @brief Timer event 5 */
+      [6]  = 17,   /** @brief Timer event 6 */
+      [7]  = 18,   /** @brief Timer event 7 */
+      [8]  = 19,   /** @brief Timer event 8 */
+      [9]  = 20,   /** @brief Timer event 9 */
+    };
+
+    static const int32_t HRTIM_TIMD_SETDxR_MSTCMPx_POS[5] = {
+      [1] = 8,    /** @brief Master compare 1 */
+      [2] = 9,    /** @brief Master compare 2 */
+      [3] = 10,   /** @brief Master compare 3 */
+      [4] = 11,   /** @brief Master compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMD_EEFDRx_EExFLTR_POS[6] = {
+      [1] = 1,    /** @brief External event 1 filter */
+      [2] = 7,    /** @brief External event 2 filter */
+      [3] = 13,   /** @brief External event 3 filter */
+      [4] = 19,   /** @brief External event 4 filter */
+      [5] = 25,   /** @brief External event 5 filter */
+    };
+
+    static const int32_t HRTIM_TIMD_EEFDRx_EExLTCH_POS[6] = {
+      [1] = 0,    /** @brief External event 1 latch */
+      [2] = 6,    /** @brief External event 2 latch */
+      [3] = 12,   /** @brief External event 3 latch */
+      [4] = 18,   /** @brief External event 4 latch */
+      [5] = 24,   /** @brief External event 5 latch */
+    };
+
+    static const int32_t HRTIM_TIMD_RSTDR_TIMECMPx_POS[5] = {
+      [1] = 28,   /** @brief Timer E compare 1 */
+      [2] = 29,   /** @brief Timer E compare 2 */
+      [4] = 30,   /** @brief Timer E compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMD_RSTDR_TIMCCMPx_POS[5] = {
+      [1] = 25,   /** @brief Timer C compare 1 */
+      [2] = 26,   /** @brief Timer C compare 2 */
+      [4] = 27,   /** @brief Timer C compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMD_RSTDR_TIMBCMPx_POS[5] = {
+      [1] = 22,   /** @brief Timer B compare 1 */
+      [2] = 23,   /** @brief Timer B compare 2 */
+      [4] = 24,   /** @brief Timer B compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMD_RSTDR_TIMACMPx_POS[5] = {
+      [1] = 19,   /** @brief Timer A compare 1 */
+      [2] = 20,   /** @brief Timer A compare 2 */
+      [4] = 21,   /** @brief Timer A compare 4 */
+    };
+
+    static const int32_t HRTIM_TIMD_CPTxDCR_TECMPx_POS[3] = {
+      [1] = 30,   /** @brief Timer E compare 1 */
+      [2] = 31,   /** @brief Timer E compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMD_CPTxDCR_TCCMPx_POS[3] = {
+      [1] = 22,   /** @brief Timer C compare 1 */
+      [2] = 23,   /** @brief Timer C compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMD_CPTxDCR_TBCMPx_POS[3] = {
+      [1] = 18,   /** @brief Timer B compare 1 */
+      [2] = 19,   /** @brief Timer B compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMD_CPTxDCR_TACMPx_POS[3] = {
+      [1] = 14,   /** @brief Timer A compare 1 */
+      [2] = 15,   /** @brief Timer A compare 2 */
+    };
+
+    static const int32_t HRTIM_TIMD_CPTxDCR_EXEVxCPT_POS[11] = {
+      [1]  = 2,    /** @brief External event 1 capture */
+      [2]  = 3,    /** @brief External event 2 capture */
+      [3]  = 4,    /** @brief External event 3 capture */
+      [4]  = 5,    /** @brief External event 4 capture */
+      [5]  = 6,    /** @brief External event 5 capture */
+      [6]  = 7,    /** @brief External event 6 capture */
+      [7]  = 8,    /** @brief External event 7 capture */
+      [8]  = 9,    /** @brief External event 8 capture */
+      [9]  = 10,   /** @brief External event 9 capture */
+      [10] = 11,   /** @brief External event 10 capture */
+    };
+
+    static const int32_t HRTIM_TIMD_OUTDR_DIDLx_POS[3] = {
+      [1] = 7,    /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 23,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const int32_t HRTIM_TIMD_OUTDR_CHPx_POS[3] = {
+      [1] = 6,    /** @brief Output 1 chopper enable */
+      [2] = 22,   /** @brief Output 2 chopper enable */
+    };
+
+    static const int32_t HRTIM_TIMD_OUTDR_FAULTx_POS[3] = {
+      [1] = 4,    /** @brief Output 1 fault state */
+      [2] = 20,   /** @brief Output 2 fault state */
+    };
+
+    static const int32_t HRTIM_TIMD_OUTDR_IDLESx_POS[3] = {
+      [1] = 3,    /** @brief Output 1 idle state */
+      [2] = 19,   /** @brief Output 2 idle state */
+    };
+
+    static const int32_t HRTIM_TIMD_OUTDR_IDLEMx_POS[3] = {
+      [1] = 2,    /** @brief Output 1 idle mode */
+      [2] = 18,   /** @brief Output 2 idle mode */
+    };
+
+    static const int32_t HRTIM_TIMD_OUTDR_POLx_POS[3] = {
+      [1] = 1,    /** @brief Output 1 polarity */
+      [2] = 17,   /** @brief Output 2 polarity */
+    };
+
+    static const int32_t HRTIM_TIMD_FLTDR_FLTxEN_POS[6] = {
+      [1] = 0,   /** @brief Fault 1 enable */
+      [2] = 1,   /** @brief Fault 2 enable */
+      [3] = 2,   /** @brief Fault 3 enable */
+      [4] = 3,   /** @brief Fault 4 enable */
+      [5] = 4,   /** @brief Fault 5 enable */
+    };
+
+    /**********************************************************************************************
+     * @section HRTIM_TIME Register Information
+     **********************************************************************************************/
+
+    /**** @subsection HRTIM_TIME Register Pointers ****/
+
+    static RW_ uint32_t* const HRTIM_TIME_TIMECR_PTR    = (RW_ uint32_t* const)0x40017680U;   /** @brief Timerx control register */
+    static RO_ uint32_t* const HRTIM_TIME_TIMEISR_PTR   = (RO_ uint32_t* const)0x40017684U;   /** @brief Timerx interrupt status register */
+    static WO_ uint32_t* const HRTIM_TIME_TIMEICR_PTR   = (WO_ uint32_t* const)0x40017688U;   /** @brief Timerx interrupt clear register */
+    static RW_ uint32_t* const HRTIM_TIME_TIMEDIER5_PTR = (RW_ uint32_t* const)0x4001768CU;   /** @brief TIMxDIER5 */
+    static RW_ uint32_t* const HRTIM_TIME_CNTER_PTR     = (RW_ uint32_t* const)0x40017690U;   /** @brief Timerx counter register */
+    static RW_ uint32_t* const HRTIM_TIME_PERER_PTR     = (RW_ uint32_t* const)0x40017694U;   /** @brief Timerx period register */
+    static RW_ uint32_t* const HRTIM_TIME_REPER_PTR     = (RW_ uint32_t* const)0x40017698U;   /** @brief Timerx repetition register */
+    static RW_ uint32_t* const HRTIM_TIME_CMP1CER_PTR   = (RW_ uint32_t* const)0x400176A0U;   /** @brief Timerx compare 1 compound register */
+    static RW_ uint32_t* const HRTIM_TIME_DTER_PTR      = (RW_ uint32_t* const)0x400176B8U;   /** @brief Timerx deadtime register */
+    static RW_ uint32_t* const HRTIM_TIME_RSTER_PTR     = (RW_ uint32_t* const)0x400176D4U;   /** @brief TimerA reset register */
+    static RW_ uint32_t* const HRTIM_TIME_CHPER_PTR     = (RW_ uint32_t* const)0x400176D8U;   /** @brief Timerx chopper register */
+    static RW_ uint32_t* const HRTIM_TIME_OUTER_PTR     = (RW_ uint32_t* const)0x400176E4U;   /** @brief Timerx output register */
+    static RW_ uint32_t* const HRTIM_TIME_FLTER_PTR     = (RW_ uint32_t* const)0x400176E8U;   /** @brief Timerx fault register */
+
+    static RW_ uint32_t* const HRTIM_TIME_CMPxER_PTR[5] = {
+      [1] = (RW_ uint32_t* const)0x4001769CU,   /** @brief Timerx compare 1 register */
+      [2] = (RW_ uint32_t* const)0x400176A4U,   /** @brief Timerx compare 2 register */
+      [3] = (RW_ uint32_t* const)0x400176A8U,   /** @brief Timerx compare 3 register */
+      [4] = (RW_ uint32_t* const)0x400176ACU,   /** @brief Timerx compare 4 register */
+    };
+
+    static RO_ uint32_t* const HRTIM_TIME_CPTxER_PTR[3] = {
+      [1] = (RO_ uint32_t* const)0x400176B0U,   /** @brief Timerx capture 1 register */
+      [2] = (RO_ uint32_t* const)0x400176B4U,   /** @brief Timerx capture 2 register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIME_SETExR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400176BCU,   /** @brief Timerx output1 set register */
+      [2] = (RW_ uint32_t* const)0x400176C4U,   /** @brief Timerx output2 set register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIME_RSTExR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400176C0U,   /** @brief Timerx output1 reset register */
+      [2] = (RW_ uint32_t* const)0x400176C8U,   /** @brief Timerx output2 reset register */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIME_EEFERx_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400176CCU,   /** @brief Timerx external event filtering register 1 */
+      [2] = (RW_ uint32_t* const)0x400176D0U,   /** @brief Timerx external event filtering register 2 */
+    };
+
+    static RW_ uint32_t* const HRTIM_TIME_CPTxECR_PTR[3] = {
+      [1] = (RW_ uint32_t* const)0x400176DCU,   /** @brief Timerx capture 2 control register */
+      [2] = (RW_ uint32_t* const)0x400176E0U,   /** @brief CPT2xCR */
+    };
+
+    /**** @subsection HRTIM_TIME Register Field Masks ****/
+
+    static const uint32_t HRTIM_TIME_TIMECR_UPDGAT_MSK      = 0xF0000000U;   /** @brief Update gating */
+    static const uint32_t HRTIM_TIME_TIMECR_PREEN_MSK       = 0x08000000U;   /** @brief Preload enable */
+    static const uint32_t HRTIM_TIME_TIMECR_DACSYNC_MSK     = 0x06000000U;   /** @brief AC synchronization */
+    static const uint32_t HRTIM_TIME_TIMECR_MSTU_MSK        = 0x01000000U;   /** @brief Master timer update */
+    static const uint32_t HRTIM_TIME_TIMECR_TEU_MSK         = 0x00800000U;   /** @brief TEU */
+    static const uint32_t HRTIM_TIME_TIMECR_TDU_MSK         = 0x00400000U;   /** @brief TDU */
+    static const uint32_t HRTIM_TIME_TIMECR_TCU_MSK         = 0x00200000U;   /** @brief TCU */
+    static const uint32_t HRTIM_TIME_TIMECR_TBU_MSK         = 0x00100000U;   /** @brief TBU */
+    static const uint32_t HRTIM_TIME_TIMECR_TXRSTU_MSK      = 0x00040000U;   /** @brief Timerx reset update */
+    static const uint32_t HRTIM_TIME_TIMECR_TXREPU_MSK      = 0x00020000U;   /** @brief Timer x repetition update */
+    static const uint32_t HRTIM_TIME_TIMECR_SYNCSTRTX_MSK   = 0x00000800U;   /** @brief Synchronization starts timer x */
+    static const uint32_t HRTIM_TIME_TIMECR_SYNCRSTX_MSK    = 0x00000400U;   /** @brief Synchronization resets timer x */
+    static const uint32_t HRTIM_TIME_TIMECR_PSHPLL_MSK      = 0x00000040U;   /** @brief Push-Pull mode enable */
+    static const uint32_t HRTIM_TIME_TIMECR_HALF_MSK        = 0x00000020U;   /** @brief Half mode enable */
+    static const uint32_t HRTIM_TIME_TIMECR_RETRIG_MSK      = 0x00000010U;   /** @brief Re-triggerable mode */
+    static const uint32_t HRTIM_TIME_TIMECR_CONT_MSK        = 0x00000008U;   /** @brief Continuous mode */
+    static const uint32_t HRTIM_TIME_TIMECR_CK_PSCX_MSK     = 0x00000007U;   /** @brief HRTIM timer x clock prescaler */
+    static const uint32_t HRTIM_TIME_TIMEISR_IPPSTAT_MSK    = 0x00020000U;   /** @brief Idle push pull status */
+    static const uint32_t HRTIM_TIME_TIMEISR_CPPSTAT_MSK    = 0x00010000U;   /** @brief Current push pull status */
+    static const uint32_t HRTIM_TIME_TIMEISR_DLYPRT_MSK     = 0x00004000U;   /** @brief Delayed protection flag */
+    static const uint32_t HRTIM_TIME_TIMEISR_RST_MSK        = 0x00002000U;   /** @brief Reset interrupt flag */
+    static const uint32_t HRTIM_TIME_TIMEISR_UPD_MSK        = 0x00000040U;   /** @brief Update interrupt flag */
+    static const uint32_t HRTIM_TIME_TIMEISR_REP_MSK        = 0x00000010U;   /** @brief Repetition interrupt flag */
+    static const uint32_t HRTIM_TIME_TIMEICR_DLYPRTC_MSK    = 0x00004000U;   /** @brief Delayed protection flag clear */
+    static const uint32_t HRTIM_TIME_TIMEICR_RSTC_MSK       = 0x00002000U;   /** @brief Reset interrupt flag clear */
+    static const uint32_t HRTIM_TIME_TIMEICR_UPDC_MSK       = 0x00000040U;   /** @brief Update interrupt flag clear */
+    static const uint32_t HRTIM_TIME_TIMEICR_REPC_MSK       = 0x00000010U;   /** @brief Repetition interrupt flag clear */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_DLYPRTDE_MSK = 0x40000000U;   /** @brief DLYPRTDE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_RSTDE_MSK    = 0x20000000U;   /** @brief RSTDE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_SETX2DE_MSK  = 0x08000000U;   /** @brief SETx2DE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_SET1XDE_MSK  = 0x02000000U;   /** @brief SET1xDE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_UPDDE_MSK    = 0x00400000U;   /** @brief UPDDE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_REPDE_MSK    = 0x00100000U;   /** @brief REPDE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_DLYPRTIE_MSK = 0x00004000U;   /** @brief DLYPRTIE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_RSTIE_MSK    = 0x00002000U;   /** @brief RSTIE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_SETX2IE_MSK  = 0x00000800U;   /** @brief SETx2IE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_SET1XIE_MSK  = 0x00000200U;   /** @brief SET1xIE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_UPDIE_MSK    = 0x00000040U;   /** @brief UPDIE */
+    static const uint32_t HRTIM_TIME_TIMEDIER5_REPIE_MSK    = 0x00000010U;   /** @brief REPIE */
+    static const uint32_t HRTIM_TIME_CNTER_CNTX_MSK         = 0x0000FFFFU;   /** @brief Timerx counter value */
+    static const uint32_t HRTIM_TIME_PERER_PERX_MSK         = 0x0000FFFFU;   /** @brief Timerx period value */
+    static const uint32_t HRTIM_TIME_REPER_REPX_MSK         = 0x000000FFU;   /** @brief Timerx repetition counter value */
+    static const uint32_t HRTIM_TIME_CMPxER_CMP1X_MSK       = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIME_CMP1CER_REPX_MSK       = 0x00FF0000U;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const uint32_t HRTIM_TIME_CMP1CER_CMP1X_MSK      = 0x0000FFFFU;   /** @brief Timerx compare 1 value */
+    static const uint32_t HRTIM_TIME_CPTxER_CPT1X_MSK       = 0x0000FFFFU;   /** @brief Timerx capture 1 value */
+    static const uint32_t HRTIM_TIME_DTER_DTFLKX_MSK        = 0x80000000U;   /** @brief Deadtime falling lock */
+    static const uint32_t HRTIM_TIME_DTER_DTFSLKX_MSK       = 0x40000000U;   /** @brief Deadtime falling sign lock */
+    static const uint32_t HRTIM_TIME_DTER_SDTFX_MSK         = 0x02000000U;   /** @brief Sign deadtime falling value */
+    static const uint32_t HRTIM_TIME_DTER_DTFX_MSK          = 0x01FF0000U;   /** @brief Deadtime falling value */
+    static const uint32_t HRTIM_TIME_DTER_DTRLKX_MSK        = 0x00008000U;   /** @brief Deadtime rising lock */
+    static const uint32_t HRTIM_TIME_DTER_DTRSLKX_MSK       = 0x00004000U;   /** @brief Deadtime rising sign lock */
+    static const uint32_t HRTIM_TIME_DTER_DTPRSC_MSK        = 0x00001C00U;   /** @brief Deadtime prescaler */
+    static const uint32_t HRTIM_TIME_DTER_SDTRX_MSK         = 0x00000200U;   /** @brief Sign deadtime rising value */
+    static const uint32_t HRTIM_TIME_DTER_DTRX_MSK          = 0x000001FFU;   /** @brief Deadtime rising value */
+    static const uint32_t HRTIM_TIME_SETExR_UPDATE_MSK      = 0x80000000U;   /** @brief Registers update (transfer preload to active) */
+    static const uint32_t HRTIM_TIME_SETExR_MSTPER_MSK      = 0x00000080U;   /** @brief Master period */
+    static const uint32_t HRTIM_TIME_SETExR_PER_MSK         = 0x00000004U;   /** @brief Timer A period */
+    static const uint32_t HRTIM_TIME_SETExR_RESYNC_MSK      = 0x00000002U;   /** @brief Timer A resynchronizaton */
+    static const uint32_t HRTIM_TIME_SETExR_SST_MSK         = 0x00000001U;   /** @brief Software set trigger */
+    static const uint32_t HRTIM_TIME_RSTExR_UPDATE_MSK      = 0x80000000U;   /** @brief UPDATE */
+    static const uint32_t HRTIM_TIME_RSTExR_MSTPER_MSK      = 0x00000080U;   /** @brief MSTPER */
+    static const uint32_t HRTIM_TIME_RSTExR_PER_MSK         = 0x00000004U;   /** @brief PER */
+    static const uint32_t HRTIM_TIME_RSTExR_RESYNC_MSK      = 0x00000002U;   /** @brief RESYNC */
+    static const uint32_t HRTIM_TIME_RSTExR_SRT_MSK         = 0x00000001U;   /** @brief SRT */
+    static const uint32_t HRTIM_TIME_RSTER_MSTPER_MSK       = 0x00000010U;   /** @brief Master timer period */
+    static const uint32_t HRTIM_TIME_RSTER_UPDT_MSK         = 0x00000002U;   /** @brief Timer A update reset */
+    static const uint32_t HRTIM_TIME_CHPER_STRTPW_MSK       = 0x00000780U;   /** @brief STRTPW */
+    static const uint32_t HRTIM_TIME_CHPER_CHPDTY_MSK       = 0x00000070U;   /** @brief Timerx chopper duty cycle value */
+    static const uint32_t HRTIM_TIME_CHPER_CHPFRQ_MSK       = 0x0000000FU;   /** @brief Timerx carrier frequency value */
+    static const uint32_t HRTIM_TIME_CPTxECR_TD1RST_MSK     = 0x02000000U;   /** @brief Timer D output 1 reset */
+    static const uint32_t HRTIM_TIME_CPTxECR_TD1SET_MSK     = 0x01000000U;   /** @brief Timer D output 1 set */
+    static const uint32_t HRTIM_TIME_CPTxECR_TC1RST_MSK     = 0x00200000U;   /** @brief Timer C output 1 reset */
+    static const uint32_t HRTIM_TIME_CPTxECR_TC1SET_MSK     = 0x00100000U;   /** @brief Timer C output 1 set */
+    static const uint32_t HRTIM_TIME_CPTxECR_TB1RST_MSK     = 0x00020000U;   /** @brief Timer B output 1 reset */
+    static const uint32_t HRTIM_TIME_CPTxECR_TB1SET_MSK     = 0x00010000U;   /** @brief Timer B output 1 set */
+    static const uint32_t HRTIM_TIME_CPTxECR_TA1RST_MSK     = 0x00002000U;   /** @brief Timer A output 1 reset */
+    static const uint32_t HRTIM_TIME_CPTxECR_TA1SET_MSK     = 0x00001000U;   /** @brief Timer A output 1 set */
+    static const uint32_t HRTIM_TIME_CPTxECR_UDPCPT_MSK     = 0x00000002U;   /** @brief Update capture */
+    static const uint32_t HRTIM_TIME_CPTxECR_SWCPT_MSK      = 0x00000001U;   /** @brief Software capture */
+    static const uint32_t HRTIM_TIME_OUTER_DLYPRT_MSK       = 0x00001C00U;   /** @brief Delayed protection */
+    static const uint32_t HRTIM_TIME_OUTER_DLYPRTEN_MSK     = 0x00000200U;   /** @brief Delayed protection enable */
+    static const uint32_t HRTIM_TIME_OUTER_DTEN_MSK         = 0x00000100U;   /** @brief Deadtime enable */
+    static const uint32_t HRTIM_TIME_FLTER_FLTLCK_MSK       = 0x80000000U;   /** @brief Fault sources lock */
+
+    static const uint32_t HRTIM_TIME_TIMECR_DELCMPx_MSK[5] = {
+      [2] = 0x00003000U,   /** @brief Delayed CMP2 mode */
+      [4] = 0x0000C000U,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEISR_OxSTAT_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Output 1 state */
+      [2] = 0x00080000U,   /** @brief Output 2 state */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEISR_RSTXx_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset interrupt flag */
+      [2] = 0x00001000U,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEISR_SETXx_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set interrupt flag */
+      [2] = 0x00000800U,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEISR_CPTx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEISR_CMPx_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEICR_RSTXxC_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief Output 1 reset flag clear */
+      [2] = 0x00001000U,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEICR_SETxXC_MSK[3] = {
+      [1] = 0x00000200U,   /** @brief Output 1 set flag clear */
+      [2] = 0x00000800U,   /** @brief Output 2 set flag clear */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEICR_CPTxC_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Capture1 interrupt flag clear */
+      [2] = 0x00000100U,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEICR_CMPxC_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 0x00000002U,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 0x00000004U,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 0x00000008U,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEDIER5_RSTXxDE_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief RSTx1DE */
+      [2] = 0x10000000U,   /** @brief RSTx2DE */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEDIER5_CPTxDE_MSK[3] = {
+      [1] = 0x00800000U,   /** @brief CPT1DE */
+      [2] = 0x01000000U,   /** @brief CPT2DE */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEDIER5_CMPxDE_MSK[5] = {
+      [1] = 0x00010000U,   /** @brief CMP1DE */
+      [2] = 0x00020000U,   /** @brief CMP2DE */
+      [3] = 0x00040000U,   /** @brief CMP3DE */
+      [4] = 0x00080000U,   /** @brief CMP4DE */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEDIER5_RSTXxIE_MSK[3] = {
+      [1] = 0x00000400U,   /** @brief RSTx1IE */
+      [2] = 0x00001000U,   /** @brief RSTx2IE */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEDIER5_CPTxIE_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief CPT1IE */
+      [2] = 0x00000100U,   /** @brief CPT2IE */
+    };
+
+    static const uint32_t HRTIM_TIME_TIMEDIER5_CMPxIE_MSK[5] = {
+      [1] = 0x00000001U,   /** @brief CMP1IE */
+      [2] = 0x00000002U,   /** @brief CMP2IE */
+      [3] = 0x00000004U,   /** @brief CMP3IE */
+      [4] = 0x00000008U,   /** @brief CMP4IE */
+    };
+
+    static const uint32_t HRTIM_TIME_SETExR_EXTEVNTx_MSK[11] = {
+      [1]  = 0x00200000U,   /** @brief External event 1 */
+      [2]  = 0x00400000U,   /** @brief External event 2 */
+      [3]  = 0x00800000U,   /** @brief External event 3 */
+      [4]  = 0x01000000U,   /** @brief External event 4 */
+      [5]  = 0x02000000U,   /** @brief External event 5 */
+      [6]  = 0x04000000U,   /** @brief External event 6 */
+      [7]  = 0x08000000U,   /** @brief External event 7 */
+      [8]  = 0x10000000U,   /** @brief External event 8 */
+      [9]  = 0x20000000U,   /** @brief External event 9 */
+      [10] = 0x40000000U,   /** @brief External event 10 */
+    };
+
+    static const uint32_t HRTIM_TIME_SETExR_TIMEVNTx_MSK[10] = {
+      [1]  = 0x00001000U,   /** @brief Timer event 1 */
+      [2]  = 0x00002000U,   /** @brief Timer event 2 */
+      [3]  = 0x00004000U,   /** @brief Timer event 3 */
+      [4]  = 0x00008000U,   /** @brief Timer event 4 */
+      [5]  = 0x00010000U,   /** @brief Timer event 5 */
+      [6]  = 0x00020000U,   /** @brief Timer event 6 */
+      [7]  = 0x00040000U,   /** @brief Timer event 7 */
+      [8]  = 0x00080000U,   /** @brief Timer event 8 */
+      [9]  = 0x00100000U,   /** @brief Timer event 9 */
+    };
+
+    static const uint32_t HRTIM_TIME_SETExR_MSTCMPx_MSK[5] = {
+      [1] = 0x00000100U,   /** @brief Master compare 1 */
+      [2] = 0x00000200U,   /** @brief Master compare 2 */
+      [3] = 0x00000400U,   /** @brief Master compare 3 */
+      [4] = 0x00000800U,   /** @brief Master compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIME_EEFERx_EExFLTR_MSK[6] = {
+      [1] = 0x0000001EU,   /** @brief External event 1 filter */
+      [2] = 0x00000780U,   /** @brief External event 2 filter */
+      [3] = 0x0001E000U,   /** @brief External event 3 filter */
+      [4] = 0x00780000U,   /** @brief External event 4 filter */
+      [5] = 0x1E000000U,   /** @brief External event 5 filter */
+    };
+
+    static const uint32_t HRTIM_TIME_EEFERx_EExLTCH_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief External event 1 latch */
+      [2] = 0x00000040U,   /** @brief External event 2 latch */
+      [3] = 0x00001000U,   /** @brief External event 3 latch */
+      [4] = 0x00040000U,   /** @brief External event 4 latch */
+      [5] = 0x01000000U,   /** @brief External event 5 latch */
+    };
+
+    static const uint32_t HRTIM_TIME_RSTER_TIMDCMPx_MSK[5] = {
+      [1] = 0x10000000U,   /** @brief Timer D compare 1 */
+      [2] = 0x20000000U,   /** @brief Timer D compare 2 */
+      [4] = 0x40000000U,   /** @brief Timer D compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIME_RSTER_TIMCCMPx_MSK[5] = {
+      [1] = 0x02000000U,   /** @brief Timer C compare 1 */
+      [2] = 0x04000000U,   /** @brief Timer C compare 2 */
+      [4] = 0x08000000U,   /** @brief Timer C compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIME_RSTER_TIMBCMPx_MSK[5] = {
+      [1] = 0x00400000U,   /** @brief Timer B compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer B compare 2 */
+      [4] = 0x01000000U,   /** @brief Timer B compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIME_RSTER_TIMACMPx_MSK[5] = {
+      [1] = 0x00080000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00100000U,   /** @brief Timer A compare 2 */
+      [4] = 0x00200000U,   /** @brief Timer A compare 4 */
+    };
+
+    static const uint32_t HRTIM_TIME_CPTxECR_TDCMPx_MSK[3] = {
+      [1] = 0x04000000U,   /** @brief Timer D compare 1 */
+      [2] = 0x08000000U,   /** @brief Timer D compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIME_CPTxECR_TCCMPx_MSK[3] = {
+      [1] = 0x00400000U,   /** @brief Timer C compare 1 */
+      [2] = 0x00800000U,   /** @brief Timer C compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIME_CPTxECR_TBCMPx_MSK[3] = {
+      [1] = 0x00040000U,   /** @brief Timer B compare 1 */
+      [2] = 0x00080000U,   /** @brief Timer B compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIME_CPTxECR_TACMPx_MSK[3] = {
+      [1] = 0x00004000U,   /** @brief Timer A compare 1 */
+      [2] = 0x00008000U,   /** @brief Timer A compare 2 */
+    };
+
+    static const uint32_t HRTIM_TIME_CPTxECR_EXEVxCPT_MSK[11] = {
+      [1]  = 0x00000004U,   /** @brief External event 1 capture */
+      [2]  = 0x00000008U,   /** @brief External event 2 capture */
+      [3]  = 0x00000010U,   /** @brief External event 3 capture */
+      [4]  = 0x00000020U,   /** @brief External event 4 capture */
+      [5]  = 0x00000040U,   /** @brief External event 5 capture */
+      [6]  = 0x00000080U,   /** @brief External event 6 capture */
+      [7]  = 0x00000100U,   /** @brief External event 7 capture */
+      [8]  = 0x00000200U,   /** @brief External event 8 capture */
+      [9]  = 0x00000400U,   /** @brief External event 9 capture */
+      [10] = 0x00000800U,   /** @brief External event 10 capture */
+    };
+
+    static const uint32_t HRTIM_TIME_OUTER_DIDLx_MSK[3] = {
+      [1] = 0x00000080U,   /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 0x00800000U,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const uint32_t HRTIM_TIME_OUTER_CHPx_MSK[3] = {
+      [1] = 0x00000040U,   /** @brief Output 1 chopper enable */
+      [2] = 0x00400000U,   /** @brief Output 2 chopper enable */
+    };
+
+    static const uint32_t HRTIM_TIME_OUTER_FAULTx_MSK[3] = {
+      [1] = 0x00000030U,   /** @brief Output 1 fault state */
+      [2] = 0x00300000U,   /** @brief Output 2 fault state */
+    };
+
+    static const uint32_t HRTIM_TIME_OUTER_IDLESx_MSK[3] = {
+      [1] = 0x00000008U,   /** @brief Output 1 idle state */
+      [2] = 0x00080000U,   /** @brief Output 2 idle state */
+    };
+
+    static const uint32_t HRTIM_TIME_OUTER_IDLEMx_MSK[3] = {
+      [1] = 0x00000004U,   /** @brief Output 1 idle mode */
+      [2] = 0x00040000U,   /** @brief Output 2 idle mode */
+    };
+
+    static const uint32_t HRTIM_TIME_OUTER_POLx_MSK[3] = {
+      [1] = 0x00000002U,   /** @brief Output 1 polarity */
+      [2] = 0x00020000U,   /** @brief Output 2 polarity */
+    };
+
+    static const uint32_t HRTIM_TIME_FLTER_FLTxEN_MSK[6] = {
+      [1] = 0x00000001U,   /** @brief Fault 1 enable */
+      [2] = 0x00000002U,   /** @brief Fault 2 enable */
+      [3] = 0x00000004U,   /** @brief Fault 3 enable */
+      [4] = 0x00000008U,   /** @brief Fault 4 enable */
+      [5] = 0x00000010U,   /** @brief Fault 5 enable */
+    };
+
+    /**** @subsection HRTIM_TIME Register Field Positions ****/
+
+    static const int32_t HRTIM_TIME_TIMECR_UPDGAT_POS      = 28;   /** @brief Update gating */
+    static const int32_t HRTIM_TIME_TIMECR_PREEN_POS       = 27;   /** @brief Preload enable */
+    static const int32_t HRTIM_TIME_TIMECR_DACSYNC_POS     = 25;   /** @brief AC synchronization */
+    static const int32_t HRTIM_TIME_TIMECR_MSTU_POS        = 24;   /** @brief Master timer update */
+    static const int32_t HRTIM_TIME_TIMECR_TEU_POS         = 23;   /** @brief TEU */
+    static const int32_t HRTIM_TIME_TIMECR_TDU_POS         = 22;   /** @brief TDU */
+    static const int32_t HRTIM_TIME_TIMECR_TCU_POS         = 21;   /** @brief TCU */
+    static const int32_t HRTIM_TIME_TIMECR_TBU_POS         = 20;   /** @brief TBU */
+    static const int32_t HRTIM_TIME_TIMECR_TXRSTU_POS      = 18;   /** @brief Timerx reset update */
+    static const int32_t HRTIM_TIME_TIMECR_TXREPU_POS      = 17;   /** @brief Timer x repetition update */
+    static const int32_t HRTIM_TIME_TIMECR_SYNCSTRTX_POS   = 11;   /** @brief Synchronization starts timer x */
+    static const int32_t HRTIM_TIME_TIMECR_SYNCRSTX_POS    = 10;   /** @brief Synchronization resets timer x */
+    static const int32_t HRTIM_TIME_TIMECR_PSHPLL_POS      = 6;    /** @brief Push-Pull mode enable */
+    static const int32_t HRTIM_TIME_TIMECR_HALF_POS        = 5;    /** @brief Half mode enable */
+    static const int32_t HRTIM_TIME_TIMECR_RETRIG_POS      = 4;    /** @brief Re-triggerable mode */
+    static const int32_t HRTIM_TIME_TIMECR_CONT_POS        = 3;    /** @brief Continuous mode */
+    static const int32_t HRTIM_TIME_TIMECR_CK_PSCX_POS     = 0;    /** @brief HRTIM timer x clock prescaler */
+    static const int32_t HRTIM_TIME_TIMEISR_IPPSTAT_POS    = 17;   /** @brief Idle push pull status */
+    static const int32_t HRTIM_TIME_TIMEISR_CPPSTAT_POS    = 16;   /** @brief Current push pull status */
+    static const int32_t HRTIM_TIME_TIMEISR_DLYPRT_POS     = 14;   /** @brief Delayed protection flag */
+    static const int32_t HRTIM_TIME_TIMEISR_RST_POS        = 13;   /** @brief Reset interrupt flag */
+    static const int32_t HRTIM_TIME_TIMEISR_UPD_POS        = 6;    /** @brief Update interrupt flag */
+    static const int32_t HRTIM_TIME_TIMEISR_REP_POS        = 4;    /** @brief Repetition interrupt flag */
+    static const int32_t HRTIM_TIME_TIMEICR_DLYPRTC_POS    = 14;   /** @brief Delayed protection flag clear */
+    static const int32_t HRTIM_TIME_TIMEICR_RSTC_POS       = 13;   /** @brief Reset interrupt flag clear */
+    static const int32_t HRTIM_TIME_TIMEICR_UPDC_POS       = 6;    /** @brief Update interrupt flag clear */
+    static const int32_t HRTIM_TIME_TIMEICR_REPC_POS       = 4;    /** @brief Repetition interrupt flag clear */
+    static const int32_t HRTIM_TIME_TIMEDIER5_DLYPRTDE_POS = 30;   /** @brief DLYPRTDE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_RSTDE_POS    = 29;   /** @brief RSTDE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_SETX2DE_POS  = 27;   /** @brief SETx2DE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_SET1XDE_POS  = 25;   /** @brief SET1xDE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_UPDDE_POS    = 22;   /** @brief UPDDE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_REPDE_POS    = 20;   /** @brief REPDE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_DLYPRTIE_POS = 14;   /** @brief DLYPRTIE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_RSTIE_POS    = 13;   /** @brief RSTIE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_SETX2IE_POS  = 11;   /** @brief SETx2IE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_SET1XIE_POS  = 9;    /** @brief SET1xIE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_UPDIE_POS    = 6;    /** @brief UPDIE */
+    static const int32_t HRTIM_TIME_TIMEDIER5_REPIE_POS    = 4;    /** @brief REPIE */
+    static const int32_t HRTIM_TIME_CNTER_CNTX_POS         = 0;    /** @brief Timerx counter value */
+    static const int32_t HRTIM_TIME_PERER_PERX_POS         = 0;    /** @brief Timerx period value */
+    static const int32_t HRTIM_TIME_REPER_REPX_POS         = 0;    /** @brief Timerx repetition counter value */
+    static const int32_t HRTIM_TIME_CMPxER_CMP1X_POS       = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIME_CMP1CER_REPX_POS       = 16;   /** @brief Timerx repetition value (aliased from hrtim_repx register) */
+    static const int32_t HRTIM_TIME_CMP1CER_CMP1X_POS      = 0;    /** @brief Timerx compare 1 value */
+    static const int32_t HRTIM_TIME_CPTxER_CPT1X_POS       = 0;    /** @brief Timerx capture 1 value */
+    static const int32_t HRTIM_TIME_DTER_DTFLKX_POS        = 31;   /** @brief Deadtime falling lock */
+    static const int32_t HRTIM_TIME_DTER_DTFSLKX_POS       = 30;   /** @brief Deadtime falling sign lock */
+    static const int32_t HRTIM_TIME_DTER_SDTFX_POS         = 25;   /** @brief Sign deadtime falling value */
+    static const int32_t HRTIM_TIME_DTER_DTFX_POS          = 16;   /** @brief Deadtime falling value */
+    static const int32_t HRTIM_TIME_DTER_DTRLKX_POS        = 15;   /** @brief Deadtime rising lock */
+    static const int32_t HRTIM_TIME_DTER_DTRSLKX_POS       = 14;   /** @brief Deadtime rising sign lock */
+    static const int32_t HRTIM_TIME_DTER_DTPRSC_POS        = 10;   /** @brief Deadtime prescaler */
+    static const int32_t HRTIM_TIME_DTER_SDTRX_POS         = 9;    /** @brief Sign deadtime rising value */
+    static const int32_t HRTIM_TIME_DTER_DTRX_POS          = 0;    /** @brief Deadtime rising value */
+    static const int32_t HRTIM_TIME_SETExR_UPDATE_POS      = 31;   /** @brief Registers update (transfer preload to active) */
+    static const int32_t HRTIM_TIME_SETExR_MSTPER_POS      = 7;    /** @brief Master period */
+    static const int32_t HRTIM_TIME_SETExR_PER_POS         = 2;    /** @brief Timer A period */
+    static const int32_t HRTIM_TIME_SETExR_RESYNC_POS      = 1;    /** @brief Timer A resynchronizaton */
+    static const int32_t HRTIM_TIME_SETExR_SST_POS         = 0;    /** @brief Software set trigger */
+    static const int32_t HRTIM_TIME_RSTExR_UPDATE_POS      = 31;   /** @brief UPDATE */
+    static const int32_t HRTIM_TIME_RSTExR_MSTPER_POS      = 7;    /** @brief MSTPER */
+    static const int32_t HRTIM_TIME_RSTExR_PER_POS         = 2;    /** @brief PER */
+    static const int32_t HRTIM_TIME_RSTExR_RESYNC_POS      = 1;    /** @brief RESYNC */
+    static const int32_t HRTIM_TIME_RSTExR_SRT_POS         = 0;    /** @brief SRT */
+    static const int32_t HRTIM_TIME_RSTER_MSTPER_POS       = 4;    /** @brief Master timer period */
+    static const int32_t HRTIM_TIME_RSTER_UPDT_POS         = 1;    /** @brief Timer A update reset */
+    static const int32_t HRTIM_TIME_CHPER_STRTPW_POS       = 7;    /** @brief STRTPW */
+    static const int32_t HRTIM_TIME_CHPER_CHPDTY_POS       = 4;    /** @brief Timerx chopper duty cycle value */
+    static const int32_t HRTIM_TIME_CHPER_CHPFRQ_POS       = 0;    /** @brief Timerx carrier frequency value */
+    static const int32_t HRTIM_TIME_CPTxECR_TD1RST_POS     = 25;   /** @brief Timer D output 1 reset */
+    static const int32_t HRTIM_TIME_CPTxECR_TD1SET_POS     = 24;   /** @brief Timer D output 1 set */
+    static const int32_t HRTIM_TIME_CPTxECR_TC1RST_POS     = 21;   /** @brief Timer C output 1 reset */
+    static const int32_t HRTIM_TIME_CPTxECR_TC1SET_POS     = 20;   /** @brief Timer C output 1 set */
+    static const int32_t HRTIM_TIME_CPTxECR_TB1RST_POS     = 17;   /** @brief Timer B output 1 reset */
+    static const int32_t HRTIM_TIME_CPTxECR_TB1SET_POS     = 16;   /** @brief Timer B output 1 set */
+    static const int32_t HRTIM_TIME_CPTxECR_TA1RST_POS     = 13;   /** @brief Timer A output 1 reset */
+    static const int32_t HRTIM_TIME_CPTxECR_TA1SET_POS     = 12;   /** @brief Timer A output 1 set */
+    static const int32_t HRTIM_TIME_CPTxECR_UDPCPT_POS     = 1;    /** @brief Update capture */
+    static const int32_t HRTIM_TIME_CPTxECR_SWCPT_POS      = 0;    /** @brief Software capture */
+    static const int32_t HRTIM_TIME_OUTER_DLYPRT_POS       = 10;   /** @brief Delayed protection */
+    static const int32_t HRTIM_TIME_OUTER_DLYPRTEN_POS     = 9;    /** @brief Delayed protection enable */
+    static const int32_t HRTIM_TIME_OUTER_DTEN_POS         = 8;    /** @brief Deadtime enable */
+    static const int32_t HRTIM_TIME_FLTER_FLTLCK_POS       = 31;   /** @brief Fault sources lock */
+
+    static const int32_t HRTIM_TIME_TIMECR_DELCMPx_POS[5] = {
+      [2] = 12,   /** @brief Delayed CMP2 mode */
+      [4] = 14,   /** @brief Delayed CMP4 mode */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEISR_OxSTAT_POS[3] = {
+      [1] = 18,   /** @brief Output 1 state */
+      [2] = 19,   /** @brief Output 2 state */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEISR_RSTXx_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset interrupt flag */
+      [2] = 12,   /** @brief Output 2 reset interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEISR_SETXx_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set interrupt flag */
+      [2] = 11,   /** @brief Output 2 set interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEISR_CPTx_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag */
+      [2] = 8,   /** @brief Capture2 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEISR_CMPx_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag */
+      [2] = 1,   /** @brief Compare 2 interrupt flag */
+      [3] = 2,   /** @brief Compare 3 interrupt flag */
+      [4] = 3,   /** @brief Compare 4 interrupt flag */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEICR_RSTXxC_POS[3] = {
+      [1] = 10,   /** @brief Output 1 reset flag clear */
+      [2] = 12,   /** @brief Output 2 reset flag clear */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEICR_SETxXC_POS[3] = {
+      [1] = 9,    /** @brief Output 1 set flag clear */
+      [2] = 11,   /** @brief Output 2 set flag clear */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEICR_CPTxC_POS[3] = {
+      [1] = 7,   /** @brief Capture1 interrupt flag clear */
+      [2] = 8,   /** @brief Capture2 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEICR_CMPxC_POS[5] = {
+      [1] = 0,   /** @brief Compare 1 interrupt flag clear */
+      [2] = 1,   /** @brief Compare 2 interrupt flag clear */
+      [3] = 2,   /** @brief Compare 3 interrupt flag clear */
+      [4] = 3,   /** @brief Compare 4 interrupt flag clear */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEDIER5_RSTXxDE_POS[3] = {
+      [1] = 26,   /** @brief RSTx1DE */
+      [2] = 28,   /** @brief RSTx2DE */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEDIER5_CPTxDE_POS[3] = {
+      [1] = 23,   /** @brief CPT1DE */
+      [2] = 24,   /** @brief CPT2DE */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEDIER5_CMPxDE_POS[5] = {
+      [1] = 16,   /** @brief CMP1DE */
+      [2] = 17,   /** @brief CMP2DE */
+      [3] = 18,   /** @brief CMP3DE */
+      [4] = 19,   /** @brief CMP4DE */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEDIER5_RSTXxIE_POS[3] = {
+      [1] = 10,   /** @brief RSTx1IE */
+      [2] = 12,   /** @brief RSTx2IE */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEDIER5_CPTxIE_POS[3] = {
+      [1] = 7,   /** @brief CPT1IE */
+      [2] = 8,   /** @brief CPT2IE */
+    };
+
+    static const int32_t HRTIM_TIME_TIMEDIER5_CMPxIE_POS[5] = {
+      [1] = 0,   /** @brief CMP1IE */
+      [2] = 1,   /** @brief CMP2IE */
+      [3] = 2,   /** @brief CMP3IE */
+      [4] = 3,   /** @brief CMP4IE */
+    };
+
+    static const int32_t HRTIM_TIME_SETExR_EXTEVNTx_POS[11] = {
+      [1]  = 21,   /** @brief External event 1 */
+      [2]  = 22,   /** @brief External event 2 */
+      [3]  = 23,   /** @brief External event 3 */
+      [4]  = 24,   /** @brief External event 4 */
+      [5]  = 25,   /** @brief External event 5 */
+      [6]  = 26,   /** @brief External event 6 */
+      [7]  = 27,   /** @brief External event 7 */
+      [8]  = 28,   /** @brief External event 8 */
+      [9]  = 29,   /** @brief External event 9 */
+      [10] = 30,   /** @brief External event 10 */
+    };
+
+    static const int32_t HRTIM_TIME_SETExR_TIMEVNTx_POS[10] = {
+      [1]  = 12,   /** @brief Timer event 1 */
+      [2]  = 13,   /** @brief Timer event 2 */
+      [3]  = 14,   /** @brief Timer event 3 */
+      [4]  = 15,   /** @brief Timer event 4 */
+      [5]  = 16,   /** @brief Timer event 5 */
+      [6]  = 17,   /** @brief Timer event 6 */
+      [7]  = 18,   /** @brief Timer event 7 */
+      [8]  = 19,   /** @brief Timer event 8 */
+      [9]  = 20,   /** @brief Timer event 9 */
+    };
+
+    static const int32_t HRTIM_TIME_SETExR_MSTCMPx_POS[5] = {
+      [1] = 8,    /** @brief Master compare 1 */
+      [2] = 9,    /** @brief Master compare 2 */
+      [3] = 10,   /** @brief Master compare 3 */
+      [4] = 11,   /** @brief Master compare 4 */
+    };
+
+    static const int32_t HRTIM_TIME_EEFERx_EExFLTR_POS[6] = {
+      [1] = 1,    /** @brief External event 1 filter */
+      [2] = 7,    /** @brief External event 2 filter */
+      [3] = 13,   /** @brief External event 3 filter */
+      [4] = 19,   /** @brief External event 4 filter */
+      [5] = 25,   /** @brief External event 5 filter */
+    };
+
+    static const int32_t HRTIM_TIME_EEFERx_EExLTCH_POS[6] = {
+      [1] = 0,    /** @brief External event 1 latch */
+      [2] = 6,    /** @brief External event 2 latch */
+      [3] = 12,   /** @brief External event 3 latch */
+      [4] = 18,   /** @brief External event 4 latch */
+      [5] = 24,   /** @brief External event 5 latch */
+    };
+
+    static const int32_t HRTIM_TIME_RSTER_TIMDCMPx_POS[5] = {
+      [1] = 28,   /** @brief Timer D compare 1 */
+      [2] = 29,   /** @brief Timer D compare 2 */
+      [4] = 30,   /** @brief Timer D compare 4 */
+    };
+
+    static const int32_t HRTIM_TIME_RSTER_TIMCCMPx_POS[5] = {
+      [1] = 25,   /** @brief Timer C compare 1 */
+      [2] = 26,   /** @brief Timer C compare 2 */
+      [4] = 27,   /** @brief Timer C compare 4 */
+    };
+
+    static const int32_t HRTIM_TIME_RSTER_TIMBCMPx_POS[5] = {
+      [1] = 22,   /** @brief Timer B compare 1 */
+      [2] = 23,   /** @brief Timer B compare 2 */
+      [4] = 24,   /** @brief Timer B compare 4 */
+    };
+
+    static const int32_t HRTIM_TIME_RSTER_TIMACMPx_POS[5] = {
+      [1] = 19,   /** @brief Timer A compare 1 */
+      [2] = 20,   /** @brief Timer A compare 2 */
+      [4] = 21,   /** @brief Timer A compare 4 */
+    };
+
+    static const int32_t HRTIM_TIME_CPTxECR_TDCMPx_POS[3] = {
+      [1] = 26,   /** @brief Timer D compare 1 */
+      [2] = 27,   /** @brief Timer D compare 2 */
+    };
+
+    static const int32_t HRTIM_TIME_CPTxECR_TCCMPx_POS[3] = {
+      [1] = 22,   /** @brief Timer C compare 1 */
+      [2] = 23,   /** @brief Timer C compare 2 */
+    };
+
+    static const int32_t HRTIM_TIME_CPTxECR_TBCMPx_POS[3] = {
+      [1] = 18,   /** @brief Timer B compare 1 */
+      [2] = 19,   /** @brief Timer B compare 2 */
+    };
+
+    static const int32_t HRTIM_TIME_CPTxECR_TACMPx_POS[3] = {
+      [1] = 14,   /** @brief Timer A compare 1 */
+      [2] = 15,   /** @brief Timer A compare 2 */
+    };
+
+    static const int32_t HRTIM_TIME_CPTxECR_EXEVxCPT_POS[11] = {
+      [1]  = 2,    /** @brief External event 1 capture */
+      [2]  = 3,    /** @brief External event 2 capture */
+      [3]  = 4,    /** @brief External event 3 capture */
+      [4]  = 5,    /** @brief External event 4 capture */
+      [5]  = 6,    /** @brief External event 5 capture */
+      [6]  = 7,    /** @brief External event 6 capture */
+      [7]  = 8,    /** @brief External event 7 capture */
+      [8]  = 9,    /** @brief External event 8 capture */
+      [9]  = 10,   /** @brief External event 9 capture */
+      [10] = 11,   /** @brief External event 10 capture */
+    };
+
+    static const int32_t HRTIM_TIME_OUTER_DIDLx_POS[3] = {
+      [1] = 7,    /** @brief Output 1 deadtime upon burst mode idle entry */
+      [2] = 23,   /** @brief Output 2 deadtime upon burst mode idle entry */
+    };
+
+    static const int32_t HRTIM_TIME_OUTER_CHPx_POS[3] = {
+      [1] = 6,    /** @brief Output 1 chopper enable */
+      [2] = 22,   /** @brief Output 2 chopper enable */
+    };
+
+    static const int32_t HRTIM_TIME_OUTER_FAULTx_POS[3] = {
+      [1] = 4,    /** @brief Output 1 fault state */
+      [2] = 20,   /** @brief Output 2 fault state */
+    };
+
+    static const int32_t HRTIM_TIME_OUTER_IDLESx_POS[3] = {
+      [1] = 3,    /** @brief Output 1 idle state */
+      [2] = 19,   /** @brief Output 2 idle state */
+    };
+
+    static const int32_t HRTIM_TIME_OUTER_IDLEMx_POS[3] = {
+      [1] = 2,    /** @brief Output 1 idle mode */
+      [2] = 18,   /** @brief Output 2 idle mode */
+    };
+
+    static const int32_t HRTIM_TIME_OUTER_POLx_POS[3] = {
+      [1] = 1,    /** @brief Output 1 polarity */
+      [2] = 17,   /** @brief Output 2 polarity */
+    };
+
+    static const int32_t HRTIM_TIME_FLTER_FLTxEN_POS[6] = {
       [1] = 0,   /** @brief Fault 1 enable */
       [2] = 1,   /** @brief Fault 2 enable */
       [3] = 2,   /** @brief Fault 3 enable */
@@ -15980,77 +19675,60 @@
     };
 
     /**********************************************************************************************
-     * @section xPU Register Information
+     * @section MPU Register Information
      **********************************************************************************************/
 
-    /**** @subsection xPU Register Pointers ****/
+    /**** @subsection MPU Register Pointers ****/
 
-    static RO_ uint32_t* const xPU_MPU_TYPER_PTR[13] = {
-      [5]  = (RO_ uint32_t* const)0xE000EF34U,   /** @brief Floating-point context control register */
-      [12] = (RO_ uint32_t* const)0xE000ED90U,   /** @brief MPU type register */
-    };
+    static RO_ uint32_t* const MPU_MPU_TYPER_PTR = (RO_ uint32_t* const)0xE000ED90U;   /** @brief MPU type register */
+    static RO_ uint32_t* const MPU_MPU_CTRL_PTR  = (RO_ uint32_t* const)0xE000ED94U;   /** @brief MPU control register */
+    static RW_ uint32_t* const MPU_MPU_RNR_PTR   = (RW_ uint32_t* const)0xE000ED98U;   /** @brief MPU region number register */
+    static RW_ uint32_t* const MPU_MPU_RBAR_PTR  = (RW_ uint32_t* const)0xE000ED9CU;   /** @brief MPU region base address register */
+    static RW_ uint32_t* const MPU_MPU_RASR_PTR  = (RW_ uint32_t* const)0xE000EDA0U;   /** @brief MPU region attribute and size register */
 
-    static RO_ uint32_t* const xPU_MPU_CTRL_PTR[13] = {
-      [5]  = (RO_ uint32_t* const)0xE000EF38U,   /** @brief Floating-point context address register */
-      [12] = (RO_ uint32_t* const)0xE000ED94U,   /** @brief MPU control register */
-    };
+    /**** @subsection MPU Register Field Masks ****/
 
-    static RW_ uint32_t* const xPU_MPU_RNR_PTR[13] = {
-      [5]  = (RW_ uint32_t* const)0xE000EF3CU,   /** @brief Floating-point status control register */
-      [12] = (RW_ uint32_t* const)0xE000ED98U,   /** @brief MPU region number register */
-    };
+    static const uint32_t MPU_MPU_TYPER_SEPARATE_MSK  = 0x00000001U;   /** @brief Separate flag */
+    static const uint32_t MPU_MPU_TYPER_DREGION_MSK   = 0x0000FF00U;   /** @brief Number of MPU data regions */
+    static const uint32_t MPU_MPU_TYPER_IREGION_MSK   = 0x00FF0000U;   /** @brief Number of MPU instruction regions */
+    static const uint32_t MPU_MPU_CTRL_ENABLE_MSK     = 0x00000001U;   /** @brief Enables the MPU */
+    static const uint32_t MPU_MPU_CTRL_HFNMIENA_MSK   = 0x00000002U;   /** @brief Enables the operation of MPU during hard fault */
+    static const uint32_t MPU_MPU_CTRL_PRIVDEFENA_MSK = 0x00000004U;   /** @brief Enable priviliged software access to default memory map */
+    static const uint32_t MPU_MPU_RNR_REGION_MSK      = 0x000000FFU;   /** @brief MPU region */
+    static const uint32_t MPU_MPU_RBAR_REGION_MSK     = 0x0000000FU;   /** @brief MPU region field */
+    static const uint32_t MPU_MPU_RBAR_VALID_MSK      = 0x00000010U;   /** @brief MPU region number valid */
+    static const uint32_t MPU_MPU_RBAR_ADDR_MSK       = 0xFFFFFFE0U;   /** @brief Region base address field */
+    static const uint32_t MPU_MPU_RASR_ENABLE_MSK     = 0x00000001U;   /** @brief Region enable bit. */
+    static const uint32_t MPU_MPU_RASR_SIZE_MSK       = 0x0000003EU;   /** @brief Size of the MPU protection region */
+    static const uint32_t MPU_MPU_RASR_SRD_MSK        = 0x0000FF00U;   /** @brief Subregion disable bits */
+    static const uint32_t MPU_MPU_RASR_B_MSK          = 0x00010000U;   /** @brief Memory attribute */
+    static const uint32_t MPU_MPU_RASR_C_MSK          = 0x00020000U;   /** @brief Memory attribute */
+    static const uint32_t MPU_MPU_RASR_S_MSK          = 0x00040000U;   /** @brief Shareable memory attribute */
+    static const uint32_t MPU_MPU_RASR_TEX_MSK        = 0x00380000U;   /** @brief Memory attribute */
+    static const uint32_t MPU_MPU_RASR_AP_MSK         = 0x07000000U;   /** @brief Access permission */
+    static const uint32_t MPU_MPU_RASR_XN_MSK         = 0x10000000U;   /** @brief Instruction access disable bit */
 
-    static RW_ uint32_t* const xPU_MPU_RBAR_PTR[13] = {
-      [12] = (RW_ uint32_t* const)0xE000ED9CU,   /** @brief MPU region base address register */
-    };
+    /**** @subsection MPU Register Field Positions ****/
 
-    static RW_ uint32_t* const xPU_MPU_RASR_PTR[13] = {
-      [12] = (RW_ uint32_t* const)0xE000EDA0U,   /** @brief MPU region attribute and size register */
-    };
-
-    /**** @subsection xPU Register Field Masks ****/
-
-    static const uint32_t xPU_MPU_TYPER_SEPARATE_MSK  = 0x00000001U;   /** @brief Separate flag */
-    static const uint32_t xPU_MPU_TYPER_DREGION_MSK   = 0x0000FF00U;   /** @brief Number of MPU data regions */
-    static const uint32_t xPU_MPU_TYPER_IREGION_MSK   = 0x00FF0000U;   /** @brief Number of MPU instruction regions */
-    static const uint32_t xPU_MPU_CTRL_ENABLE_MSK     = 0x00000001U;   /** @brief Enables the MPU */
-    static const uint32_t xPU_MPU_CTRL_HFNMIENA_MSK   = 0x00000002U;   /** @brief Enables the operation of MPU during hard fault */
-    static const uint32_t xPU_MPU_CTRL_PRIVDEFENA_MSK = 0x00000004U;   /** @brief Enable priviliged software access to default memory map */
-    static const uint32_t xPU_MPU_RNR_REGION_MSK      = 0x000000FFU;   /** @brief MPU region */
-    static const uint32_t xPU_MPU_RBAR_REGION_MSK     = 0x0000000FU;   /** @brief MPU region field */
-    static const uint32_t xPU_MPU_RBAR_VALID_MSK      = 0x00000010U;   /** @brief MPU region number valid */
-    static const uint32_t xPU_MPU_RBAR_ADDR_MSK       = 0xFFFFFFE0U;   /** @brief Region base address field */
-    static const uint32_t xPU_MPU_RASR_ENABLE_MSK     = 0x00000001U;   /** @brief Region enable bit. */
-    static const uint32_t xPU_MPU_RASR_SIZE_MSK       = 0x0000003EU;   /** @brief Size of the MPU protection region */
-    static const uint32_t xPU_MPU_RASR_SRD_MSK        = 0x0000FF00U;   /** @brief Subregion disable bits */
-    static const uint32_t xPU_MPU_RASR_B_MSK          = 0x00010000U;   /** @brief Memory attribute */
-    static const uint32_t xPU_MPU_RASR_C_MSK          = 0x00020000U;   /** @brief Memory attribute */
-    static const uint32_t xPU_MPU_RASR_S_MSK          = 0x00040000U;   /** @brief Shareable memory attribute */
-    static const uint32_t xPU_MPU_RASR_TEX_MSK        = 0x00380000U;   /** @brief Memory attribute */
-    static const uint32_t xPU_MPU_RASR_AP_MSK         = 0x07000000U;   /** @brief Access permission */
-    static const uint32_t xPU_MPU_RASR_XN_MSK         = 0x10000000U;   /** @brief Instruction access disable bit */
-
-    /**** @subsection xPU Register Field Positions ****/
-
-    static const int32_t xPU_MPU_TYPER_SEPARATE_POS  = 0;    /** @brief Separate flag */
-    static const int32_t xPU_MPU_TYPER_DREGION_POS   = 8;    /** @brief Number of MPU data regions */
-    static const int32_t xPU_MPU_TYPER_IREGION_POS   = 16;   /** @brief Number of MPU instruction regions */
-    static const int32_t xPU_MPU_CTRL_ENABLE_POS     = 0;    /** @brief Enables the MPU */
-    static const int32_t xPU_MPU_CTRL_HFNMIENA_POS   = 1;    /** @brief Enables the operation of MPU during hard fault */
-    static const int32_t xPU_MPU_CTRL_PRIVDEFENA_POS = 2;    /** @brief Enable priviliged software access to default memory map */
-    static const int32_t xPU_MPU_RNR_REGION_POS      = 0;    /** @brief MPU region */
-    static const int32_t xPU_MPU_RBAR_REGION_POS     = 0;    /** @brief MPU region field */
-    static const int32_t xPU_MPU_RBAR_VALID_POS      = 4;    /** @brief MPU region number valid */
-    static const int32_t xPU_MPU_RBAR_ADDR_POS       = 5;    /** @brief Region base address field */
-    static const int32_t xPU_MPU_RASR_ENABLE_POS     = 0;    /** @brief Region enable bit. */
-    static const int32_t xPU_MPU_RASR_SIZE_POS       = 1;    /** @brief Size of the MPU protection region */
-    static const int32_t xPU_MPU_RASR_SRD_POS        = 8;    /** @brief Subregion disable bits */
-    static const int32_t xPU_MPU_RASR_B_POS          = 16;   /** @brief Memory attribute */
-    static const int32_t xPU_MPU_RASR_C_POS          = 17;   /** @brief Memory attribute */
-    static const int32_t xPU_MPU_RASR_S_POS          = 18;   /** @brief Shareable memory attribute */
-    static const int32_t xPU_MPU_RASR_TEX_POS        = 19;   /** @brief Memory attribute */
-    static const int32_t xPU_MPU_RASR_AP_POS         = 24;   /** @brief Access permission */
-    static const int32_t xPU_MPU_RASR_XN_POS         = 28;   /** @brief Instruction access disable bit */
+    static const int32_t MPU_MPU_TYPER_SEPARATE_POS  = 0;    /** @brief Separate flag */
+    static const int32_t MPU_MPU_TYPER_DREGION_POS   = 8;    /** @brief Number of MPU data regions */
+    static const int32_t MPU_MPU_TYPER_IREGION_POS   = 16;   /** @brief Number of MPU instruction regions */
+    static const int32_t MPU_MPU_CTRL_ENABLE_POS     = 0;    /** @brief Enables the MPU */
+    static const int32_t MPU_MPU_CTRL_HFNMIENA_POS   = 1;    /** @brief Enables the operation of MPU during hard fault */
+    static const int32_t MPU_MPU_CTRL_PRIVDEFENA_POS = 2;    /** @brief Enable priviliged software access to default memory map */
+    static const int32_t MPU_MPU_RNR_REGION_POS      = 0;    /** @brief MPU region */
+    static const int32_t MPU_MPU_RBAR_REGION_POS     = 0;    /** @brief MPU region field */
+    static const int32_t MPU_MPU_RBAR_VALID_POS      = 4;    /** @brief MPU region number valid */
+    static const int32_t MPU_MPU_RBAR_ADDR_POS       = 5;    /** @brief Region base address field */
+    static const int32_t MPU_MPU_RASR_ENABLE_POS     = 0;    /** @brief Region enable bit. */
+    static const int32_t MPU_MPU_RASR_SIZE_POS       = 1;    /** @brief Size of the MPU protection region */
+    static const int32_t MPU_MPU_RASR_SRD_POS        = 8;    /** @brief Subregion disable bits */
+    static const int32_t MPU_MPU_RASR_B_POS          = 16;   /** @brief Memory attribute */
+    static const int32_t MPU_MPU_RASR_C_POS          = 17;   /** @brief Memory attribute */
+    static const int32_t MPU_MPU_RASR_S_POS          = 18;   /** @brief Shareable memory attribute */
+    static const int32_t MPU_MPU_RASR_TEX_POS        = 19;   /** @brief Memory attribute */
+    static const int32_t MPU_MPU_RASR_AP_POS         = 24;   /** @brief Access permission */
+    static const int32_t MPU_MPU_RASR_XN_POS         = 28;   /** @brief Instruction access disable bit */
 
     /**********************************************************************************************
      * @section STK Register Information
@@ -16140,6 +19818,70 @@
     static const int32_t SCB_ACTRL_ACTRL_FPEXCODIS_POS      = 10;   /** @brief FPEXCODIS */
     static const int32_t SCB_ACTRL_ACTRL_DISRAMODE_POS      = 11;   /** @brief DISRAMODE */
     static const int32_t SCB_ACTRL_ACTRL_DISITMATBFLUSH_POS = 12;   /** @brief DISITMATBFLUSH */
+
+    /**********************************************************************************************
+     * @section FPU Register Information
+     **********************************************************************************************/
+
+    /**** @subsection FPU Register Pointers ****/
+
+    static RW_ uint32_t* const FPU_FPCCR_PTR = (RW_ uint32_t* const)0xE000EF34U;   /** @brief Floating-point context control register */
+    static RW_ uint32_t* const FPU_FPCAR_PTR = (RW_ uint32_t* const)0xE000EF38U;   /** @brief Floating-point context address register */
+    static RW_ uint32_t* const FPU_FPSCR_PTR = (RW_ uint32_t* const)0xE000EF3CU;   /** @brief Floating-point status control register */
+
+    /**** @subsection FPU Register Field Masks ****/
+
+    static const uint32_t FPU_FPCCR_LSPACT_MSK  = 0x00000001U;   /** @brief LSPACT */
+    static const uint32_t FPU_FPCCR_USER_MSK    = 0x00000002U;   /** @brief USER */
+    static const uint32_t FPU_FPCCR_THREAD_MSK  = 0x00000008U;   /** @brief THREAD */
+    static const uint32_t FPU_FPCCR_HFRDY_MSK   = 0x00000010U;   /** @brief HFRDY */
+    static const uint32_t FPU_FPCCR_MMRDY_MSK   = 0x00000020U;   /** @brief MMRDY */
+    static const uint32_t FPU_FPCCR_BFRDY_MSK   = 0x00000040U;   /** @brief BFRDY */
+    static const uint32_t FPU_FPCCR_MONRDY_MSK  = 0x00000100U;   /** @brief MONRDY */
+    static const uint32_t FPU_FPCCR_LSPEN_MSK   = 0x40000000U;   /** @brief LSPEN */
+    static const uint32_t FPU_FPCCR_ASPEN_MSK   = 0x80000000U;   /** @brief ASPEN */
+    static const uint32_t FPU_FPCAR_ADDRESS_MSK = 0xFFFFFFF8U;   /** @brief Location of unpopulated floating-point */
+    static const uint32_t FPU_FPSCR_IOC_MSK     = 0x00000001U;   /** @brief Invalid operation cumulative exception bit */
+    static const uint32_t FPU_FPSCR_DZC_MSK     = 0x00000002U;   /** @brief Division by zero cumulative exception bit. */
+    static const uint32_t FPU_FPSCR_OFC_MSK     = 0x00000004U;   /** @brief Overflow cumulative exception bit */
+    static const uint32_t FPU_FPSCR_UFC_MSK     = 0x00000008U;   /** @brief Underflow cumulative exception bit */
+    static const uint32_t FPU_FPSCR_IXC_MSK     = 0x00000010U;   /** @brief Inexact cumulative exception bit */
+    static const uint32_t FPU_FPSCR_IDC_MSK     = 0x00000080U;   /** @brief Input denormal cumulative exception bit. */
+    static const uint32_t FPU_FPSCR_RMODE_MSK   = 0x00C00000U;   /** @brief Rounding mode control field */
+    static const uint32_t FPU_FPSCR_FZ_MSK      = 0x01000000U;   /** @brief Flush-to-zero mode control bit: */
+    static const uint32_t FPU_FPSCR_DN_MSK      = 0x02000000U;   /** @brief Default nan mode control bit */
+    static const uint32_t FPU_FPSCR_AHP_MSK     = 0x04000000U;   /** @brief Alternative half-precision control bit */
+    static const uint32_t FPU_FPSCR_V_MSK       = 0x10000000U;   /** @brief Overflow condition code flag */
+    static const uint32_t FPU_FPSCR_C_MSK       = 0x20000000U;   /** @brief Carry condition code flag */
+    static const uint32_t FPU_FPSCR_Z_MSK       = 0x40000000U;   /** @brief Zero condition code flag */
+    static const uint32_t FPU_FPSCR_N_MSK       = 0x80000000U;   /** @brief Negative condition code flag */
+
+    /**** @subsection FPU Register Field Positions ****/
+
+    static const int32_t FPU_FPCCR_LSPACT_POS  = 0;    /** @brief LSPACT */
+    static const int32_t FPU_FPCCR_USER_POS    = 1;    /** @brief USER */
+    static const int32_t FPU_FPCCR_THREAD_POS  = 3;    /** @brief THREAD */
+    static const int32_t FPU_FPCCR_HFRDY_POS   = 4;    /** @brief HFRDY */
+    static const int32_t FPU_FPCCR_MMRDY_POS   = 5;    /** @brief MMRDY */
+    static const int32_t FPU_FPCCR_BFRDY_POS   = 6;    /** @brief BFRDY */
+    static const int32_t FPU_FPCCR_MONRDY_POS  = 8;    /** @brief MONRDY */
+    static const int32_t FPU_FPCCR_LSPEN_POS   = 30;   /** @brief LSPEN */
+    static const int32_t FPU_FPCCR_ASPEN_POS   = 31;   /** @brief ASPEN */
+    static const int32_t FPU_FPCAR_ADDRESS_POS = 3;    /** @brief Location of unpopulated floating-point */
+    static const int32_t FPU_FPSCR_IOC_POS     = 0;    /** @brief Invalid operation cumulative exception bit */
+    static const int32_t FPU_FPSCR_DZC_POS     = 1;    /** @brief Division by zero cumulative exception bit. */
+    static const int32_t FPU_FPSCR_OFC_POS     = 2;    /** @brief Overflow cumulative exception bit */
+    static const int32_t FPU_FPSCR_UFC_POS     = 3;    /** @brief Underflow cumulative exception bit */
+    static const int32_t FPU_FPSCR_IXC_POS     = 4;    /** @brief Inexact cumulative exception bit */
+    static const int32_t FPU_FPSCR_IDC_POS     = 7;    /** @brief Input denormal cumulative exception bit. */
+    static const int32_t FPU_FPSCR_RMODE_POS   = 22;   /** @brief Rounding mode control field */
+    static const int32_t FPU_FPSCR_FZ_POS      = 24;   /** @brief Flush-to-zero mode control bit: */
+    static const int32_t FPU_FPSCR_DN_POS      = 25;   /** @brief Default nan mode control bit */
+    static const int32_t FPU_FPSCR_AHP_POS     = 26;   /** @brief Alternative half-precision control bit */
+    static const int32_t FPU_FPSCR_V_POS       = 28;   /** @brief Overflow condition code flag */
+    static const int32_t FPU_FPSCR_C_POS       = 29;   /** @brief Carry condition code flag */
+    static const int32_t FPU_FPSCR_Z_POS       = 30;   /** @brief Zero condition code flag */
+    static const int32_t FPU_FPSCR_N_POS       = 31;   /** @brief Negative condition code flag */
 
     /**********************************************************************************************
      * @section SCB Register Information

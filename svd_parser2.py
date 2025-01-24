@@ -14,7 +14,7 @@ import os
 ###################################################################################################
 
 # Output file path
-OUTPUT_PATH: str = "D:\\main\\projects\\sarp\\svd_parser\\output.h"
+OUTPUT_PATH: str = "D:\\main\\projects\\sarp\\svd_parser\\cm4_out.h"
 
 # Path to SVD data directory -> git clone --depth=1 -b main https://github.com/cmsis-svd/cmsis-svd-data.git
 SVD_PKG_PATH: str = "D:\\main\\projects\\sarp\\svd_parser\\cmsis-svd-data\\data"
@@ -23,7 +23,7 @@ SVD_PKG_PATH: str = "D:\\main\\projects\\sarp\\svd_parser\\cmsis-svd-data\\data"
 VENDOR_NAME: str = "STMicro"
 
 # Core 1 SVD file name
-SVD_NAME: str = "STM32H7x5_CM7.svd"
+SVD_NAME: str = "STM32H7x5_CM4.svd"
 
 ###################################################################################################
 # ADVANCED CONFIG
@@ -31,14 +31,16 @@ SVD_NAME: str = "STM32H7x5_CM7.svd"
 
 PERIPH_DIGIT_ENUM: bool = True
 PERIPH_DIGIT_ENUM_EXC_LIST: list[str] = []
-PERIPH_ALPHA_ENUM: bool = True
-PERIPH_ALPHA_ENUM_EXC_LIST: list[str] = []
+PERIPH_ALPHA_ENUM: bool = False
+PERIPH_ALPHA_ENUM_EXC_LIST: list[str] = [
+      "GPIOA", "GPIOB", "GPIOC", "GPIOD", "GPIOE", "GPIOF", "GPIOG", "GPIOH", "GPIOI", "GPIOJ", "GPIOK",
+      "HRTIM_TIMA, HRTIM_TIMB, HRTIM_TIMC, HRTIM_TIMD, HRTIM_TIME, HRTIM_TIMF",]
 MIN_PERIPH_ENUM_LEN: int = 2
 MAX_PERIPH_ENUM_LEN: int = 100
 
 ISR_DIGIT_ENUM: bool = True
 ISR_DIGIT_ENUM_EXC_LIST: list[str] = []
-ISR_ALPHA_ENUM: bool = False
+ISR_ALPHA_ENUM: bool = True
 ISR_ALPHA_ENUM_EXC_LIST: list[str] = []
 MIN_ISR_ENUM_LEN: int = 2
 MAX_ISR_ENUM_LEN: int = 100
@@ -158,7 +160,7 @@ def de_enum_registers_dig(x: svd.parser.SVDPeripheral, y: svd.parser.SVDPeripher
                       x_num: int, y_num: int):
     if x.registers:
         for reg1 in x.registers:
-            if not reg1.dim_index_separator:
+            if y.registers and not reg1.dim_index_separator:
                 for reg2 in y.registers:
                     if not reg2.dim_index_separator:
                         de_enum_fields_dig(reg1, reg2, x_num, y_num)
@@ -640,7 +642,7 @@ with open(OUTPUT_PATH, 'w') as file:
                                     if (isr_dim_name.get(isr2.value) == isr_dim_name[isr.value] and 
                                         isr_dim_index[isr2.value] == i and isr2.value not in isr_value_list):
                                         max_dim_idx_len: int = len(str(isr_dim[isr_dim_name[isr.value]])) + 1
-                                        dim_value_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= {isr2.value}')
+                                        dim_value_list.append(f'[{i}]{" "*(max_dim_idx_len - len(str(i)))}= {isr2.value + 15}')
                                         dim_comment_list.append(f'/** @brief {isr2.description} */')
                                         isr_value_list.append(isr2.value)
                     max_index_len = max([len(x) for x in dim_value_list], default = 1) + 3
@@ -654,7 +656,7 @@ with open(OUTPUT_PATH, 'w') as file:
                     if isr.value not in isr_value_list:
                         isr_value_list.append(isr.value)
                         irq_decl_list.append(f'{isr.name}_IRQ')
-                        irq_def_list.append(str(isr.value))
+                        irq_def_list.append(str(isr.value + 15))
                         isr_array_list.append(False)
                         isr_comment_list.append(f'/** @brief {isr.description} */')
     if len(isr_array_list) > 0:
@@ -708,28 +710,30 @@ with open(OUTPUT_PATH, 'w') as file:
                     reg_xlist.append(reg1.dim_name)
                     if periph1.dim_name:
                         dim1_def_list: list[str] = []
+                        dim1_num_list: list[int] = []
                         for i in range(periph_dim[periph1.dim_name]):
                             dim2_def_list: list[str] = []
                             dim2_cmt_list: list[str] = []
                             for periph2 in device.peripherals:
-                                if periph2.dim_name == periph1.dim_name and periph2.dim_index == i:
+                                if periph2.dim_name == periph1.dim_name and periph2.dim_index == i and periph2.registers:
                                     for j in range(reg_dim[f'{periph1.name}_{reg1.dim_name}']):
-                                        for reg2 in periph2.registers:
-                                            if reg2.dim_name == reg1.dim_name and reg2.dim_index == j:
-                                                max_dim2_idx_len: int = len(str(reg_dim[f'{periph1.name}_{reg1.dim_name}'])) + 1
-                                                reg_addr: int = periph2.base_address + reg2.address_offset
-                                                dim2_def_list.append(f'[{j}]{" "*(max_dim2_idx_len - len(str(j)))}= {reg_cast}0x{reg_addr:08X}U')
-                                                dim2_cmt_list.append(f'/** @brief {reg2.description} */')
+                                          for reg2 in periph2.registers:
+                                              if reg2.dim_name == reg1.dim_name and reg2.dim_index == j:
+                                                  max_dim2_idx_len: int = len(str(reg_dim[f'{periph1.name}_{reg1.dim_name}'])) + 1
+                                                  reg_addr: int = periph2.base_address + reg2.address_offset
+                                                  dim2_def_list.append(f'[{j}]{" "*(max_dim2_idx_len - len(str(j)))}= {reg_cast}0x{reg_addr:08X}U')
+                                                  dim2_cmt_list.append(f'/** @brief {reg2.description} */')
                             if len(dim2_def_list) > 1:
                                 max_dim_def_len = max([len(x) for x in dim2_def_list], default = 1) + 3
                                 dim1_def_list.append(f'{{\n{("".join(f'{INDENT}    {x},{" "*(max_dim_def_len - len(x))}{cmt}\n' 
                                     for x, cmt in zip(dim2_def_list, dim2_cmt_list)))}{INDENT}  }}')
+                                dim1_num_list.append(i)
                         if len(dim1_def_list) > 1:
                             reg_decl_list.append(f'{periph_name}_{reg1.dim_name}_PTR'
                                 f'[{periph_dim[periph1.dim_name]}][{reg_dim[f'{periph1.name}_{reg1.dim_name}']}]')
                             max_dim_idx_len: int = len(str(periph_dim[periph1.dim_name])) + 1
                             reg_def_list.append(f'{{\n{("".join(f'{INDENT}  [{i}]{" "*(max_dim_idx_len - len(str(i)))}= {x},\n' 
-                                for x, i in zip(dim1_def_list, range(len(dim1_def_list)))))}{INDENT}}}')
+                                for x, i in zip(dim1_def_list, dim1_num_list)))}{INDENT}}}')
                             reg_array_list.append(True)
                             reg_cmt_list.append("")
                     else:
@@ -755,7 +759,7 @@ with open(OUTPUT_PATH, 'w') as file:
                         dim_cmt_list: list[str] = []
                         for i in range(periph_dim[periph1.dim_name]):
                             for periph2 in device.peripherals:
-                                if periph2.dim_name == periph1.dim_name and periph2.dim_index == i:
+                                if periph2.dim_name == periph1.dim_name and periph2.dim_index == i and periph2.registers:
                                     for reg2 in periph2.registers:
                                         if reg2.address_offset == reg1.address_offset:
                                             reg_addr: int = periph2.base_address + reg2.address_offset
@@ -778,9 +782,9 @@ with open(OUTPUT_PATH, 'w') as file:
                         reg_cmt_list.append(f'/** @brief {reg1.description} */')
                 reg_pre_list.append(f'static {REG_QUAL[reg1.access]} uint{reg1.size}_t* const')
             if len(reg_decl_list) > 0:
+                file.write(f'{INDENT}/**** @subsection {periph_name} Register Pointers ****/\n')
+                file.write("\n")
                 if any(not x for x in reg_array_list):
-                    file.write(f'{INDENT}/**** @subsection {periph_name} Register Pointers ****/\n')
-                    file.write("\n")
                     max_reg_pre_len = max([len(x) for x in reg_pre_list if not reg_array_list[reg_pre_list.index(x)]], default = 1)
                     max_reg_decl_len = max([len(x) for x in reg_decl_list if not reg_array_list[reg_decl_list.index(x)]], default = 1)
                     max_reg_def_len = max([len(x) for x in reg_def_list if not reg_array_list[reg_def_list.index(x)]], default = 1)
@@ -791,8 +795,6 @@ with open(OUTPUT_PATH, 'w') as file:
                             file.write(f'{INDENT}{reg_pre} {reg_decl}{" "*reg_def_gap}= {reg_def};{" "*reg_cmt_gap}{reg_cmt}\n')
                     file.write("\n")
                 if any(x for x in reg_array_list):
-                    file.write(f'{INDENT}/**** @subsection Enumerated {periph_name} Register Pointers ****/\n')
-                    file.write("\n")
                     for reg_pre, reg_decl, reg_def, reg_array in zip(reg_pre_list, reg_decl_list, reg_def_list, reg_array_list):
                         if reg_array:
                             file.write(f'{INDENT}{reg_pre} {reg_decl} = {reg_def};\n')
@@ -841,9 +843,9 @@ with open(OUTPUT_PATH, 'w') as file:
                             field_array_list.append(False)
                             field_cmt_list.append(f'/** @brief {field1.description} */')
         if len(field_decl_list) > 0:
+            file.write(f'{INDENT}/**** @subsection {periph_name} Register Field Masks ****/\n')
+            file.write("\n")
             if any(not x for x in field_array_list):
-                file.write(f'{INDENT}/**** @subsection {periph_name} Register Field Masks ****/\n')
-                file.write("\n")
                 max_field_decl_len = max([len(x) for x in field_decl_list if not field_array_list[field_decl_list.index(x)]], default = 1)
                 max_field_def_len = max([len(x) for x in field_def_list if not field_array_list[field_def_list.index(x)]], default = 1)
                 for field_decl, field_def, field_cmt, field_array in zip(field_decl_list, field_def_list, field_cmt_list, field_array_list):
@@ -853,8 +855,6 @@ with open(OUTPUT_PATH, 'w') as file:
                         file.write(f'{INDENT}static const uint32_t {field_decl}{" "*field_def_gap}= {field_def};{" "*field_cmt_gap}{field_cmt}\n')
                 file.write("\n")
             if any(x for x in field_array_list):
-                file.write(f'{INDENT}/**** @subsection Enumerated {periph_name} Register Field Masks ****/\n')
-                file.write("\n")
                 for field_decl, field_def, field_array in zip(field_decl_list, field_def_list, field_array_list):
                     if field_array:
                         file.write(f'{INDENT}static const uint{reg.size}_t {field_decl} = {field_def};\n')
@@ -901,9 +901,9 @@ with open(OUTPUT_PATH, 'w') as file:
                             field_array_list.append(False)
                             field_cmt_list.append(f'/** @brief {field1.description} */')
         if len(field_decl_list) > 0:
+            file.write(f'{INDENT}/**** @subsection {periph_name} Register Field Positions ****/\n')
+            file.write("\n")
             if any(not x for x in field_array_list):
-                file.write(f'{INDENT}/**** @subsection {periph_name} Register Field Positions ****/\n')
-                file.write("\n")
                 max_field_def_len = max([len(x) for x in field_def_list if not field_array_list[field_def_list.index(x)]], default = 1)
                 max_field_decl_len = max([len(x) for x in field_decl_list if not field_array_list[field_decl_list.index(x)]], default = 1)
                 for field_decl, field_def, field_cmt, field_array in zip(field_decl_list, field_def_list, field_cmt_list, field_array_list):
@@ -913,8 +913,6 @@ with open(OUTPUT_PATH, 'w') as file:
                         file.write(f'{INDENT}static const int32_t {field_decl}{" "*field_def_gap}= {field_def};{" "*field_cmt_gap}{field_cmt}\n')
                 file.write("\n")
             if any(x for x in field_array_list):
-                file.write(f'{INDENT}/**** @subsection Enumerated {periph_name} Register Field Positions ****/\n')
-                file.write("\n")
                 for field_decl, field_def, field_array in zip(field_decl_list, field_def_list, field_array_list):
                     if field_array:
                         file.write(f'{INDENT}static const int32_t {field_decl} = {field_def};\n')
