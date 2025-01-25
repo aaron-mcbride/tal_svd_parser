@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "name": "tal_dev",
+      "intelliSenseMode": "gcc-arm",
+      "cStandard": "gnu17",
+      "compilerArgs": [
+        "-mcpu=cortex-m7",
+        "-ffreestanding",
+        "-nostdlib",
+        "-Wpedantic",
+        "-Wall",
+        "-Wextra"
+      ],
+      "includePath": [
+        "${workspaceFolder}"
+      ],
+      "compilerPath": "${env:ARM_GNU_TOOLCHAIN}/bin/arm-none-eabi-gcc",
+      "defines": [
+        "TAL_DEBUG",
+        "TAL_TARGET_GCC_STM32H745ZI"
+      ]
+    }
+  ],
+  "version": 4
+}
